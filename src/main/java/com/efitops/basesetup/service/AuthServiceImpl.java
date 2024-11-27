@@ -33,7 +33,6 @@ import com.efitops.basesetup.dto.RolesResponsibilityDTO;
 import com.efitops.basesetup.dto.ScreensDTO;
 import com.efitops.basesetup.dto.SignUpFormDTO;
 import com.efitops.basesetup.dto.UserLoginBranchAccessDTO;
-import com.efitops.basesetup.dto.UserLoginClientAccessDTO;
 import com.efitops.basesetup.dto.UserLoginRoleAccessDTO;
 import com.efitops.basesetup.dto.UserResponseDTO;
 import com.efitops.basesetup.entity.ResponsibilityVO;
@@ -42,11 +41,9 @@ import com.efitops.basesetup.entity.RolesVO;
 import com.efitops.basesetup.entity.ScreensVO;
 import com.efitops.basesetup.entity.TokenVO;
 import com.efitops.basesetup.entity.UserLoginBranchAccessibleVO;
-import com.efitops.basesetup.entity.UserLoginClientAccessVO;
 import com.efitops.basesetup.entity.UserLoginRolesVO;
 import com.efitops.basesetup.entity.UserVO;
 import com.efitops.basesetup.exception.ApplicationException;
-import com.efitops.basesetup.repo.ClientAccessRepo;
 import com.efitops.basesetup.repo.ResponsibilitiesRepo;
 import com.efitops.basesetup.repo.RolesRepo;
 import com.efitops.basesetup.repo.RolesResponsibilityRepo;
@@ -100,9 +97,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	RolesResponsibilityRepo rolesResponsibilityRepo;
-	
-	@Autowired
-	ClientAccessRepo clientAccessRepo;
+//	
+//	@Autowired
+//	ClientAccessRepo clientAccessRepo;
 
 	@Override
 	public void signup(SignUpFormDTO signUpRequest) {
@@ -134,8 +131,8 @@ public class AuthServiceImpl implements AuthService {
 
 			List<UserLoginRolesVO> roles = loginRolesRepo.findByUserVO(userVO);
 			loginRolesRepo.deleteAll(roles);
-			List<UserLoginClientAccessVO> client = clientAccessRepo.findByUserVO(userVO);
-			clientAccessRepo.deleteAll(client);
+//			List<UserLoginClientAccessVO> client = clientAccessRepo.findByUserVO(userVO);
+//			clientAccessRepo.deleteAll(client);
 			List<UserLoginBranchAccessibleVO> branch = branchAccessRepo.findByUserVO(userVO);
 			branchAccessRepo.deleteAll(branch);
 		}
@@ -172,18 +169,18 @@ public class AuthServiceImpl implements AuthService {
 			}
 		}
 
-		userVO.setRoleAccessVO(rolesVO);
-		List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
-		if (signUpFormDTO.getClientAccessDTOList() != null) {
-			for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList()) {
-				UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
-				clientAccessVO.setClient(clientAccessDTO.getClient());
-				clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
-				clientAccessVO.setUserVO(userVO);
-				clientAccessVOList.add(clientAccessVO);
-			}
-		}
-		userVO.setClientAccessVO(clientAccessVOList);
+//		userVO.setRoleAccessVO(rolesVO);
+//		List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
+//		if (signUpFormDTO.getClientAccessDTOList() != null) {
+//			for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList()) {
+//				UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
+//				clientAccessVO.setClient(clientAccessDTO.getClient());
+//				clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
+//				clientAccessVO.setUserVO(userVO);
+//				clientAccessVOList.add(clientAccessVO);
+//			}
+//		}
+//		userVO.setClientAccessVO(clientAccessVOList);
 
 		List<UserLoginBranchAccessibleVO> branchAccessList = new ArrayList<>();
 		if (signUpFormDTO.getBranchAccessDTOList() != null) {
