@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.DepartmentDTO;
+import com.efitops.basesetup.dto.DesignationDTO;
 import com.efitops.basesetup.dto.GstDTO;
 import com.efitops.basesetup.dto.ItemDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessMasterDTO;
@@ -30,13 +31,18 @@ import com.efitops.basesetup.dto.MaterialTypeDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
 import com.efitops.basesetup.dto.ProcessMasterDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
+import com.efitops.basesetup.dto.ShiftDTO;
+import com.efitops.basesetup.dto.UomDTO;
 import com.efitops.basesetup.entity.DepartmentVO;
+import com.efitops.basesetup.entity.DesignationVO;
 import com.efitops.basesetup.entity.GstVO;
 import com.efitops.basesetup.entity.ItemVO;
 import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
 import com.efitops.basesetup.entity.ProcessMasterVO;
+import com.efitops.basesetup.entity.ShiftVO;
+import com.efitops.basesetup.entity.UomVO;
 import com.efitops.basesetup.service.EfitMasterService;
 
 @CrossOrigin
@@ -744,6 +750,240 @@ public class EfitMasterController extends BaseController{
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
+		
+		@GetMapping("/getDesignationByOrgId")
+		public ResponseEntity<ResponseDTO> getDesignationByOrgId(@RequestParam(required = false) Long orgId) {
+			String methodName = "getDesignationByOrgId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<DesignationVO> designationVO = new ArrayList<>();
+			try {
+				designationVO = efitMasterService.getDesignationByOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Designation information get successfully By OrgId");
+				responseObjectsMap.put("designationVO", designationVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"DesignationVO information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
 
+		}
+
+		
+		@GetMapping("/getDesignationById")
+		public ResponseEntity<ResponseDTO> getDesignationById(@RequestParam Long id) {
+			String methodName = "getDesignationById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<DesignationVO> designationVO = new ArrayList<>();
+			try {
+				designationVO = efitMasterService.getDesignationById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Designation information get successfully By Id");
+				responseObjectsMap.put("designationVO", designationVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"DesignationVO information receive failed By Id", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@PutMapping("/updateCreateDesignation")
+		public ResponseEntity<ResponseDTO> updateCreateDesignation(@RequestBody DesignationDTO designationdto) {
+			String methodName = "updateCreateTaxInvoice()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				Map<String, Object> designationVO = efitMasterService.updateCreateDesignation(designationdto);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, designationVO.get("message"));
+				responseObjectsMap.put("designationVO", designationVO.get("designationVO"));
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@GetMapping("/getUomByOrgId")
+		public ResponseEntity<ResponseDTO> getUomByOrgId(@RequestParam(required = false) Long orgId) {
+			String methodName = "getUomByOrgId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<UomVO> uomVO = new ArrayList<>();
+			try {
+				uomVO = efitMasterService.getUomByOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Uom information get successfully By OrgId");
+				responseObjectsMap.put("uomVO", uomVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"UomVO information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@GetMapping("/getUomById")
+		public ResponseEntity<ResponseDTO> getUomById(@RequestParam Long id) {
+			String methodName = "getUomById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<UomVO> uomVO = new ArrayList<>();
+			try {
+				uomVO = efitMasterService.getUomById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Designation information get successfully By Id");
+				responseObjectsMap.put("uomVO", uomVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"UomVO information receive failed By Id", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+		
+		@PutMapping("/updateCreateUom")
+		public ResponseEntity<ResponseDTO> updateCreateUom(@RequestBody UomDTO uomdto) {
+			String methodName = "updateCreateTaxInvoice()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				Map<String, Object> uomVO = efitMasterService.updateCreateUom(uomdto);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, uomVO.get("message"));
+				responseObjectsMap.put("uomVO", uomVO.get("uomVO"));
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		
+		//Shiftmaster-
+		
+		@GetMapping("/getShiftByOrgId")
+		public ResponseEntity<ResponseDTO> getShiftByOrgId(@RequestParam(required = false) Long orgId) {
+			String methodName = "getShiftByOrgId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<ShiftVO> shiftVO = new ArrayList<>();
+			try {
+				shiftVO = efitMasterService.getShiftByOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Shift information get successfully By OrgId");
+				responseObjectsMap.put("shiftVO", shiftVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"shiftVO information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@GetMapping("/getShiftById")
+		public ResponseEntity<ResponseDTO> getShiftById(@RequestParam Long id) {
+			String methodName = "getShiftById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<ShiftVO> shiftVO = new ArrayList<>();
+			try {
+				shiftVO = efitMasterService.getShiftById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Shift information get successfully By Id");
+				responseObjectsMap.put("shiftVO", shiftVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"UomVO information receive failed By Id", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+		
+		@PutMapping("/updateCreateShift")
+		public ResponseEntity<ResponseDTO> updateCreateShift(@RequestBody ShiftDTO shiftdto) {
+			String methodName = "updateCreateTaxInvoice()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				Map<String, Object> shiftVO = efitMasterService.updateCreateShift(shiftdto);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, shiftVO.get("message"));
+				responseObjectsMap.put("shiftVO", shiftVO.get("shiftVO"));
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 	
 }
