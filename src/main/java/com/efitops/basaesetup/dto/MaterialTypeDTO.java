@@ -1,4 +1,5 @@
 package com.efitops.basaesetup.dto;
+import java.util.List;
 
 
 import lombok.AllArgsConstructor;
@@ -8,11 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartmentDTO {
+public class MaterialTypeDTO {
 	private Long id;
-	private String departmentName;
-	private String departmentCode;
+	private String materialType;
+	private String itemGroup;
 	private Long orgId;
 	private String createdBy;
 	private boolean active;
+	
+  List<MaterialDetailDTO>materialDetailDTO;
 }

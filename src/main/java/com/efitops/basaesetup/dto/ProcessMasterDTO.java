@@ -1,6 +1,4 @@
 package com.efitops.basaesetup.dto;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +6,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartmentDTO {
+public class ProcessMasterDTO {
 	private Long id;
-	private String departmentName;
-	private String departmentCode;
+	private String processName;
 	private Long orgId;
 	private String createdBy;
 	private boolean active;
