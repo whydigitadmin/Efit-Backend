@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.GateInwardEntryDTO;
+import com.efitops.basesetup.dto.GateOutwardEntryDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.GateInwardEntryVO;
+import com.efitops.basesetup.entity.GateOutwardEntryVO;
 import com.efitops.basesetup.service.InwardOutwardService;
 
 @CrossOrigin
@@ -141,5 +143,83 @@ public class InwardOutwardController extends BaseController{
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	//GateOutWard
+	
+	@GetMapping("/getGateOutwardEntryByOrgId")
+	public ResponseEntity<ResponseDTO> getGateOutwardEntryByOrgId(@RequestParam Long orgId) {
+		String methodName = "getGateOutwardEntryByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<GateOutwardEntryVO> gateOutwardEntryVO = new ArrayList<>();
+		try {
+			gateOutwardEntryVO = inwardOutwardService.getGateOutwardEntryByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GateOutwardEntry information get successfully ByOrgId");
+			responseObjectsMap.put("gateOutwardEntryVO", gateOutwardEntryVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "GateOutwardEntry information receive failedByOrgId",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getGateOutwardEntryById")
+	public ResponseEntity<ResponseDTO> getGateOutwardEntryById(@RequestParam Long id) {
+		String methodName = "getGateOutwardEntryById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<GateOutwardEntryVO> gateOutwardEntryVO = new ArrayList<>();
+		try {
+			gateOutwardEntryVO = inwardOutwardService.getGateOutwardEntryById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GateOutwardEntry information get successfully By Id");
+			responseObjectsMap.put("gateOutwardEntryVO", gateOutwardEntryVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "GateOutwardEntry information receive failedBy Id",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+
+	@PutMapping("/updateCreateGateOutwardEntry")
+	public ResponseEntity<ResponseDTO> updateCreateGateOutwardEntry(@RequestBody GateOutwardEntryDTO gateOutwardEntryDTO) {
+		String methodName = "updateCreateGateOutwardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> gateOutwardEntryVO = inwardOutwardService.updateCreateGateOutwardEntry(gateOutwardEntryDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, gateOutwardEntryVO.get("message"));
+			responseObjectsMap.put("gateOutwardEntryVO", gateOutwardEntryVO.get("gateOutwardEntryVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 
 }
