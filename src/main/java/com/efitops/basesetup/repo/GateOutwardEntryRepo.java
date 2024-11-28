@@ -14,7 +14,7 @@ public interface GateOutwardEntryRepo extends JpaRepository<GateOutwardEntryVO, 
 	@Query(nativeQuery = true, value = "select * from t_gateoutwardentry where orgid=?1")
 	List<GateOutwardEntryVO> findGateOutwardEntryByOrgId(Long orgId);
 
-	@Query(nativeQuery = true, value = "select * from t_gateoutwardentry where gateinwardentryid=?1")
+	@Query(nativeQuery = true, value = "select * from t_gateoutwardentry where gateoutwardentryid=?1")
 	List<GateOutwardEntryVO> findGateOutwardEntryById(Long id);
 
 }
