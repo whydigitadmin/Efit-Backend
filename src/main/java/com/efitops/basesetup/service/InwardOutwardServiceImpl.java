@@ -196,8 +196,10 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 			createUpdateGateOutwardEntryVOByGateOutwardEntryDTO(gateOutwardEntryDTO, gateOutwardEntryVO);
 			message = "GateOutwardEntry Updated Successfully";
 
-//			List<GateOutwardEntryDetailsVO> gateOutwardEntryDetailsVOs = gateOutwardEntryDetailsRepo.findByGateOutwardEntryVO(gateOutwardEntryVO);
-//			gateOutwardEntryDetailsRepo.deleteAll(gateOutwardEntryDetailsVOs);
+			List<GateOutwardEntryDetailsVO> entryDetailsVOs = gateOutwardEntryDetailsRepo
+					.findByGateOutwardEntryVO(gateOutwardEntryVO);
+			gateOutwardEntryDetailsRepo.deleteAll(entryDetailsVOs);
+		
 
 			
 		} else {
@@ -230,12 +232,6 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 		gateOutwardEntryVO.setVehicleNo(gateOutwardEntryDTO.getVehicleNo());
 		gateOutwardEntryVO.setNarration(gateOutwardEntryDTO.getNarration());
 		gateOutwardEntryVO.setOrgId(gateOutwardEntryDTO.getOrgId());
-
-		if (gateOutwardEntryDTO.getId() != null) {
-			List<GateOutwardEntryDetailsVO> entryDetailsVOs = gateOutwardEntryDetailsRepo
-					.findByGateOutwardEntryVO(gateOutwardEntryVO);
-			gateOutwardEntryDetailsRepo.deleteAll(entryDetailsVOs);
-		}
 		
 		List<GateOutwardEntryDetailsVO> gateOutwardEntryDetailsVOs = new ArrayList<>();
 		for (GateOutwardEntryDetailsDTO gateOutwardEntryDetailsDTO : gateOutwardEntryDTO.getGateOutwardEntryDetailsDTO()) {

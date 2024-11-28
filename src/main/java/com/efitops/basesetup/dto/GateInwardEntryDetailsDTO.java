@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GateInwardEntryDetailsDTO {
 
-	private Long id;
 
 	private String itemName;
 
