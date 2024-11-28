@@ -15,13 +15,20 @@ import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.GateInwardEntryDTO;
 import com.efitops.basesetup.dto.GateInwardEntryDetailsDTO;
+import com.efitops.basesetup.dto.GateOutwardEntryDTO;
+import com.efitops.basesetup.dto.GateOutwardEntryDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.GateInwardEntryDetailsVO;
 import com.efitops.basesetup.entity.GateInwardEntryVO;
+import com.efitops.basesetup.entity.GateOutwardEntryDetailsVO;
+import com.efitops.basesetup.entity.GateOutwardEntryVO;
+import com.efitops.basesetup.entity.ParticularsJournalVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.GateInwardEntryDetailsRepo;
 import com.efitops.basesetup.repo.GateInwardEntryRepo;
+import com.efitops.basesetup.repo.GateOutwardEntryDetailsRepo;
+import com.efitops.basesetup.repo.GateOutwardEntryRepo;
 
 @Service
 public class InwardOutwardServiceImpl implements InwardOutwardService{
@@ -37,12 +44,18 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 	
+	@Autowired
+	GateOutwardEntryRepo gateOutwardEntryRepo;
+	
+	@Autowired
+	GateOutwardEntryDetailsRepo gateOutwardEntryDetailsRepo;
+	
 	@Override
 	public List<GateInwardEntryVO> getGateInwardEntryByOrgId(Long orgId) {
 		List<GateInwardEntryVO> gateInwardEntryVO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(orgId)) {
 			LOGGER.info("Successfully Received GateInwardEntry BY OrgId : {}", orgId);
-			gateInwardEntryVO = gateInwardEntryRepo.findItemByOrgId(orgId);
+			gateInwardEntryVO = gateInwardEntryRepo.findgetGateInwardEntryByOrgId(orgId);
 		}
 		return gateInwardEntryVO;
 	}
@@ -52,7 +65,7 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 		List<GateInwardEntryVO> gateInwardEntryVO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received GateInwardEntry BY Id : {}", id);
-			gateInwardEntryVO = gateInwardEntryRepo.findItemById(id);
+			gateInwardEntryVO = gateInwardEntryRepo.findgetGateInwardEntryById(id);
 		}
 		return gateInwardEntryVO;
 	}
@@ -147,6 +160,96 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 		return result;
 	}
 	
+	//GateOutWard
 	
+	@Override
+	public List<GateOutwardEntryVO> getGateOutwardEntryByOrgId(Long orgId) {
+		List<GateOutwardEntryVO> gateOutwardEntryVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received GateInwardEntry BY OrgId : {}", orgId);
+			gateOutwardEntryVO = gateOutwardEntryRepo.findGateOutwardEntryByOrgId(orgId);
+		}
+		return gateOutwardEntryVO;
+	}
+	
+	@Override
+	public List<GateOutwardEntryVO> getGateOutwardEntryById(Long id) {
+		List<GateOutwardEntryVO> gateOutwardEntryVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received GateInwardEntry BY OrgId : {}", id);
+			gateOutwardEntryVO = gateOutwardEntryRepo.findGateOutwardEntryById(id);
+		}
+		return gateOutwardEntryVO;
+	}
+	
+	@Override
+	public Map<String, Object> updateCreateGateOutwardEntry(@Valid GateOutwardEntryDTO gateOutwardEntryDTO) throws ApplicationException {
+		String message;
+        String screenCode="GOE";
+		GateOutwardEntryVO gateOutwardEntryVO = new GateOutwardEntryVO();
+
+		if (gateOutwardEntryDTO.getId() != null) {
+			// Fetch existing ItemVO for update
+			gateOutwardEntryVO = gateOutwardEntryRepo.findById(gateOutwardEntryDTO.getId())
+					.orElseThrow(() -> new ApplicationException("GateOutwardEntry not found"));
+			gateOutwardEntryVO.setUpdatedBy(gateOutwardEntryDTO.getCreatedBy());
+			createUpdateGateOutwardEntryVOByGateOutwardEntryDTO(gateOutwardEntryDTO, gateOutwardEntryVO);
+			message = "GateOutwardEntry Updated Successfully";
+
+//			List<GateOutwardEntryDetailsVO> gateOutwardEntryDetailsVOs = gateOutwardEntryDetailsRepo.findByGateOutwardEntryVO(gateOutwardEntryVO);
+//			gateOutwardEntryDetailsRepo.deleteAll(gateOutwardEntryDetailsVOs);
+
+			
+		} else {
+			
+			// Create new ItemVO
+			gateOutwardEntryVO.setCreatedBy(gateOutwardEntryDTO.getCreatedBy());
+			gateOutwardEntryVO.setUpdatedBy(gateOutwardEntryDTO.getCreatedBy());
+			createUpdateGateOutwardEntryVOByGateOutwardEntryDTO(gateOutwardEntryDTO, gateOutwardEntryVO);
+			message = "GateOutwardEntry Created Successfully";
+		}
+
+		// Save the ItemVO
+		gateOutwardEntryRepo.save(gateOutwardEntryVO);
+
+		// Prepare response
+		Map<String, Object> response = new HashMap<>();
+		response.put("gateOutwardEntryVO", gateOutwardEntryVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdateGateOutwardEntryVOByGateOutwardEntryDTO(@Valid GateOutwardEntryDTO gateOutwardEntryDTO, GateOutwardEntryVO gateOutwardEntryVO) {
+		gateOutwardEntryVO.setCustomerNo(gateOutwardEntryDTO.getCustomerNo());
+		gateOutwardEntryVO.setType(gateOutwardEntryDTO.getType());
+		gateOutwardEntryVO.setDeliveryChallanNo(gateOutwardEntryDTO.getDeliveryChallanNo());
+		gateOutwardEntryVO.setDeliveryChallanDate(gateOutwardEntryDTO.getDeliveryChallanDate());
+		gateOutwardEntryVO.setInvoiceNo(gateOutwardEntryDTO.getInvoiceNo());
+		gateOutwardEntryVO.setInvoiceDate(gateOutwardEntryDTO.getInvoiceDate());
+		gateOutwardEntryVO.setModeOfShipment(gateOutwardEntryDTO.getModeOfShipment());
+		gateOutwardEntryVO.setVehicleNo(gateOutwardEntryDTO.getVehicleNo());
+		gateOutwardEntryVO.setNarration(gateOutwardEntryDTO.getNarration());
+		gateOutwardEntryVO.setOrgId(gateOutwardEntryDTO.getOrgId());
+
+		if (gateOutwardEntryDTO.getId() != null) {
+			List<GateOutwardEntryDetailsVO> entryDetailsVOs = gateOutwardEntryDetailsRepo
+					.findByGateOutwardEntryVO(gateOutwardEntryVO);
+			gateOutwardEntryDetailsRepo.deleteAll(entryDetailsVOs);
+		}
+		
+		List<GateOutwardEntryDetailsVO> gateOutwardEntryDetailsVOs = new ArrayList<>();
+		for (GateOutwardEntryDetailsDTO gateOutwardEntryDetailsDTO : gateOutwardEntryDTO.getGateOutwardEntryDetailsDTO()) {
+			GateOutwardEntryDetailsVO gateOutwardEntryDetailsVO = new GateOutwardEntryDetailsVO();
+			gateOutwardEntryDetailsVO.setItem(gateOutwardEntryDetailsDTO.getItem());
+			gateOutwardEntryDetailsVO.setItemDesc(gateOutwardEntryDetailsDTO.getItemDesc());
+			gateOutwardEntryDetailsVO.setUom(gateOutwardEntryDetailsDTO.getUom());
+			gateOutwardEntryDetailsVO.setQty(gateOutwardEntryDetailsDTO.getQty());
+
+			gateOutwardEntryDetailsVO.setGateOutwardEntryVO(gateOutwardEntryVO); // Set the reference in child entity
+			gateOutwardEntryDetailsVOs.add(gateOutwardEntryDetailsVO);
+		}
+		gateOutwardEntryVO.setGateOutwardEntryDetailsVO(gateOutwardEntryDetailsVOs);
+
+	}
 
 }
