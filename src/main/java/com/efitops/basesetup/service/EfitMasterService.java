@@ -37,6 +37,18 @@ public interface EfitMasterService {
 	List<ItemVO> getItemById(Long id);
 
 	Map<String, Object> updateCreateItemMaster(ItemDTO itemDTO) throws ApplicationException;
+	
+	List<Map<String, Object>> getPrimaryCodeFromUomMaster(Long orgId);
+	
+	List<Map<String, Object>> getStockLocationForItemMaster(Long orgId);
+
+	List<Map<String, Object>> getTaxSlabFromGst(Long orgId);
+	
+	List<Map<String, Object>> getItemGroupFromMaterialType(Long orgId ,String itemName);
+	
+	List<Map<String, Object>> getItemSubGroupFromMaterialType(Long orgId, String itemName, String itemGroup);
+
+	List<Map<String, Object>> getItemNameFromMaterialType(Long orgId);
 
 	//MeasuringInstruments
 	
@@ -119,4 +131,9 @@ public interface EfitMasterService {
 		Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException;
 
 		List<ShiftVO> getShiftById(Long id);
+
+		
+
+	
+
 }
