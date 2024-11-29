@@ -44,11 +44,11 @@ public interface EfitMasterService {
 
 	List<Map<String, Object>> getTaxSlabFromGst(Long orgId);
 	
-	List<Map<String, Object>> getItemGroupFromMaterialType(Long orgId ,String itemName);
+	List<Map<String, Object>> getMaterialGroupFromMaterialType(Long orgId, String materialType);
 	
-	List<Map<String, Object>> getItemSubGroupFromMaterialType(Long orgId, String itemName, String itemGroup);
+	List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId, String materialType, String materialGroup);
 
-	List<Map<String, Object>> getItemNameFromMaterialType(Long orgId);
+	List<Map<String, Object>> getMaterialTypeForItemMaster(Long orgId);
 
 	//MeasuringInstruments
 	
@@ -62,7 +62,7 @@ public interface EfitMasterService {
 
 	List<Map<String, Object>> getInstrumentNameFromItemMaster(Long orgId);
 
-	//ProcessMaster
+	//ItemwiseProcessMaster
 	List<ItemWiseProcessMasterVO> getItemWiseProcessMasterByOrgId(Long orgId);
 
 	List<ItemWiseProcessMasterVO> getItemWiseProcessMasterById(Long id);
@@ -71,6 +71,9 @@ public interface EfitMasterService {
 
 
 	List<Map<String, Object>> getItemAndItemDescforItemWiseProcess(Long orgId);
+	
+	List<Map<String, Object>> getProcessNameFromItemWiseProcess(Long orgId);
+	
 
 
 	//Department
@@ -131,6 +134,10 @@ public interface EfitMasterService {
 		Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException;
 
 		List<ShiftVO> getShiftById(Long id);
+
+
+
+
 
 		
 

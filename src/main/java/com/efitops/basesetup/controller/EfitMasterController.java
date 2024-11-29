@@ -227,18 +227,18 @@ public class EfitMasterController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@GetMapping("/getItemNameFromMaterialType")
-	public ResponseEntity<ResponseDTO> getItemNameFromMaterialType(
+	@GetMapping("/getMaterialTypeForItemMaster")
+	public ResponseEntity<ResponseDTO> getMaterialTypeForItemMaster(
 			@RequestParam Long orgId ) {
 
-		String methodName = "getItemNameFromMaterialType()";
+		String methodName = "getMaterialTypeForItemMaster()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = efitMasterService.getItemNameFromMaterialType(orgId );
+			mov = efitMasterService.getMaterialTypeForItemMaster(orgId );
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -246,12 +246,12 @@ public class EfitMasterController extends BaseController{
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					" ItemName from MaterialType information retrieved successfully");
+					"  MaterialType for Itemmaster information retrieved successfully");
 			responseObjectsMap.put("ItemVO", mov);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve ItemName from MaterialType information", errorMsg);
+					"Failed to retrieve MaterialType for Itemmaster information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -259,18 +259,18 @@ public class EfitMasterController extends BaseController{
 	}
 
 	
-	@GetMapping("/getItemGroupFromMaterialType")
-	public ResponseEntity<ResponseDTO> getItemGroupFromMaterialType(
-			@RequestParam Long orgId ,@RequestParam String itemName) {
+	@GetMapping("/getMaterialGroupFromMaterialType")
+	public ResponseEntity<ResponseDTO> getMaterialGroupFromMaterialType(
+			@RequestParam Long orgId ,@RequestParam String materialType) {
 
-		String methodName = "getItemGroupFromMaterialType()";
+		String methodName = "getMaterialGroupFromMaterialType()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = efitMasterService.getItemGroupFromMaterialType(orgId ,itemName);
+			mov = efitMasterService.getMaterialGroupFromMaterialType(orgId ,materialType);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -278,30 +278,30 @@ public class EfitMasterController extends BaseController{
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					" ItemGroup from MaterialType information retrieved successfully");
+					" MaterialGroup from MaterialType information retrieved successfully");
 			responseObjectsMap.put("ItemVO", mov);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve ItemGroup from MaterialType information", errorMsg);
+					"Failed to retrieve MaterialGroup from MaterialType information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getItemSubGroupFromMaterialType")
-	public ResponseEntity<ResponseDTO> getItemSubGroupFromMaterialType(
-			@RequestParam Long orgId ,@RequestParam String itemName, @RequestParam String itemGroup) {
+	@GetMapping("/getMaterialSubGroupFromMaterialType")
+	public ResponseEntity<ResponseDTO> getMaterialSubGroupFromMaterialType(
+			@RequestParam Long orgId ,@RequestParam String materialType, @RequestParam String materialGroup) {
 
-		String methodName = "getItemSubGroupFromMaterialType()";
+		String methodName = "getMaterialSubGroupFromMaterialType()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = efitMasterService.getItemSubGroupFromMaterialType(orgId ,itemName, itemGroup);
+			mov = efitMasterService.getMaterialSubGroupFromMaterialType(orgId ,materialType, materialGroup);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -309,12 +309,12 @@ public class EfitMasterController extends BaseController{
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					" ItemSubGroup from MaterialType information retrieved successfully");
+					" MaterialSubGroup from MaterialType information retrieved successfully");
 			responseObjectsMap.put("ItemVO", mov);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve ItemSubGroup from MaterialType information", errorMsg);
+					"Failed to retrieve MaterialSubGroup from MaterialType information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -570,6 +570,39 @@ public class EfitMasterController extends BaseController{
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
+	@GetMapping("/getProcessNameFromItemWiseProcess")
+	public ResponseEntity<ResponseDTO> getProcessNameFromItemWiseProcess(
+			@RequestParam Long orgId ) {
+
+		String methodName = "getProcessNameFromItemWiseProcess()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+		try {
+			mov = efitMasterService.getProcessNameFromItemWiseProcess(orgId );
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" ProcessName from ItemWiseProcess information retrieved successfully");
+			responseObjectsMap.put("ItemVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve ProcessName from ItemWiseProcess information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 
 	// Department
 

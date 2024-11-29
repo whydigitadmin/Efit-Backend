@@ -294,17 +294,17 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getItemGroupFromMaterialType(Long orgId,String itemName) {
+	public List<Map<String, Object>> getMaterialGroupFromMaterialType(Long orgId,String materialType) {
 
-		Set<Object[]> result = itemRepo.findItemGroupFromMaterialType(orgId,itemName);
-		return getItemGroupFromMaterialType(result);
+		Set<Object[]> result = itemRepo.findMaterialGroupFromMaterialType(orgId,materialType);
+		return getMaterialGroupFromMaterialType(result);
 	}
 
-	private List<Map<String, Object>> getItemGroupFromMaterialType(Set<Object[]> result) {
+	private List<Map<String, Object>> getMaterialGroupFromMaterialType(Set<Object[]> result) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("itemGroup", fs[0] != null ? fs[0].toString() : "");
+			part.put("materialGroup", fs[0] != null ? fs[0].toString() : "");
 
 			details1.add(part);
 		}
@@ -313,17 +313,17 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getItemSubGroupFromMaterialType(Long orgId,String itemName,String itemGroup) {
+	public List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId,String materialType,String materialGroup) {
 
-		Set<Object[]> result = itemRepo.findItemSubGroupFromMaterialType(orgId,itemName,itemGroup);
-		return getItemSubGroupFromMaterialType(result);
+		Set<Object[]> result = itemRepo.findMaterialSubGroupFromMaterialType(orgId,materialType,materialGroup);
+		return getMaterialSubGroupFromMaterialType(result);
 	}
 
-	private List<Map<String, Object>> getItemSubGroupFromMaterialType(Set<Object[]> result) {
+	private List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Set<Object[]> result) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("itemSubGroup", fs[0] != null ? fs[0].toString() : "");
+			part.put("materialSubGroup", fs[0] != null ? fs[0].toString() : "");
 
 			details1.add(part);
 		}
@@ -332,17 +332,17 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getItemNameFromMaterialType(Long orgId) {
+	public List<Map<String, Object>> getMaterialTypeForItemMaster(Long orgId) {
 
-		Set<Object[]> result = itemRepo.findItemNameFromMaterialType(orgId);
-		return getItemNameFromMaterialType(result);
+		Set<Object[]> result = itemRepo.findMaterialTypeForItemMaster(orgId);
+		return getMaterialTypeForItemMaster(result);
 	}
 
-	private List<Map<String, Object>> getItemNameFromMaterialType(Set<Object[]> result) {
+	private List<Map<String, Object>> getMaterialTypeForItemMaster(Set<Object[]> result) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("itemName", fs[0] != null ? fs[0].toString() : "");
+			part.put("materialType", fs[0] != null ? fs[0].toString() : "");
 
 			details1.add(part);
 		}
@@ -586,6 +586,25 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("itemName", fs[0] != null ? fs[0].toString() : "");
 			part.put("itemDesc", fs[1] != null ? fs[1].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getProcessNameFromItemWiseProcess(Long orgId) {
+
+		Set<Object[]> result = itemWiseProcessMasterRepo.findProcessNameFromItemWiseProcess(orgId);
+		return getProcessNameFromItemWiseProcess(result);
+	}
+
+	private List<Map<String, Object>> getProcessNameFromItemWiseProcess(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("processName", fs[0] != null ? fs[0].toString() : "");
 
 			details1.add(part);
 		}
