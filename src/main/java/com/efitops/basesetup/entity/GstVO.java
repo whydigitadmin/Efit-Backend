@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "gst")
+@Table(name = "m_gst")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class GstVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gstgen")
-	@SequenceGenerator(name = "gstgen", sequenceName = "gstseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_gstgen")
+	@SequenceGenerator(name = "m_gstgen", sequenceName = "m_gstseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "gstid")
 	private Long id;
 	@Column(name="gstslab")

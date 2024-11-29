@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "department")
+@Table(name = "m_department")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 public class DepartmentVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departmentgen")
-	@SequenceGenerator(name = "departmentgen", sequenceName = "departmentseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_departmentgen")
+	@SequenceGenerator(name = "m_departmentgen", sequenceName = "m_departmentseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "departid")
 	private Long id;
 	@Column(name = "departmentid")

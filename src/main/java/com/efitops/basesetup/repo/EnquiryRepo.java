@@ -10,10 +10,10 @@ import com.efitops.basesetup.entity.EnquiryVO;
 @Repository
 public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 
-	@Query(nativeQuery = true,value="select * from  enquiry where orgid=?1")
+	@Query(nativeQuery = true,value="select * from  t_enquiry where orgid=?1")
 	List<EnquiryVO> getAllEnquiryByOrgId(Long orgId);
 	
-	@Query(nativeQuery = true,value="select * from enquiry where enquiryid=?1")
+	@Query(nativeQuery = true,value="select * from t_enquiry where enquiryid=?1")
 	List<EnquiryVO> getEnquiryById(Long id);
 	
 	

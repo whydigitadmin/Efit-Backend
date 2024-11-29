@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,9 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 
 	@Autowired
 	WorkOrderRepo workOrderRepo;
@@ -241,14 +245,15 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		quotationVO.setOrgId(quotationDTO.getOrgId());
 		quotationVO.setCreatedBy(quotationDTO.getCreatedBy());
 		
-		
+		BigDecimal grocessAmount= BigDecimal.ZERO;
+		BigDecimal netAmount= BigDecimal.ZERO;
            
            if (ObjectUtils.isNotEmpty(quotationDTO.getId())) {
    			List<QuotationDetailsVO> quotationDetailsVO1 = quotationDetailsRepo.findByQuotationVO(quotationVO);
    			quotationDetailsRepo.deleteAll(quotationDetailsVO1);
    			
    		}
-           
+  
          List<QuotationDetailsVO>quotationDetailsVOs=new ArrayList<>();
          for(QuotationDetailsDTO quotationDetailsDTO : quotationDTO.getQuotationDetailsDTO()) {
         	 QuotationDetailsVO quotationDetailsVO =new QuotationDetailsVO();
@@ -259,14 +264,30 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
         	 quotationDetailsVO.setUnit(quotationDetailsDTO.getUnit());
         	 quotationDetailsVO.setUnitPrice(quotationDetailsDTO.getUnitPrice());
         	 quotationDetailsVO.setQtyOffered(quotationDetailsDTO.getQtyOffered());
-        	 quotationDetailsVO.setBasicPrice(quotationDetailsDTO.getBasicPrice());
         	 quotationDetailsVO.setDiscount(quotationDetailsDTO.getDiscount());
-        	 quotationDetailsVO.setDiscountAmount(quotationDetailsDTO.getDiscountAmount());
-        	 quotationDetailsVO.setQuoteAmount(quotationDetailsDTO.getQuoteAmount());
+        	 
+             BigDecimal discountamount;
+ 
+        	 
+        	  BigDecimal amountSet=quotationDetailsDTO.getUnitPrice().multiply(quotationDetailsDTO.getQtyOffered());
+        	     quotationDetailsVO.setBasicPrice(amountSet);
+   
+        	     grocessAmount=grocessAmount.add(amountSet);
+        	     
+        	    discountamount=quotationDetailsVO.getBasicPrice().multiply(quotationDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
+        	     quotationDetailsVO.setDiscountAmount(discountamount);
+         	 quotationDetailsVO.setQuoteAmount(quotationDetailsVO.getBasicPrice().subtract(quotationDetailsVO.getDiscountAmount()));
+         	 
+            netAmount=netAmount.add(quotationDetailsVO.getQuoteAmount());
         	 quotationDetailsVO.setDeliveryDate(quotationDetailsDTO.getDeliveryDate());
         	 quotationDetailsVO.setQuotationVO(quotationVO);
           quotationDetailsVOs.add(quotationDetailsVO);
          }
+         quotationVO.setGrossAmount(grocessAmount);
+         quotationVO.setNetAmount(netAmount);
+         
+         quotationVO.setAmountInWords(
+ 				amountInWordsConverterService.convert(quotationVO.getNetAmount().longValue()));
          quotationVO.setQuotationDetailsVO(quotationDetailsVOs);  
 	}
 

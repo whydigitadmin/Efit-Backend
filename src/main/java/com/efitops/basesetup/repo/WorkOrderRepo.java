@@ -15,7 +15,7 @@ public interface WorkOrderRepo extends JpaRepository<WorkOrderVO, Long>{
 	@Query(nativeQuery = true,value="select * from t_workorder  where  orgid=?1")
 	List<WorkOrderVO> getAllWorkOrderByOrgId(Long orgId);
 	
-	@Query(nativeQuery = true,value="select * from t_workorder  where  t_workorderid=?1")
+	@Query(nativeQuery = true,value="select * from t_workorder  where  workorderid=?1")
 	List<WorkOrderVO> getWorkOrderById(Long id);
 	
 	

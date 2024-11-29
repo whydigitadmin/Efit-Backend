@@ -33,7 +33,7 @@ public class WorkOrderVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_workordergen")
 	@SequenceGenerator(name = "t_workordergen", sequenceName = "t_workorderseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "t_workorderid")
+	@Column(name = "workorderid")
 	private Long id;
 	@Column(name="wono")
 	private String woNo;

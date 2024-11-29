@@ -11,10 +11,10 @@ import com.efitops.basesetup.entity.GstVO;
 @Repository
 public interface GstRepo extends JpaRepository<GstVO, Long>{
 
-	@Query(nativeQuery = true,value="select * from gst  where orgid=?1")
+	@Query(nativeQuery = true,value="select * from m_gst  where orgid=?1")
 	List<GstVO> getAllGstByOrgId(Long orgId);
 
-	@Query(nativeQuery = true,value="select * from gst where gstid=?1")
+	@Query(nativeQuery = true,value="select * from m_gst where gstid=?1")
 	List<GstVO> getGstById(Long id);
 
 	boolean existsByGstSlabAndOrgId(String gstSlab, Long orgId);
