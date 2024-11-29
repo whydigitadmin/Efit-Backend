@@ -31,7 +31,7 @@ public class TaxInvoiceController extends BaseController {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(TaxInvoiceController.class);
 
-	@Autowired
+	@Autowired  
 	TaxInvoiceService taxInvoiceService;
 
 	// TaxInvoice

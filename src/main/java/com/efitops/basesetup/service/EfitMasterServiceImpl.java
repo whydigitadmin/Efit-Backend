@@ -234,6 +234,120 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		itemVO.setItemTaxSlabVO(itemTaxSlabVOs);
 	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getPrimaryCodeFromUomMaster(Long orgId) {
+
+		Set<Object[]> result = itemRepo.findPrimaryCodeFromUomMaster(orgId);
+		return getPrimaryCodeFromUomMaster(result);
+	}
+
+	private List<Map<String, Object>> getPrimaryCodeFromUomMaster(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("primaryUnit", fs[0] != null ? fs[0].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getStockLocationForItemMaster(Long orgId) {
+
+		Set<Object[]> result = itemRepo.findStockLocationForItemMaster(orgId);
+		return getStockLocationForItemMaster(result);
+	}
+
+	private List<Map<String, Object>> getStockLocationForItemMaster(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("stockLocation", fs[0] != null ? fs[0].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getTaxSlabFromGst(Long orgId) {
+
+		Set<Object[]> result = itemRepo.findTaxSlabFromGst(orgId);
+		return getTaxSlabFromGst(result);
+	}
+
+	private List<Map<String, Object>> getTaxSlabFromGst(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("taxSlab", fs[0] != null ? fs[0].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getMaterialGroupFromMaterialType(Long orgId,String materialType) {
+
+		Set<Object[]> result = itemRepo.findMaterialGroupFromMaterialType(orgId,materialType);
+		return getMaterialGroupFromMaterialType(result);
+	}
+
+	private List<Map<String, Object>> getMaterialGroupFromMaterialType(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("materialGroup", fs[0] != null ? fs[0].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId,String materialType,String materialGroup) {
+
+		Set<Object[]> result = itemRepo.findMaterialSubGroupFromMaterialType(orgId,materialType,materialGroup);
+		return getMaterialSubGroupFromMaterialType(result);
+	}
+
+	private List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("materialSubGroup", fs[0] != null ? fs[0].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getMaterialTypeForItemMaster(Long orgId) {
+
+		Set<Object[]> result = itemRepo.findMaterialTypeForItemMaster(orgId);
+		return getMaterialTypeForItemMaster(result);
+	}
+
+	private List<Map<String, Object>> getMaterialTypeForItemMaster(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("materialType", fs[0] != null ? fs[0].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
 
 	// MeasuringInstrument
 
@@ -256,6 +370,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return measuringInstrumentsVO;
 	}
+
 
 	@Override
 	public Map<String, Object> updateCreateMeasuringInstruments(@Valid MeasuringInstrumentsDTO measuringInstrumentsDTO)
@@ -471,6 +586,25 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("itemName", fs[0] != null ? fs[0].toString() : "");
 			part.put("itemDesc", fs[1] != null ? fs[1].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getProcessNameFromItemWiseProcess(Long orgId) {
+
+		Set<Object[]> result = itemWiseProcessMasterRepo.findProcessNameFromItemWiseProcess(orgId);
+		return getProcessNameFromItemWiseProcess(result);
+	}
+
+	private List<Map<String, Object>> getProcessNameFromItemWiseProcess(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("processName", fs[0] != null ? fs[0].toString() : "");
 
 			details1.add(part);
 		}
