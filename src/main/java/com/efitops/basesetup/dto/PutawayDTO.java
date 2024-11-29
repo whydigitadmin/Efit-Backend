@@ -21,6 +21,7 @@ public class PutawayDTO {
 	private String toLocation;
 	private String goodsType;
 	private String dcNo;
+	private String narration;
 	private Long orgId;
 	private String createdBy;
 	

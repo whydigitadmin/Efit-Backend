@@ -40,7 +40,7 @@ public class PutawayVO {
 	@Column(name="docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "grnno")
 	private String grnNo;	
 	@Column(name = "grndate")
@@ -57,6 +57,8 @@ public class PutawayVO {
 	private String goodsType;
 	@Column(name = "dcno")
 	private String dcNo;
+	@Column(name = "narration")
+	private String narration;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
