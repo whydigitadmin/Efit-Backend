@@ -1,10 +1,8 @@
 package com.efitops.basesetup.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.efitops.basesetup.dto.CreatedUpdatedDate;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
@@ -23,29 +20,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_itemtaxslab")
+@Table(name = "t_routecardengdept")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemTaxSlabVO {
-	
+public class RouteCardEngDeptVO {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itemtaxslabgen")
-	@SequenceGenerator(name = "m_itemtaxslabgen", sequenceName = "m_itemtaxslabseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "itemtaxslabid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_routecardengdeptgen")
+	@SequenceGenerator(name = "t_routecardengdeptgen", sequenceName = "t_routecardengdeptseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "routecardengdeptid")
 	private Long id;
 	
-	@Column(name = "taxslab")
-	private String taxSlab;
-
-	@Column(name = "taxeffectivefrom")
-	private LocalDate taxEffectiveFrom;
+	@Column(name = "preparedby")
+	private String preparedBy;
+	@Column(name = "prepareddate")
+	private LocalDate preparedDate;
+	@Column(name = "approvedby")
+	private String approvedBy;
+	@Column(name = "approveddate")
+	private LocalDate approvedDate;
 	
 	@ManyToOne
-	@JoinColumn(name = "itemid")
 	@JsonBackReference
-	private ItemVO itemVO;
-	
-
+	@JoinColumn(name = "routecardentryid")
+	RouteCardEntryVO routeCardEntryVO;
 }

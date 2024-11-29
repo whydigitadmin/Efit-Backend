@@ -22,15 +22,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "item")
+@Table(name = "m_item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemgen")
-	@SequenceGenerator(name = "itemgen", sequenceName = "itemseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itemgen")
+	@SequenceGenerator(name = "m_itemgen", sequenceName = "m_itemseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "itemid")
 	private Long id;
 
@@ -42,7 +42,7 @@ public class ItemVO {
 
 	@Column(name = "materialtype")
 	private String materialType;
-	
+
 	@Column(name = "materialgroup")
 	private String materialGroup;
 
@@ -74,11 +74,16 @@ public class ItemVO {
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active ;
+	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel = false;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
+
+	@Column(name = "screencode", length = 5)
+	private String screenCode = "IT";
+	@Column(name = "screenname", length = 30)
+	private String screenName = " ITEM";
 
 	@OneToMany(mappedBy = "itemVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
@@ -95,6 +100,11 @@ public class ItemVO {
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
+	}
+
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
 	}
 
 	@Embedded
