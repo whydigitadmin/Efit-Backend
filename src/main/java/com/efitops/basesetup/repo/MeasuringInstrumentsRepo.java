@@ -23,13 +23,13 @@ public interface MeasuringInstrumentsRepo extends JpaRepository<MeasuringInstrum
 
 	boolean existsByInstrumentCodeAndOrgId(String instrumentCode, Long orgId);
 
-	@Query(nativeQuery = true, value = "select itemname,itemdesc from item where orgid=?1 and materialtype='INSTRUMENT'  and  active=1")
+	@Query(nativeQuery = true, value = "select itemname,itemdesc from m_item where orgid=?1 and materialtype='INSTRUMENT'  and  active=1")
 	Set<Object[]> findInstrumentNameFromItemMaster(Long orgId);
 
-	@Query(nativeQuery = true, value = "select * from measuringinstruments where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from m_measuringinstruments where orgid=?1")
 	List<MeasuringInstrumentsVO> findMeasuringInstrumentsByOrgId(Long orgId);
 
-	@Query(nativeQuery = true, value = "select * from measuringinstruments where measuringinstrumentsid=?1")
+	@Query(nativeQuery = true, value = "select * from m_measuringinstruments where measuringinstrumentsid=?1")
 	List<MeasuringInstrumentsVO> findMeasuringInstrumentsById(Long id);
 
 
