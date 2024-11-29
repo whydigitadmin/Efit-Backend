@@ -19,60 +19,67 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_itemwiseprocess")
+@Table(name = "t_putaway")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemWiseProcessMasterVO {
+@Builder
+public class PutawayVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itemwiseprocessgen")
-	@SequenceGenerator(name = "m_itemwiseprocessgen", sequenceName = "m_itemwiseprocessseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "itemwiseprocessid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_putawaygen")
+	@SequenceGenerator(name = "t_putawaygen", sequenceName = "t_putawayseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "putawayid")
 	private Long id;
 	
-
-	@Column(name = "docid")
+	@Column(name="docid")
 	private String docId;
-	
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-
-	@Column(name = "processtype")
-	private String processType;
-	
-	@Column(name = "item")
-	private String item;
-
-	@Column(name = "itemdesc")
-	private String itemDesc;
-
-	@Column(name = "createdby")
-	private String createdBy;
+	@Column(name = "grnno")
+	private String grnNo;	
+	@Column(name = "grndate")
+	private LocalDate grnDate;
+	@Column(name = "supplier")
+	private String supplier;	
+	@Column(name = "vehicleno")
+	private String vehicleNo;
+	@Column(name = "fromlocation")
+	private String fromLocation;	
+	@Column(name = "tolocation")
+	private String toLocation;
+	@Column(name = "goodstype")
+	private String goodsType;
+	@Column(name = "dcno")
+	private String dcNo;
+	@Column(name = "narration")
+	private String narration;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "modifiedby")
+	@Column(name = "createdby", length = 25)
+	private String createdBy;	
+	@Column(name = "modifyby", length = 25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
-	private boolean cancel = false;
+	private boolean cancel;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	
-	private String screenCode="IPM";
+    @Column(name = "screencode", length = 5)
+	private String screenCode="PA";
 	@Column(name = "screenname",length = 30)
-	private String screenName="ITEMWISE PROCESS MASTER";
+	private String screenName=" putaway";
 	
-	
-	@OneToMany(mappedBy = "itemWiseProcessMasterVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "putawayVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<ItemWiseProcessDetailsVO> itemWiseProcessDetailsVO;
-	
+	private List<PutawayDetailsVO> putawayDetailsVO;
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
@@ -82,7 +89,7 @@ public class ItemWiseProcessMasterVO {
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-
 	@Embedded
+	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
