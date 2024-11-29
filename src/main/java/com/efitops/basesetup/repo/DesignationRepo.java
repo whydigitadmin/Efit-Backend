@@ -13,9 +13,9 @@ import com.efitops.basesetup.entity.DesignationVO;
 public interface DesignationRepo  extends JpaRepository<DesignationVO, Long>
 {
 
-	@Query(nativeQuery = true, value = "select * from designation where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from m_designation where orgid=?1")
 	List<DesignationVO> getDesignationByOrgId(Long orgId);
 
-	@Query(nativeQuery = true, value = "select * from designation where designationid=?1")
+	@Query(nativeQuery = true, value = "select * from m_designation where designationid=?1")
 	List<DesignationVO> getDesignationById(Long id);
 }

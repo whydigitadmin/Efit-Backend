@@ -9,9 +9,9 @@ import com.efitops.basesetup.entity.ShiftVO;
 
 public interface ShiftRepo extends JpaRepository<ShiftVO, Long>  {
 
-	@Query(nativeQuery = true, value = "select * from shiftmast where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from m_shiftmast where orgid=?1")
 	 List<ShiftVO> getShiftByOrgId(Long orgId) ;
-	@Query(nativeQuery = true, value = "select * from shiftmast where shiftmastid=?1")
+	@Query(nativeQuery = true, value = "select * from m_shiftmast where shiftmastid=?1")
 	List<ShiftVO> getShiftById(Long id);
 	
 	boolean existsByShiftNameAndOrgId(String shiftCode, Long orgId);
