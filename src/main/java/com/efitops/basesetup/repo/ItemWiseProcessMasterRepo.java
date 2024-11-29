@@ -21,6 +21,9 @@ public interface ItemWiseProcessMasterRepo extends JpaRepository<ItemWiseProcess
 	@Query(nativeQuery = true, value = "select itemname, itemdesc from item where orgid=?1 and itemtype NOT IN ('RAW MATERIAL')")
 	Set<Object[]> findItemAndItemDescforItemWiseProcess(Long orgId);
 
+	@Query(nativeQuery = true, value = "select processname from processmaster where orgid=?1 ")
+	Set<Object[]> findProcessNameFromItemWiseProcess(Long orgId);
+
 
 
 }
