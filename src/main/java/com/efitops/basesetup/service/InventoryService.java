@@ -25,6 +25,13 @@ public interface InventoryService {
 
 	String getPutawayDocId(Long orgId);
 	
+	List<Map<String, Object>> getGrnDetailsForPutaway(Long orgId);
+	
+	List<Map<String, Object>> getLocationCodeForPutaway(Long orgId);
+
+	List<Map<String, Object>> getFillGridForPutaway(Long orgId, String grnNo);
+
+	
 	//routeCardEntry
 
 	Map<String, Object> updateCreateRouteCardEntry(@Valid RouteCardEntryDTO routeCardEntryDTO) throws ApplicationException;
@@ -34,5 +41,8 @@ public interface InventoryService {
 	List<RouteCardEntryVO> getRouteCardEntryById(Long id);
 
 	String getRouteCardEntryDocId(Long orgId);
+
+	
+
 
 }

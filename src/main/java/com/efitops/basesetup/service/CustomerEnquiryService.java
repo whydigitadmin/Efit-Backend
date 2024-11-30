@@ -15,35 +15,49 @@ import com.efitops.basesetup.exception.ApplicationException;
 
 @Service
 public interface CustomerEnquiryService {
-	
-	//Enquiry
-	
+
+	// Enquiry
+
 	Map<String, Object> createUpdateEnquiry(EnquiryDTO enquiryDTO) throws ApplicationException;
-	
+
 	List<EnquiryVO> getAllEnquiryByOrgId(Long orgId);
 
-	List<EnquiryVO> getEnquiryById(Long id); 
-	
+	List<EnquiryVO> getEnquiryById(Long id);
+
 	String getEnquiryDocId(Long orgId);
-	
-	//Quotation
-	
-  Map<String, Object> createUpdateQuotation(QuotationDTO quotationDTO) throws ApplicationException;
-	
+
+	List<Map<String, Object>> getCustomerNameAndCode(Long orgId);
+
+	List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName);
+
+	List<Map<String, Object>> getPartNoAndDescription(Long orgId);
+
+	List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo);
+
+	// Quotation
+
+	Map<String, Object> createUpdateQuotation(QuotationDTO quotationDTO) throws ApplicationException;
+
 	List<QuotationVO> getAllQuotationByOrgId(Long orgId);
 
-	List<QuotationVO> getQuotationById(Long id); 
-	
+	List<QuotationVO> getQuotationById(Long id);
+
 	String getQuotationDocId(Long orgId);
 	
-	//WorkOrder
+	List<Map<String,Object>>  getEnquiryNoAndDate(Long orgId,String customer);	
 	
-Map<String, Object> createUpdateWorkOrder(WorkOrderDTO workOrderDTO) throws ApplicationException;
-	
+	List<Map<String,Object>>  getProductionManager(Long orgId);	
+
+	// WorkOrder
+
+	Map<String, Object> createUpdateWorkOrder(WorkOrderDTO workOrderDTO) throws ApplicationException;
+
 	List<WorkOrderVO> getAllWorkOrderByOrgId(Long orgId);
 
-	List<WorkOrderVO> getWorkOrderById(Long id); 
-	
+	List<WorkOrderVO> getWorkOrderById(Long id);
+
 	String getWorkOrderDocId(Long orgId);
 	
+	List<Map<String,Object>>  getQuotationNumber(Long orgId);	
+
 }

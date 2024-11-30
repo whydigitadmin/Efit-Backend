@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -168,6 +170,74 @@ public class InventoryServiceImpl implements InventoryService {
 		String ScreenCode = "PUT";
 		String result = putawayRepo.getPutawayDocId(orgId, ScreenCode);
 		return result;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getGrnDetailsForPutaway(Long orgId) {
+
+		Set<Object[]> result = putawayRepo.findGrnDetailsForPutaway(orgId);
+		return getGrnDetailsForPutaway(result);
+	}
+
+	private List<Map<String, Object>> getGrnDetailsForPutaway(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("supplierName", fs[2] != null ? fs[2].toString() : "");
+			part.put("invDcNo", fs[3] != null ? fs[3].toString() : "");
+			part.put("invoiceNo", fs[4] != null ? fs[4].toString() : "");
+			part.put("vehicleNo", fs[5] != null ? fs[5].toString() : "");
+//			part.put("id",fs[6]!=null ? Integer.parseInt(fs[6].toString()):0);
+			
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getLocationCodeForPutaway(Long orgId) {
+
+		Set<Object[]> result = putawayRepo.findLocationCodeForPutaway(orgId);
+		return getLocationCodeForPutaway(result);
+	}
+
+	private List<Map<String, Object>> getLocationCodeForPutaway(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("locationCode", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getFillGridForPutaway(Long orgId , String grnNo) {
+
+		Set<Object[]> result = putawayRepo.findFillGridForPutaway(orgId,grnNo);
+		return getFillGridForPutaway(result);
+	}
+
+	private List<Map<String, Object>> getFillGridForPutaway(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("item", fs[0] != null ? fs[0].toString() : "");
+			part.put("itemDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("primaryUnit", fs[2] != null ? fs[2].toString() : "");
+			part.put("receivedQty", fs[3] != null ? fs[3].toString() : "");
+			part.put("id",fs[4]!=null ? Integer.parseInt(fs[4].toString()):0);
+
+			details1.add(part);
+		}
+		return details1;
 	}
 
 	// Routecardentry

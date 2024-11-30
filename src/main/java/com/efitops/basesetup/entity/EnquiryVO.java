@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "enquiry")
+@Table(name = "t_enquiry")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,14 +31,14 @@ import lombok.NoArgsConstructor;
 public class EnquiryVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "enquirygen")
-	@SequenceGenerator(name = "enquirygen", sequenceName = "enquiryseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_enquirygen")
+	@SequenceGenerator(name = "t_enquirygen", sequenceName = "t_enquiryseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "enquiryid")
 	private Long id;
-	@Column(name = "customerenquiryno", length = 150)
-	private String customerEnquiryNo;
-	@Column(name="enquirydate")
-	private LocalDate enquiryDate= LocalDate.now();
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
 	@Column(name="enquirytype")
 	private String enquiryType;
 	@Column(name="customer")

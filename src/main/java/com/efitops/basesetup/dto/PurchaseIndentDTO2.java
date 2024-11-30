@@ -3,16 +3,14 @@ package com.efitops.basesetup.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UomDTO {
-	
+public class PurchaseIndentDTO2 {
+
 	private Long id;
-    private String uomCode;
-    private String uomDesc;
-    private Long orgId;
-    private String createdBy;
-    private boolean active;
+	private String verifiedBy;
+	private String cancelRemarks;
+	
+	
 }

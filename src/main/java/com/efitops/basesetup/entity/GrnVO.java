@@ -58,9 +58,9 @@ public class GrnVO {
 	private Long exchangeRate;
 	@Column(name="grncleartime")
 	private String grnClearTime;
-	@Column(name="incdcno")
+	@Column(name="invdcno")
 	private String invDcNo;
-	@Column(name="incdcdate")
+	@Column(name="invdcdate")
 	private Date invDcDate;
 	@Column(name="customer")
 	private String customer; 

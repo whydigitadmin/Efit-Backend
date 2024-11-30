@@ -11,10 +11,10 @@ import com.efitops.basesetup.entity.DrawingMasterVO;
 @Repository
 public interface DrawingMasterRepo extends JpaRepository<DrawingMasterVO, Long>{
 
-	@Query(nativeQuery =true,value ="select * from drawingMaster where orgid=?1")
+	@Query(nativeQuery =true,value ="select * from m_drawingMaster where orgid=?1")
 	List<DrawingMasterVO> getDrawingMasterByOrgId(Long orgId);
 	
-	@Query(nativeQuery =true,value ="select * from drawingMaster where drawingMasterid=?1")
+	@Query(nativeQuery =true,value ="select * from m_drawingMaster where drawingMasterid=?1")
 	Optional<DrawingMasterVO> getDrawingMasterById(Long id);
 
 }

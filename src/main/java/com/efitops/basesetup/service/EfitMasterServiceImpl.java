@@ -657,7 +657,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 				throw new ApplicationException(errorMessage);
 			}
 			String docId = departmentRepo.getDepartmentDocId(departmentDTO.getOrgId(), screenCode);
-			departmentVO.setDepartmentId(docId);
+			departmentVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -816,7 +816,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			}
 
 			String docId = processMasterRepo.getProcessMasterDocId(processMasterDTO.getOrgId(), screenCode);
-			processMasterVO.setProcessId(docId);
+			processMasterVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -1075,6 +1075,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		uomVO.setUomCode(uomDTO.getUomCode());
 		uomVO.setUomDesc(uomDTO.getUomDesc());
 		uomVO.setOrgId(uomDTO.getOrgId());
+		uomVO.setActive(uomDTO.isActive());
+
 
 	}
 	//shift master 

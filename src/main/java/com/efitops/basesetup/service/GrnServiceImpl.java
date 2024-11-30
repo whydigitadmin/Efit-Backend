@@ -109,6 +109,8 @@ public class GrnServiceImpl implements GrnService
 		grnVO.setInvDcNo(grndto.getInvDcNo());
 		grnVO.setInvDcDate(grndto.getInvDcDate());
 		grnVO.setCustomer(grndto.getCustomer());
+		grnVO.setSupplierName(grndto.getSupplierName());
+
 		
 		if(ObjectUtils.isNotEmpty(grnVO.getId())) {	
 	List<GrnDetailsVO>grnDetailsVo1= grnDetailsRepo.findByGrnVO(grnVO);
@@ -139,6 +141,7 @@ public class GrnServiceImpl implements GrnService
 			grnDetailsVO.setStock(grnDetailsDTO.getStock());
 			grnDetailsVO.setHsnSacCode(grnDetailsDTO.getHsnSacCode());
 			grnDetailsVO.setCgst(grnDetailsDTO.getCgst());
+			grnDetailsVO.setOrderQty(grnDetailsDTO.getOrderQty());
 			grnDetailsVO.setLandedValue(grnDetailsDTO.getLandedValue());
 
 			grnDetailsVO.setGrnVO(grnVO); // Set the reference in child entity

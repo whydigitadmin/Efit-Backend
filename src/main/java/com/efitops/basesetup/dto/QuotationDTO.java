@@ -23,6 +23,7 @@ public class QuotationDTO {
 		private String productionManager;
 		private String currency;
 		private Long orgId;
+		private boolean active;
 		private String createdBy;
 		
    List<QuotationDetailsDTO>quotationDetailsDTO;
