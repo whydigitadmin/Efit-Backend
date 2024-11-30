@@ -14,4 +14,5 @@ public class UomDTO {
     private String uomDesc;
     private Long orgId;
     private String createdBy;
+    private boolean active;
 }

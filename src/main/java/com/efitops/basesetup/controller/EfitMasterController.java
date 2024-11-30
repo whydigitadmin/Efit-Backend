@@ -420,7 +420,7 @@ public class EfitMasterController extends BaseController{
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "MeasuringInstruments DocId information retrieved successfully");
-			responseObjectsMap.put("MeasuringInstruments DocId", mapp);
+			responseObjectsMap.put("MeasuringInstrumentsDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
