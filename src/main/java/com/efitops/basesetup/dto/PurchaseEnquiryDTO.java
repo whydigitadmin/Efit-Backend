@@ -1,5 +1,7 @@
 package com.efitops.basesetup.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,15 +26,14 @@ public class PurchaseEnquiryDTO {
     private String enquiryType;
     private String enquiryDueDate;
     private String expectedDeliveryDate;
+    private String summary;
 
- // Additional fields
  	private String branch;
  	private String branchCode;
  	private String createdBy;
- 	private boolean active;
- 	private boolean cancel;
  	private String cancelRemarks;
  	private String finYear;
  	private Long orgId;
     
+ 	private List<PurchaseEnquiryDetailsDTO> purchaseEnquiryDetailsDTO;
 }
