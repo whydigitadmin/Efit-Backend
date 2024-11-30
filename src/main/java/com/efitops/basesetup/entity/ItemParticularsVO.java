@@ -30,7 +30,7 @@ public class ItemParticularsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_itemparticularsgen")
 	@SequenceGenerator(name = "t_itemparticularsgen", sequenceName = "t_itemparticularsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "t_itemparticularsid")
+	@Column(name = "itemparticularsid")
 	private Long id;
 	@Column(name = "partno")
 	private String partNo;
@@ -52,7 +52,7 @@ public class ItemParticularsVO {
 	private BigDecimal requiredQty;
 
 	@ManyToOne
-	@JoinColumn(name = "t_workorderid")
+	@JoinColumn(name = "workorderid")
 	@JsonBackReference
 	WorkOrderVO workOrderVO;
 

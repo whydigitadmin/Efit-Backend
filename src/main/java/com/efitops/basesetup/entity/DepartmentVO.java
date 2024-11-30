@@ -1,5 +1,7 @@
 package com.efitops.basesetup.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -18,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "department")
+@Table(name = "m_department")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,12 +28,14 @@ import lombok.NoArgsConstructor;
 public class DepartmentVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departmentgen")
-	@SequenceGenerator(name = "departmentgen", sequenceName = "departmentseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "departid")
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_departmentgen")
+	@SequenceGenerator(name = "m_departmentgen", sequenceName = "m_departmentseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "departmentid")
-	private String departmentId;
+	private Long id;
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
 	@Column(name = "departmentcode")
 	private String departmentCode;
 	@Column(name = "departmentname")

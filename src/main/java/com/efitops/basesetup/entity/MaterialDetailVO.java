@@ -18,15 +18,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "materialdetail")
+@Table(name = "m_materialdetail")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MaterialDetailVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materialdetailgen")
-	@SequenceGenerator(name = "materialdetailgen", sequenceName = "materialdetailseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_materialdetailgen")
+	@SequenceGenerator(name = "m_materialdetailgen", sequenceName = "m_materialdetailseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "materialdetailid")
 	private Long id;
 	@Column(name="itemsubgroup")

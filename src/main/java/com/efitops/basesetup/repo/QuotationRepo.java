@@ -10,10 +10,10 @@ import com.efitops.basesetup.entity.QuotationVO;
 @Repository
 public interface QuotationRepo extends JpaRepository<QuotationVO, Long>{
 	
-	@Query(nativeQuery = true,value="select * from quotation  where  orgid=?1")
+	@Query(nativeQuery = true,value="select * from t_quotation  where  orgid=?1")
 	List<QuotationVO> getAllQuotationByOrgId(Long orgId);
 	
-	@Query(nativeQuery = true,value="select * from quotation  where  quotationid=?1")
+	@Query(nativeQuery = true,value="select * from t_quotation  where  quotationid=?1")
 	List<QuotationVO> getQuotationById(Long id);
 	
 	
