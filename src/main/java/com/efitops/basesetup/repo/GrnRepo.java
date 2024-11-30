@@ -15,5 +15,8 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 
 	@Query(nativeQuery = true,value="select*from t_grn where grnid=?1")
 	List<GrnVO> getGrnById(Long id);
+	
+	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
+	String getGrnDocId(Long orgId, String screenCode);
 
 }
