@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.xmlbeans.impl.xb.xmlconfig.NamespaceList.Member2.Item;
@@ -92,7 +93,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		} else {
 
 			String docId = enquiryRepo.getEnquiryDocId(enquiryDTO.getOrgId(), screenCode);
-			enquiryVO.setCustomerEnquiryNo(docId);
+			enquiryVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -192,6 +193,78 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> getCustomerNameAndCode(Long orgId) {
+		Set<Object[]> chType = enquiryRepo.getCustomerNameAndCode(orgId);
+		return getCustomerName(chType);
+	}
+
+	private List<Map<String, Object>> getCustomerName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("customer", ch[0] != null ? ch[0].toString() : "");
+			map.put("customerCode", ch[1] != null ? ch[1].toString() : "");
+			map.put("currency", ch[2] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName) {
+		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId,partyName);
+		return getContactName(chType);
+	}
+
+	private List<Map<String, Object>> getContactName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("contactName", ch[0] != null ? ch[0].toString() : "");
+			map.put("contactNo", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getPartNoAndDescription(Long orgId) {
+		Set<Object[]> chType = enquiryRepo.getPartNoAndDescription(orgId);
+		return getPartNo(chType);
+	}
+
+	private List<Map<String, Object>> getPartNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("partNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("unit", ch[2] != null ? ch[2].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo) {
+		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevNo(orgId,partNo);
+		return getDrawingNoAndRev(chType);
+	}
+
+	private List<Map<String, Object>> getDrawingNoAndRev(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("drawingNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("revisionNo", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	
 	
 	
 	//Quotation
@@ -210,7 +283,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		} else {
 
 			String docId = quotationRepo.getQuotationDocId(quotationDTO.getOrgId(), screenCode);
-			quotationVO.setQuoteNo(docId);
+			quotationVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -336,7 +409,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		} else {
 
 			String docId = workOrderRepo.getWorkOrderDocId(workOrderDTO.getOrgId(), screenCode);
-			workOrderVO.setWoNo(docId);
+			workOrderVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -435,6 +508,10 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		String result = workOrderRepo.getWorkOrderDocId(orgId, screenCode);
 		return result;
 	}
+
+
+
+	
 	
 	
 	

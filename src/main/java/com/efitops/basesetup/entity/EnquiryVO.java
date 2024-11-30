@@ -35,10 +35,10 @@ public class EnquiryVO {
 	@SequenceGenerator(name = "t_enquirygen", sequenceName = "t_enquiryseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "enquiryid")
 	private Long id;
-	@Column(name = "customerenquiryno", length = 150)
-	private String customerEnquiryNo;
-	@Column(name="enquirydate")
-	private LocalDate enquiryDate= LocalDate.now();
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
 	@Column(name="enquirytype")
 	private String enquiryType;
 	@Column(name="customer")

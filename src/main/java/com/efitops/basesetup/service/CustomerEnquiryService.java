@@ -26,6 +26,14 @@ public interface CustomerEnquiryService {
 	
 	String getEnquiryDocId(Long orgId);
 	
+	List<Map<String, Object>> getCustomerNameAndCode(Long orgId);
+	
+	List<Map<String, Object>> getContactNameAndNo(Long orgId,String partyName);
+	
+    List<Map<String, Object>> getPartNoAndDescription(Long orgId);
+	
+	List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId,String partNo);
+
 	//Quotation
 	
   Map<String, Object> createUpdateQuotation(QuotationDTO quotationDTO) throws ApplicationException;

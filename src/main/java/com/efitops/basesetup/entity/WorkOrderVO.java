@@ -35,10 +35,10 @@ public class WorkOrderVO {
 	@SequenceGenerator(name = "t_workordergen", sequenceName = "t_workorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "workorderid")
 	private Long id;
-	@Column(name="wono")
-	private String woNo;
-	@Column(name="docdate")
-	private LocalDate docdate=LocalDate.now();
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
 	@Column(name="customername")
 	private String  customerName; 
 	@Column(name="customerpono")

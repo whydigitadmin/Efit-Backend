@@ -1,5 +1,7 @@
 package com.efitops.basesetup.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -30,8 +32,10 @@ public class ProcessMasterVO {
 	@SequenceGenerator(name = "m_processmastergen", sequenceName = "m_processmasterseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "processmasterid")
 	private Long id;
-	@Column(name="processid")
-	private String processId;
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
 	@Column(name="processname")
 	private String processName;
 	@Column(name = "orgid")

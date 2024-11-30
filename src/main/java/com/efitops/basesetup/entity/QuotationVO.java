@@ -36,10 +36,10 @@ public class QuotationVO {
 	@SequenceGenerator(name = "t_quotationgen", sequenceName = "t_quotationseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "quotationid")
 	private Long id;
-	@Column(name = "quoteno", length = 150)
-	private String quoteNo;
-	@Column(name="date")
-	private LocalDate date= LocalDate.now();
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
 	@Column(name="customername")
     private String customerName;
 	@Column(name="customerid")
