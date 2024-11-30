@@ -1,9 +1,11 @@
 package com.efitops.basesetup.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.xmlbeans.impl.xb.xmlconfig.NamespaceList.Member2.Item;
@@ -62,6 +64,9 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 
 	@Autowired
 	WorkOrderRepo workOrderRepo;
@@ -88,7 +93,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		} else {
 
 			String docId = enquiryRepo.getEnquiryDocId(enquiryDTO.getOrgId(), screenCode);
-			enquiryVO.setCustomerEnquiryNo(docId);
+			enquiryVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -188,6 +193,78 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> getCustomerNameAndCode(Long orgId) {
+		Set<Object[]> chType = enquiryRepo.getCustomerNameAndCode(orgId);
+		return getCustomerName(chType);
+	}
+
+	private List<Map<String, Object>> getCustomerName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("customer", ch[0] != null ? ch[0].toString() : "");
+			map.put("customerCode", ch[1] != null ? ch[1].toString() : "");
+			map.put("currency", ch[2] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName) {
+		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId,partyName);
+		return getContactName(chType);
+	}
+
+	private List<Map<String, Object>> getContactName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("contactName", ch[0] != null ? ch[0].toString() : "");
+			map.put("contactNo", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getPartNoAndDescription(Long orgId) {
+		Set<Object[]> chType = enquiryRepo.getPartNoAndDescription(orgId);
+		return getPartNo(chType);
+	}
+
+	private List<Map<String, Object>> getPartNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("partNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("unit", ch[2] != null ? ch[2].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo) {
+		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevNo(orgId,partNo);
+		return getDrawingNoAndRev(chType);
+	}
+
+	private List<Map<String, Object>> getDrawingNoAndRev(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("drawingNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("revisionNo", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	
 	
 	
 	//Quotation
@@ -206,7 +283,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		} else {
 
 			String docId = quotationRepo.getQuotationDocId(quotationDTO.getOrgId(), screenCode);
-			quotationVO.setQuoteNo(docId);
+			quotationVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -241,14 +318,15 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		quotationVO.setOrgId(quotationDTO.getOrgId());
 		quotationVO.setCreatedBy(quotationDTO.getCreatedBy());
 		
-		
+		BigDecimal grocessAmount= BigDecimal.ZERO;
+		BigDecimal netAmount= BigDecimal.ZERO;
            
            if (ObjectUtils.isNotEmpty(quotationDTO.getId())) {
    			List<QuotationDetailsVO> quotationDetailsVO1 = quotationDetailsRepo.findByQuotationVO(quotationVO);
    			quotationDetailsRepo.deleteAll(quotationDetailsVO1);
    			
    		}
-           
+  
          List<QuotationDetailsVO>quotationDetailsVOs=new ArrayList<>();
          for(QuotationDetailsDTO quotationDetailsDTO : quotationDTO.getQuotationDetailsDTO()) {
         	 QuotationDetailsVO quotationDetailsVO =new QuotationDetailsVO();
@@ -259,14 +337,30 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
         	 quotationDetailsVO.setUnit(quotationDetailsDTO.getUnit());
         	 quotationDetailsVO.setUnitPrice(quotationDetailsDTO.getUnitPrice());
         	 quotationDetailsVO.setQtyOffered(quotationDetailsDTO.getQtyOffered());
-        	 quotationDetailsVO.setBasicPrice(quotationDetailsDTO.getBasicPrice());
         	 quotationDetailsVO.setDiscount(quotationDetailsDTO.getDiscount());
-        	 quotationDetailsVO.setDiscountAmount(quotationDetailsDTO.getDiscountAmount());
-        	 quotationDetailsVO.setQuoteAmount(quotationDetailsDTO.getQuoteAmount());
+        	 
+             BigDecimal discountamount;
+ 
+        	 
+        	  BigDecimal amountSet=quotationDetailsDTO.getUnitPrice().multiply(quotationDetailsDTO.getQtyOffered());
+        	     quotationDetailsVO.setBasicPrice(amountSet);
+   
+        	     grocessAmount=grocessAmount.add(amountSet);
+        	     
+        	    discountamount=quotationDetailsVO.getBasicPrice().multiply(quotationDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
+        	     quotationDetailsVO.setDiscountAmount(discountamount);
+         	 quotationDetailsVO.setQuoteAmount(quotationDetailsVO.getBasicPrice().subtract(quotationDetailsVO.getDiscountAmount()));
+         	 
+            netAmount=netAmount.add(quotationDetailsVO.getQuoteAmount());
         	 quotationDetailsVO.setDeliveryDate(quotationDetailsDTO.getDeliveryDate());
         	 quotationDetailsVO.setQuotationVO(quotationVO);
           quotationDetailsVOs.add(quotationDetailsVO);
          }
+         quotationVO.setGrossAmount(grocessAmount);
+         quotationVO.setNetAmount(netAmount);
+         
+         quotationVO.setAmountInWords(
+ 				amountInWordsConverterService.convert(quotationVO.getNetAmount().longValue()));
          quotationVO.setQuotationDetailsVO(quotationDetailsVOs);  
 	}
 
@@ -315,7 +409,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		} else {
 
 			String docId = workOrderRepo.getWorkOrderDocId(workOrderDTO.getOrgId(), screenCode);
-			workOrderVO.setWoNo(docId);
+			workOrderVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
@@ -414,6 +508,10 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		String result = workOrderRepo.getWorkOrderDocId(orgId, screenCode);
 		return result;
 	}
+
+
+
+	
 	
 	
 	

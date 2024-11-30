@@ -13,14 +13,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "uommast")
+@Table(name = "m_uommast")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UomVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uommastgen")
-	@SequenceGenerator(name = "uommastgen", sequenceName = "uommastseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_uommastgen")
+	@SequenceGenerator(name = "m_uommastgen", sequenceName = "m_uommastseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "uommastid")
 	private Long id;
 	

@@ -18,9 +18,6 @@ public class QuotationDetailsDTO {
 	private String unit;
 	private BigDecimal unitPrice;
 	private BigDecimal qtyOffered;
-	private BigDecimal basicPrice;
 	private BigDecimal discount;
-	private BigDecimal discountAmount;
-	private BigDecimal quoteAmount;
 	private LocalDate deliveryDate;
 }
