@@ -21,15 +21,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "drawingmaster")	
+@Table(name = "m_drawingmaster")	
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DrawingMasterVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "drawingmastergen")
-	@SequenceGenerator(name = "drawingmastergen", sequenceName = "drawingmasterseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "m_drawingmastergen")
+	@SequenceGenerator(name = "m_drawingmastergen", sequenceName = "m_drawingmasterseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "drawingmasterid")
 	private Long id;
 	@Column(name ="docdate")

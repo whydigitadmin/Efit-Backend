@@ -1,7 +1,6 @@
 package com.efitops.basesetup.entity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,15 +19,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchaseenquiry")
+@Table(name = "t_purchaseenquirydetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PurchaseEnquiryDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tpurchaseenquirygen")
-	@SequenceGenerator(name = "tpurchaseenquirygen", sequenceName = "tpurchaseenquiryseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "tpurchaseenquirydetailid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseenquirygen")
+	@SequenceGenerator(name = "t_purchaseenquirygen", sequenceName = "t_purchaseenquiryseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "purchaseenquirydetailid")
 	private Long id;
 	
 	@Column(name = "item", length = 20)
@@ -47,7 +46,7 @@ public class PurchaseEnquiryDetailsVO {
     private String remarks;
 
 	@ManyToOne
-	@JoinColumn(name="tpurchaseenquiryid")
+	@JoinColumn(name="purchaseenquiryid")
 	@JsonBackReference
 	private PurchaseEnquiryVO purchaseEnquiryVO;
 

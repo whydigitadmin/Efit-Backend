@@ -15,9 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.GrnDTO;
 import com.efitops.basesetup.dto.GrnDetailsDTO;
+import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.EnquiryVO;
 import com.efitops.basesetup.entity.GrnDetailsVO;
 import com.efitops.basesetup.entity.GrnVO;
 import com.efitops.basesetup.exception.ApplicationException;
+import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.GrnDetailsRepo;
 import com.efitops.basesetup.repo.GrnRepo;
 
@@ -32,6 +35,9 @@ public class GrnServiceImpl implements GrnService
 	
 	@Autowired
 	GrnDetailsRepo grnDetailsRepo;
+	
+	@Autowired
+	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
 	@Override
 	public List<GrnVO> getGrnByOrgId(Long orgId) {
@@ -54,17 +60,30 @@ public class GrnServiceImpl implements GrnService
 	}
 	@Override
 	public Map<String, Object> updateCreateGrn(GrnDTO grndto) throws ApplicationException {
-		String screenCode = "D";
 		GrnVO grnVO = new GrnVO();
 		String message;
+		String screenCode = "GRN";
 		if (ObjectUtils.isNotEmpty(grndto.getId())) {
-			grnVO = grnRepo.findById(grndto.getId()).orElseThrow(() -> new ApplicationException("Uom not found")); 
-			message="Grn Updated sucessfully";
-		}else {
-			
+			grnVO = grnRepo.findById(grndto.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid Grn details"));
+			message = "Enquiry Updated Successfully";
+			grnVO.setUpdatedBy(grndto.getCreatedBy());
+
+		} else {
+
+			String docId = grnRepo.getGrnDocId(grndto.getOrgId(), screenCode);
+			grnVO.setGrnNo(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(grndto.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
 			grnVO.setCreatedBy(grndto.getCreatedBy());
 			grnVO.setUpdatedBy(grndto.getCreatedBy());
-			message="Grn Created sucessfully";
+
+			message = "Enquiry Created Successfully";
 		}
 		createUpdateGrnVOByGrnDTO(grndto,grnVO);
 		grnRepo.save(grnVO);
@@ -77,7 +96,6 @@ public class GrnServiceImpl implements GrnService
 	
 
 	private void createUpdateGrnVOByGrnDTO(@Valid GrnDTO grndto, GrnVO grnVO) throws ApplicationException {
-		grnVO.setGrnNo(grndto.getSupplierName());
 		grnVO.setInwardNo(grndto.getInwardNo());
 		grnVO.setLocation(grndto.getLocation());
 		grnVO.setGstNo(grndto.getGstNo());
@@ -91,6 +109,8 @@ public class GrnServiceImpl implements GrnService
 		grnVO.setInvDcNo(grndto.getInvDcNo());
 		grnVO.setInvDcDate(grndto.getInvDcDate());
 		grnVO.setCustomer(grndto.getCustomer());
+		grnVO.setSupplierName(grndto.getSupplierName());
+
 		
 		if(ObjectUtils.isNotEmpty(grnVO.getId())) {	
 	List<GrnDetailsVO>grnDetailsVo1= grnDetailsRepo.findByGrnVO(grnVO);
@@ -121,6 +141,7 @@ public class GrnServiceImpl implements GrnService
 			grnDetailsVO.setStock(grnDetailsDTO.getStock());
 			grnDetailsVO.setHsnSacCode(grnDetailsDTO.getHsnSacCode());
 			grnDetailsVO.setCgst(grnDetailsDTO.getCgst());
+			grnDetailsVO.setOrderQty(grnDetailsDTO.getOrderQty());
 			grnDetailsVO.setLandedValue(grnDetailsDTO.getLandedValue());
 
 			grnDetailsVO.setGrnVO(grnVO); // Set the reference in child entity

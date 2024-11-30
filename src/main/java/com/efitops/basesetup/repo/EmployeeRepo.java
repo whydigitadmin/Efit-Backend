@@ -17,4 +17,9 @@ public interface EmployeeRepo extends JpaRepository<EmployeeVO,Long>{
 
 	boolean existsByEmployeeCodeAndOrgId(String employeeCode, Long orgId);
 
+	@Query(nativeQuery =true,value ="select employeeid,employee from employee order by 1")
+	Set<Object[]> getRequestedByDetails();
+
+
 }
+  
