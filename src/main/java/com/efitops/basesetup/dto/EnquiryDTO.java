@@ -17,6 +17,7 @@ public class EnquiryDTO {
 	private String contactName;
 	private Long contactNo;
 	private Long orgId;
+	private boolean active;
 	private String createdBy;
 	List<EnquiryDetailsDTO>enquiryDetailsDTO;
 	List<EnquirySummaryDTO>enquirySummaryDTO;

@@ -21,6 +21,7 @@ public class WorkOrderDTO {
 	private String productionMgr;
 	private String customerSpecialRequirement;
 	private Long orgId;
+	private boolean active;
 	private String createdBy;
 	List<ItemParticularsDTO> itemParticularsDTO;
 	List<TermsAndConditionsDTO> termsAndConditionsDTO;
