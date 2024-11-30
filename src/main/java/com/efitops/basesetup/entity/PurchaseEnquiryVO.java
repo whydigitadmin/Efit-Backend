@@ -1,6 +1,5 @@
 package com.efitops.basesetup.entity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +12,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.efitops.basesetup.dto.CreatedUpdatedDate;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -27,9 +25,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseEnquiryVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tpurchaseenquirygen")
-	@SequenceGenerator(name = "tpurchaseenquirygen", sequenceName = "tpurchaseenquiryseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "tpurchaseenquiryid")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_purchaseenquirygen")
+	@SequenceGenerator(name = "t_purchaseenquirygen", sequenceName = "t_purchaseenquiryseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "purchaseenquiryid")
 	private Long id;
 
 	@Column(name = "purchaseenquiryno", length = 20)
@@ -96,7 +94,7 @@ public class PurchaseEnquiryVO {
     @Column(name = "cancelremarks", length = 50)
     private String cancelRemarks;
 
-    @Column(name = "finyear", length = 5)
+    @Column(name = "finyear", length = 10)
     private String finYear;
 
     @Column(name = "screencode", length = 5)
@@ -107,6 +105,8 @@ public class PurchaseEnquiryVO {
 
     @Column(name = "orgid")
     private Long orgId;
+    
+    private String summary;
     
     @OneToMany(mappedBy ="purchaseEnquiryVO",cascade =CascadeType.ALL)
     @JsonManagedReference

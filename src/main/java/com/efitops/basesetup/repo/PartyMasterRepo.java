@@ -1,6 +1,7 @@
 package com.efitops.basesetup.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,11 @@ public interface PartyMasterRepo extends JpaRepository<PartyMasterVO, Long> {
 
 	@Query(value = "select a from PartyMasterVO a where a.orgId=?1 and a.partyType=?2 and a.active=true")
 	List<PartyMasterVO> findByOrgIdAndPartyTypeIgnoreCase(Long orgId, String partyType);
+
+	@Query(nativeQuery =true,value ="select distinct   partyname,partycode from partymaster\r\n"
+			+ "where partytype = 'customer' and orgid=?1\r\n"
+			+ "order by 1")
+	Set<Object[]> findCustomerDetails(Long orgId);
 
 	
 

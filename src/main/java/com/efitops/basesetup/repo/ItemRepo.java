@@ -35,6 +35,12 @@ public interface ItemRepo extends JpaRepository<ItemVO, Long>{
 
 	@Query(nativeQuery = true, value = "select materialtype from  m_material where orgid=?1 and active=1")
 	Set<Object[]> findMaterialTypeForItemMaster(Long orgId);
+	
+	@Query(nativeQuery =true,value ="select distinct(Itemtype) from m_item")
+	Set<Object[]> findItemDetails();
+
+	@Query(nativeQuery =true,value ="select a.itemid, a.itemdesc,a.primaryunit from m_item a  where a.active=1 and itemtype='identtype' and itemname=?1 order by a.itemid")
+	Set<Object[]> getItemDetails(String itemName);
 
 
 
