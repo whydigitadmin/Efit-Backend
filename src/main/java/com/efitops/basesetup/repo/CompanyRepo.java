@@ -1,6 +1,7 @@
 package com.efitops.basesetup.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,8 @@ public interface CompanyRepo extends JpaRepository<CompanyVO, Long> {
 
 	@Query(nativeQuery = true, value = "select * from company  where companyid=?1")
 	List<CompanyVO> findByCompany(Long companyid);
+
+	@Query(value="select companycode,companyname from m_company where companyid=?1", nativeQuery =true)
+	Set<Object[]> findCompanyForStockLocation(Long orgId);
 
 }

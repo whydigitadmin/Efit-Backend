@@ -20,6 +20,7 @@ import com.efitops.basesetup.dto.PurchaseEnquiryDetailsDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO1;
 import com.efitops.basesetup.dto.PurchaseIndentDTO2;
+import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.PurchaseEnquiryDetailsVO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
@@ -27,6 +28,7 @@ import com.efitops.basesetup.entity.PurchaseIndentVO1;
 import com.efitops.basesetup.entity.PurchaseIndentVO2;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DepartmentRepo;
+import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.EmployeeRepo;
 import com.efitops.basesetup.repo.ItemRepo;
 import com.efitops.basesetup.repo.PartyMasterRepo;
@@ -68,20 +70,37 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Autowired
 	PurchaseEnquiryDetailsRepo purchaseEnquiryDetailsRepo;
 
+	@Autowired
+	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
 	@Override
 	public Map<String, Object> updateCreatePurchaseIndent(@Valid PurchaseIndentDTO purchaseIndentDTO)
 			throws ApplicationException {
 
 		PurchaseIndentVO purchaseIndentVO;
 		String message = null;
+		String screenCode="PI";
 
 		if (ObjectUtils.isEmpty(purchaseIndentDTO.getId())) {
 
+			
 			purchaseIndentVO = new PurchaseIndentVO();
 			purchaseIndentVO.setCreatedBy(purchaseIndentDTO.getCreatedBy());
 			purchaseIndentVO.setUpdatedBy(purchaseIndentDTO.getCreatedBy());
+			
+			String docId = purchaseIndentRepo.getPurchaseIndentByDocId(purchaseIndentDTO.getOrgId(),
+					screenCode);
 
+			purchaseIndentVO.setDocId(docId);
+
+//        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(purchaseIndentDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			
 			message = "PurchaseIndent Creation SuccessFully";
+			
 		} else {
 
 			purchaseIndentVO = purchaseIndentRepo.findById(purchaseIndentDTO.getId()).orElseThrow(
@@ -157,6 +176,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 		purchaseIndentVO.setPurchaseIndentVO2(purchaseIndentVO2s);
 		return purchaseIndentVO;
+	}
+	
+	@Override
+	public String getpurchaseIndentDocId(Long orgId,String finYear,String screenCode) {
+		String ScreenCode = "PI";
+		String result = purchaseIndentRepo.getpurchaseIndentDocId(orgId,finYear,ScreenCode);
+		return result;
 	}
 
 	@Override
@@ -269,10 +295,23 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 		PurchaseEnquiryVO purchaseEnquiryVO;
 		String message = null;
+		String screenCode="PE";
 
 		if (ObjectUtils.isEmpty(purchaseEnquiryDTO.getId())) {
 
 			purchaseEnquiryVO = new PurchaseEnquiryVO();
+			
+			String docId = purchaseEnquiryRepo.getPurchaseEnquiryByDocId(purchaseEnquiryDTO.getOrgId(),
+					screenCode);
+
+			purchaseEnquiryVO.setDocId(docId);
+
+//        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(purchaseEnquiryDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			
 			purchaseEnquiryVO.setCreatedBy(purchaseEnquiryDTO.getCreatedBy());
 			purchaseEnquiryVO.setUpdatedBy(purchaseEnquiryDTO.getCreatedBy());
 
@@ -362,4 +401,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 	public Optional<PurchaseEnquiryVO> getAllPurchaseEnquiryById(Long id) {
 		return purchaseEnquiryRepo.getPurchaseEnquiryById(id);
 	}
+
+	@Override
+	public String getPurchaseEnquiryDocId(Long orgId, String finYear, String screenCode) {
+		return purchaseEnquiryRepo.getPurchaseEnquiryDocId(orgId,finYear,screenCode);
+	}
+
+
+	
 }

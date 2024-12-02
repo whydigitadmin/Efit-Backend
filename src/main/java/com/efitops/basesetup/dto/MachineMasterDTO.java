@@ -35,6 +35,9 @@ public class MachineMasterDTO {
     private boolean active;
     private Long orgId;
     private String createdBy;
+    private String finYear;
+    private String filePath;
+    private String instrumentName;
 	
     
     private List<MachineMasterDTO1> machineMasterDTO1;

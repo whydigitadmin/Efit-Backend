@@ -30,6 +30,7 @@ import com.efitops.basesetup.dto.DrawingMasterDTO;
 import com.efitops.basesetup.dto.MachineMasterDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.StockLocationDTO;
+import com.efitops.basesetup.entity.CompanyVO;
 import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.entity.DrawingMaster2VO;
 import com.efitops.basesetup.entity.DrawingMasterVO;
@@ -50,7 +51,7 @@ public class MachineMasterController extends BaseController {
 	
 	
 	@PutMapping("/updateCreateMachineMaster")
-	public ResponseEntity<ResponseDTO> updateCreateCostDebitNote(@Valid @RequestBody MachineMasterDTO machineMasterDTO) {
+	public ResponseEntity<ResponseDTO> updateCreateMachineMaster(@Valid @RequestBody MachineMasterDTO machineMasterDTO) {
 		String methodName = "updateCreateMachineMaster()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -69,6 +70,64 @@ public class MachineMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getMachineMasterDocId")
+	public ResponseEntity<ResponseDTO> getMachineMasterDocId(@RequestParam Long orgId,@RequestParam String finYear,
+			@RequestParam String screenCode) {
+
+		String methodName = "getMachineMasterDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = machineMasterService.getMachineMasterDocId(orgId,finYear,screenCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "MachineMaster DocId information retrieved successfully");
+			responseObjectsMap.put("purchaseIndent DocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve MachineMaster DocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getMachineMasterByDocId")
+	public ResponseEntity<ResponseDTO> getMachineMasterByDocId(@RequestParam Long orgId, @RequestParam String docId) {
+		String methodName = "getMachineMasterByDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		MachineMasterVO machineMasterVO = new MachineMasterVO();
+		try {
+			machineMasterVO = machineMasterService.getMachineMasterByDocId(orgId, docId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "MachineMaster information get successfully By docid");
+			responseObjectsMap.put("machineMasterVO", machineMasterVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"MachineMaster information receive failed By docid", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
 	}
 	
 	@GetMapping("/getAllMachineMasterByOrgId")
@@ -232,6 +291,33 @@ public class MachineMasterController extends BaseController {
 
 	}
 	
+	@GetMapping("/getCompanyForStockLocation")
+	public ResponseEntity<ResponseDTO> getCompanyForStockLocation(@RequestParam(required = false) Long orgId) {
+		String methodName = "getCompanyForStockLocation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> companyVO = new ArrayList<>();
+		try {
+			companyVO = machineMasterService.getCompanyForStockLocation(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company information get successfully By OrgId");
+			responseObjectsMap.put("companyVO", companyVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Company information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
      //DRAWING MASTER
 	
 	@PutMapping("/updateDrawingMaster")
@@ -362,5 +448,7 @@ public class MachineMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
+	
 }
 
