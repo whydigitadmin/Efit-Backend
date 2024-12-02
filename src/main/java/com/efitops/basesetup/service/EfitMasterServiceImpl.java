@@ -1075,6 +1075,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		uomVO.setUomCode(uomDTO.getUomCode());
 		uomVO.setUomDesc(uomDTO.getUomDesc());
 		uomVO.setOrgId(uomDTO.getOrgId());
+		uomVO.setActive(uomDTO.isActive());
+
 
 	}
 	//shift master 

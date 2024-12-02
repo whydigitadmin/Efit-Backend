@@ -21,8 +21,8 @@ public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getEnquiryDocId(Long orgId, String screenCode);
 	
-	@Query(nativeQuery = true,value = "select  a.partyname,a.partycode,a.currency from partymaster a where  a.partytype='CUSTOMER' and  a.orgid=?1 and active=1 and cancel=0 group by \r\n"
-			+ " a.partyname,a.partycode,a.currency order by  a.partyname")
+	@Query(nativeQuery = true,value = "select  a.partyname,a.partycode,a.currency,a.gstin from partymaster a where  a.partytype='CUSTOMER' and  a.orgid=?1 and active=1 and cancel=0 group by \r\n"
+			+ " a.partyname,a.partycode,a.currency,a.gstin  order by  a.partyname")
 	Set<Object[]> getCustomerNameAndCode(Long orgId);	
 	
 	@Query(nativeQuery = true,value = "select a.contactperson,a.contactphoneno from partystate a,partymaster a1 where a.partymasterid=a1.partymasterid and a1.orgid=?1 and a1.partyname=?2 and \r\n"
@@ -37,6 +37,7 @@ public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 	@Query(nativeQuery = true,value = "select a.drawingno,a.drawingrevno from m_drawingmaster a where a.partno=?1 and a.orgid=?2 and active=1 and  cancel=0  group by \r\n"
 			+ "  a.drawingno,a.drawingrevno order by a.drawingno")
 	Set<Object[]> getDrawingNoAndRevNo(Long orgId,String partNo);	
+			
 	
 
 }

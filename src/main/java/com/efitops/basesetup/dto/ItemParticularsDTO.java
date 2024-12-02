@@ -18,5 +18,4 @@ public class ItemParticularsDTO {
 	private BigDecimal ordQty;
 	private BigDecimal freeQty;
 	private BigDecimal availableStockQty;
-	private BigDecimal requiredQty;
 }
