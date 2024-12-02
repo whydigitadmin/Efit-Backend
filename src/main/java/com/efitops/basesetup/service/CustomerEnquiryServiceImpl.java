@@ -435,8 +435,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		String screenCode = "WOP";
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
 			workOrderVO = workOrderRepo.findById(workOrderDTO.getId())
-					.orElseThrow(() -> new ApplicationException("Quotation Enquiry details"));
-			message = "Quotation Updated Successfully";
+					.orElseThrow(() -> new ApplicationException("WorkOrder Enquiry details"));
+			message = "WorkOrder Updated Successfully";
 			workOrderVO.setUpdatedBy(workOrderDTO.getCreatedBy());
 
 		} else {
@@ -453,7 +453,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
 			workOrderVO.setUpdatedBy(workOrderDTO.getCreatedBy());
 
-			message = "Quotation Created Successfully";
+			message = "WorkOrder Created Successfully";
 		}
 		createUpdatedWorkOrderVOFromWorkOrderDTO(workOrderDTO, workOrderVO);
 		workOrderRepo.save(workOrderVO);
@@ -473,7 +473,6 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		workOrderVO.setProductionMgr(workOrderDTO.getProductionMgr());
 		workOrderVO.setCustomerSpecialRequirement(workOrderDTO.getCustomerSpecialRequirement());
 		workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
-		workOrderVO.setActive(workOrderDTO.isActive());
 		workOrderVO.setOrgId(workOrderDTO.getOrgId());
  
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {

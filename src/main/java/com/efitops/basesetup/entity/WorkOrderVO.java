@@ -65,9 +65,9 @@ public class WorkOrderVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 	@Column(name = "screencode",length = 30)
 	private String screenCode ="WOP";
 	@Column(name = "screenname",length = 30)
@@ -81,16 +81,6 @@ public class WorkOrderVO {
 	@JsonManagedReference
 	List<TermsAndConditionsVO> termsAndConditionsVO;
 	
-	
-	@JsonGetter("active")
-	public String getActive() {
-		return active ? "Active" : "In-Active";
-	}
-	
-	@JsonGetter("cancel")
-	public String getCancel() {
-		return cancel ? "T" : "F";
-	}
 
 	@Embedded
 	@Builder.Default

@@ -445,11 +445,11 @@ public class CustomerEnquiryController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOder information get successfully ByOrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOrder information get successfully ByOrgId");
 			responseObjectsMap.put("workOrderVO", workOrderVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "WorkOder information receive failed By OrgId",
+			responseDTO = createServiceResponseError(responseObjectsMap, "WorkOrder information receive failed By OrgId",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
