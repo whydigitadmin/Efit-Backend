@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -117,6 +118,23 @@ public class MachineMasterVO {
     @Column(name = "cancelremarks")
     private String cancelRemarks;
     
+    @Column(name = "finyear")
+    private String finYear;
+    
+    @Column(name = "screencode")
+    private String screenCode="MM";
+    
+    @Column(name = "screenname")
+    private String screenname="MACHINEMASTER";
+    
+    @Column(name="instrumentname")
+	private String instrumentName;
+	@Lob
+	@Column(name = "attachements", columnDefinition = "LONGBLOB")
+	private byte[] attachements;
+	@Column(name="filepath")
+	private String filePath;
+    
     
     @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
     @JsonManagedReference
@@ -126,10 +144,10 @@ public class MachineMasterVO {
     @JsonManagedReference
     private List<MachineMasterVO2> machineMasterVO2;
     
-    @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
-    @JsonManagedReference
-    private List<MachineMasterVO3> machineMasterVO3;
-    
+//    @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
+//    @JsonManagedReference
+//    private List<MachineMasterVO3> machineMasterVO3;
+//    
 	
     @JsonGetter("active")
 	public String getActive() {

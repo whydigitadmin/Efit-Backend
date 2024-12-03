@@ -108,6 +108,9 @@ public class PurchaseEnquiryVO {
     
     private String summary;
     
+    @Column(name = "docid")
+    private String docId;
+    
     @OneToMany(mappedBy ="purchaseEnquiryVO",cascade =CascadeType.ALL)
     @JsonManagedReference
     private List<PurchaseEnquiryDetailsVO> purchaseEnquiryDetailsVO;

@@ -17,15 +17,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "company")
+@Table(name = "m_company")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companygen")
-	@SequenceGenerator(name = "companygen", sequenceName = "companyseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_companygen")
+	@SequenceGenerator(name = "m_companygen", sequenceName = "m_companyseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "companyid")
 	private Long id;
 
