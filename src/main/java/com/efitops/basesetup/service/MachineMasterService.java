@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.efitops.basesetup.dto.DrawingMasterDTO;
 import com.efitops.basesetup.dto.MachineMasterDTO;
 import com.efitops.basesetup.dto.StockLocationDTO;
+import com.efitops.basesetup.entity.CompanyVO;
 import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.entity.DrawingMaster2VO;
 import com.efitops.basesetup.entity.DrawingMasterVO;
@@ -31,7 +32,10 @@ public interface MachineMasterService {
 	Optional<MachineMasterVO> getAllMachineMasterById(Long id);
 	
 	MachineMasterVO3 uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException;
+	
+	String getMachineMasterDocId(Long orgId, String finYear, String screenCode);
 
+	MachineMasterVO getMachineMasterByDocId(Long orgId, String docId);
 	
 	//STOCKLOCATION
 
@@ -40,6 +44,8 @@ public interface MachineMasterService {
 	List<StockLocationVO> getAllStockLocationByOrgId(Long orgId);
 
 	Optional<StockLocationVO> getAllStockLocationById(Long id);
+	
+	List<Map<String, Object>> getCompanyForStockLocation(Long orgId);
 	
 	//DRAWING MASTER
 
@@ -52,6 +58,14 @@ public interface MachineMasterService {
 	DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 
 	DrawingMaster2VO uploadAttachementsInBloob1(MultipartFile file, Long id)throws IOException;
+
+
+
+	
+
+	
+
+	
 
 	
 

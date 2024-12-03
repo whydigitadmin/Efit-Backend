@@ -39,7 +39,7 @@ public class PurchaseIndentVO {
 	@Column(name="docid")
 	private String docId;
 	@Column(name="docdate")
-	private LocalDate docDate;
+	private LocalDate docDate=LocalDate.now();
 	@Column(name="indenttype")
 	private String indentType;
 	@Column(name="customername")

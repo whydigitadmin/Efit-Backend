@@ -30,9 +30,11 @@ public interface PurchaseService {
 	List<Map<String, Object>> getDepartmentForPurchase();
 
 	List<Map<String, Object>> getRequestedByForPurchase(); 
-	
 
 	List<Map<String, Object>> getItemDetailsForPurchase(String itemName);
+	
+	String getpurchaseIndentDocId(Long orgId, String finYear, String screenCode);
+	
 	
 	//PurchaseEnquiry
 
@@ -41,5 +43,11 @@ public interface PurchaseService {
 	List<PurchaseEnquiryVO> getAllPurchaseEnquiryByOrgId(Long orgId);
 
 	Optional<PurchaseEnquiryVO> getAllPurchaseEnquiryById(Long id);
+
+	String getPurchaseEnquiryDocId(Long orgId, String finYear, String screenCode);
+
+	
+
+	
 	
 }

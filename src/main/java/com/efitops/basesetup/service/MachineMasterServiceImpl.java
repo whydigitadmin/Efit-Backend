@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -22,8 +23,8 @@ import com.efitops.basesetup.dto.DrawingMasterDTO;
 import com.efitops.basesetup.dto.MachineMasterDTO;
 import com.efitops.basesetup.dto.MachineMasterDTO1;
 import com.efitops.basesetup.dto.MachineMasterDTO2;
-import com.efitops.basesetup.dto.MachineMasterDTO3;
 import com.efitops.basesetup.dto.StockLocationDTO;
+import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.entity.DrawingMaster2VO;
 import com.efitops.basesetup.entity.DrawingMasterVO;
@@ -34,6 +35,8 @@ import com.efitops.basesetup.entity.MachineMasterVO3;
 import com.efitops.basesetup.entity.StockLocationRepo;
 import com.efitops.basesetup.entity.StockLocationVO;
 import com.efitops.basesetup.exception.ApplicationException;
+import com.efitops.basesetup.repo.CompanyRepo;
+import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.DrawingMaster1Repo;
 import com.efitops.basesetup.repo.DrawingMaster2Repo;
 import com.efitops.basesetup.repo.DrawingMasterRepo;
@@ -68,6 +71,12 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	
 	@Autowired
 	DrawingMaster2Repo drawingMaster2Repo;
+	
+	@Autowired
+	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	CompanyRepo companyRepo;
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MachineMasterServiceImpl.class);
 
@@ -76,14 +85,26 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 			throws ApplicationException {
 
 		MachineMasterVO machineMasterVO;
-
+        String screenCode="MM";
 		String message = null;
 
 		if (ObjectUtils.isEmpty(machineMasterDTO.getId())) {
 
 			machineMasterVO = new MachineMasterVO();
+			
 			machineMasterVO.setCreatedBy(machineMasterDTO.getCreatedBy());
 			machineMasterVO.setUpdatedBy(machineMasterDTO.getCreatedBy());
+			
+			String docId = machineMasterRepo.getMachineMasterByDocId(machineMasterDTO.getOrgId(),machineMasterDTO.getFinYear(),
+					screenCode);
+
+			machineMasterVO.setDocId(docId);
+
+//        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(machineMasterDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 			message = "MachineMaster Creation Success";
 		}
@@ -131,6 +152,8 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		machineMasterVO.setRemarks(machineMasterDTO.getRemarks());
 		machineMasterVO.setActive(machineMasterDTO.isActive());
 		machineMasterVO.setOrgId(machineMasterDTO.getOrgId());
+		machineMasterVO.setInstrumentName(machineMasterDTO.getInstrumentName());
+		machineMasterVO.setFilePath(machineMasterDTO.getFilePath());
 
 		if (machineMasterDTO.getId() != null) {
 
@@ -140,8 +163,8 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 			List<MachineMasterVO2> machineMasterVO2s = machineMasterRepo2.findByMachineMasterVO(machineMasterVO);
 			machineMasterRepo2.deleteAll(machineMasterVO2s);
 
-			List<MachineMasterVO3> machineMasterVO3s = machineMasterRepo3.findByMachineMasterVO(machineMasterVO);
-			machineMasterRepo3.deleteAll(machineMasterVO3s);
+//			List<MachineMasterVO3> machineMasterVO3s = machineMasterRepo3.findByMachineMasterVO(machineMasterVO);
+//			machineMasterRepo3.deleteAll(machineMasterVO3s);
 
 		}
 
@@ -193,21 +216,28 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		}
 		machineMasterVO.setMachineMasterVO2(MachineMasterVO2s);
 
-		List<MachineMasterVO3> MachineMasterVO3s = new ArrayList<>();
-		for (MachineMasterDTO3 machineMasterDTO3 : machineMasterDTO.getMachineMasterDTO3()) {
-			MachineMasterVO3 machineMasterVO3 = new MachineMasterVO3();
-
-			machineMasterVO3.setInstrumentName(machineMasterDTO3.getInstrumentName());
-		//	machineMasterVO3.setAttachments(machineMasterDTO3.getAttachments());
-			machineMasterVO3.setFilePath(machineMasterDTO3.getFilePath());
-
-			machineMasterVO3.setMachineMasterVO(machineMasterVO);
-			MachineMasterVO3s.add(machineMasterVO3);
-		}
-		machineMasterVO.setMachineMasterVO3(MachineMasterVO3s);
+//		List<MachineMasterVO3> MachineMasterVO3s = new ArrayList<>();
+//		for (MachineMasterDTO3 machineMasterDTO3 : machineMasterDTO.getMachineMasterDTO3()) {
+//			MachineMasterVO3 machineMasterVO3 = new MachineMasterVO3();
+//
+//			machineMasterVO3.setInstrumentName(machineMasterDTO3.getInstrumentName());
+//		//	machineMasterVO3.setAttachments(machineMasterDTO3.getAttachments());
+//			machineMasterVO3.setFilePath(machineMasterDTO3.getFilePath());
+//
+//			machineMasterVO3.setMachineMasterVO(machineMasterVO);
+//			MachineMasterVO3s.add(machineMasterVO3);
+//		}
+//		machineMasterVO.setMachineMasterVO3(MachineMasterVO3s);
 
 		return machineMasterVO;
 
+	}
+	
+	@Override
+	public String getMachineMasterDocId(Long orgId, String finYear, String screenCode) {
+		String ScreenCode = "MM";
+		String result = machineMasterRepo.getMachineMasterByDocId(orgId, finYear, ScreenCode);
+		return result;
 	}
 
 	@Override
@@ -215,6 +245,13 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 
 		return machineMasterRepo.getMachineMasterByOrgId(orgId);
 	}
+	
+	@Override
+	public MachineMasterVO getMachineMasterByDocId(Long orgId, String docId) {
+		
+		return machineMasterRepo.findALLMachineMasterByDocId(orgId,docId);
+	}
+
 
 	@Override
 	public Optional<MachineMasterVO> getAllMachineMasterById(Long id) {
@@ -414,6 +451,28 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		drawingMaster2VO.setAttachements(file.getBytes());
 		return drawingMaster2Repo.save(drawingMaster2VO);
 	}
+
+	@Override
+	public List<Map<String, Object>> getCompanyForStockLocation(Long orgId) {
+		
+		Set<Object[]> getCompany = companyRepo.findCompanyForStockLocation(orgId);
+		return getCompanyDetails(getCompany);
+	}
+
+	private List<Map<String, Object>> getCompanyDetails(Set<Object[]> chCode) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chCode) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("companyCode", ch[0] != null ? ch[0].toString() : "");
+			map.put("companyName", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	
+	
 
 	
 }
