@@ -58,6 +58,9 @@ public interface CustomerEnquiryService {
 
 	String getWorkOrderDocId(Long orgId);
 	
-	List<Map<String,Object>>  getQuotationNumber(Long orgId);	
+	List<Map<String,Object>>  getQuotationNumber(Long orgId,String customerName);	
+	
+	
+	List<Map<String,Object>>  getWorkOderPartNo(Long orgId,String docId);	
 
 }
