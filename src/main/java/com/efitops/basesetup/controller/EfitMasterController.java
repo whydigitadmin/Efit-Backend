@@ -30,6 +30,7 @@ import com.efitops.basesetup.dto.ItemWiseProcessMasterDTO;
 import com.efitops.basesetup.dto.MaterialTypeDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
 import com.efitops.basesetup.dto.ProcessMasterDTO;
+import com.efitops.basesetup.dto.RackMasterDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.ShiftDTO;
 import com.efitops.basesetup.dto.UomDTO;
@@ -41,6 +42,7 @@ import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
 import com.efitops.basesetup.entity.ProcessMasterVO;
+import com.efitops.basesetup.entity.RackMasterVO;
 import com.efitops.basesetup.entity.ShiftVO;
 import com.efitops.basesetup.entity.UomVO;
 import com.efitops.basesetup.service.EfitMasterService;
@@ -1208,5 +1210,83 @@ public class EfitMasterController extends BaseController{
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
+		
+		//Rackmaster
+
+		@GetMapping("/getRackMasterByOrgId")
+		public ResponseEntity<ResponseDTO> getRackMasterByOrgId(@RequestParam Long orgId) {
+			String methodName = "getRackMasterByOrgId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<RackMasterVO> rackMasterVO = new ArrayList<>();
+			try {
+				rackMasterVO = efitMasterService.getRackMasterByOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RackMaster information get successfully ByOrgId");
+				responseObjectsMap.put("rackMasterVO", rackMasterVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "RackMaster information receive failedByOrgId",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+		
+		@GetMapping("/getRackMasterById")
+		public ResponseEntity<ResponseDTO> getRackMasterById(@RequestParam Long id) {
+			String methodName = "getRackMasterById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<RackMasterVO> rackMasterVO = new ArrayList<>();
+			try {
+				rackMasterVO = efitMasterService.getRackMasterById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RackMaster information get successfully By Id");
+				responseObjectsMap.put("rackMasterVO", rackMasterVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "RackMaster information receive failed By Id",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+	
+		@PutMapping("/updateCreateRackMaster")
+		public ResponseEntity<ResponseDTO> updateCreateRackMaster(@RequestBody RackMasterDTO rackMasterDTO) {
+			String methodName = "updateCreateRackMaster()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				Map<String, Object> shiftVO = efitMasterService.updateCreateRackMaster(rackMasterDTO);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, shiftVO.get("message"));
+				responseObjectsMap.put("rackMasterVO", shiftVO.get("rackMasterVO"));
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
 	
 }

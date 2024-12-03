@@ -1,6 +1,7 @@
 package com.efitops.basesetup.service;
 
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.xmlbeans.impl.xb.xmlconfig.NamespaceList.Member2.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 					.orElseThrow(() -> new ApplicationException("Invalid Enquiry details"));
 			message = "Enquiry Updated Successfully";
 			enquiryVO.setUpdatedBy(enquiryDTO.getCreatedBy());
-
+			
 		} else {
 
 			String docId = enquiryRepo.getEnquiryDocId(enquiryDTO.getOrgId(), screenCode);
@@ -435,8 +435,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		String screenCode = "WOP";
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
 			workOrderVO = workOrderRepo.findById(workOrderDTO.getId())
-					.orElseThrow(() -> new ApplicationException("Quotation Enquiry details"));
-			message = "Quotation Updated Successfully";
+					.orElseThrow(() -> new ApplicationException("WorkOrder Enquiry details"));
+			message = "WorkOrder Updated Successfully";
 			workOrderVO.setUpdatedBy(workOrderDTO.getCreatedBy());
 
 		} else {
@@ -453,7 +453,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
 			workOrderVO.setUpdatedBy(workOrderDTO.getCreatedBy());
 
-			message = "Quotation Created Successfully";
+			message = "WorkOrder Created Successfully";
 		}
 		createUpdatedWorkOrderVOFromWorkOrderDTO(workOrderDTO, workOrderVO);
 		workOrderRepo.save(workOrderVO);
@@ -473,7 +473,6 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		workOrderVO.setProductionMgr(workOrderDTO.getProductionMgr());
 		workOrderVO.setCustomerSpecialRequirement(workOrderDTO.getCustomerSpecialRequirement());
 		workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
-		workOrderVO.setActive(workOrderDTO.isActive());
 		workOrderVO.setOrgId(workOrderDTO.getOrgId());
  
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
@@ -543,16 +542,35 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getQuotationNumber(Long orgId) {
-		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId);
-		return getPQuotation(chType);
+	public List<Map<String, Object>> getQuotationNumber(Long orgId,String customerName) {
+		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId,customerName);
+		return getQuotation(chType);
 	}
 
-	private List<Map<String, Object>> getPQuotation(Set<Object[]> chType) {
+	private List<Map<String, Object>> getQuotation(Set<Object[]> chType) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("quotationNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getWorkOderPartNo(Long orgId,String docId) {
+		Set<Object[]> chType = workOrderRepo.getWorkOderPartNo(orgId,docId);
+		return getWorkOrder(chType);
+	}
+
+	private List<Map<String, Object>> getWorkOrder(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("partCode", ch[0] != null ? ch[0].toString() : "");
+			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("uom", ch[2] != null ? ch[2].toString() : "");
+			map.put("orderQty", ch[3] != null ? ch[3].toString() : "");
 			List1.add(map);
 		}
 		return List1;

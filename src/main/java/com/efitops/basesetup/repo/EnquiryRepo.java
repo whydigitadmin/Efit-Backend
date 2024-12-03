@@ -41,3 +41,5 @@ public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 	
 
 }
+
+

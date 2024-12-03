@@ -1,13 +1,11 @@
 package com.efitops.basesetup.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -17,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.PickListDTO;
+import com.efitops.basesetup.dto.PickListDetailsDTO;
 import com.efitops.basesetup.dto.PutawayDTO;
 import com.efitops.basesetup.dto.PutawayDetailsDTO;
 import com.efitops.basesetup.dto.RouteCardClosureDTO;
@@ -24,6 +24,8 @@ import com.efitops.basesetup.dto.RouteCardEngDeptDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.PickListDetailsVO;
+import com.efitops.basesetup.entity.PickListVO;
 import com.efitops.basesetup.entity.PutawayDetailsVO;
 import com.efitops.basesetup.entity.PutawayVO;
 import com.efitops.basesetup.entity.RouteCardClosureVO;
@@ -32,6 +34,8 @@ import com.efitops.basesetup.entity.RouteCardEntryDetailsVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
+import com.efitops.basesetup.repo.PickListDetailsRepo;
+import com.efitops.basesetup.repo.PickListRepo;
 import com.efitops.basesetup.repo.PutawayDetailsRepo;
 import com.efitops.basesetup.repo.PutawayRepo;
 import com.efitops.basesetup.repo.RouteCardClosureRepo;
@@ -64,6 +68,12 @@ public class InventoryServiceImpl implements InventoryService {
 
 	@Autowired
 	RouteCardEntryDetailsRepo routeCardEntryDetailsRepo;
+	
+	@Autowired
+	PickListRepo pickListRepo;
+	
+	@Autowired
+	PickListDetailsRepo pickListDetailsRepo;
 
 	// Putaway
 
@@ -217,6 +227,25 @@ public class InventoryServiceImpl implements InventoryService {
 		return details1;
 	}
 
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getRackNoForPutaway(Long orgId) {
+
+		Set<Object[]> result = putawayRepo.findRackNoForPutaway(orgId);
+		return getRackNoForPutaway(result);
+	}
+
+	private List<Map<String, Object>> getRackNoForPutaway(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("rackNo", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getFillGridForPutaway(Long orgId , String grnNo) {
@@ -393,5 +422,112 @@ public class InventoryServiceImpl implements InventoryService {
 		return result;
 	}
 
+	@Override
+	public List<PickListVO> getPickListById(Long id) {
+		List<PickListVO> pickListVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received PickList BY Id : {}", id);
+			pickListVO = pickListRepo.findPickListById(id);
+		}
+		return pickListVO;
+	}
+	
+	@Override
+	public List<PickListVO> getPickListByOrgId(Long orgId) {
+		List<PickListVO> pickListVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received PickList BY OrgId : {}", orgId);
+			pickListVO = pickListRepo.findPickListByOrgId(orgId);
+		}
+		return pickListVO;
+	}
+	
+	
+	@Override
+	public Map<String, Object> updateCreatePickList(@Valid PickListDTO pickListDTO) throws ApplicationException {
+		String message;
+		String screenCode = "PL";
+
+		PickListVO pickListVO = new PickListVO();
+
+		if (pickListDTO.getId() != null) {
+			// Fetch existing ItemVO for update
+			pickListVO = pickListRepo.findById(pickListDTO.getId())
+					.orElseThrow(() -> new ApplicationException("PickList not found"));
+			pickListVO.setUpdatedBy(pickListDTO.getCreatedBy());
+			createUpdatePickListVOByPickListDTO(pickListDTO, pickListVO);
+			message = "PickList Updated Successfully";
+
+			List<PickListDetailsVO> pickListDetailsVOs = pickListDetailsRepo.findByPickListVO(pickListVO);
+			pickListDetailsRepo.deleteAll(pickListDetailsVOs);
+
+		} else {
+
+			// GETDOCID API
+			String docId = pickListRepo.getPickListDocId(pickListDTO.getOrgId(), screenCode);
+
+			pickListVO.setDocId(docId);
+
+//			        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(pickListDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			// Create new ItemVO
+			pickListVO.setCreatedBy(pickListDTO.getCreatedBy());
+			pickListVO.setUpdatedBy(pickListDTO.getCreatedBy());
+			createUpdatePickListVOByPickListDTO(pickListDTO, pickListVO);
+			message = "PickList Created Successfully";
+		}
+
+		// Save the ItemVO
+		pickListRepo.save(pickListVO);
+
+		// Prepare response
+		Map<String, Object> response = new HashMap<>();
+		response.put("pickListVO", pickListVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdatePickListVOByPickListDTO(@Valid PickListDTO pickListDTO, PickListVO pickListVO) {
+		pickListVO.setCustomerName(pickListDTO.getCustomerName());
+		pickListVO.setRouteCardNo(pickListDTO.getRouteCardNo());
+		pickListVO.setWorkOrderNo(pickListDTO.getWorkOrderNo());
+		pickListVO.setItemIssueToProductionNo(pickListDTO.getItemIssueToProductionNo());
+		pickListVO.setDepartment(pickListDTO.getDepartment());
+		pickListVO.setLocation(pickListDTO.getLocation());
+		pickListVO.setShift(pickListDTO.getShift());
+		pickListVO.setPickedBy(pickListDTO.getPickedBy());
+		pickListVO.setFgPartNo(pickListDTO.getFgPartNo());
+		pickListVO.setOrgId(pickListDTO.getOrgId());
+
+		// Handling ItemInventoryVO
+		List<PickListDetailsVO> pickListDetailsVOs = new ArrayList<>();
+		for (PickListDetailsDTO pickListDetailsDTO : pickListDTO.getPickListDetailsDTO()) {
+			PickListDetailsVO pickListDetailsVO = new PickListDetailsVO();
+			pickListDetailsVO.setItem(pickListDetailsDTO.getItem());
+			pickListDetailsVO.setItemName(pickListDetailsDTO.getItemName());
+			pickListDetailsVO.setUnit(pickListDetailsDTO.getUnit());
+			pickListDetailsVO.setRackNo(pickListDetailsDTO.getRackNo());
+			pickListDetailsVO.setRackQty(pickListDetailsDTO.getRackQty());
+			pickListDetailsVO.setIssuedQty(pickListDetailsDTO.getIssuedQty());	
+			pickListDetailsVO.setPickedQty(pickListDetailsDTO.getPickedQty());
+			pickListDetailsVO.setRemainingQty(pickListDetailsDTO.getRemainingQty());
+
+			pickListDetailsVO.setPickListVO(pickListVO); // Set the reference in child entity
+			pickListDetailsVOs.add(pickListDetailsVO);
+		}
+		pickListVO.setPickListDetailsVO(pickListDetailsVOs);
+
+	}
+
+	@Override
+	public String getPickListDocId(Long orgId) {
+		String ScreenCode = "PL";
+		String result = pickListRepo .getPickListDocId(orgId, ScreenCode);
+		return result;
+	}
 
 }
