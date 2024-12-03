@@ -15,6 +15,7 @@ import com.efitops.basesetup.dto.ItemWiseProcessMasterDTO;
 import com.efitops.basesetup.dto.MaterialTypeDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
 import com.efitops.basesetup.dto.ProcessMasterDTO;
+import com.efitops.basesetup.dto.RackMasterDTO;
 import com.efitops.basesetup.dto.ShiftDTO;
 import com.efitops.basesetup.dto.UomDTO;
 import com.efitops.basesetup.entity.DepartmentVO;
@@ -25,6 +26,7 @@ import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
 import com.efitops.basesetup.entity.ProcessMasterVO;
+import com.efitops.basesetup.entity.RackMasterVO;
 import com.efitops.basesetup.entity.ShiftVO;
 import com.efitops.basesetup.entity.UomVO;
 import com.efitops.basesetup.exception.ApplicationException;
@@ -134,6 +136,14 @@ public interface EfitMasterService {
 		Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException;
 
 		List<ShiftVO> getShiftById(Long id);
+
+		//RackMaster
+		
+		List<RackMasterVO> getRackMasterByOrgId(Long orgId);
+
+		List<RackMasterVO> getRackMasterById(Long id);
+
+		Map<String, Object> updateCreateRackMaster(RackMasterDTO rackMasterDTO) throws ApplicationException;
 
 
 
