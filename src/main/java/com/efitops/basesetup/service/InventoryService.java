@@ -7,8 +7,10 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.PickListDTO;
 import com.efitops.basesetup.dto.PutawayDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
+import com.efitops.basesetup.entity.PickListVO;
 import com.efitops.basesetup.entity.PutawayVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
 import com.efitops.basesetup.exception.ApplicationException;
@@ -31,7 +33,8 @@ public interface InventoryService {
 
 	List<Map<String, Object>> getFillGridForPutaway(Long orgId, String grnNo);
 
-	
+	List<Map<String, Object>> getRackNoForPutaway(Long orgId);
+
 	//routeCardEntry
 
 	Map<String, Object> updateCreateRouteCardEntry(@Valid RouteCardEntryDTO routeCardEntryDTO) throws ApplicationException;
@@ -41,6 +44,15 @@ public interface InventoryService {
 	List<RouteCardEntryVO> getRouteCardEntryById(Long id);
 
 	String getRouteCardEntryDocId(Long orgId);
+
+	//PickList
+	Map<String, Object> updateCreatePickList(@Valid PickListDTO pickListDTO) throws ApplicationException;
+
+	List<PickListVO> getPickListByOrgId(Long orgId);
+
+	List<PickListVO> getPickListById(Long id);
+
+	String getPickListDocId(Long orgId);
 
 	
 

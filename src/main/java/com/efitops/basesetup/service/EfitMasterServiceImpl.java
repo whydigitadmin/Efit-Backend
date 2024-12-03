@@ -28,6 +28,7 @@ import com.efitops.basesetup.dto.MaterialDetailDTO;
 import com.efitops.basesetup.dto.MaterialTypeDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
 import com.efitops.basesetup.dto.ProcessMasterDTO;
+import com.efitops.basesetup.dto.RackMasterDTO;
 import com.efitops.basesetup.dto.ShiftDTO;
 import com.efitops.basesetup.dto.ShiftDetailsDTO;
 import com.efitops.basesetup.dto.UomDTO;
@@ -45,6 +46,7 @@ import com.efitops.basesetup.entity.MaterialDetailVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
 import com.efitops.basesetup.entity.ProcessMasterVO;
+import com.efitops.basesetup.entity.RackMasterVO;
 import com.efitops.basesetup.entity.ShiftDetailsVO;
 import com.efitops.basesetup.entity.ShiftVO;
 import com.efitops.basesetup.entity.UomVO;
@@ -63,6 +65,7 @@ import com.efitops.basesetup.repo.MaterialDetailRepo;
 import com.efitops.basesetup.repo.MaterialTypeRepo;
 import com.efitops.basesetup.repo.MeasuringInstrumentsRepo;
 import com.efitops.basesetup.repo.ProcessMasterRepo;
+import com.efitops.basesetup.repo.RackMasterRepo;
 import com.efitops.basesetup.repo.ShiftDetailsRepo;
 import com.efitops.basesetup.repo.ShiftRepo;
 import com.efitops.basesetup.repo.UomRepo;
@@ -122,6 +125,9 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	
 	@Autowired
 	ShiftRepo shiftrepo;
+	
+	@Autowired
+	RackMasterRepo rackMasterRepo;
 
 	@Override
 	public List<ItemVO> getItemByOrgId(Long orgId) {
@@ -1166,4 +1172,68 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		shiftVO.setShiftDetailsVO(shiftDetailsVOs);
 	
 	}
+	
+	
+	@Override
+	public List<RackMasterVO> getRackMasterByOrgId(Long orgId) {
+		List<RackMasterVO> rackMasterVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received RackMaster BY OrgId : {}", orgId);
+			rackMasterVO = rackMasterRepo.getRackMasterByOrgId(orgId);
+		} 
+		return rackMasterVO;
+	}
+	
+	@Override
+	public List<RackMasterVO> getRackMasterById(Long id) {
+		List<RackMasterVO> rackMasterVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received RackMaster BY Id : {}", id);
+			rackMasterVO = rackMasterRepo.getRackMasterById(id);
+		} 
+		return rackMasterVO;
+	}
+	
+	
+	@Override
+	public Map<String, Object> updateCreateRackMaster(@Valid RackMasterDTO rackMasterDTO) throws ApplicationException {
+		String message;
+
+		RackMasterVO rackMasterVO = new RackMasterVO();
+
+		if (rackMasterDTO.getId() != null) {
+			// Fetch existing ItemVO for update
+			rackMasterVO = rackMasterRepo.findById(rackMasterDTO.getId())
+					.orElseThrow(() -> new ApplicationException("RackMaster master not found"));
+			rackMasterVO.setUpdatedBy(rackMasterDTO.getCreatedBy());
+			createUpdateRackMasterVOByRackMasterDTO(rackMasterDTO, rackMasterVO);
+			message = "RackMaster Updated Successfully";
+
+			
+		} else {
+			// Create new ItemVO
+			rackMasterVO.setCreatedBy(rackMasterDTO.getCreatedBy());
+			rackMasterVO.setUpdatedBy(rackMasterDTO.getCreatedBy());
+			createUpdateRackMasterVOByRackMasterDTO(rackMasterDTO, rackMasterVO);
+			message = "RackMaster Created Successfully";
+		}
+
+		// Save the ItemVO
+		rackMasterRepo.save(rackMasterVO);
+
+		// Prepare response
+		Map<String, Object> response = new HashMap<>();
+		response.put("rackMasterVO", rackMasterVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdateRackMasterVOByRackMasterDTO(@Valid RackMasterDTO rackMasterDTO, RackMasterVO rackMasterVO) {
+		rackMasterVO.setRackNo(rackMasterDTO.getRackNo());
+		rackMasterVO.setRackLocation(rackMasterDTO.getRackLocation());
+		rackMasterVO.setOrgId(rackMasterDTO.getOrgId());
+		rackMasterVO.setActive(rackMasterDTO.isActive());
+
+	}
+	
 }
