@@ -249,6 +249,38 @@ public class PurchaseController extends BaseController{
 
 	}
 	
+	@GetMapping("/getpurchaseIndentDocId")
+	public ResponseEntity<ResponseDTO> getpurchaseIndentDocId(@RequestParam Long orgId,@RequestParam String finYear,
+			@RequestParam String screenCode) {
+
+		String methodName = "getpurchaseIndentDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = purchaseService.getpurchaseIndentDocId(orgId,finYear,screenCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseIndent DocId information retrieved successfully");
+			responseObjectsMap.put("purchaseIndent DocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve purchaseIndent DocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
 	//PurchaseEnquiry
 
 	@PutMapping("/updateCreatePurchaseEnquiry")
@@ -300,31 +332,35 @@ public class PurchaseController extends BaseController{
 
 	}
 	
-	@GetMapping("/getAllPurchaseEnquiryByOrgId")
-	public ResponseEntity<ResponseDTO> getAllPurchaseEnquiryByOrgId(@RequestParam(required = false) Long orgId) {
-		String methodName = "getAllPurchaseEnquiryByOrgId()";
+	@GetMapping("/getPurchaseEnquiryDocId")
+	public ResponseEntity<ResponseDTO> getPurchaseEnquiryDocId(@RequestParam Long orgId,@RequestParam String finYear,
+			@RequestParam String screenCode) {
+
+		String methodName = "getPurchaseEnquiryDocId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<PurchaseEnquiryVO> purchaseEnquiryVO=new ArrayList<PurchaseEnquiryVO>();
+		String mapp = "";
+
 		try {
-			purchaseEnquiryVO = purchaseService.getAllPurchaseEnquiryByOrgId(orgId);
+			mapp = purchaseService.getPurchaseEnquiryDocId(orgId,finYear,screenCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
+
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseEnquiry information get successfully By orgId");
-			responseObjectsMap.put("purchaseEnquiryVO", purchaseEnquiryVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseEnquiry DocId information retrieved successfully");
+			responseObjectsMap.put("purchaseIndent DocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"PurchaseEnquiry information receive failed By orgId", errorMsg);
+					"Failed to retrieve PurchaseEnquiry DocId information", errorMsg);
 		}
+
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
-
 	}
 	
 }

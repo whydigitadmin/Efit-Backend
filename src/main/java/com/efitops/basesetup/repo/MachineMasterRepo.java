@@ -18,4 +18,11 @@ public interface MachineMasterRepo extends JpaRepository<MachineMasterVO, Long>{
 	@Query(nativeQuery =true,value ="select * from m_machinemaster where machinemasterid=?1")
 	Optional<MachineMasterVO> getMachineMasterById(Long id);
 
+	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and finyear=?2 and screencode=?3")
+	String getMachineMasterByDocId(Long orgId,String finYear, String screenCode);
+
+	
+    @Query(nativeQuery =true,value ="SELECT * FROM m_machinemaster where orgid=?1 and docid=?2")
+	MachineMasterVO findALLMachineMasterByDocId(Long orgId, String docId);
+
 }
