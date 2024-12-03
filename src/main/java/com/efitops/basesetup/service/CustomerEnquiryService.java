@@ -47,6 +47,8 @@ public interface CustomerEnquiryService {
 	List<Map<String,Object>>  getEnquiryNoAndDate(Long orgId,String customer);	
 	
 	List<Map<String,Object>>  getProductionManager(Long orgId);	
+	
+	List<Map<String,Object>>  getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId,String customer);	
 
 	// WorkOrder
 
@@ -61,6 +63,6 @@ public interface CustomerEnquiryService {
 	List<Map<String,Object>>  getQuotationNumber(Long orgId,String customerName);	
 	
 	
-	List<Map<String,Object>>  getWorkOderPartNo(Long orgId,String docId);	
+	List<Map<String,Object>>  getWorkOrderPartNo(Long orgId,String docId,String custmoerName);	
 
 }
