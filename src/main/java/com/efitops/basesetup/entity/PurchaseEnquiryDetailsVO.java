@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseEnquiryDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseenquirygen")
-	@SequenceGenerator(name = "t_purchaseenquirygen", sequenceName = "t_purchaseenquiryseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseenquirydetailsgen")
+	@SequenceGenerator(name = "t_purchaseenquirydetailsgen", sequenceName = "t_purchaseenquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchaseenquirydetailid")
 	private Long id;
 	

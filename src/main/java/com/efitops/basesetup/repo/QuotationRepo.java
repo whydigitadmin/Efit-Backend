@@ -28,4 +28,5 @@ public interface QuotationRepo extends JpaRepository<QuotationVO, Long> {
 	@Query(nativeQuery = true, value = "select a.employee from employee a where a.orgid=?1 and active=1 order by a.employee")
 	Set<Object[]> getProductionManager(Long orgId);
 
+
 }
