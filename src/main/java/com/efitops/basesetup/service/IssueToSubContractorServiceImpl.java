@@ -6,18 +6,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.DcForSubContractDTO;
+import com.efitops.basesetup.dto.DcForSubContractDetailsDTO;
 import com.efitops.basesetup.dto.IssueItemDetailsDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.entity.DcForSubContractDetailsVO;
+import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.IssueItemDetailsVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.exception.ApplicationException;
+import com.efitops.basesetup.repo.DcForSubContractDetailsRepo;
+import com.efitops.basesetup.repo.DcForSubContractRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.IssueItemDetailsRepo;
 import com.efitops.basesetup.repo.IssueToSubContractorRepo;
@@ -35,6 +43,13 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	DcForSubContractRepo dcForSubContractRepo;
+	
+	@Autowired
+	DcForSubContractDetailsRepo  dcForSubContractDetailsRepo;
+	
 
 	// IssueToSubContract
 	@Override
@@ -180,4 +195,121 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		}
 		return List1;
 	}
+	
+	
+	//DcForSubContractor
+	
+	@Override
+	public List<DcForSubContractVO> getDcforSCByOrgId(Long orgId) {
+		List<DcForSubContractVO> dcForSubContractVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received Item BY OrgId : {}", orgId);
+			dcForSubContractVO = dcForSubContractRepo.findDcforSCByOrgId(orgId);
+		}
+		return dcForSubContractVO;
+	}
+
+
+		@Override
+		public List<DcForSubContractVO> getDcforSCById (Long id) {
+			List<DcForSubContractVO> dcForSubContractVO = new ArrayList<>();
+			if (ObjectUtils.isNotEmpty(id)) {
+				LOGGER.info("Successfully Received Shift BY Id : {}", id);
+				dcForSubContractVO = dcForSubContractRepo.getDcforSCById(id);
+			}
+			return dcForSubContractVO;
+	}
+
+
+	
+		@Override
+		public Map<String, Object> updateCreateDcForSubContract(DcForSubContractDTO dcForSubContractDTO) throws ApplicationException {
+			DcForSubContractVO dcForSubContractVO = new DcForSubContractVO();
+			String message;
+			String screenCode = "DCSC";
+			if (ObjectUtils.isNotEmpty(dcForSubContractDTO.getId())) {
+				dcForSubContractVO = dcForSubContractRepo.findById(dcForSubContractDTO.getId())
+						.orElseThrow(() -> new ApplicationException("Invalid DcForSubContract details"));
+				message = "DcForSubContract Updated Successfully";
+				dcForSubContractVO.setUpdatedBy(dcForSubContractDTO.getCreatedBy());
+
+			} else {
+
+				String docId = dcForSubContractRepo.getdcForSubcontractDocId(dcForSubContractDTO.getOrgId(), screenCode);
+				dcForSubContractVO.setDeliveryChallanNo(docId);
+
+				// GETDOCID LASTNO +1
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+						.findByOrgIdAndScreenCode(dcForSubContractDTO.getOrgId(), screenCode);
+				documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+				documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+				dcForSubContractVO.setCreatedBy(dcForSubContractDTO.getCreatedBy());
+				dcForSubContractVO.setUpdatedBy(dcForSubContractDTO.getCreatedBy());
+
+				message = "DcForSubContract Created Successfully";
+			}
+			createUpdateDcForSubContractVOByDcForSubContractDTO(dcForSubContractDTO,dcForSubContractVO);
+			dcForSubContractRepo.save(dcForSubContractVO);
+			Map<String, Object> response = new HashMap<>();
+			response.put("dcForSubContractVO", dcForSubContractVO);
+			response.put("message", message);
+			return response;
+
+		}
+		
+
+		private void createUpdateDcForSubContractVOByDcForSubContractDTO(@Valid DcForSubContractDTO dcForSubContractDTO, DcForSubContractVO dcForSubContractVO) throws ApplicationException {
+			dcForSubContractVO.setDeliveryChallanNo(dcForSubContractDTO.getDeliveryChallanNo());
+			dcForSubContractVO.setDeliveryChallanDate(dcForSubContractDTO.getDeliveryChallanDate());
+			dcForSubContractVO.setScIssueNo(dcForSubContractDTO.getScIssueNo());
+			dcForSubContractVO.setCustomerName(dcForSubContractDTO.getCustomerName());
+			dcForSubContractVO.setCustomerAddress(dcForSubContractDTO.getCustomerAddress());
+			dcForSubContractVO.setGstNo(dcForSubContractDTO.getGstNo());
+			dcForSubContractVO.setSubContractorName(dcForSubContractDTO.getSubContractorName());
+			dcForSubContractVO.setSubContractorId(dcForSubContractDTO.getSubContractorId());
+			dcForSubContractVO.setSubContractoraddress(dcForSubContractDTO.getSubContractoraddress());
+			dcForSubContractVO.setVehicleNo(dcForSubContractDTO.getVehicleNo());
+			dcForSubContractVO.setDuedate(dcForSubContractDTO.getDuedate());
+			dcForSubContractVO.setDisatchThrough(dcForSubContractDTO.getDisatchThrough());
+			dcForSubContractVO.setEwayBillNo(dcForSubContractDTO.getEwayBillNo());	
+			dcForSubContractVO.setActive(dcForSubContractDTO.isActive());
+			dcForSubContractVO.setCreatedBy(dcForSubContractDTO.getCreatedBy());
+			dcForSubContractVO.setOrgId(dcForSubContractDTO.getOrgId());
+			
+
+			
+			if(ObjectUtils.isNotEmpty(dcForSubContractVO.getId())) {	
+		List<DcForSubContractDetailsVO>dcForSubContractDetails1= dcForSubContractDetailsRepo.findByDcForSubContractVO(dcForSubContractVO);
+		dcForSubContractDetailsRepo.deleteAll(dcForSubContractDetails1);
+			}
+			
+			
+			List<DcForSubContractDetailsVO> dcForSubContractDetailsVOs = new ArrayList<>();
+			for (DcForSubContractDetailsDTO dcForSubContractDetailsDTO : dcForSubContractDTO.getDcForSubContractDetailsDTO()) {
+				DcForSubContractDetailsVO dcForSubContractDetailsVO = new DcForSubContractDetailsVO();
+				dcForSubContractDetailsVO.setItem(dcForSubContractDetailsDTO.getItem());
+				dcForSubContractDetailsVO.setItemDesc(dcForSubContractDetailsDTO.getItemDesc());
+				dcForSubContractDetailsVO.setProcess(dcForSubContractDetailsDTO.getProcess());
+				dcForSubContractDetailsVO.setUnit(dcForSubContractDetailsDTO.getUnit());
+				dcForSubContractDetailsVO.setQty(dcForSubContractDetailsDTO.getQty());
+				dcForSubContractDetailsVO.setWeight(dcForSubContractDetailsDTO.getWeight());
+				dcForSubContractDetailsVO.setRemarks(dcForSubContractDetailsDTO.getRemarks());
+				dcForSubContractDetailsVO.setDcForSubContractVO(dcForSubContractVO); // Set the reference in child entity
+				dcForSubContractDetailsVOs.add(dcForSubContractDetailsVO);
+			}
+			dcForSubContractVO.setDcForSubContractDetailsVO(dcForSubContractDetailsVOs);
+		}
+
+
+		@Override
+		public String getDcForSubContractDocId(Long orgId) {
+			String screenCode = "DCSC";
+			String result = dcForSubContractRepo.getdcForSubcontractDocId(orgId, screenCode);
+			return result;
+		}
+	
+	
+	
+	
 }

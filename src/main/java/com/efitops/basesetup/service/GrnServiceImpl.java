@@ -150,6 +150,13 @@ public class GrnServiceImpl implements GrnService
 		grnVO.setGrnDetailsVO(grnDetailsVOs);
 	
 	}
+	
+	@Override
+	public String getGrnDocId(Long orgId) {
+		String screenCode = "GRN";
+		String result = grnRepo.getGrnDocId(orgId, screenCode);
+		return result;
+	}
 
 
 }

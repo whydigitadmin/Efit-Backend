@@ -976,6 +976,8 @@ public class EfitMasterController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
+		//designation master
+		
 		@GetMapping("/getDesignationByOrgId")
 		public ResponseEntity<ResponseDTO> getDesignationByOrgId(@RequestParam(required = false) Long orgId) {
 			String methodName = "getDesignationByOrgId()";
@@ -1053,6 +1055,38 @@ public class EfitMasterController extends BaseController{
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
+		@GetMapping("/getDesignationDocId")
+		public ResponseEntity<ResponseDTO> getDesignationDocId(@RequestParam Long orgId) 
+		{
+			String methodName = "getDesignationDocId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			String mapp = "";
+
+			try {
+				mapp = efitMasterService.getDesignationDocId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Designation DocId information retrieved successfully");
+				responseObjectsMap.put("getDesignationDocId", mapp);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve Designation DocId information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		
+		
 
 		@GetMapping("/getUomByOrgId")
 		public ResponseEntity<ResponseDTO> getUomByOrgId(@RequestParam(required = false) Long orgId) {

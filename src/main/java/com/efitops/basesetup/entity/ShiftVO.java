@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -56,13 +57,23 @@ public class ShiftVO {
 		@Column(name = "modifiedby")
 		private String updatedBy;
 		@Column(name = "cancel")
-		private boolean cancel = false;
+		private boolean cancel ;
 		@Column(name = "active")
-		private boolean active = true;
+		private boolean active ;
 		@Column(name = "cancelremarks", length = 150)
 		private String cancelRemarks;
 
 		@OneToMany(mappedBy = "shiftVO",cascade = CascadeType.ALL)
 		@JsonManagedReference
 		private List<ShiftDetailsVO> shiftDetailsVO; 
+		
+		@JsonGetter("active")
+		public String getActive() {
+			return active ? "Active" : "In-Active";
+		}
+		
+		@JsonGetter("cancel")
+		public String getCancel() {
+			return cancel ? "T" : "F";
+		}
 }
