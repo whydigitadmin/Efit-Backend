@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
+import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
+import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.EnquiryVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.service.IssueToSubContractorService;
@@ -236,4 +238,115 @@ public class IssueToSubContractorController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	//DcForSubContractor
+	
+	
+	@GetMapping("/getDcforSCByOrgId")
+	public ResponseEntity<ResponseDTO> getDcforSCByOrgId(@RequestParam Long orgId) {
+		String methodName = "getDcforSCByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DcForSubContractVO> dcForSubContractVO = new ArrayList<>();
+		try {
+			dcForSubContractVO = issueToSubContractorService.getDcforSCByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DcForSubContract information get successfully ByOrgId");
+			responseObjectsMap.put("dcForSubContractVO", dcForSubContractVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "DcForSubContract information receive failedByOrgId",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getDcforSCById")
+	public ResponseEntity<ResponseDTO> getDcforSCById(@RequestParam Long id) {
+		String methodName = "getDcforSCById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DcForSubContractVO> dcForSubContractVO = new ArrayList<>();
+		try {
+			dcForSubContractVO = issueToSubContractorService.getDcforSCById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Dc For SubContract information get successfully By Id");
+			responseObjectsMap.put("dcForSubContractVO", dcForSubContractVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Dc For SubContract information receive failed By Id",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@PutMapping("/updateCreateDcForSubContract")
+	public ResponseEntity<ResponseDTO> updateCreateDcForSubContract(@Valid @RequestBody DcForSubContractDTO dcForSubContractDTO) {
+		String methodName = "updateCreateDcForSubContract()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> dcForSubContractVO = issueToSubContractorService.updateCreateDcForSubContract(dcForSubContractDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, dcForSubContractVO.get("message"));
+			responseObjectsMap.put("dcForSubContractVO", dcForSubContractVO.get("dcForSubContractVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	
+	@GetMapping("/getDcForSubContractDocId")
+	public ResponseEntity<ResponseDTO> getDcForSubContractDocId(@RequestParam Long orgId) 
+	{
+		String methodName = "getDcForSubContractDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = issueToSubContractorService.getDcForSubContractDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GrnDocId information retrieved successfully");
+			responseObjectsMap.put("dcForSubContractDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve GrnDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	
 }

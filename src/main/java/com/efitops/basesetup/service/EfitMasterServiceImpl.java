@@ -986,7 +986,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	@Override
 	public Map<String, Object> updateCreateDesignation(@Valid DesignationDTO designationDTO)
 			throws ApplicationException {
-		String screenCode = "D";
+		String screenCode = "DSG";
 		DesignationVO designationVO = new DesignationVO();
 		String message;
 		if (ObjectUtils.isNotEmpty(designationDTO.getId())) {
@@ -997,6 +997,14 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			createUpdateDesignationVOByDesignationDTO(designationDTO, designationVO);
 			message = "Designation  Updated Successfully";
 		} else {
+			String docId = designationrepo.getDesignationDocId(designationDTO.getOrgId(), screenCode);
+			designationVO.setDocid(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(designationDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 			
 			designationVO.setCreatedBy(designationDTO.getCreatedBy());
 			designationVO.setUpdatedBy(designationDTO.getCreatedBy());
@@ -1015,7 +1023,15 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			DesignationVO designationVO) throws ApplicationException {
 		designationVO.setDesignation(designationDTO.getDesignation());
 		designationVO.setOrgId(designationDTO.getOrgId());
+		designationVO.setActive(designationDTO.isActive());
 		
+		
+	}
+	@Override
+	public String getDesignationDocId(Long orgId) {
+		String screenCode = "DSG";
+		String result = designationrepo.getDesignationDocId(orgId, screenCode);
+		return result;
 	}
 	
 	@Override
@@ -1158,6 +1174,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		shiftVO.setToHour(shiftDTO.getToHour());
 		shiftVO.setTiming(shiftDTO.getTiming());
 		shiftVO.setOrgId(shiftDTO.getOrgId());
+		shiftVO.setActive(shiftDTO.isActive());;
 		
 
 		List<ShiftDetailsVO> shiftDetailsVOs = new ArrayList<>();
@@ -1235,5 +1252,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		rackMasterVO.setActive(rackMasterDTO.isActive());
 
 	}
+
+	
 	
 }

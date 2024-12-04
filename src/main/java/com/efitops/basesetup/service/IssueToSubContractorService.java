@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.exception.ApplicationException;
 
@@ -26,4 +28,17 @@ public interface IssueToSubContractorService {
 	List<Map<String, Object>> getDepartmentName(Long orgId);
 
 	List<Map<String, Object>> getProcessNameFormItemWiseProcess(Long orgId,String item);
+	
+	//DcForSubContracto
+	
+	List<DcForSubContractVO> getDcforSCByOrgId(Long orgId);
+
+	List<DcForSubContractVO> getDcforSCById(Long id);
+
+
+	Map<String, Object> updateCreateDcForSubContract(DcForSubContractDTO dcForSubContractDTO)
+			throws ApplicationException;
+
+	String getDcForSubContractDocId(Long orgId);
+
 }

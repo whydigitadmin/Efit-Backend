@@ -20,6 +20,8 @@ public class ShiftDTO {
 	private String timing;
 	private Long orgId;
 	private String createdBy;
+	private boolean active;
+	
 	 
 	private List<ShiftDetailsDTO> ShiftDetailsDTO; 
 }
