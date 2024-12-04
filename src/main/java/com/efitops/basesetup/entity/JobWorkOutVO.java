@@ -1,6 +1,6 @@
 package com.efitops.basesetup.entity;
 
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JobwWorkOutVO {
+public class JobWorkOutVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkoutgen")
@@ -60,6 +60,16 @@ public class JobwWorkOutVO {
 	private String durationOfrocess;
 	@Column(name="customer")
 	private String customer; 
+	@Column(name="termsofpay")
+	private String termsOfPay;
+	@Column(name="amtinwords")
+	private String amtInWords;
+	@Column(name="totalamt")
+	private BigDecimal totalAmt;
+	@Column(name="totalgrossamt")
+	private BigDecimal totalGrossAmt;
+	@Column(name="totaltax")
+	private BigDecimal totalTax; 
 	
 	
 	@Column(name = "orgid")
@@ -80,9 +90,9 @@ public class JobwWorkOutVO {
 	private String screenName="JOBWORKORDER";
 	
 	
-	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "jobWorkOutVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<GrnDetailsVO> grnDetailsVO;
+	List<JobWorkOutDetailsVO> jobWorkOutDetailsVO;
 	
 
 }

@@ -69,8 +69,8 @@ public class JobWorkOutDetailsVO {
 	private BigDecimal landedValue;
 		
 	@ManyToOne
-	@JoinColumn(name = "grnid")
+	@JoinColumn(name = "t_jobworkoutid")
 	@JsonBackReference
-	private GrnVO grnVO;
+	private JobWorkOutVO jobWorkOutVO;
 
 }
