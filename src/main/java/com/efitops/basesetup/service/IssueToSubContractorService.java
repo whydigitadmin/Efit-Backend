@@ -12,7 +12,7 @@ import com.efitops.basesetup.exception.ApplicationException;
 @Service
 public interface IssueToSubContractorService {
 	
-	
+	//IssueToSubContractor
 	Map<String, Object> createUpdateIssueToSubContractor(IssueToSubContractorDTO  issueToSubContractorDTO) throws ApplicationException;
 
 	List<IssueToSubContractorVO> getAllIssueToSubContractorByOrgId(Long orgId);
@@ -20,5 +20,10 @@ public interface IssueToSubContractorService {
 	List<IssueToSubContractorVO> getIssueToSubContractorById(Long id);
 
 	String getIssueToSubContractorDocId(Long orgId);
+		
+	List<Map<String, Object>> getRouteCardNoAndItemNo(Long orgId);
+	
+	List<Map<String, Object>> getDepartmentName(Long orgId);
 
+	List<Map<String, Object>> getProcessNameFormItemWiseProcess(Long orgId,String item);
 }

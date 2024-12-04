@@ -1,6 +1,7 @@
 package com.efitops.basesetup.controller;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
-import com.efitops.basesetup.dto.EnquiryDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.EnquiryVO;
@@ -35,10 +35,10 @@ import com.efitops.basesetup.service.IssueToSubContractorService;
 public class IssueToSubContractorController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(IssueToSubContractorController.class);
-	
+
 	@Autowired
 	IssueToSubContractorService issueToSubContractorService;
-	
+
 	@GetMapping("/getAllIssueToSubContractorByOrgId")
 	public ResponseEntity<ResponseDTO> getAllIssueToSubContractorByOrgId(@RequestParam Long orgId) {
 		String methodName = "getAllIssueToSubContractorByOrgId()";
@@ -54,12 +54,13 @@ public class IssueToSubContractorController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "IssueToSubContractor information get successfully ByOrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"IssueToSubContractor information get successfully ByOrgId");
 			responseObjectsMap.put("issueToSubContractorVO", issueToSubContractorVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "IssueToSubContractor information receive failed By OrgId",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"IssueToSubContractor information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -81,12 +82,13 @@ public class IssueToSubContractorController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "IssueToSubContractor information get successfully By Id");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"IssueToSubContractor information get successfully By Id");
 			responseObjectsMap.put("issueToSubContractorVO", issueToSubContractorVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "IssueToSubContractor information receive failed By Id",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"IssueToSubContractor information receive failed By Id", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -94,14 +96,16 @@ public class IssueToSubContractorController extends BaseController {
 	}
 
 	@PutMapping("/createUpdateIssueToSubContractor")
-	public ResponseEntity<ResponseDTO> createUpdateIssueToSubContractor(@Valid @RequestBody IssueToSubContractorDTO issueToSubContractorDTO) {
+	public ResponseEntity<ResponseDTO> createUpdateIssueToSubContractor(
+			@Valid @RequestBody IssueToSubContractorDTO issueToSubContractorDTO) {
 		String methodName = "createUpdateIssueToSubContractor()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			Map<String, Object> issueToSubContractorVO = issueToSubContractorService.createUpdateIssueToSubContractor(issueToSubContractorDTO);
+			Map<String, Object> issueToSubContractorVO = issueToSubContractorService
+					.createUpdateIssueToSubContractor(issueToSubContractorDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, issueToSubContractorVO.get("message"));
 			responseObjectsMap.put("issueToSubContractorVO", issueToSubContractorVO.get("issueToSubContractorVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -132,11 +136,100 @@ public class IssueToSubContractorController extends BaseController {
 		}
 
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "IssueToSubContractorDocId information retrieved successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"IssueToSubContractorDocId information retrieved successfully");
 			responseObjectsMap.put("issueToSubContractorDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve IssueToSubContractorDocId information",
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve IssueToSubContractorDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getRouteCardNoAndItemNo")
+	public ResponseEntity<ResponseDTO> getRouteCardNoAndItemNo(@RequestParam Long orgId) {
+		String methodName = "getRouteCardNoAndItemNo()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = issueToSubContractorService.getRouteCardNoAndItemNo(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RouteCardNo Details retrieved successfully");
+			responseObjectsMap.put("routeCardVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve RouteCardNo Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getDepartmentName")
+	public ResponseEntity<ResponseDTO> getDepartmentName(@RequestParam Long orgId) {
+		String methodName = "getDepartmentName()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = issueToSubContractorService.getDepartmentName(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DepartmentName Details retrieved successfully");
+			responseObjectsMap.put("routeCardVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve DepartmentName Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getProcessNameFormItemWiseProcess")
+	public ResponseEntity<ResponseDTO> getProcessNameFormItemWiseProcess(@RequestParam Long orgId,
+			@RequestParam String item) {
+		String methodName = "getProcessNameFormItemWiseProcess()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = issueToSubContractorService.getProcessNameFormItemWiseProcess(orgId, item);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ProcessName Details retrieved successfully");
+			responseObjectsMap.put("routeCardVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve ProcessName Details",
 					errorMsg);
 		}
 
