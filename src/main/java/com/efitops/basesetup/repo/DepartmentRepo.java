@@ -13,7 +13,7 @@ public interface DepartmentRepo extends JpaRepository<DepartmentVO, Long> {
 	@Query(nativeQuery = true,value="select * from m_department  where orgid=?1")
 	List<DepartmentVO> getAllDepartmentByOrgId(Long orgId);
 	
-	@Query(nativeQuery = true,value="select * from m_department where departid=?1")
+	@Query(nativeQuery = true,value="select * from m_department where departmentid=?1")
 	List<DepartmentVO> getDepartmentById(Long id);
 
 	boolean existsByDepartmentNameAndOrgId(String departmentName, Long orgId);
