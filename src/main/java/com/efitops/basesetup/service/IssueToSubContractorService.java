@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
+import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.exception.ApplicationException;
 
 @Service
@@ -40,5 +42,15 @@ public interface IssueToSubContractorService {
 			throws ApplicationException;
 
 	String getDcForSubContractDocId(Long orgId);
+	
+	//SubContractEnquiry
+	
+	Map<String, Object> createUpdateSubContractEnquiry(SubContractEnquiryDTO  subContractEnquiryDTO) throws ApplicationException;
+
+	List<SubContractEnquiryVO> getAllSubContractEnquiryByOrgId(Long orgId);
+
+	List<SubContractEnquiryVO> getSubContractEnquiryById(Long id);
+
+	String getSubContractEnquiryDocId(Long orgId);
 
 }
