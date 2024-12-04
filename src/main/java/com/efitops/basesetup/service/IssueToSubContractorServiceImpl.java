@@ -18,17 +18,23 @@ import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.DcForSubContractDetailsDTO;
 import com.efitops.basesetup.dto.IssueItemDetailsDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.dto.SubContractEnquiryDTO;
+import com.efitops.basesetup.dto.SubContractEnquiryDetailsDTO;
 import com.efitops.basesetup.entity.DcForSubContractDetailsVO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.IssueItemDetailsVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
+import com.efitops.basesetup.entity.SubContractEnquiryDetailsVO;
+import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DcForSubContractDetailsRepo;
 import com.efitops.basesetup.repo.DcForSubContractRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.IssueItemDetailsRepo;
 import com.efitops.basesetup.repo.IssueToSubContractorRepo;
+import com.efitops.basesetup.repo.SubContractEnquiryDetailsRepo;
+import com.efitops.basesetup.repo.SubContractEnquiryRepo;
 
 @Service
 public class IssueToSubContractorServiceImpl implements IssueToSubContractorService {
@@ -49,6 +55,12 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 	
 	@Autowired
 	DcForSubContractDetailsRepo  dcForSubContractDetailsRepo;
+	
+	@Autowired
+	SubContractEnquiryRepo subContractEnquiryRepo;
+	
+	@Autowired
+	SubContractEnquiryDetailsRepo subContractEnquiryDetailsRepo;
 	
 
 	// IssueToSubContract
@@ -81,7 +93,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 			message = "IssueToSubContractor Created Successfully";
 		}
-		createUpdatedQuotationVOFromQuotationDTO(issueToSubContractorDTO, issueToSubContractorVO);
+		createUpdatedIssueToSubContractorVOFromIssueToSubContractorDTO(issueToSubContractorDTO, issueToSubContractorVO);
 		issueToSubContractorRepo.save(issueToSubContractorVO);
 		Map<String, Object> response = new HashMap<>();
 		response.put("issueToSubContractorVO", issueToSubContractorVO);
@@ -89,7 +101,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return response;
 	}
 
-	private void createUpdatedQuotationVOFromQuotationDTO(IssueToSubContractorDTO issueToSubContractorDTO,
+	private void createUpdatedIssueToSubContractorVOFromIssueToSubContractorDTO(IssueToSubContractorDTO issueToSubContractorDTO,
 			IssueToSubContractorVO issueToSubContractorVO) {
 		issueToSubContractorVO.setRouteCardNo(issueToSubContractorDTO.getRouteCardNo());
 		issueToSubContractorVO.setCustomerName(issueToSubContractorDTO.getCustomerName());
@@ -306,6 +318,106 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		public String getDcForSubContractDocId(Long orgId) {
 			String screenCode = "DCSC";
 			String result = dcForSubContractRepo.getdcForSubcontractDocId(orgId, screenCode);
+			return result;
+		}
+		
+		
+		//SubContractorEnquiry
+
+		@Override
+		public Map<String, Object> createUpdateSubContractEnquiry(SubContractEnquiryDTO subContractEnquiryDTO)
+				throws ApplicationException {
+			SubContractEnquiryVO subContractEnquiryVO = new SubContractEnquiryVO();
+			String message;
+			String screenCode = "SUB";
+			if (ObjectUtils.isNotEmpty(subContractEnquiryDTO.getId())) {
+				subContractEnquiryVO = subContractEnquiryRepo.findById(subContractEnquiryDTO.getId())
+						.orElseThrow(() -> new ApplicationException("SubContractEnquiry Enquiry details"));
+				message = "SubContractEnquiry Updated Successfully";
+				subContractEnquiryVO.setUpdatedBy(subContractEnquiryDTO.getCreatedBy());
+
+			} else {
+
+				String docId = subContractEnquiryRepo.getSubContractEnquiryDocId(subContractEnquiryDTO.getOrgId(),
+						screenCode);
+				subContractEnquiryVO.setDocId(docId);
+
+				// GETDOCID LASTNO +1
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+						.findByOrgIdAndScreenCode(subContractEnquiryDTO.getOrgId(), screenCode);
+				documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+				documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+				subContractEnquiryVO.setCreatedBy(subContractEnquiryDTO.getCreatedBy());
+				subContractEnquiryVO.setUpdatedBy(subContractEnquiryDTO.getCreatedBy());
+
+				message = "SubContractEnquiry Created Successfully";
+			}
+			createUpdatedSubContractEnquiryVOFromSubContractEnquiryDTO(subContractEnquiryDTO, subContractEnquiryVO);
+			subContractEnquiryRepo.save(subContractEnquiryVO);
+			Map<String, Object> response = new HashMap<>();
+			response.put("subContractEnquiryVO", subContractEnquiryVO);
+			response.put("message", message);
+			return response;
+		}
+
+		private void createUpdatedSubContractEnquiryVOFromSubContractEnquiryDTO(SubContractEnquiryDTO subContractEnquiryDTO,
+				SubContractEnquiryVO subContractEnquiryVO) {
+			subContractEnquiryVO.setEnquiryType(subContractEnquiryDTO.getEnquiryType());
+			subContractEnquiryVO.setSubContractorName(subContractEnquiryDTO.getSubContractorName());
+			subContractEnquiryVO.setSubContractorRefNo(subContractEnquiryDTO.getSubContractorRefNo());
+			subContractEnquiryVO.setSubContractorRefDate(subContractEnquiryDTO.getSubContractorRefDate());
+			subContractEnquiryVO.setRouteCardNo(subContractEnquiryDTO.getRouteCardNo());
+			subContractEnquiryVO.setEnquiryDueDate(subContractEnquiryDTO.getEnquiryDueDate());
+			subContractEnquiryVO.setRouteCardNo(subContractEnquiryDTO.getRouteCardNo());
+			subContractEnquiryVO.setContactNo(subContractEnquiryDTO.getContactNo());
+			subContractEnquiryVO.setContactName(subContractEnquiryDTO.getContactName());
+			subContractEnquiryVO.setScIssueNo(subContractEnquiryDTO.getScIssueNo());
+			subContractEnquiryVO.setOrgId(subContractEnquiryDTO.getOrgId());
+			subContractEnquiryVO.setActive(subContractEnquiryDTO.isActive());
+			subContractEnquiryVO.setCreatedBy(subContractEnquiryDTO.getCreatedBy());
+
+			if (ObjectUtils.isNotEmpty(subContractEnquiryDTO.getId())) {
+				List<SubContractEnquiryDetailsVO> subContractEnquiryDetailsVO1 = subContractEnquiryDetailsRepo
+						.findBySubContractEnquiryVO(subContractEnquiryVO);
+				subContractEnquiryDetailsRepo.deleteAll(subContractEnquiryDetailsVO1);
+
+			}
+
+			List<SubContractEnquiryDetailsVO> subContractEnquiryDetailsVOs = new ArrayList<>();
+			for (SubContractEnquiryDetailsDTO subContractEnquiryDetailsDTO : subContractEnquiryDTO.getSubContractEnquiryDetailsDTO()) {
+				SubContractEnquiryDetailsVO subContractEnquiryDetailsVO = new SubContractEnquiryDetailsVO();
+				subContractEnquiryDetailsVO.setPart(subContractEnquiryDetailsDTO.getPart());
+				subContractEnquiryDetailsVO.setPartDescription(subContractEnquiryDetailsDTO.getPartDescription());
+				subContractEnquiryDetailsVO.setProcess(subContractEnquiryDetailsDTO.getProcess());
+				subContractEnquiryDetailsVO.setQty(subContractEnquiryDetailsDTO.getQty());
+				subContractEnquiryDetailsVO.setDeliveryDate(subContractEnquiryDetailsDTO.getDeliveryDate());
+				subContractEnquiryDetailsVO.setRemarks(subContractEnquiryDetailsDTO.getRemarks());
+
+				subContractEnquiryDetailsVO.setSubContractEnquiryVO(subContractEnquiryVO);
+				subContractEnquiryDetailsVOs.add(subContractEnquiryDetailsVO);
+			}
+			subContractEnquiryVO.setSubContractEnquiryDetailsVO(subContractEnquiryDetailsVOs);
+
+		}
+
+		@Override
+		public List<SubContractEnquiryVO> getAllSubContractEnquiryByOrgId(Long orgId) {
+			
+			return subContractEnquiryRepo.getAllSubContractEnquiryByOrgId(orgId);
+		}
+
+		@Override
+		public List<SubContractEnquiryVO> getSubContractEnquiryById(Long id) {
+			
+			return subContractEnquiryRepo.getSubContractEnquiryById(id);
+		}
+
+		@Override
+		public String getSubContractEnquiryDocId(Long orgId) {
+			
+			String ScreenCode = "SUB";
+			String result = subContractEnquiryRepo.getSubContractEnquiryDocId(orgId, ScreenCode);
 			return result;
 		}
 	
