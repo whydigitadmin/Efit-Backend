@@ -1,7 +1,6 @@
 package com.efitops.basesetup.controller;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +24,14 @@ import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.dto.JobWorkOutDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
 import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
-import com.efitops.basesetup.entity.EnquiryVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
+import com.efitops.basesetup.entity.JobWorkOutVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
 import com.efitops.basesetup.entity.SubContractQuotationVO;
@@ -694,5 +694,119 @@ public class IssueToSubContractorController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
+	//JobWorkOut
+	
+	
+		@GetMapping("/getAllJobWorkOutByOrgId")
+		public ResponseEntity<ResponseDTO> getAllJobWorkOutByOrgId(@RequestParam Long orgId) {
+			String methodName = "getAllJobWorkOutByOrgId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<JobWorkOutVO> jobWorkOutVO = new ArrayList<>();
+			try {
+				jobWorkOutVO = issueToSubContractorService.getAllJobWorkOutByOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"SubContractEnquiry information get successfully ByOrgId");
+				responseObjectsMap.put("jobWorkOutVO", jobWorkOutVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"SubContractEnquiry information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@GetMapping("/getAllJobWorkOutById")
+		public ResponseEntity<ResponseDTO> getAllJobWorkOutById(@RequestParam Long id) {
+			String methodName = "getAllJobWorkOutById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<JobWorkOutVO> jobWorkOutVO = new ArrayList<>();
+			try {
+				jobWorkOutVO = issueToSubContractorService.getAllJobWorkOutById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"SubContractEnquiry information get successfully By Id");
+				responseObjectsMap.put("jobWorkOutVO", jobWorkOutVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"SubContractEnquiry information receive failed By Id", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@PutMapping("/createUpdateJobWorkOut")
+		public ResponseEntity<ResponseDTO> createUpdateJobWorkOut(
+				@Valid @RequestBody JobWorkOutDTO jobWorkOutDTO) {
+			String methodName = "createUpdateJobWorkOut()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				Map<String, Object> jobWorkOutVO = issueToSubContractorService
+						.createUpdateJobWorkOut(jobWorkOutDTO);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, jobWorkOutVO.get("message"));
+				responseObjectsMap.put("jobWorkOutVO", jobWorkOutVO.get("jobWorkOutVO"));
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@GetMapping("/getJobWorkOutDocId")
+		public ResponseEntity<ResponseDTO> getJobWorkOutDocId(@RequestParam Long orgId) {
+
+			String methodName = "getJobWorkOutDocId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			String mapp = "";
+
+			try {
+				mapp = issueToSubContractorService.getJobWorkOutDocId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"JobWorkOutDocId information retrieved successfully");
+				responseObjectsMap.put("jobWorkOutDocId", mapp);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve JobWorkOutDocId information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 	
 }

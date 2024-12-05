@@ -2,16 +2,15 @@ package com.efitops.basesetup.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class JobWorkOutDTO {
 	
 	private Long id;
@@ -29,7 +28,7 @@ public class JobWorkOutDTO {
 	
 	private String contractorCode;
 	
-	private Long dispatchedThrough;
+	private String dispatchedThrough;
 	
 	private String durationOfrocess;
 	
@@ -48,5 +47,10 @@ public class JobWorkOutDTO {
 	private Long orgId;
 	
 	private String createdBy;
+	private boolean active;
+	private String narration;
+	private String scIssueNo;
+	
+	List<JobWorkOutDetailsDTO> jobWorkOutDetailsDTO;
 
 }

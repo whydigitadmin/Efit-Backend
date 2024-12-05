@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.BomDTO;
 import com.efitops.basesetup.dto.DepartmentDTO;
 import com.efitops.basesetup.dto.DesignationDTO;
 import com.efitops.basesetup.dto.GstDTO;
@@ -18,11 +19,13 @@ import com.efitops.basesetup.dto.ProcessMasterDTO;
 import com.efitops.basesetup.dto.RackMasterDTO;
 import com.efitops.basesetup.dto.ShiftDTO;
 import com.efitops.basesetup.dto.UomDTO;
+import com.efitops.basesetup.entity.BomVO;
 import com.efitops.basesetup.entity.DepartmentVO;
 import com.efitops.basesetup.entity.DesignationVO;
 import com.efitops.basesetup.entity.GstVO;
 import com.efitops.basesetup.entity.ItemVO;
 import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
+import com.efitops.basesetup.entity.JobWorkOutVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
 import com.efitops.basesetup.entity.ProcessMasterVO;
@@ -147,6 +150,16 @@ public interface EfitMasterService {
 
 		String getDesignationDocId(Long orgId);
 
+		
+		//Bom Master
+		
+		Map<String, Object> createUpdateBom(BomDTO  bomDTO) throws ApplicationException;
+
+		List<BomVO> getAllBomOrgId(Long orgId);
+
+		List<BomVO> getAllBomId(Long id);
+
+		String getBomDocId(Long orgId);
 
 
 

@@ -73,4 +73,6 @@ public class JobWorkOutDetailsVO {
 	@JsonBackReference
 	private JobWorkOutVO jobWorkOutVO;
 
+	
+
 }

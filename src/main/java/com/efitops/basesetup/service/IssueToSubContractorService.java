@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.dto.JobWorkOutDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
 import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
+import com.efitops.basesetup.entity.JobWorkOutVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
 import com.efitops.basesetup.entity.SubContractQuotationVO;
@@ -79,5 +81,16 @@ public interface IssueToSubContractorService {
 	List<SubContractInvoiceVO> getSubContractInvoiceById(Long id);
 
 	String getSubContractInvoiceDocId(Long orgId);
+	
+
+	//JobWorkOut
+
+		Map<String, Object> createUpdateJobWorkOut(JobWorkOutDTO  jobWorkOutDTO) throws ApplicationException;
+
+		List<JobWorkOutVO> getAllJobWorkOutByOrgId(Long orgId);
+
+		List<JobWorkOutVO> getAllJobWorkOutById(Long id);
+
+		String getJobWorkOutDocId(Long orgId);
 
 }
