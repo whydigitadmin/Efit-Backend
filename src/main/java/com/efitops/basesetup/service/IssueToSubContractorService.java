@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
+import com.efitops.basesetup.dto.SubContractInvoiceDTO;
+import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
+import com.efitops.basesetup.entity.SubContractInvoiceVO;
+import com.efitops.basesetup.entity.SubContractQuotationVO;
 import com.efitops.basesetup.exception.ApplicationException;
 
 @Service
@@ -52,5 +56,28 @@ public interface IssueToSubContractorService {
 	List<SubContractEnquiryVO> getSubContractEnquiryById(Long id);
 
 	String getSubContractEnquiryDocId(Long orgId);
+	
+	
+	
+	//SubContractQuotation
+	
+	Map<String, Object> createUpdateSubContractQuotation(SubContractQuotationDTO  subContractQuotationDTO) throws ApplicationException;
+
+	List<SubContractQuotationVO> getAllSubContractQuotationByOrgId(Long orgId);
+
+	List<SubContractQuotationVO> getSubContractQuotationById(Long id);
+
+	String getSubContractQuotationDocId(Long orgId);
+	
+	
+	//SubContractInvoice
+	
+	Map<String, Object> createUpdateSubContractInvoice(SubContractInvoiceDTO  subContractInvoiceDTO) throws ApplicationException;
+
+	List<SubContractInvoiceVO> getAllSubContractInvoiceByOrgId(Long orgId);
+
+	List<SubContractInvoiceVO> getSubContractInvoiceById(Long id);
+
+	String getSubContractInvoiceDocId(Long orgId);
 
 }

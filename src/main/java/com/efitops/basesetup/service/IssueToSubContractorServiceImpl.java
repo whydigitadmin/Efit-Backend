@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +19,31 @@ import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.DcForSubContractDetailsDTO;
 import com.efitops.basesetup.dto.IssueItemDetailsDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.dto.ItemParticularsDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDetailsDTO;
+import com.efitops.basesetup.dto.SubContractInvoiceDTO;
+import com.efitops.basesetup.dto.SubContractQuotationDTO;
+import com.efitops.basesetup.dto.SubContractQuotationDetailsDTO;
+import com.efitops.basesetup.dto.SubContractTaxInvoiceDetailsDTO;
+import com.efitops.basesetup.dto.SubContractTermsAndConditionsDTO;
+import com.efitops.basesetup.dto.TermsAndConditionsDTO;
+import com.efitops.basesetup.dto.WorkOrderDTO;
 import com.efitops.basesetup.entity.DcForSubContractDetailsVO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.IssueItemDetailsVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
+import com.efitops.basesetup.entity.ItemParticularsVO;
 import com.efitops.basesetup.entity.SubContractEnquiryDetailsVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
+import com.efitops.basesetup.entity.SubContractInvoiceVO;
+import com.efitops.basesetup.entity.SubContractQuotationDetailsVO;
+import com.efitops.basesetup.entity.SubContractQuotationVO;
+import com.efitops.basesetup.entity.SubContractTaxInvoiceDetailsVO;
+import com.efitops.basesetup.entity.SubContractTermsAndConditionsVO;
+import com.efitops.basesetup.entity.TermsAndConditionsVO;
+import com.efitops.basesetup.entity.WorkOrderVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DcForSubContractDetailsRepo;
 import com.efitops.basesetup.repo.DcForSubContractRepo;
@@ -35,6 +52,11 @@ import com.efitops.basesetup.repo.IssueItemDetailsRepo;
 import com.efitops.basesetup.repo.IssueToSubContractorRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryDetailsRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryRepo;
+import com.efitops.basesetup.repo.SubContractInvoiceRepo;
+import com.efitops.basesetup.repo.SubContractQuotationDetailsRepo;
+import com.efitops.basesetup.repo.SubContractQuotationRepo;
+import com.efitops.basesetup.repo.SubContractTaxInvoiceDetailsRepo;
+import com.efitops.basesetup.repo.SubContractTermsAndConditionsRepo;
 
 @Service
 public class IssueToSubContractorServiceImpl implements IssueToSubContractorService {
@@ -61,6 +83,21 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 	
 	@Autowired
 	SubContractEnquiryDetailsRepo subContractEnquiryDetailsRepo;
+	
+	@Autowired
+	SubContractQuotationRepo subContractQuotationRepo;
+	
+     @Autowired
+     SubContractQuotationDetailsRepo subContractQuotationDetailsRepo;
+     
+     @Autowired
+     SubContractInvoiceRepo subContractInvoiceRepo;
+     
+     @Autowired
+     SubContractTaxInvoiceDetailsRepo subContractTaxInvoiceDetailsRepo;
+     
+     @Autowired
+     SubContractTermsAndConditionsRepo subContractTermsAndConditionsRepo;
 	
 
 	// IssueToSubContract
@@ -420,6 +457,223 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			String result = subContractEnquiryRepo.getSubContractEnquiryDocId(orgId, ScreenCode);
 			return result;
 		}
+
+		
+		//SubContractQuotation
+		
+		
+		@Override
+		public Map<String, Object> createUpdateSubContractQuotation(SubContractQuotationDTO subContractQuotationDTO)
+				throws ApplicationException {
+			SubContractQuotationVO subContractQuotationVO = new SubContractQuotationVO();
+			String message;
+			String screenCode = "SCQ";
+			if (ObjectUtils.isNotEmpty(subContractQuotationDTO.getId())) {
+				subContractQuotationVO = subContractQuotationRepo.findById(subContractQuotationDTO.getId())
+						.orElseThrow(() -> new ApplicationException("SubContractQuotation Enquiry details"));
+				message = "SubContractQuotation Updated Successfully";
+				subContractQuotationVO.setUpdatedBy(subContractQuotationDTO.getCreatedBy());
+
+			} else {
+
+				String docId = subContractQuotationRepo.getSubContractQuotationDocId(subContractQuotationDTO.getOrgId(),
+						screenCode);
+				subContractQuotationVO.setDocId(docId);
+
+				// GETDOCID LASTNO +1
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+						.findByOrgIdAndScreenCode(subContractQuotationDTO.getOrgId(), screenCode);
+				documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+				documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+				subContractQuotationVO.setCreatedBy(subContractQuotationDTO.getCreatedBy());
+				subContractQuotationVO.setUpdatedBy(subContractQuotationDTO.getCreatedBy());
+
+				message = "SubContractQuotation Created Successfully";
+			}
+			createUpdatedSubContractQuotationVOFromSubContractQuotationDTO(subContractQuotationDTO, subContractQuotationVO);
+			subContractQuotationRepo.save(subContractQuotationVO);
+			Map<String, Object> response = new HashMap<>();
+			response.put("subContractQuotationVO", subContractQuotationVO);
+			response.put("message", message);
+			return response;
+		}
+
+		private void createUpdatedSubContractQuotationVOFromSubContractQuotationDTO(SubContractQuotationDTO subContractQuotationDTO,
+				SubContractQuotationVO subContractQuotationVO) {
+			subContractQuotationVO.setEnquiryNo(subContractQuotationDTO.getEnquiryNo());
+			subContractQuotationVO.setEnquiryDate(subContractQuotationDTO.getEnquiryDate());
+			subContractQuotationVO.setSubContractorId(subContractQuotationDTO.getSubContractorId());
+			subContractQuotationVO.setSubContractorName(subContractQuotationDTO.getSubContractorName());
+			subContractQuotationVO.setVaildTill(subContractQuotationDTO.getVaildTill());
+			subContractQuotationVO.setTaxCode(subContractQuotationDTO.getTaxCode());
+			subContractQuotationVO.setRouteCardNo(subContractQuotationDTO.getRouteCardNo());
+			subContractQuotationVO.setContactPerson(subContractQuotationDTO.getContactPerson());
+			subContractQuotationVO.setContactNo(subContractQuotationDTO.getContactNo());
+			subContractQuotationVO.setScIssueNo(subContractQuotationDTO.getScIssueNo());
+			subContractQuotationVO.setNarration(subContractQuotationDTO.getNarration());
+			subContractQuotationVO.setOrgId(subContractQuotationDTO.getOrgId());
+			subContractQuotationVO.setActive(subContractQuotationDTO.isActive());
+			subContractQuotationVO.setCreatedBy(subContractQuotationDTO.getCreatedBy());
+
+			if (ObjectUtils.isNotEmpty(subContractQuotationDTO.getId())) {
+				List<SubContractQuotationDetailsVO> subContractQuotationDetailsVO1 = subContractQuotationDetailsRepo
+						.findBySubContractQuotationVO(subContractQuotationVO);
+				subContractQuotationDetailsRepo.deleteAll(subContractQuotationDetailsVO1);
+
+			}
+
+			List<SubContractQuotationDetailsVO> subContractQuotationDetailsVOs = new ArrayList<>();
+			for (SubContractQuotationDetailsDTO subContractQuotationDetailsDTO : subContractQuotationDTO.getSubContractQuotationDetailsDTO()) {
+				SubContractQuotationDetailsVO subContractQuotationDetailsVO = new SubContractQuotationDetailsVO();
+				subContractQuotationDetailsVO.setPart(subContractQuotationDetailsDTO.getPart());
+				subContractQuotationDetailsVO.setPartDescription(subContractQuotationDetailsDTO.getPartDescription());
+				subContractQuotationDetailsVO.setProcess(subContractQuotationDetailsDTO.getProcess());
+				subContractQuotationDetailsVO.setQty(subContractQuotationDetailsDTO.getQty());
+				subContractQuotationDetailsVO.setRate(subContractQuotationDetailsDTO.getRate());
+				subContractQuotationDetailsVO.setAmount(subContractQuotationDetailsDTO.getAmount());
+				subContractQuotationDetailsVO.setDiscount(subContractQuotationDetailsDTO.getDiscount());
+				subContractQuotationDetailsVO.setDiscountAmount(subContractQuotationDetailsDTO.getDiscountAmount());
+				subContractQuotationDetailsVO.setTax(subContractQuotationDetailsDTO.getTax());
+				subContractQuotationDetailsVO.setQuotationAmount(subContractQuotationDetailsDTO.getQuotationAmount());
+				subContractQuotationDetailsVO.setDeliveryDate(subContractQuotationDetailsDTO.getDeliveryDate());
+			
+				subContractQuotationDetailsVO.setSubContractQuotationVO(subContractQuotationVO);
+				subContractQuotationDetailsVOs.add(subContractQuotationDetailsVO);
+			}
+			subContractQuotationVO.setSubContractQuotationDetailsVO(subContractQuotationDetailsVOs);;
+		}
+
+		@Override
+		public List<SubContractQuotationVO> getAllSubContractQuotationByOrgId(Long orgId) {
+			
+			return subContractQuotationRepo.getAllSubContractQuotationByOrgId(orgId);
+		}
+
+		@Override
+		public List<SubContractQuotationVO> getSubContractQuotationById(Long id) {
+
+			return subContractQuotationRepo.getSubContractQuotationById(id);
+		}
+
+		@Override
+		public String getSubContractQuotationDocId(Long orgId) {
+			String ScreenCode = "SCQ";
+			String result = subContractQuotationRepo.getSubContractQuotationDocId(orgId, ScreenCode);
+			return result;
+		}
+		
+		
+		
+		//SubContractInvoice
+		
+
+		@Override
+		public Map<String, Object> createUpdateSubContractInvoice(SubContractInvoiceDTO subContractInvoiceDTO)
+				throws ApplicationException {
+			SubContractInvoiceVO subContractInvoiceVO = new SubContractInvoiceVO();
+			String message;
+			String screenCode = "SCI";
+			if (ObjectUtils.isNotEmpty(subContractInvoiceDTO.getId())) {
+				subContractInvoiceVO = subContractInvoiceRepo.findById(subContractInvoiceDTO.getId())
+						.orElseThrow(() -> new ApplicationException("SubContractInvoice Enquiry details"));
+				message = "SubContractInvoice Updated Successfully";
+				subContractInvoiceVO.setUpdatedBy(subContractInvoiceDTO.getCreatedBy());
+
+			} else {
+
+				String docId = subContractInvoiceRepo.getSubContractInvoiceDocId(subContractInvoiceDTO.getOrgId(), screenCode);
+				subContractInvoiceVO.setDocId(docId);
+
+				// GETDOCID LASTNO +1
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+						.findByOrgIdAndScreenCode(subContractInvoiceDTO.getOrgId(), screenCode);
+				documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+				documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+				subContractInvoiceVO.setCreatedBy(subContractInvoiceDTO.getCreatedBy());
+				subContractInvoiceVO.setUpdatedBy(subContractInvoiceDTO.getCreatedBy());
+
+				message = "SubContractInvoice Created Successfully";
+			}
+			createUpdatedSubContractInvoiceVOFromSubContractInvoiceDTO(subContractInvoiceDTO, subContractInvoiceVO);
+			subContractInvoiceRepo.save(subContractInvoiceVO);
+			Map<String, Object> response = new HashMap<>();
+			response.put("subContractInvoiceVO", subContractInvoiceVO);
+			response.put("message", message);
+			return response;
+		}
+
+		private void createUpdatedSubContractInvoiceVOFromSubContractInvoiceDTO(SubContractInvoiceDTO subContractInvoiceDTO, SubContractInvoiceVO subContractInvoiceVO) {
+			subContractInvoiceVO.setJobWorkOrderNo(subContractInvoiceDTO.getJobWorkOrderNo());
+			subContractInvoiceVO.setDcno(subContractInvoiceDTO.getDcno());
+			subContractInvoiceVO.setDeliveryNoteDate(subContractInvoiceDTO.getDeliveryNoteDate());
+			subContractInvoiceVO.setDispatchedThrough(subContractInvoiceDTO.getDispatchedThrough());
+			subContractInvoiceVO.setRouteCardNo(subContractInvoiceDTO.getRouteCardNo());
+			subContractInvoiceVO.setSubContractorCode(subContractInvoiceDTO.getSubContractorCode());
+			subContractInvoiceVO.setSubContractorName(subContractInvoiceDTO.getSubContractorName());
+			subContractInvoiceVO.setSubContractorAddress(subContractInvoiceDTO.getSubContractorAddress());
+			subContractInvoiceVO.setCreatedBy(subContractInvoiceDTO.getCreatedBy());
+			subContractInvoiceVO.setOrgId(subContractInvoiceDTO.getOrgId());
+	        subContractInvoiceVO.setActive(subContractInvoiceDTO.isActive());
+	        subContractInvoiceVO.setNarration(subContractInvoiceDTO.getNarration());
+	        
+	        if (ObjectUtils.isNotEmpty(subContractInvoiceDTO.getId())) {
+				List<SubContractTaxInvoiceDetailsVO> subContractTaxInvoiceDetailsVO1 = subContractTaxInvoiceDetailsRepo.findBySubContractInvoiceVO(subContractInvoiceVO);
+				subContractTaxInvoiceDetailsRepo.deleteAll(subContractTaxInvoiceDetailsVO1);
+
+				List<SubContractTermsAndConditionsVO> subContractTermsAndConditionsVO1 = subContractTermsAndConditionsRepo.findBySubContractInvoiceVO(subContractInvoiceVO);
+				subContractTermsAndConditionsRepo.deleteAll(subContractTermsAndConditionsVO1);
+			}
+
+			List<SubContractTaxInvoiceDetailsVO> subContractTaxInvoiceDetailsVOs = new ArrayList<>();
+			for (SubContractTaxInvoiceDetailsDTO subContractTaxInvoiceDetailsDTO : subContractInvoiceDTO.getSubContractTaxInvoiceDetailsDTO()) {
+				SubContractTaxInvoiceDetailsVO subContractTaxInvoiceDetailsVO = new SubContractTaxInvoiceDetailsVO();
+				subContractTaxInvoiceDetailsVO.setPartNo(subContractTaxInvoiceDetailsDTO.getPartNo());
+				subContractTaxInvoiceDetailsVO.setPartDes(subContractTaxInvoiceDetailsDTO.getPartDes());
+				subContractTaxInvoiceDetailsVO.setProcess(subContractTaxInvoiceDetailsDTO.getProcess());
+				subContractTaxInvoiceDetailsVO.setQuantityNos(subContractTaxInvoiceDetailsDTO.getQuantityNos());
+				subContractTaxInvoiceDetailsVO.setRate(subContractTaxInvoiceDetailsDTO.getRate());
+				subContractTaxInvoiceDetailsVO.setAmount(subContractTaxInvoiceDetailsDTO.getAmount());
+				subContractTaxInvoiceDetailsVO.setCgst(subContractTaxInvoiceDetailsDTO.getCgst());
+				subContractTaxInvoiceDetailsVO.setSgst(subContractTaxInvoiceDetailsDTO.getSgst());
+				subContractTaxInvoiceDetailsVO.setLandedAmount(subContractTaxInvoiceDetailsDTO.getLandedAmount());
+				subContractTaxInvoiceDetailsVO.setQuotationAmount(subContractTaxInvoiceDetailsDTO.getQuotationAmount());
+				subContractTaxInvoiceDetailsVO.setSubContractInvoiceVO(subContractInvoiceVO);
+				subContractTaxInvoiceDetailsVOs.add(subContractTaxInvoiceDetailsVO);
+			}
+			subContractInvoiceVO.setSubContractTaxInvoiceDetailsVO(subContractTaxInvoiceDetailsVOs);
+
+			List<SubContractTermsAndConditionsVO> subContractTermsAndConditionsVOs = new ArrayList<>();
+			for (SubContractTermsAndConditionsDTO subContractTermsAndConditionsDTO : subContractInvoiceDTO.getSubContractTermsAndConditionsDTO()) {
+				SubContractTermsAndConditionsVO subContractTermsAndConditionsVO = new SubContractTermsAndConditionsVO();
+				subContractTermsAndConditionsVO.setTerms(subContractTermsAndConditionsDTO.getTerms());
+				subContractTermsAndConditionsVO.setDescription(subContractTermsAndConditionsDTO.getDescription());
+				subContractTermsAndConditionsVO.setSubContractInvoiceVO(subContractInvoiceVO);
+				subContractTermsAndConditionsVOs.add(subContractTermsAndConditionsVO);
+			}
+			subContractInvoiceVO.setSubContractTermsAndConditionsVO(subContractTermsAndConditionsVOs);
+		}
+
+		@Override
+		public List<SubContractInvoiceVO> getAllSubContractInvoiceByOrgId(Long orgId) {
+			 
+			return subContractInvoiceRepo.getAllSubContractInvoiceByOrgId(orgId);
+		}
+
+		@Override
+		public List<SubContractInvoiceVO> getSubContractInvoiceById(Long id) {
+			
+			return subContractInvoiceRepo.getSubContractInvoiceById(id);
+		}
+
+		@Override
+		public String getSubContractInvoiceDocId(Long orgId) {
+			String ScreenCode = "SCI";
+			String result = subContractInvoiceRepo.getSubContractInvoiceDocId(orgId, ScreenCode);
+			return result;
+		}
+	
 	
 	
 	

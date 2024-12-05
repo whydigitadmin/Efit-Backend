@@ -21,7 +21,7 @@ public interface IssueToSubContractorRepo extends JpaRepository<IssueToSubContra
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getIssueToSubContractorDocId(Long orgId, String screenCode);
 
-	@Query(nativeQuery = true, value = "select a.docid,a.customername,a.fgpartname,a.fgpartdesc,a.fgqty,a.wono from t_routecardentry a where a.orgid=?1 and a.active=true and a.status in('PENDING','IN-COMPLETE') group by \r\n"
+	@Query(nativeQuery = true, value = "select a.docid,a.customername,a.fgpartname,a.fgpartdesc,a.fgqty,a.wono from t_routecardentry a where a.orgid=?1  and a.status in('PENDING','IN-COMPLETE') group by \r\n"
 			+ "			a.docid,a.customername,a.fgpartname,a.fgpartdesc,a.fgqty,a.wono\r\n"
 			+ "			 order by  a.docid")
 	Set<Object[]> getRouteCardNoAndItemNo(Long orgId);

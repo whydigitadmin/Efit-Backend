@@ -25,10 +25,8 @@ public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 			+ " a.partyname,a.partycode,a.currency,a.gstin  order by  a.partyname")
 	Set<Object[]> getCustomerNameAndCode(Long orgId);	
 	
-	@Query(nativeQuery = true,value = "select a.contactperson,a.contactphoneno from partystate a,partymaster a1 where a.partymasterid=a1.partymasterid and a1.orgid=?1 and a1.partyname=?2 and \r\n"
-			+ " a1.partytype='CUSTOMER' and active = 1 and cancel = 0 group by a.contactperson,a.contactphoneno \r\n"
-			+ " order by a.contactperson")
-	Set<Object[]> getContactNameAndNo(Long orgId,String partyName);	
+	@Query(nativeQuery = true,value = "select a.contactperson,a.contactphoneno from partystate a,partymaster a1 where a.partymasterid=a1.partymasterid and a1.orgid=?1 and a1.partycode=?2 and a1.partytype='CUSTOMER' and a1.active = 1 group by a.contactperson,a.contactphoneno order by a.contactperson")
+	Set<Object[]> getContactNameAndNo(Long orgId,String partyCode);	
 	
 	@Query(nativeQuery = true,value = " select a.itemname,a.itemdesc,a.primaryunit from m_item a where a.orgid=?1 and active=1 and cancel=0 group by a.itemname,a.itemdesc,a.primaryunit  order by \r\n"
 			+ " a.itemname")

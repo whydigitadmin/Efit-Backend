@@ -214,8 +214,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName) {
-		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId, partyName);
+	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyCode) {
+		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId, partyCode);
 		return getContactName(chType);
 	}
 
@@ -495,6 +495,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		workOrderVO.setCustomerSpecialRequirement(workOrderDTO.getCustomerSpecialRequirement());
 		workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
 		workOrderVO.setOrgId(workOrderDTO.getOrgId());
+		workOrderVO.setActive(workOrderDTO.isActive());
  
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
 			List<ItemParticularsVO> itemParticularsVO1 = itemParticularsRepo.findByWorkOrderVO(workOrderVO);
