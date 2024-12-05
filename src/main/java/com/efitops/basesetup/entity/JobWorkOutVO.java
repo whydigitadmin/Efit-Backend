@@ -1,11 +1,12 @@
 package com.efitops.basesetup.entity;
 
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.efitops.basesetup.dto.CreatedUpdatedDate;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +30,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JobwWorkOutVO {
+public class JobWorkOutVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkoutgen")
@@ -55,11 +58,25 @@ public class JobwWorkOutVO {
 	@Column(name="contractorcode")
 	private String contractorCode;
 	@Column(name="dispatchedthrough")
-	private Long dispatchedThrough;
+	private String dispatchedThrough;
 	@Column(name="durationofprocess")
 	private String durationOfrocess;
 	@Column(name="customer")
 	private String customer; 
+	@Column(name="termsofpay")
+	private String termsOfPay;
+	@Column(name="amtinwords")
+	private String amtInWords;
+	@Column(name="totalamt")
+	private BigDecimal totalAmt;
+	@Column(name="totalgrossamt")
+	private BigDecimal totalGrossAmt;
+	@Column(name="totaltax")
+	private BigDecimal totalTax; 
+	@Column(name="narration")
+	private String narration;
+	@Column(name="scissueno")
+	private String scIssueNo;
 	
 	
 	@Column(name = "orgid")
@@ -80,9 +97,23 @@ public class JobwWorkOutVO {
 	private String screenName="JOBWORKORDER";
 	
 	
-	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "jobWorkOutVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<GrnDetailsVO> grnDetailsVO;
+	List<JobWorkOutDetailsVO> jobWorkOutDetailsVO;
 	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
+	}
+
+	@Embedded
+	@Builder.Default
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 
 }

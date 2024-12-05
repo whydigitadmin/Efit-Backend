@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.BomDTO;
+import com.efitops.basesetup.dto.BomDetailsDTO;
 import com.efitops.basesetup.dto.DepartmentDTO;
 import com.efitops.basesetup.dto.DesignationDTO;
 import com.efitops.basesetup.dto.GstDTO;
@@ -24,6 +26,8 @@ import com.efitops.basesetup.dto.ItemPriceSlabDTO;
 import com.efitops.basesetup.dto.ItemTaxSlabDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessDetailsDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessMasterDTO;
+import com.efitops.basesetup.dto.JobWorkOutDTO;
+import com.efitops.basesetup.dto.JobWorkOutDetailsDTO;
 import com.efitops.basesetup.dto.MaterialDetailDTO;
 import com.efitops.basesetup.dto.MaterialTypeDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
@@ -32,6 +36,8 @@ import com.efitops.basesetup.dto.RackMasterDTO;
 import com.efitops.basesetup.dto.ShiftDTO;
 import com.efitops.basesetup.dto.ShiftDetailsDTO;
 import com.efitops.basesetup.dto.UomDTO;
+import com.efitops.basesetup.entity.BomDetailsVO;
+import com.efitops.basesetup.entity.BomVO;
 import com.efitops.basesetup.entity.DepartmentVO;
 import com.efitops.basesetup.entity.DesignationVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
@@ -42,6 +48,8 @@ import com.efitops.basesetup.entity.ItemTaxSlabVO;
 import com.efitops.basesetup.entity.ItemVO;
 import com.efitops.basesetup.entity.ItemWiseProcessDetailsVO;
 import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
+import com.efitops.basesetup.entity.JobWorkOutDetailsVO;
+import com.efitops.basesetup.entity.JobWorkOutVO;
 import com.efitops.basesetup.entity.MaterialDetailVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
@@ -51,6 +59,8 @@ import com.efitops.basesetup.entity.ShiftDetailsVO;
 import com.efitops.basesetup.entity.ShiftVO;
 import com.efitops.basesetup.entity.UomVO;
 import com.efitops.basesetup.exception.ApplicationException;
+import com.efitops.basesetup.repo.BomDetailsRepo;
+import com.efitops.basesetup.repo.BomRepo;
 import com.efitops.basesetup.repo.DepartmentRepo;
 import com.efitops.basesetup.repo.DesignationRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
@@ -128,6 +138,12 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	
 	@Autowired
 	RackMasterRepo rackMasterRepo;
+	
+	@Autowired
+	BomRepo bomRepo;
+	
+	@Autowired
+	BomDetailsRepo bomDetailsRepo;
 
 	@Override
 	public List<ItemVO> getItemByOrgId(Long orgId) {
@@ -1253,6 +1269,100 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 	}
 
+	
+	//Bom Master
+	
+	@Override
+	public Map<String, Object> createUpdateBom(BomDTO bomDTO) throws ApplicationException {
+		BomVO bomVO = new BomVO();
+		String message;
+		String screenCode = "BOM";
+		if (ObjectUtils.isNotEmpty(bomDTO.getId())) {
+			bomVO = bomRepo.findById(bomDTO.getId())
+					.orElseThrow(() -> new ApplicationException("SubContractEnquiry Enquiry details"));
+			message = "jobWorkOut Updated Successfully";
+			bomVO.setUpdatedBy(bomDTO.getCreatedBy());
+
+		} else {
+
+			String docId = bomRepo.getBomDocId(bomDTO.getOrgId(),
+					screenCode);
+			bomVO.setDocid(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(bomDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			bomVO.setCreatedBy(bomDTO.getCreatedBy());
+			bomVO.setUpdatedBy(bomDTO.getCreatedBy());
+
+			message = "jobWorkOut Created Successfully";
+		}
+		createUpdatedBomVOFromBomDTO(bomDTO, bomVO);
+		bomRepo.save(bomVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("bomVO", bomVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdatedBomVOFromBomDTO(BomDTO bomDTO,
+			BomVO bomVO) {
+		bomVO.setProductCode(bomDTO.getProductCode());
+		bomVO.setProductName(bomDTO.getProductName());
+		bomVO.setProductType(bomDTO.getProductType());
+		bomVO.setQty(bomDTO.getQty());
+		bomVO.setUom(bomDTO.getUom());
+		bomVO.setActive(bomDTO.isActive());
+		bomVO.setRevision(bomDTO.isRevision());
+		bomVO.setCurrent(bomDTO.isCurrent());
+
+
+		if (ObjectUtils.isNotEmpty(bomDTO.getId())) {
+			List<BomDetailsVO> bomDetailsVO1 = bomDetailsRepo
+					.findByBomVO(bomVO);
+			bomDetailsRepo.deleteAll(bomDetailsVO1);
+
+		}
+
+		List<BomDetailsVO> bomDetailsVOs = new ArrayList<>();
+		for (BomDetailsDTO bomDetailsDTO : bomDTO.getBomDetailsDTO()) {
+			BomDetailsVO bomDetailsVO = new BomDetailsVO();
+			bomDetailsVO.setItemCode(bomDetailsDTO.getItemCode());
+			bomDetailsVO.setItemDesc(bomDetailsDTO.getItemDesc());
+			bomDetailsVO.setItemType(bomDetailsDTO.getItemType());
+			bomDetailsVO.setQty(bomDetailsDTO.getQty());
+			bomDetailsVO.setUom(bomDetailsDTO.getUom());
+			
+		}
+		bomVO.setBomDetailsVO(bomDetailsVOs);
+
+	
+	}
+
+	
+
+	@Override
+	public String getBomDocId(Long orgId) {
+		String ScreenCode = "BOM";
+		String result = bomRepo.getBomDocId(orgId, ScreenCode);
+		return result;
+	}
+
+
+	@Override
+	public List<BomVO> getAllBomOrgId(Long orgId) {
+		// TODO Auto-generated method stub
+		return bomRepo.getAllBomByOrgId(orgId);
+	}
+
+	@Override
+	public List<BomVO> getAllBomId(Long id) {
+		// TODO Auto-generated method stub
+		return bomRepo.getBomById(id);
+	}
 	
 	
 }

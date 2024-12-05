@@ -1,6 +1,5 @@
 package com.efitops.basesetup.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,8 @@ import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.DcForSubContractDetailsDTO;
 import com.efitops.basesetup.dto.IssueItemDetailsDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
-import com.efitops.basesetup.dto.ItemParticularsDTO;
+import com.efitops.basesetup.dto.JobWorkOutDTO;
+import com.efitops.basesetup.dto.JobWorkOutDetailsDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDetailsDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
@@ -27,14 +27,13 @@ import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.dto.SubContractQuotationDetailsDTO;
 import com.efitops.basesetup.dto.SubContractTaxInvoiceDetailsDTO;
 import com.efitops.basesetup.dto.SubContractTermsAndConditionsDTO;
-import com.efitops.basesetup.dto.TermsAndConditionsDTO;
-import com.efitops.basesetup.dto.WorkOrderDTO;
 import com.efitops.basesetup.entity.DcForSubContractDetailsVO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.IssueItemDetailsVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
-import com.efitops.basesetup.entity.ItemParticularsVO;
+import com.efitops.basesetup.entity.JobWorkOutDetailsVO;
+import com.efitops.basesetup.entity.JobWorkOutVO;
 import com.efitops.basesetup.entity.SubContractEnquiryDetailsVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
@@ -42,14 +41,14 @@ import com.efitops.basesetup.entity.SubContractQuotationDetailsVO;
 import com.efitops.basesetup.entity.SubContractQuotationVO;
 import com.efitops.basesetup.entity.SubContractTaxInvoiceDetailsVO;
 import com.efitops.basesetup.entity.SubContractTermsAndConditionsVO;
-import com.efitops.basesetup.entity.TermsAndConditionsVO;
-import com.efitops.basesetup.entity.WorkOrderVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DcForSubContractDetailsRepo;
 import com.efitops.basesetup.repo.DcForSubContractRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.IssueItemDetailsRepo;
 import com.efitops.basesetup.repo.IssueToSubContractorRepo;
+import com.efitops.basesetup.repo.JobWorkOutDetailsRepo;
+import com.efitops.basesetup.repo.JobWorkOutRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryDetailsRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryRepo;
 import com.efitops.basesetup.repo.SubContractInvoiceRepo;
@@ -98,6 +97,12 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
      
      @Autowired
      SubContractTermsAndConditionsRepo subContractTermsAndConditionsRepo;
+     
+     @Autowired
+     JobWorkOutRepo jobWorkOutRepo;
+     
+     @Autowired
+     JobWorkOutDetailsRepo jobWorkOutDetailsRepo;
 	
 
 	// IssueToSubContract
@@ -675,7 +680,115 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		}
 	
 	
-	
+		//JoibWorkOut
+
+				@Override
+				public Map<String, Object> createUpdateJobWorkOut(JobWorkOutDTO jobWorkOutDTO) throws ApplicationException {
+					JobWorkOutVO jobWorkOutVO = new JobWorkOutVO();
+					String message;
+					String screenCode = "JWO";
+					if (ObjectUtils.isNotEmpty(jobWorkOutDTO.getId())) {
+						jobWorkOutVO = jobWorkOutRepo.findById(jobWorkOutDTO.getId())
+								.orElseThrow(() -> new ApplicationException("SubContractEnquiry Enquiry details"));
+						message = "jobWorkOut Updated Successfully";
+						jobWorkOutVO.setUpdatedBy(jobWorkOutDTO.getCreatedBy());
+
+					} else {
+
+						String docId = jobWorkOutRepo.getJobWorkOutDocId(jobWorkOutDTO.getOrgId(),
+								screenCode);
+						jobWorkOutVO.setJobWorkOrderNo(docId);
+
+						// GETDOCID LASTNO +1
+						DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+								.findByOrgIdAndScreenCode(jobWorkOutDTO.getOrgId(), screenCode);
+						documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+						documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+						jobWorkOutVO.setCreatedBy(jobWorkOutDTO.getCreatedBy());
+						jobWorkOutVO.setUpdatedBy(jobWorkOutDTO.getCreatedBy());
+
+						message = "jobWorkOut Created Successfully";
+					}
+					createUpdatedJodWorkOutVOFromJodWorkOuDTO(jobWorkOutDTO, jobWorkOutVO);
+					jobWorkOutRepo.save(jobWorkOutVO);
+					Map<String, Object> response = new HashMap<>();
+					response.put("jobWorkOutVO", jobWorkOutVO);
+					response.put("message", message);
+					return response;
+				}
+
+				private void createUpdatedJodWorkOutVOFromJodWorkOuDTO(JobWorkOutDTO jobWorkOutDTO,
+						JobWorkOutVO jobWorkOutVO) {
+					jobWorkOutVO.setJobWorkOrderDate(jobWorkOutDTO.getJobWorkOrderDate());
+					jobWorkOutVO.setDcNo(jobWorkOutDTO.getDcNo());
+					jobWorkOutVO.setRouteCardNo(jobWorkOutDTO.getRouteCardNo());
+					jobWorkOutVO.setPoNo(jobWorkOutDTO.getPoNo());
+					jobWorkOutVO.setQuotationNo(jobWorkOutDTO.getQuotationNo());
+					jobWorkOutVO.setCustomer(jobWorkOutDTO.getCustomer());
+					jobWorkOutVO.setContractorName(jobWorkOutDTO.getContractorName());
+					jobWorkOutVO.setContractorCode(jobWorkOutDTO.getContractorCode());
+					jobWorkOutVO.setDestination(jobWorkOutDTO.getDestination());
+					jobWorkOutVO.setDurationOfrocess(jobWorkOutDTO.getDurationOfrocess());
+					jobWorkOutVO.setDispatchedThrough(jobWorkOutDTO.getDurationOfrocess());
+					jobWorkOutVO.setGstType(jobWorkOutDTO.getGstType());
+					jobWorkOutVO.setTermsOfPay(jobWorkOutDTO.getTermsOfPay());
+					jobWorkOutVO.setTotalAmt(jobWorkOutDTO.getTotalAmt());
+					jobWorkOutVO.setTotalGrossAmt(jobWorkOutDTO.getTotalGrossAmt());
+					jobWorkOutVO.setAmtInWords(jobWorkOutDTO.getAmtInWords());
+					jobWorkOutVO.setTotalTax(jobWorkOutDTO.getTotalTax());
+					jobWorkOutVO.setScIssueNo(jobWorkOutDTO.getScIssueNo());
+					jobWorkOutVO.setOrgId(jobWorkOutDTO.getOrgId());
+					jobWorkOutVO.setActive(jobWorkOutDTO.isActive());
+					jobWorkOutVO.setCreatedBy(jobWorkOutDTO.getCreatedBy());
+
+					if (ObjectUtils.isNotEmpty(jobWorkOutDTO.getId())) {
+						List<JobWorkOutDetailsVO> jobWorkOutDetailsVO1 = jobWorkOutDetailsRepo
+								.findByJobWorkOutVO(jobWorkOutVO);
+						jobWorkOutDetailsRepo.deleteAll(jobWorkOutDetailsVO1);
+
+					}
+
+					List<JobWorkOutDetailsVO> jobWorkOutDetailsVOs = new ArrayList<>();
+					for (JobWorkOutDetailsDTO jobWorkOutDetailsDTO : jobWorkOutDTO.getJobWorkOutDetailsDTO()) {
+						JobWorkOutDetailsVO jobWorkOutDetailsVO = new JobWorkOutDetailsVO();
+						jobWorkOutDetailsVO.setPart(jobWorkOutDetailsDTO.getPart());
+						jobWorkOutDetailsVO.setPartDesc(jobWorkOutDetailsDTO.getPartDesc());
+						jobWorkOutDetailsVO.setProcess(jobWorkOutDetailsDTO.getProcess());
+						jobWorkOutDetailsVO.setDueOn(jobWorkOutDetailsDTO.getDueOn());
+						jobWorkOutDetailsVO.setQuantity(jobWorkOutDetailsDTO.getQuantity());
+						jobWorkOutDetailsVO.setRate(jobWorkOutDetailsDTO.getRate());
+						jobWorkOutDetailsVO.setDiscount(jobWorkOutDetailsDTO.getDiscount());
+						jobWorkOutDetailsVO.setCgst(jobWorkOutDetailsDTO.getCgst());
+						jobWorkOutDetailsVO.setSgst(jobWorkOutDetailsDTO.getSgst());
+						jobWorkOutDetailsVO.setIgst(jobWorkOutDetailsDTO.getIgst());
+						jobWorkOutDetailsVO.setLandedValue(jobWorkOutDetailsDTO.getLandedValue());
+						jobWorkOutDetailsVO.setJobWorkOutVO(jobWorkOutVO);
+						jobWorkOutDetailsVOs.add(jobWorkOutDetailsVO);
+					}
+					jobWorkOutVO.setJobWorkOutDetailsVO(jobWorkOutDetailsVOs);
+
+				}
+
+
+				@Override
+				public List<JobWorkOutVO> getAllJobWorkOutById(Long id) {
+					// TODO Auto-generated method stub
+					return jobWorkOutRepo.getAllJobWorkOutById(id);
+				}
+
+				@Override
+				public String getJobWorkOutDocId(Long orgId) {
+					String ScreenCode = "JWO";
+					String result = jobWorkOutRepo.getJobWorkOutDocId(orgId, ScreenCode);
+					return result;
+				}
+
+				@Override
+				public List<JobWorkOutVO> getAllJobWorkOutByOrgId(Long orgId) {
+					// TODO Auto-generated method stub
+					return jobWorkOutRepo.getAllJobWorkOutByOrgId(orgId);
+				}
 	
 	
 }
