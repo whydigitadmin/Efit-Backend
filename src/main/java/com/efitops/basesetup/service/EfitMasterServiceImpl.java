@@ -402,7 +402,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		String screenCode = "MI";
 
 		if (measuringInstrumentsDTO.getId() != null) {
-			// Fetch existing ItemVO for update
+
 			measuringInstrumentsVO = measuringInstrumentsRepo.findById(measuringInstrumentsDTO.getId())
 					.orElseThrow(() -> new ApplicationException("MeasuringInstrument not found"));
 
@@ -456,7 +456,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 						measuringInstrumentsDTO.getInstrumentCode());
 				throw new ApplicationException(errorMessage);
 			}
-			// Create new ItemVO
+
 			measuringInstrumentsVO.setCreatedBy(measuringInstrumentsDTO.getCreatedBy());
 			measuringInstrumentsVO.setUpdatedBy(measuringInstrumentsDTO.getCreatedBy());
 			createUpdateMeasuringInstrumentVOByMeasuringInstrumentDTO(measuringInstrumentsDTO, measuringInstrumentsVO);
@@ -542,7 +542,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		String screenCode = "IPM";
 
 		if (itemWiseProcessMasterDTO.getId() != null) {
-			// Fetch existing ItemVO for update
+
 			itemWiseProcessMasterVO = itemWiseProcessMasterRepo.findById(itemWiseProcessMasterDTO.getId())
 					.orElseThrow(() -> new ApplicationException("ItemWiseProcessMaster not found"));
 
@@ -561,14 +561,14 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 
-			// Create new ItemVO
+
 			itemWiseProcessMasterVO.setCreatedBy(itemWiseProcessMasterDTO.getCreatedBy());
 			itemWiseProcessMasterVO.setUpdatedBy(itemWiseProcessMasterDTO.getCreatedBy());
 			createUpdateProcessMasterVOByProcessMasterDTO(itemWiseProcessMasterDTO, itemWiseProcessMasterVO);
 			message = "ItemWiseProcessMaster Created Successfully";
 		}
 
-		// Save the ItemVO
+
 		itemWiseProcessMasterRepo.save(itemWiseProcessMasterVO);
 
 		// Prepare response
@@ -1164,11 +1164,11 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		ShiftVO shiftVO = new ShiftVO();
 		String message;
 		if (ObjectUtils.isNotEmpty(shiftdto.getId())) {
-			shiftVO = shiftrepo.findById(shiftdto.getId()).orElseThrow(() -> new ApplicationException("Uom not found")); 
+			shiftVO = shiftrepo.findById(shiftdto.getId()).orElseThrow(() -> new ApplicationException("SHIFT not found")); 
 			
 			 if (!shiftVO.getShiftName().equalsIgnoreCase(shiftdto.getShiftName())) {
-				if (shiftrepo.existsByShiftCodeAndOrgId(shiftdto.getShiftCode(), shiftdto.getOrgId())) {
-					String errorMessage = String.format("The UomCode: %s  already exists This Organization.",
+				if (shiftrepo.existsByShiftCodeAndOrgId(shiftdto.getShiftName(), shiftdto.getOrgId())) {
+					String errorMessage = String.format("The ShiftName: %s  already exists This Organization.",
 							shiftdto.getShiftName());
 					throw new ApplicationException(errorMessage);
 				}
@@ -1180,7 +1180,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 				
 			 shiftVO.setUpdatedBy(shiftdto.getCreatedBy());
 			createUpdateShiftVOByShiftDTO(shiftdto, shiftVO);
-			message = "Uom  Updated Successfully";
+			message = "Shift  Updated Successfully";
 		} else {
 
 			if (shiftrepo.existsByShiftNameAndOrgId(shiftdto.getShiftName(), shiftdto.getOrgId())) {
@@ -1196,7 +1196,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 		shiftrepo.save(shiftVO);
 		Map<String, Object> response = new HashMap<>();
-		response.put("shiftVO", shiftdto);
+		response.put("shiftVO", shiftVO);
 		response.put("message", message);
 		return response;
 	}
@@ -1254,7 +1254,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		RackMasterVO rackMasterVO = new RackMasterVO();
 
 		if (rackMasterDTO.getId() != null) {
-			// Fetch existing ItemVO for update
+
 			rackMasterVO = rackMasterRepo.findById(rackMasterDTO.getId())
 					.orElseThrow(() -> new ApplicationException("RackMaster master not found"));
 			rackMasterVO.setUpdatedBy(rackMasterDTO.getCreatedBy());
@@ -1263,14 +1263,14 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 			
 		} else {
-			// Create new ItemVO
+
 			rackMasterVO.setCreatedBy(rackMasterDTO.getCreatedBy());
 			rackMasterVO.setUpdatedBy(rackMasterDTO.getCreatedBy());
 			createUpdateRackMasterVOByRackMasterDTO(rackMasterDTO, rackMasterVO);
 			message = "RackMaster Created Successfully";
 		}
 
-		// Save the ItemVO
+
 		rackMasterRepo.save(rackMasterVO);
 
 		// Prepare response
@@ -1383,5 +1383,47 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		return bomRepo.getBomById(id);
 	}
 	
+	
+	@Override
+	public List<Map<String, Object>> getFGSFGPartDetailsForBOM(Long orgId , String productType) {
+		Set<Object[]> FgSfg = bomRepo.findFGSFGPartDetails(orgId,productType);
+		return getFGSFGPartDetailsForBOM(FgSfg);
+	}
+	private List<Map<String, Object>> getFGSFGPartDetailsForBOM(Set<Object[]> chCode) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chCode) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("docId", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("docDate", ch[1] != null ? ch[1].toString() : "");
+			map.put("routeCardNo", ch[2] != null ? ch[2].toString() : "");
+			map.put("customerName", ch[3] != null ? ch[3].toString() : "");
+			map.put("gstin", ch[4] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getSFGItemDetailsForBOM(Long orgId) {
+		Set<Object[]> SfgItem = bomRepo.findSFGItemDetails(orgId);
+		return getSFGItemDetailsForBOM(SfgItem);
+	}
+	private List<Map<String, Object>> getSFGItemDetailsForBOM(Set<Object[]> chCode) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chCode) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemname", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("itemtype", ch[2] != null ? ch[2].toString() : "");
+			map.put("primaryunit", ch[3] != null ? ch[3].toString() : "");
+			
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
 	
 }

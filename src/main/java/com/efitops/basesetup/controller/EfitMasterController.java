@@ -1467,6 +1467,58 @@ public class EfitMasterController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
+		@GetMapping("/getFGSFGPartDetailsForBom")
+		public ResponseEntity<ResponseDTO> getFGSFGPartDetailsForBom(@RequestParam(required = false) Long orgId, String productType) {
+			String methodName = "getFGSFGPartDetailsForBom()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> FgSfg = new ArrayList<>();
+			try {
+				FgSfg = efitMasterService.getFGSFGPartDetailsForBOM(orgId,productType);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FGSFGPartDetails information get successfully By OrgId");
+				responseObjectsMap.put("FgSfg", FgSfg);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"FGSFGPartDetails information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
 		
+		@GetMapping("/getSFGItemDetailsForBom")
+		public ResponseEntity<ResponseDTO> getSFGItemDetailsForBom(@RequestParam(required = false) Long orgId) {
+			String methodName = "getSFGItemDetailsForBom()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> SfgItem = new ArrayList<>();
+			try {
+				SfgItem = efitMasterService.getSFGItemDetailsForBOM(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FGSFGPartDetails information get successfully By OrgId");
+				responseObjectsMap.put("SfgItem", SfgItem);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"FGSFGPartDetails information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
 	
 }

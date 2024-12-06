@@ -117,7 +117,6 @@ public class InventoryServiceImpl implements InventoryService {
 		PutawayVO putawayVO = new PutawayVO();
 
 		if (putawayDTO.getId() != null) {
-			// Fetch existing ItemVO for update
 			putawayVO = putawayRepo.findById(putawayDTO.getId())
 					.orElseThrow(() -> new ApplicationException("Putaway not found"));
 			putawayVO.setUpdatedBy(putawayDTO.getCreatedBy());
@@ -140,14 +139,12 @@ public class InventoryServiceImpl implements InventoryService {
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
-			// Create new ItemVO
 			putawayVO.setCreatedBy(putawayDTO.getCreatedBy());
 			putawayVO.setUpdatedBy(putawayDTO.getCreatedBy());
 			createUpdatePutawayVOByPutawayDTO(putawayDTO, putawayVO);
 			message = "Putaway Created Successfully";
 		}
 
-		// Save the ItemVO
 		putawayRepo.save(putawayVO);
 
 		// Prepare response
@@ -169,7 +166,6 @@ public class InventoryServiceImpl implements InventoryService {
 		putawayVO.setNarration(putawayDTO.getNarration());
 		putawayVO.setOrgId(putawayDTO.getOrgId());
 
-		// Handling ItemInventoryVO
 		List<PutawayDetailsVO> putawayDetailsVOs = new ArrayList<>();
 		for (PutawayDetailsDTO putawayDetailsDTO : putawayDTO.getPutawayDetailsDTO()) {
 			PutawayDetailsVO putawayDetailsVO = new PutawayDetailsVO();
@@ -433,6 +429,144 @@ public class InventoryServiceImpl implements InventoryService {
 		String result = routeCardEntryRepo.getRouteCardEntryDocId(orgId, ScreenCode);
 		return result;
 	}
+	
+	@Override
+	public List<Map<String, Object>> getCustomerNameAndCodeFromRouteCardEntry(Long orgId) {
+		Set<Object[]> customerDetails = routeCardEntryRepo.findCustomerNameAndCodeFromRouteCardEntry(orgId);
+		return getCustomerNameAndCodeFromRouteCardEntry(customerDetails);
+	}
+
+	private List<Map<String, Object>> getCustomerNameAndCodeFromRouteCardEntry(Set<Object[]> customerDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : customerDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("customer", ch[0] != null ? ch[0].toString() : "");
+			map.put("customerCode", ch[1] != null ? ch[1].toString() : "");
+			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getOptrSignFromRouteCardEntry(Long orgId) {
+		Set<Object[]> employeeName = routeCardEntryRepo.findOptrSignFromRouteCardEntry(orgId);
+		return getOptrSignFromRouteCardEntry(employeeName);
+	}
+
+	private List<Map<String, Object>> getOptrSignFromRouteCardEntry(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("optrSign", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getPreparedByFromRouteCardEntry(Long orgId) {
+		Set<Object[]> employeeName = routeCardEntryRepo.findPreparedByFromRouteCardEntry(orgId);
+		return getOptrSignFromRouteCardEntry(employeeName);
+	}
+
+	private List<Map<String, Object>> getPreparedByFromRouteCardEntry(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("preparedBy", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getApprovedByFromRouteCardEntry(Long orgId) {
+		Set<Object[]> employeeName = routeCardEntryRepo.findApprovedByFromRouteCardEntry(orgId);
+		return getApprovedByFromRouteCardEntry(employeeName);
+	}
+
+	private List<Map<String, Object>> getApprovedByFromRouteCardEntry(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("approvedBy", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getQAManagerSignFromRouteCardEntry(Long orgId) {
+		Set<Object[]> employeeName = routeCardEntryRepo.findQAManagerSignFromRouteCardEntry(orgId);
+		return getQAManagerSignFromRouteCardEntry(employeeName);
+	}
+
+	private List<Map<String, Object>> getQAManagerSignFromRouteCardEntry(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("qaManagerSign", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getPlantManagerSignFromRouteCardEntry(Long orgId) {
+		Set<Object[]> employeeName = routeCardEntryRepo.findPlantManagerSignFromRouteCardEntry(orgId);
+		return getPlantManagerSignFromRouteCardEntry(employeeName);
+	}
+
+	private List<Map<String, Object>> getPlantManagerSignFromRouteCardEntry(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("plantManagerSign", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Long orgId,String customer) {
+		Set<Object[]> workOrderNo = routeCardEntryRepo.findWorkOrderNoFromRouteCardEntry(orgId,customer);
+		return getWorkOrderNoFromRouteCardEntry(workOrderNo);
+	}
+
+	private List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Set<Object[]> workOrderNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
+			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getFgPartNameAndDescAndQtyFromRouteCardEntry(Long orgId,String workOrderNo) {
+		Set<Object[]> fgDetails = routeCardEntryRepo.findFgPartNameAndDescAndQtyFromRouteCardEntry(orgId,workOrderNo);
+		return getFgPartNameAndDescAndQtyFromRouteCardEntry(fgDetails);
+	}
+
+	private List<Map<String, Object>> getFgPartNameAndDescAndQtyFromRouteCardEntry(Set<Object[]> fgDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : fgDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("fgPartName", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPartDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgQt", ch[2] != null ? ch[2].toString() : "");
+
+			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	//PickList
 
 	@Override
 	public List<PickListVO> getPickListById(Long id) {
@@ -463,7 +597,6 @@ public class InventoryServiceImpl implements InventoryService {
 		PickListVO pickListVO = new PickListVO();
 
 		if (pickListDTO.getId() != null) {
-			// Fetch existing ItemVO for update
 			pickListVO = pickListRepo.findById(pickListDTO.getId())
 					.orElseThrow(() -> new ApplicationException("PickList not found"));
 			pickListVO.setUpdatedBy(pickListDTO.getCreatedBy());
@@ -486,14 +619,12 @@ public class InventoryServiceImpl implements InventoryService {
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
-			// Create new ItemVO
 			pickListVO.setCreatedBy(pickListDTO.getCreatedBy());
 			pickListVO.setUpdatedBy(pickListDTO.getCreatedBy());
 			createUpdatePickListVOByPickListDTO(pickListDTO, pickListVO);
 			message = "PickList Created Successfully";
 		}
 
-		// Save the ItemVO
 		pickListRepo.save(pickListVO);
 
 		// Prepare response
@@ -515,7 +646,6 @@ public class InventoryServiceImpl implements InventoryService {
 		pickListVO.setFgPartNo(pickListDTO.getFgPartNo());
 		pickListVO.setOrgId(pickListDTO.getOrgId());
 
-		// Handling ItemInventoryVO
 		List<PickListDetailsVO> pickListDetailsVOs = new ArrayList<>();
 		for (PickListDetailsDTO pickListDetailsDTO : pickListDTO.getPickListDetailsDTO()) {
 			PickListDetailsVO pickListDetailsVO = new PickListDetailsVO();
@@ -572,7 +702,6 @@ public class InventoryServiceImpl implements InventoryService {
 		ItemIssueToProductionVO itemIssueToProductionVO = new ItemIssueToProductionVO();
 
 		if (itemIssueToProductionDTO.getId() != null) {
-			// Fetch existing ItemVO for update
 			itemIssueToProductionVO = itemIssueToProductionRepo.findById(itemIssueToProductionDTO.getId())
 					.orElseThrow(() -> new ApplicationException("ItemIssueToProduction not found"));
 			itemIssueToProductionVO.setUpdatedBy(itemIssueToProductionDTO.getCreatedBy());
@@ -595,14 +724,12 @@ public class InventoryServiceImpl implements InventoryService {
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
-			// Create new ItemVO
 			itemIssueToProductionVO.setCreatedBy(itemIssueToProductionDTO.getCreatedBy());
 			itemIssueToProductionVO.setUpdatedBy(itemIssueToProductionDTO.getCreatedBy());
 			createUpdateItemIssueToProductionVOByItemIssueToProductionDTO(itemIssueToProductionDTO, itemIssueToProductionVO);
 			message = "ItemIssueToProduction Created Successfully";
 		}
 
-		// Save the ItemVO
 		itemIssueToProductionRepo.save(itemIssueToProductionVO);
 
 		// Prepare response
