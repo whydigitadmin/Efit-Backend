@@ -1164,11 +1164,11 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		ShiftVO shiftVO = new ShiftVO();
 		String message;
 		if (ObjectUtils.isNotEmpty(shiftdto.getId())) {
-			shiftVO = shiftrepo.findById(shiftdto.getId()).orElseThrow(() -> new ApplicationException("Uom not found")); 
+			shiftVO = shiftrepo.findById(shiftdto.getId()).orElseThrow(() -> new ApplicationException("SHIFT not found")); 
 			
 			 if (!shiftVO.getShiftName().equalsIgnoreCase(shiftdto.getShiftName())) {
-				if (shiftrepo.existsByShiftCodeAndOrgId(shiftdto.getShiftCode(), shiftdto.getOrgId())) {
-					String errorMessage = String.format("The UomCode: %s  already exists This Organization.",
+				if (shiftrepo.existsByShiftCodeAndOrgId(shiftdto.getShiftName(), shiftdto.getOrgId())) {
+					String errorMessage = String.format("The ShiftName: %s  already exists This Organization.",
 							shiftdto.getShiftName());
 					throw new ApplicationException(errorMessage);
 				}
@@ -1180,7 +1180,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 				
 			 shiftVO.setUpdatedBy(shiftdto.getCreatedBy());
 			createUpdateShiftVOByShiftDTO(shiftdto, shiftVO);
-			message = "Uom  Updated Successfully";
+			message = "Shift  Updated Successfully";
 		} else {
 
 			if (shiftrepo.existsByShiftNameAndOrgId(shiftdto.getShiftName(), shiftdto.getOrgId())) {
@@ -1196,7 +1196,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 		shiftrepo.save(shiftVO);
 		Map<String, Object> response = new HashMap<>();
-		response.put("shiftVO", shiftdto);
+		response.put("shiftVO", shiftVO);
 		response.put("message", message);
 		return response;
 	}
