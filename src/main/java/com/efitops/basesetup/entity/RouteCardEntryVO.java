@@ -65,6 +65,8 @@ public class RouteCardEntryVO {
 	@Column(name = "narration")
 	private String narration;
 
+	@Column(name = "status")
+	private String status;
 	@Column(name = "invoice")
 	private String invoice;
 	@Column(name = "invoicedate")

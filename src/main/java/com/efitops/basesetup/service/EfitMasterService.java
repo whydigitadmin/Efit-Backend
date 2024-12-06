@@ -145,6 +145,8 @@ public interface EfitMasterService {
 
 		Map<String, Object> updateCreateRackMaster(RackMasterDTO rackMasterDTO) throws ApplicationException;
 
+		String getItemWiseProcessMasterDocId(Long orgId);
+
 
 
 
