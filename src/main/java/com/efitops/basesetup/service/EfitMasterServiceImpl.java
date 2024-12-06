@@ -1215,7 +1215,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		List<ShiftDetailsVO> shiftDetailsVOs = new ArrayList<>();
 		for (ShiftDetailsDTO shiftDetailsDTO : shiftDTO.getShiftDetailsDTO()) {
 			ShiftDetailsVO shiftDetailsVO = new ShiftDetailsVO();
-			shiftDetailsVO.setSno(shiftDetailsDTO.getSno());
 			shiftDetailsVO.setTimingInHours(shiftDetailsDTO.getTimingInHours());
 			
 			shiftDetailsVO.setShiftVO (shiftVO); // Set the reference in child entity
