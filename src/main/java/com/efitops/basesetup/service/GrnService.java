@@ -19,6 +19,6 @@ public interface GrnService {
 
 	Map<String, Object> updateCreateGrn(GrnDTO grndto) throws ApplicationException;
 
-
+	String getGrnDocId(Long orgId);
 
 	}

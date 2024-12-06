@@ -178,7 +178,7 @@ public class CustomerEnquiryController extends BaseController {
 	}
 
 	@GetMapping("/getContactNameAndNo")
-	public ResponseEntity<ResponseDTO> getContactNameAndNo(@RequestParam Long orgId, @RequestParam String partyName) {
+	public ResponseEntity<ResponseDTO> getContactNameAndNo(@RequestParam Long orgId, @RequestParam String partyCode) {
 		String methodName = "getContactNameAndNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -187,7 +187,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getContactNameAndNo(orgId, partyName);
+			mapp = customerEnquiryService.getContactNameAndNo(orgId, partyCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

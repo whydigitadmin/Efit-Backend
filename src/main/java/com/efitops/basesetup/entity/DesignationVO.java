@@ -46,7 +46,10 @@ public class DesignationVO {
 	private boolean cancel;
 	@Column(name = "active")
 	private boolean active;
-	
+	@Column(name = "screencode",length = 10)
+	private String screenCode ="DSG";
+	@Column(name = "screenname",length = 30)
+	private String screenName="DESIGNATION";
 	
 
 	@Embedded

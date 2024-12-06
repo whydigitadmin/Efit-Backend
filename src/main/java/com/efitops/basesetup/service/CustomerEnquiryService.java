@@ -28,7 +28,7 @@ public interface CustomerEnquiryService {
 
 	List<Map<String, Object>> getCustomerNameAndCode(Long orgId);
 
-	List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName);
+	List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyCode);
 
 	List<Map<String, Object>> getPartNoAndDescription(Long orgId);
 

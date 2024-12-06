@@ -27,10 +27,11 @@ public interface ItemRepo extends JpaRepository<ItemVO, Long>{
 	@Query(nativeQuery = true, value = "select gstslab from m_gst where orgid=?1 and active=1")
 	Set<Object[]> findTaxSlabFromGst(Long orgId);
 
-	@Query(nativeQuery = true, value = "select materialgroup from m_material where orgid=?1 and materialtype=?2 and active=1")
+	@Query(nativeQuery = true, value = "select itemgroup from m_material where orgid=?1 and materialtype=?2 and active=1")
 	Set<Object[]> findMaterialGroupFromMaterialType(Long orgId, String materialType);
 
-	@Query(nativeQuery = true, value = "select materialsubgroup from m_material where orgid=?1 and materialtype=?2 and materialgroup=?3 and active=1")
+	@Query(nativeQuery = true, value = "select a1.itemsubgroup from m_material a, m_materialdetail a1 where a.orgid=?1 and a.materialtype=?2 and \r\n"
+			+ "a.itemgroup=?3  and a.materialid=a1.materialid and active=1")
 	Set<Object[]> findMaterialSubGroupFromMaterialType(Long orgId, String materialType, String materialGroup);
 
 	@Query(nativeQuery = true, value = "select materialtype from  m_material where orgid=?1 and active=1")
