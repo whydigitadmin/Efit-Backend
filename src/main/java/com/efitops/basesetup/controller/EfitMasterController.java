@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
+import com.efitops.basesetup.dto.BomDTO;
 import com.efitops.basesetup.dto.DepartmentDTO;
 import com.efitops.basesetup.dto.DesignationDTO;
 import com.efitops.basesetup.dto.GstDTO;
@@ -34,6 +35,7 @@ import com.efitops.basesetup.dto.RackMasterDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.ShiftDTO;
 import com.efitops.basesetup.dto.UomDTO;
+import com.efitops.basesetup.entity.BomVO;
 import com.efitops.basesetup.entity.DepartmentVO;
 import com.efitops.basesetup.entity.DesignationVO;
 import com.efitops.basesetup.entity.GstVO;
@@ -605,6 +607,38 @@ public class EfitMasterController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
+	@GetMapping("/getItemWiseProcessMasterDocId")
+	public ResponseEntity<ResponseDTO> getItemWiseProcessMasterDocId(@RequestParam Long orgId) {
+
+		String methodName = "getItemWiseProcessMasterDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = efitMasterService.getItemWiseProcessMasterDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemWiseProcessMasterDocId information retrieved successfully");
+			responseObjectsMap.put("itemWiseProcessMasterDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve ItemWiseProcessMasterDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+
 
 	// Department
 
@@ -976,6 +1010,8 @@ public class EfitMasterController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
+		//designation master
+		
 		@GetMapping("/getDesignationByOrgId")
 		public ResponseEntity<ResponseDTO> getDesignationByOrgId(@RequestParam(required = false) Long orgId) {
 			String methodName = "getDesignationByOrgId()";
@@ -1053,6 +1089,38 @@ public class EfitMasterController extends BaseController{
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
+		@GetMapping("/getDesignationDocId")
+		public ResponseEntity<ResponseDTO> getDesignationDocId(@RequestParam Long orgId) 
+		{
+			String methodName = "getDesignationDocId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			String mapp = "";
+
+			try {
+				mapp = efitMasterService.getDesignationDocId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Designation DocId information retrieved successfully");
+				responseObjectsMap.put("getDesignationDocId", mapp);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve Designation DocId information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		
+		
 
 		@GetMapping("/getUomByOrgId")
 		public ResponseEntity<ResponseDTO> getUomByOrgId(@RequestParam(required = false) Long orgId) {
@@ -1287,6 +1355,118 @@ public class EfitMasterController extends BaseController{
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
+		
+		
+		
+		//BOM
+		
+		
+		@GetMapping("/getAllBomOrgId")
+		public ResponseEntity<ResponseDTO> getAllBomOrgId(@RequestParam Long orgId) {
+			String methodName = "getAllBomOrgId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<BomVO> bomVO = new ArrayList<>();
+			try {
+				bomVO = efitMasterService.getAllBomOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ProcessMaster information get successfully ByOrgId");
+				responseObjectsMap.put("bomVO", bomVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"ProcessMaster information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@GetMapping("/getAllBomId")
+		public ResponseEntity<ResponseDTO> getAllBomId(@RequestParam Long id) {
+			String methodName = "getAllBomId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<BomVO> bomVO = new ArrayList<>();
+			try {
+				bomVO = efitMasterService.getAllBomId(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ProcessMaster information get successfully By Id");
+				responseObjectsMap.put("bomVO", bomVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"ProcessMaster information receive failed By Id", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+
+		@PutMapping("/createUpdateBom")
+		public ResponseEntity<ResponseDTO> createUpdateBom(
+				@Valid @RequestBody BomDTO  bomDTO) {
+			String methodName = "createUpdateBom()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				Map<String, Object> bomVO = efitMasterService.createUpdateBom(bomDTO);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, bomVO.get("message"));
+				responseObjectsMap.put("bomVO", bomVO.get("bomVO"));
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getBomDocId")
+		public ResponseEntity<ResponseDTO> getBomDocId(@RequestParam Long orgId) {
+
+			String methodName = "getBomDocId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			String mapp = "";
+
+			try {
+				mapp = efitMasterService.getBomDocId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BobDocId information retrieved successfully");
+				responseObjectsMap.put("bomDocId", mapp);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve BobDocId information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
 		
 	
 }

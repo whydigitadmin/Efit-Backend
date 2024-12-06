@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.ItemIssueToProductionDTO;
+import com.efitops.basesetup.dto.ItemIssueToProductionDetailsDTO;
 import com.efitops.basesetup.dto.PickListDTO;
 import com.efitops.basesetup.dto.PickListDetailsDTO;
 import com.efitops.basesetup.dto.PutawayDTO;
@@ -24,6 +26,8 @@ import com.efitops.basesetup.dto.RouteCardEngDeptDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.ItemIssueToProductionDetailsVO;
+import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListDetailsVO;
 import com.efitops.basesetup.entity.PickListVO;
 import com.efitops.basesetup.entity.PutawayDetailsVO;
@@ -34,6 +38,8 @@ import com.efitops.basesetup.entity.RouteCardEntryDetailsVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
+import com.efitops.basesetup.repo.ItemIssueToProductionDetailsRepo;
+import com.efitops.basesetup.repo.ItemIssueToProductionRepo;
 import com.efitops.basesetup.repo.PickListDetailsRepo;
 import com.efitops.basesetup.repo.PickListRepo;
 import com.efitops.basesetup.repo.PutawayDetailsRepo;
@@ -74,6 +80,12 @@ public class InventoryServiceImpl implements InventoryService {
 	
 	@Autowired
 	PickListDetailsRepo pickListDetailsRepo;
+	
+	@Autowired
+	ItemIssueToProductionRepo itemIssueToProductionRepo;
+	
+	@Autowired
+	ItemIssueToProductionDetailsRepo itemIssueToProductionDetailsRepo;
 
 	// Putaway
 
@@ -527,6 +539,114 @@ public class InventoryServiceImpl implements InventoryService {
 	public String getPickListDocId(Long orgId) {
 		String ScreenCode = "PL";
 		String result = pickListRepo .getPickListDocId(orgId, ScreenCode);
+		return result;
+	}
+	
+	//ItemissueToProduction
+	
+	@Override
+	public List<ItemIssueToProductionVO> getItemIssToProdById(Long id) {
+		List<ItemIssueToProductionVO> itemIssueToProductionVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received ItemIssueToProduction BY Id : {}", id);
+			itemIssueToProductionVO = itemIssueToProductionRepo.findItemIssueToProductionById(id);
+		}
+		return itemIssueToProductionVO;
+	}
+
+	@Override
+	public List<ItemIssueToProductionVO> getItemIssToProdByOrgId(Long orgId) {
+		List<ItemIssueToProductionVO> itemIssueToProductionVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received ItemIssueToProduction BY Id : {}", orgId);
+			itemIssueToProductionVO = itemIssueToProductionRepo.findItemIssueToProductionByOrgId(orgId);
+		}
+		return itemIssueToProductionVO;
+	}
+	
+	@Override
+	public Map<String, Object> updateCreateItemIssToProd(@Valid ItemIssueToProductionDTO itemIssueToProductionDTO) throws ApplicationException {
+		String message;
+		String screenCode = "IITP";
+
+		ItemIssueToProductionVO itemIssueToProductionVO = new ItemIssueToProductionVO();
+
+		if (itemIssueToProductionDTO.getId() != null) {
+			// Fetch existing ItemVO for update
+			itemIssueToProductionVO = itemIssueToProductionRepo.findById(itemIssueToProductionDTO.getId())
+					.orElseThrow(() -> new ApplicationException("ItemIssueToProduction not found"));
+			itemIssueToProductionVO.setUpdatedBy(itemIssueToProductionDTO.getCreatedBy());
+			createUpdateItemIssueToProductionVOByItemIssueToProductionDTO(itemIssueToProductionDTO, itemIssueToProductionVO);
+			message = "ItemIssueToProduction Updated Successfully";
+
+			List<ItemIssueToProductionDetailsVO> itemIssueToProductionDetailsVOs = itemIssueToProductionDetailsRepo.findByItemIssueToProductionVO(itemIssueToProductionVO);
+			itemIssueToProductionDetailsRepo.deleteAll(itemIssueToProductionDetailsVOs);
+
+		} else {
+
+			// GETDOCID API
+			String docId = itemIssueToProductionRepo.getItemIssueToProductionDocId(itemIssueToProductionDTO.getOrgId(), screenCode);
+
+			itemIssueToProductionVO.setDocId(docId);
+
+//			        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(itemIssueToProductionDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			// Create new ItemVO
+			itemIssueToProductionVO.setCreatedBy(itemIssueToProductionDTO.getCreatedBy());
+			itemIssueToProductionVO.setUpdatedBy(itemIssueToProductionDTO.getCreatedBy());
+			createUpdateItemIssueToProductionVOByItemIssueToProductionDTO(itemIssueToProductionDTO, itemIssueToProductionVO);
+			message = "ItemIssueToProduction Created Successfully";
+		}
+
+		// Save the ItemVO
+		itemIssueToProductionRepo.save(itemIssueToProductionVO);
+
+		// Prepare response
+		Map<String, Object> response = new HashMap<>();
+		response.put("itemIssToProdVO", itemIssueToProductionVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdateItemIssueToProductionVOByItemIssueToProductionDTO(@Valid ItemIssueToProductionDTO itemIssueToProductionDTO, ItemIssueToProductionVO itemIssueToProductionVO) {
+		itemIssueToProductionVO.setRouteCardNo(itemIssueToProductionDTO.getRouteCardNo());
+		itemIssueToProductionVO.setWorkorder(itemIssueToProductionDTO.getWorkorder());
+		itemIssueToProductionVO.setFgItemId(itemIssueToProductionDTO.getFgItemId());
+		itemIssueToProductionVO.setFgItemDesc(itemIssueToProductionDTO.getFgItemDesc());
+		itemIssueToProductionVO.setFgQty(itemIssueToProductionDTO.getFgQty());
+		itemIssueToProductionVO.setFromLocation(itemIssueToProductionDTO.getFromLocation());
+		itemIssueToProductionVO.setRemarks(itemIssueToProductionDTO.getRemarks());
+		itemIssueToProductionVO.setPreparedBy(itemIssueToProductionDTO.getPreparedBy());
+		itemIssueToProductionVO.setOrgId(itemIssueToProductionDTO.getOrgId());
+
+		List<ItemIssueToProductionDetailsVO> itemIssueToProductionDetailsVOs = new ArrayList<>();
+		for (ItemIssueToProductionDetailsDTO itemIssueToProductionDetailsDTO : itemIssueToProductionDTO.getItemIssueToProductionDetailsDTO()) {
+			ItemIssueToProductionDetailsVO itemIssueToProductionDetailsVO = new ItemIssueToProductionDetailsVO();
+			itemIssueToProductionDetailsVO.setItem(itemIssueToProductionDetailsDTO.getItem());
+			itemIssueToProductionDetailsVO.setItemDesc(itemIssueToProductionDetailsDTO.getItemDesc());
+			itemIssueToProductionDetailsVO.setUnit(itemIssueToProductionDetailsDTO.getUnit());
+			itemIssueToProductionDetailsVO.setHoldQty(itemIssueToProductionDetailsDTO.getHoldQty());
+			itemIssueToProductionDetailsVO.setReqQty(itemIssueToProductionDetailsDTO.getReqQty());
+			itemIssueToProductionDetailsVO.setAvgQty(itemIssueToProductionDetailsDTO.getAvgQty());	
+			itemIssueToProductionDetailsVO.setIssueQty(itemIssueToProductionDetailsDTO.getIssueQty());
+			itemIssueToProductionDetailsVO.setPendingQty(itemIssueToProductionDetailsDTO.getPendingQty());
+
+			itemIssueToProductionDetailsVO.setItemIssueToProductionVO(itemIssueToProductionVO); // Set the reference in child entity
+			itemIssueToProductionDetailsVOs.add(itemIssueToProductionDetailsVO);
+		}
+		itemIssueToProductionVO.setItemIssueToProductionDetailsVO(itemIssueToProductionDetailsVOs);
+
+	}
+	
+	
+	@Override
+	public String getItemIssueToProductionDocId(Long orgId) {
+		String ScreenCode = "IITP";
+		String result = itemIssueToProductionRepo .getItemIssueToProductionDocId(orgId, ScreenCode);
 		return result;
 	}
 

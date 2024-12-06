@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
+import com.efitops.basesetup.dto.ItemIssueToProductionDTO;
 import com.efitops.basesetup.dto.PickListDTO;
 import com.efitops.basesetup.dto.PutawayDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
+import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListVO;
 import com.efitops.basesetup.entity.PutawayVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
@@ -494,4 +496,116 @@ public class InventoryController extends BaseController{
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	//ItemIssueToProduction
+	
+	@PutMapping("/updateCreateItemIssToProd")
+	public ResponseEntity<ResponseDTO> updateCreateItemIssToProd(
+			@Valid @RequestBody ItemIssueToProductionDTO itemIssueToProductionDTO) {
+		String methodName = "updateCreateItemIssToProd()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+
+		try {
+			Map<String, Object> itemIssToProdVO = inventoryService.updateCreateItemIssToProd(itemIssueToProductionDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, itemIssToProdVO.get("message"));
+			responseObjectsMap.put("itemIssToProdVO", itemIssToProdVO.get("itemIssToProdVO")); // Corrected key
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getItemIssToProdByOrgId")
+	public ResponseEntity<ResponseDTO> getItemIssToProdByOrgId(@RequestParam Long orgId) {
+		String methodName = "getItemIssToProdByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ItemIssueToProductionVO> itemIssueToProductionVO = new ArrayList<>();
+		try {
+			itemIssueToProductionVO = inventoryService.getItemIssToProdByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemIssueToProduction information get successfully ByOrgId");
+			responseObjectsMap.put("itemIssueToProductionVO", itemIssueToProductionVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "ItemIssueToProduction information receive failedByOrgId",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getItemIssToProdById")
+	public ResponseEntity<ResponseDTO> getItemIssToProdById(@RequestParam Long id) {
+		String methodName = "getItemIssToProdById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ItemIssueToProductionVO> itemIssueToProductionVO = new ArrayList<>();
+		try {
+			itemIssueToProductionVO = inventoryService.getItemIssToProdById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemIssueToProduction information get successfully By Id");
+			responseObjectsMap.put("itemIssueToProductionVO", itemIssueToProductionVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "ItemIssueToProduction information receive failedBy Id",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getItemIssueToProductionDocId")
+	public ResponseEntity<ResponseDTO> getItemIssueToProductionDocId(@RequestParam Long orgId) {
+
+		String methodName = "getItemIssueToProductionDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = inventoryService.getItemIssueToProductionDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemIssueToProduction DocId information retrieved successfully");
+			responseObjectsMap.put("ItemIssueToProductionDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve ItemIssueToProduction DocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 }

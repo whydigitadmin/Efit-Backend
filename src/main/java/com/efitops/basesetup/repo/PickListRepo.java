@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListVO;
 
 @Repository
@@ -19,5 +20,7 @@ public interface PickListRepo extends JpaRepository<PickListVO, Long>{
 
 	@Query(nativeQuery = true,value="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getPickListDocId(Long orgId, String screenCode);
+
+	
 
 }

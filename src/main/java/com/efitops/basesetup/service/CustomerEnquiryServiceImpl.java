@@ -214,8 +214,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName) {
-		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId, partyName);
+	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyCode) {
+		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId, partyCode);
 		return getContactName(chType);
 	}
 
@@ -425,6 +425,27 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId, String customer) {
+		Set<Object[]> chType = quotationRepo.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customer);
+		return getPartNoAndPartDes(chType);
+	}
+
+	private List<Map<String, Object>> getPartNoAndPartDes(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("partNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("drawingNo", ch[2] != null ? ch[2].toString() : "");
+			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
+			map.put("unit", ch[4] != null ? ch[4].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
 
 	// WorkOrder
 
@@ -474,6 +495,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		workOrderVO.setCustomerSpecialRequirement(workOrderDTO.getCustomerSpecialRequirement());
 		workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
 		workOrderVO.setOrgId(workOrderDTO.getOrgId());
+		workOrderVO.setActive(workOrderDTO.isActive());
  
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
 			List<ItemParticularsVO> itemParticularsVO1 = itemParticularsRepo.findByWorkOrderVO(workOrderVO);
@@ -558,8 +580,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getWorkOderPartNo(Long orgId,String docId) {
-		Set<Object[]> chType = workOrderRepo.getWorkOderPartNo(orgId,docId);
+	public List<Map<String, Object>> getWorkOrderPartNo(Long orgId,String docId,String custmoerName) {
+		Set<Object[]> chType = workOrderRepo.getWorkOrderPartNo(orgId,docId,custmoerName);
 		return getWorkOrder(chType);
 	}
 
@@ -569,12 +591,17 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			Map<String, Object> map = new HashMap<>();
 			map.put("partCode", ch[0] != null ? ch[0].toString() : "");
 			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
-			map.put("uom", ch[2] != null ? ch[2].toString() : "");
-			map.put("orderQty", ch[3] != null ? ch[3].toString() : "");
+			map.put("drawingNo", ch[2] != null ? ch[2].toString() : "");
+			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
+			map.put("uom", ch[4] != null ? ch[4].toString() : "");
+			map.put("orderQty", ch[5] != null ? ch[5].toString() : "");
+
 			List1.add(map);
 		}
 		return List1;
 	}
+
+	
 
 
 

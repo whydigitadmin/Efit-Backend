@@ -25,7 +25,8 @@ public interface WorkOrderRepo extends JpaRepository<WorkOrderVO, Long> {
 	Set<Object[]> getQuotationNumber(Long orgId,String custmoerName);
 
 	
-@Query(nativeQuery = true,value="select a1.partcode,a1.partdescription,a1.unit,a1.qtyoffered from t_quotation a ,t_quotationdetails a1 where a.orgid=?1 and\r\n"
-		+ " a.quotationid=a1.quotationid  and a.docid=?2 and  active=true group by a1.partcode,a1.partdescription,a1.unit,a1.qtyoffered order by a1.partcode")
-Set<Object[]> getWorkOderPartNo(Long orgId,String docId);
+@Query(nativeQuery = true,value="select a.partcode,a.partdescription,a.drawingno,a.revisionno,a.unit,a.qtyoffered from t_quotationdetails a,t_quotation a1 where a1.quotationid=a.quotationid and \r\n"
+		+ "a1.orgid=?1 and a1.docid=?2 and a1.customername=?3 and  active =1 group by \r\n"
+		+ " a.partcode,a.partdescription,a.drawingno,a.revisionno,a.unit,a.qtyoffered   order by  a.partcode")
+Set<Object[]> getWorkOrderPartNo(Long orgId,String docId,String custmoerName);
 }

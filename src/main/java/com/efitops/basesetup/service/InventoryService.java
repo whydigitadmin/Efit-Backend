@@ -7,9 +7,11 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.ItemIssueToProductionDTO;
 import com.efitops.basesetup.dto.PickListDTO;
 import com.efitops.basesetup.dto.PutawayDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
+import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListVO;
 import com.efitops.basesetup.entity.PutawayVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
@@ -53,6 +55,16 @@ public interface InventoryService {
 	List<PickListVO> getPickListById(Long id);
 
 	String getPickListDocId(Long orgId);
+	
+	//ItemIssueToProduction
+
+	Map<String, Object> updateCreateItemIssToProd(@Valid ItemIssueToProductionDTO itemIssueToProductionDTO) throws ApplicationException;
+
+	List<ItemIssueToProductionVO> getItemIssToProdByOrgId(Long id);
+
+	List<ItemIssueToProductionVO> getItemIssToProdById(Long id);
+
+	String getItemIssueToProductionDocId(Long orgId);
 
 	
 
