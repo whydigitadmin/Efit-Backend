@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +27,6 @@ import com.efitops.basesetup.dto.ItemPriceSlabDTO;
 import com.efitops.basesetup.dto.ItemTaxSlabDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessDetailsDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessMasterDTO;
-import com.efitops.basesetup.dto.JobWorkOutDTO;
-import com.efitops.basesetup.dto.JobWorkOutDetailsDTO;
 import com.efitops.basesetup.dto.MaterialDetailDTO;
 import com.efitops.basesetup.dto.MaterialTypeDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
@@ -48,8 +47,6 @@ import com.efitops.basesetup.entity.ItemTaxSlabVO;
 import com.efitops.basesetup.entity.ItemVO;
 import com.efitops.basesetup.entity.ItemWiseProcessDetailsVO;
 import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
-import com.efitops.basesetup.entity.JobWorkOutDetailsVO;
-import com.efitops.basesetup.entity.JobWorkOutVO;
 import com.efitops.basesetup.entity.MaterialDetailVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
@@ -1162,6 +1159,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	public Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException {
 		String screenCode = "D";
 		ShiftVO shiftVO = new ShiftVO();
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
 		String message;
 		if (ObjectUtils.isNotEmpty(shiftdto.getId())) {
 			shiftVO = shiftrepo.findById(shiftdto.getId()).orElseThrow(() -> new ApplicationException("SHIFT not found")); 
@@ -1202,25 +1201,38 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	}
 
 	private void createUpdateShiftVOByShiftDTO(@Valid ShiftDTO shiftDTO, ShiftVO shiftVO) throws ApplicationException {
-		shiftVO.setShiftName(shiftDTO.getShiftName());
-		shiftVO.setShiftType(shiftDTO.getShiftType());
-		shiftVO.setShiftCode(shiftDTO.getShiftCode());
-		shiftVO.setFromHour(shiftDTO.getFromHour());
-		shiftVO.setToHour(shiftDTO.getToHour());
-		shiftVO.setTiming(shiftDTO.getTiming());
-		shiftVO.setOrgId(shiftDTO.getOrgId());
-		shiftVO.setActive(shiftDTO.isActive());;
 		
+		// Extracting LocalTime from LocalDateTime
+	    if (shiftDTO.getFromHour() != null) {
+	        shiftVO.setFromHour(shiftDTO.getFromHour().toLocalTime());
+	    }
+	    if (shiftDTO.getToHour() != null) {
+	        shiftVO.setToHour(shiftDTO.getToHour().toLocalTime());
+	    }
+	    
+	        shiftVO.setTiming(shiftDTO.getTiming());
+	    
 
-		List<ShiftDetailsVO> shiftDetailsVOs = new ArrayList<>();
-		for (ShiftDetailsDTO shiftDetailsDTO : shiftDTO.getShiftDetailsDTO()) {
-			ShiftDetailsVO shiftDetailsVO = new ShiftDetailsVO();
-			shiftDetailsVO.setTimingInHours(shiftDetailsDTO.getTimingInHours());
-			
-			shiftDetailsVO.setShiftVO (shiftVO); // Set the reference in child entity
-			shiftDetailsVOs.add(shiftDetailsVO);
-		}
-		shiftVO.setShiftDetailsVO(shiftDetailsVOs);
+	    shiftVO.setShiftName(shiftDTO.getShiftName());
+	    shiftVO.setShiftType(shiftDTO.getShiftType());
+	    shiftVO.setShiftCode(shiftDTO.getShiftCode());
+	    shiftVO.setOrgId(shiftDTO.getOrgId());
+	    shiftVO.setActive(shiftDTO.isActive());
+
+	    // Map shift details
+	    List<ShiftDetailsVO> shiftDetailsVOs = new ArrayList<>();
+	    for (ShiftDetailsDTO shiftDetailsDTO : shiftDTO.getShiftDetailsDTO()) {
+	        ShiftDetailsVO shiftDetailsVO = new ShiftDetailsVO();
+
+	        if (shiftDetailsDTO.getTimingInHours() != null) {
+	            shiftDetailsVO.setTimingInHours(shiftDetailsDTO.getTimingInHours());
+	        }
+
+	        // Set the reference in the child entity
+	        shiftDetailsVO.setShiftVO(shiftVO);
+	        shiftDetailsVOs.add(shiftDetailsVO);
+	    }
+	    shiftVO.setShiftDetailsVO(shiftDetailsVOs);
 	
 	}
 	
