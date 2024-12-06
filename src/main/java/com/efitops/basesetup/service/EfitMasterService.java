@@ -42,133 +42,128 @@ public interface EfitMasterService {
 	List<ItemVO> getItemById(Long id);
 
 	Map<String, Object> updateCreateItemMaster(ItemDTO itemDTO) throws ApplicationException;
-	
+
 	List<Map<String, Object>> getPrimaryCodeFromUomMaster(Long orgId);
-	
+
 	List<Map<String, Object>> getStockLocationForItemMaster(Long orgId);
 
 	List<Map<String, Object>> getTaxSlabFromGst(Long orgId);
-	
+
 	List<Map<String, Object>> getMaterialGroupFromMaterialType(Long orgId, String materialType);
-	
-	List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId, String materialType, String materialGroup);
+
+	List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId, String materialType,
+			String materialGroup);
 
 	List<Map<String, Object>> getMaterialTypeForItemMaster(Long orgId);
 
-	//MeasuringInstruments
-	
+	// MeasuringInstruments
+
 	List<MeasuringInstrumentsVO> getMeasuringInstrumentByOrgId(Long orgId);
 
 	List<MeasuringInstrumentsVO> getMeasuringInstrumentById(Long id);
 
-	Map<String, Object> updateCreateMeasuringInstruments(MeasuringInstrumentsDTO measuringInstrumentsDTO)throws ApplicationException;
+	Map<String, Object> updateCreateMeasuringInstruments(MeasuringInstrumentsDTO measuringInstrumentsDTO)
+			throws ApplicationException;
 
 	String getMeasuringInstrumentsDocId(Long orgId);
 
 	List<Map<String, Object>> getInstrumentNameFromItemMaster(Long orgId);
 
-	//ItemwiseProcessMaster
+	// ItemwiseProcessMaster
 	List<ItemWiseProcessMasterVO> getItemWiseProcessMasterByOrgId(Long orgId);
 
 	List<ItemWiseProcessMasterVO> getItemWiseProcessMasterById(Long id);
 
-	Map<String, Object> updateCreateItemWiseProcessMaster(ItemWiseProcessMasterDTO itemWiseProcessMasterDTO) throws ApplicationException;
-
+	Map<String, Object> updateCreateItemWiseProcessMaster(ItemWiseProcessMasterDTO itemWiseProcessMasterDTO)
+			throws ApplicationException;
 
 	List<Map<String, Object>> getItemAndItemDescforItemWiseProcess(Long orgId);
-	
+
 	List<Map<String, Object>> getProcessNameFromItemWiseProcess(Long orgId);
-	
-  		String getItemWiseProcessMasterDocId(Long orgId);
 
+	String getItemWiseProcessMasterDocId(Long orgId);
 
+	// Department
 
-	//Department
-	
-		Map<String, Object> createUpdateDepartment(DepartmentDTO departmentDTO) throws ApplicationException;
+	Map<String, Object> createUpdateDepartment(DepartmentDTO departmentDTO) throws ApplicationException;
 
-		List<DepartmentVO> getAllDepartmentByOrgId(Long orgId);
+	List<DepartmentVO> getAllDepartmentByOrgId(Long orgId);
 
-		List<DepartmentVO> getDepartmentById(Long id); 
-		
-		String getDepartmentDocId(Long orgId);
-		
-		//GST
+	List<DepartmentVO> getDepartmentById(Long id);
 
-		Map<String, Object> createUpdateGst(GstDTO gstDTO) throws ApplicationException;
+	String getDepartmentDocId(Long orgId);
 
-		List<GstVO> getAllGstByOrgId(Long orgId);
+	// GST
 
-		List<GstVO> getGstById(Long id); 
-		
-		//ProcessMaster
-		
-		Map<String, Object> createUpdateProcessMaster(ProcessMasterDTO processMasterDTO) throws ApplicationException;
-		
-		List<ProcessMasterVO> getAllProcessMasterByOrgId(Long orgId);
+	Map<String, Object> createUpdateGst(GstDTO gstDTO) throws ApplicationException;
 
-		List<ProcessMasterVO> getProcessMasterById(Long id); 
-		
-		String getProcessMasterDocId(Long orgId);
-		
-		//Material Type
-		
-	    Map<String, Object> createUpdateMaterialType(MaterialTypeDTO materialTypeDTO) throws ApplicationException;
-		
-		List<MaterialTypeVO> getAllMaterialTypeByOrgId(Long orgId);
+	List<GstVO> getAllGstByOrgId(Long orgId);
 
-		List<MaterialTypeVO> getMaterialTypeById(Long id);
-		
-		//Designation
-		List<DesignationVO> getDesignationByOrgId(Long orgId);
+	List<GstVO> getGstById(Long id);
 
-		List<DesignationVO> getDesignationById(Long id);
+	// ProcessMaster
 
-		Map<String, Object> updateCreateDesignation(DesignationDTO designationdto) throws ApplicationException;
+	Map<String, Object> createUpdateProcessMaster(ProcessMasterDTO processMasterDTO) throws ApplicationException;
 
-  	String getDesignationDocId(Long orgId);
+	List<ProcessMasterVO> getAllProcessMasterByOrgId(Long orgId);
 
-		//UOM
-		
-		List<UomVO> getUomByOrgId(Long orgId);
+	List<ProcessMasterVO> getProcessMasterById(Long id);
 
-		List<UomVO> getUomById(Long id);
+	String getProcessMasterDocId(Long orgId);
 
-		Map<String, Object> updateCreateUom(@Valid UomDTO uomDTO) throws ApplicationException;
+	// Material Type
 
-		//SHIFT
-		
-		List<ShiftVO> getShiftByOrgId(Long orgId);
+	Map<String, Object> createUpdateMaterialType(MaterialTypeDTO materialTypeDTO) throws ApplicationException;
 
-		Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException;
+	List<MaterialTypeVO> getAllMaterialTypeByOrgId(Long orgId);
 
-		List<ShiftVO> getShiftById(Long id);
+	List<MaterialTypeVO> getMaterialTypeById(Long id);
 
-		//RackMaster
-		
-		List<RackMasterVO> getRackMasterByOrgId(Long orgId);
+	// Designation
+	List<DesignationVO> getDesignationByOrgId(Long orgId);
 
-		List<RackMasterVO> getRackMasterById(Long id);
+	List<DesignationVO> getDesignationById(Long id);
 
-		Map<String, Object> updateCreateRackMaster(RackMasterDTO rackMasterDTO) throws ApplicationException;
+	Map<String, Object> updateCreateDesignation(DesignationDTO designationdto) throws ApplicationException;
 
-		
-		//Bom Master
-		
-		Map<String, Object> createUpdateBom(BomDTO  bomDTO) throws ApplicationException;
+	String getDesignationDocId(Long orgId);
 
-		List<BomVO> getAllBomOrgId(Long orgId);
+	// UOM
 
-		List<BomVO> getAllBomId(Long id);
+	List<UomVO> getUomByOrgId(Long orgId);
 
-		String getBomDocId(Long orgId);
+	List<UomVO> getUomById(Long id);
 
+	Map<String, Object> updateCreateUom(@Valid UomDTO uomDTO) throws ApplicationException;
 
+	// SHIFT
 
+	List<ShiftVO> getShiftByOrgId(Long orgId);
 
+	Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException;
 
-		
+	List<ShiftVO> getShiftById(Long id);
 
-	
+	// RackMaster
+
+	List<RackMasterVO> getRackMasterByOrgId(Long orgId);
+
+	List<RackMasterVO> getRackMasterById(Long id);
+
+	Map<String, Object> updateCreateRackMaster(RackMasterDTO rackMasterDTO) throws ApplicationException;
+
+	// Bom Master
+
+	Map<String, Object> createUpdateBom(BomDTO bomDTO) throws ApplicationException;
+
+	List<BomVO> getAllBomOrgId(Long orgId);
+
+	List<BomVO> getAllBomId(Long id);
+
+	String getBomDocId(Long orgId);
+
+	List<Map<String, Object>> getFGSFGPartDetailsForBOM(Long orgId, String productType);
+
+	List<Map<String, Object>> getSFGItemDetailsForBOM(Long orgId);
 
 }
