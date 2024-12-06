@@ -304,6 +304,60 @@ public class IssueToSubContractorController extends BaseController {
 
 	}
 	
+	@GetMapping("/getIssueSCNoForDcForSubContract")
+	public ResponseEntity<ResponseDTO> getIssueSCNoForDcForSubContract(@RequestParam(required = false) Long orgId) {
+		String methodName = "getIssueSCNoForDcForSubContract()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> issuescno = new ArrayList<>();
+		try {
+			issuescno = issueToSubContractorService.getIssueSCNoForDcForSubContracto(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CustomerName information get successfully By OrgId");
+			responseObjectsMap.put("issuescno", issuescno);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CustomerName information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getAddressForDcForSubContract")
+	public ResponseEntity<ResponseDTO> getAddressForDcForSubContract(@RequestParam(required = false) Long orgId, String customerName) {
+		String methodName = "getAddressForDcForSubContract()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> address = new ArrayList<>();
+		try {
+			address = issueToSubContractorService.getAddressForDcForSubContract(orgId,customerName);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Address information get successfully By OrgId");
+			responseObjectsMap.put("address", address);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Address information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
 	@PutMapping("/updateCreateDcForSubContract")
 	public ResponseEntity<ResponseDTO> updateCreateDcForSubContract(@Valid @RequestBody DcForSubContractDTO dcForSubContractDTO) {
 		String methodName = "updateCreateDcForSubContract()";
@@ -809,4 +863,31 @@ public class IssueToSubContractorController extends BaseController {
 			return ResponseEntity.ok().body(responseDTO);
 		}
 	
+		@GetMapping("/getDcForSubContractForJobWorkOut")
+		public ResponseEntity<ResponseDTO> getDcForSubContractForJobWorkOut(@RequestParam(required = false) Long orgId, String customerName) {
+			String methodName = "getDcForSubContractForJobWorkOut()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> dcforsub = new ArrayList<>();
+			try {
+				dcforsub = issueToSubContractorService.getDcForSubContractForJobWorkOut(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "dc for subcontract information get successfully By OrgId");
+				responseObjectsMap.put("dcforsub", dcforsub);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Address information receive failed By OrgId", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+
+		}
+		
 }

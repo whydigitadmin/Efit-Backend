@@ -274,7 +274,47 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			return dcForSubContractVO;
 	}
 
+		@Override
+		public List<Map<String, Object>> getIssueSCNoForDcForSubContracto(Long orgId) {
+			Set<Object[]> issuescno = dcForSubContractRepo.findIssueSCNoDetails(orgId);
+			return getIssueSCNoForDcForSubContracto(issuescno);
+		}
+		private List<Map<String, Object>> getIssueSCNoForDcForSubContracto(Set<Object[]> chCode) {
+			List<Map<String, Object>> List1 = new ArrayList<>();
+			for (Object[] ch : chCode) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("docId", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+				map.put("docDate", ch[1] != null ? ch[1].toString() : "");
+				map.put("routeCardNo", ch[2] != null ? ch[2].toString() : "");
+				map.put("customerName", ch[3] != null ? ch[3].toString() : "");
+				map.put("gstin", ch[4] != null ? ch[4].toString() : "");
 
+				List1.add(map);
+			}
+			return List1;
+
+		}
+
+		
+		@Override
+		public List<Map<String, Object>> getAddressForDcForSubContract(Long orgId, String customerName) {
+			Set<Object[]> address = dcForSubContractRepo.findAddressDetails(orgId,customerName);
+			return getAddressForDcForSubContract(address);
+		}
+		private List<Map<String, Object>> getAddressForDcForSubContract(Set<Object[]> chCode) {
+			List<Map<String, Object>> List1 = new ArrayList<>();
+			for (Object[] ch : chCode) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("docId", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+				map.put("docDate", ch[1] != null ? ch[1].toString() : "");
+				map.put("routeCardNo", ch[2] != null ? ch[2].toString() : "");
+				map.put("customerName", ch[3] != null ? ch[3].toString() : "");
+				map.put("gstin", ch[4] != null ? ch[4].toString() : "");
+
+				List1.add(map);
+			}
+			return List1;
+		}
 	
 		@Override
 		public Map<String, Object> updateCreateDcForSubContract(DcForSubContractDTO dcForSubContractDTO) throws ApplicationException {
@@ -789,6 +829,35 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 					// TODO Auto-generated method stub
 					return jobWorkOutRepo.getAllJobWorkOutByOrgId(orgId);
 				}
+
+				@Override
+				public List<Map<String, Object>> getDcForSubContractForJobWorkOut(Long orgId) {
+					Set<Object[]> address = jobWorkOutRepo.findDcForSubContractDetails(orgId);
+					return getDcForSubContractForJobWorkOut(address);
+				}
+				private List<Map<String, Object>> getDcForSubContractForJobWorkOut(Set<Object[]> chCode) {
+					List<Map<String, Object>> List1 = new ArrayList<>();
+					for (Object[] ch : chCode) {
+						Map<String, Object> map = new HashMap<>();
+						map.put("customername", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+						map.put("customeraddress", ch[1] != null ? ch[1].toString() : "");
+						map.put("dcno", ch[2] != null ? ch[2].toString() : "");
+						map.put("gstno", ch[3] != null ? ch[3].toString() : "");
+						map.put("routecardno", ch[4] != null ? ch[4].toString() : "");
+						map.put("scissueno", ch[5] != null ? ch[5].toString() : "");
+						map.put("subcontractorid", ch[6] != null ? ch[6].toString() : "");
+						map.put("subcontractorname", ch[7] != null ? ch[7].toString() : "");
+						map.put("subcontractoraddress", ch[8] != null ? ch[8].toString() : "");
+						map.put("vehicleno", ch[9] != null ? ch[9].toString() : "");
+
+						List1.add(map);
+					}
+					return List1;
+				}
+
+				
+
+				
 	
 	
 }

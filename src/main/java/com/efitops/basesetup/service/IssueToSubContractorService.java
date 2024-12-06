@@ -49,6 +49,11 @@ public interface IssueToSubContractorService {
 
 	String getDcForSubContractDocId(Long orgId);
 	
+	List<Map<String, Object>> getIssueSCNoForDcForSubContracto(Long orgId);
+	
+	List<Map<String, Object>> getAddressForDcForSubContract(Long orgId,String customerName);
+	
+	
 	//SubContractEnquiry
 	
 	Map<String, Object> createUpdateSubContractEnquiry(SubContractEnquiryDTO  subContractEnquiryDTO) throws ApplicationException;
@@ -92,5 +97,9 @@ public interface IssueToSubContractorService {
 		List<JobWorkOutVO> getAllJobWorkOutById(Long id);
 
 		String getJobWorkOutDocId(Long orgId);
+
+		List<Map<String, Object>> getDcForSubContractForJobWorkOut(Long orgId);
+
+		
 
 }
