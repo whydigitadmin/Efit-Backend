@@ -539,7 +539,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			@Valid ItemWiseProcessMasterDTO itemWiseProcessMasterDTO) throws ApplicationException {
 		String message;
 		ItemWiseProcessMasterVO itemWiseProcessMasterVO = new ItemWiseProcessMasterVO();
-		String screenCode = "PM";
+		String screenCode = "IPM";
 
 		if (itemWiseProcessMasterDTO.getId() != null) {
 			// Fetch existing ItemVO for update
@@ -550,6 +550,16 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			createUpdateProcessMasterVOByProcessMasterDTO(itemWiseProcessMasterDTO, itemWiseProcessMasterVO);
 			message = "ItemWiseProcessMaster Updated Successfully";
 		} else {
+
+			String docId = itemWiseProcessMasterRepo.getItemWiseProcessMasterDocId(itemWiseProcessMasterDTO.getOrgId(), screenCode);
+			itemWiseProcessMasterVO.setDocId(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(itemWiseProcessMasterDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
 
 			// Create new ItemVO
 			itemWiseProcessMasterVO.setCreatedBy(itemWiseProcessMasterDTO.getCreatedBy());
@@ -563,7 +573,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 		// Prepare response
 		Map<String, Object> response = new HashMap<>();
-		response.put("ItemWiseProcessMasterVO", itemWiseProcessMasterVO);
+		response.put("itemWiseProcessMasterVO", itemWiseProcessMasterVO);
 		response.put("message", message);
 		return response;
 	}
@@ -593,6 +603,13 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		itemWiseProcessMasterVO.setItemWiseProcessDetailsVO(itemWiseProcessDetailsVOs);
 
 	}
+	
+	@Override
+	public String getItemWiseProcessMasterDocId(Long orgId) {
+		String screenCode = "IPM";
+		String result = itemWiseProcessMasterRepo.getItemWiseProcessMasterDocId(orgId, screenCode);
+		return result;
+	}
 
 	@Override
 	@Transactional
@@ -608,6 +625,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("itemName", fs[0] != null ? fs[0].toString() : "");
 			part.put("itemDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("id",fs[2]!=null ? Integer.parseInt(fs[2].toString()):0);
 
 			details1.add(part);
 		}
@@ -874,6 +892,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		return result;
 	}
 
+	
 	@Override
 	public List<ProcessMasterVO> getAllProcessMasterByOrgId(Long orgId) {
 		List<ProcessMasterVO> processMasterVO = new ArrayList<>();

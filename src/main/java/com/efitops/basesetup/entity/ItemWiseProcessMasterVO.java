@@ -46,7 +46,7 @@ public class ItemWiseProcessMasterVO {
 	private String processType;
 	
 	@Column(name = "item")
-	private String item;
+	private String item; 
 
 	@Column(name = "itemdesc")
 	private String itemDesc;

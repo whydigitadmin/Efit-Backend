@@ -607,6 +607,38 @@ public class EfitMasterController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
+	@GetMapping("/getItemWiseProcessMasterDocId")
+	public ResponseEntity<ResponseDTO> getItemWiseProcessMasterDocId(@RequestParam Long orgId) {
+
+		String methodName = "getItemWiseProcessMasterDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = efitMasterService.getItemWiseProcessMasterDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemWiseProcessMasterDocId information retrieved successfully");
+			responseObjectsMap.put("itemWiseProcessMasterDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve ItemWiseProcessMasterDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+
 
 	// Department
 
