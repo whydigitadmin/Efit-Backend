@@ -1,5 +1,6 @@
 package com.efitops.basesetup.entity;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,11 +15,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.efitops.basesetup.dto.CreatedUpdatedDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -44,12 +45,15 @@ public class ShiftVO {
 	@Column(name = "shiftcode", length = 20)
 	private String shiftCode;
 
+    @JsonFormat(pattern = "HH:mm")
 	@Column(name = "fromhour", length = 20)
-	private String fromHour;
-
+	private LocalTime fromHour;
+	
+    @JsonFormat(pattern = "HH:mm")
 	@Column(name = "tohour", length = 20)
-	private String toHour;
+	private LocalTime toHour;
 
+    @JsonFormat(pattern = "HH:mm")
 	@Column(name = "timing", length = 20)
 	private String timing;
 
