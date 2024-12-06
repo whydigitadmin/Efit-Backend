@@ -941,7 +941,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		materialTypeVO.setItemGroup(materialTypeDTO.getItemGroup().toLowerCase().toUpperCase());
 		materialTypeVO.setOrgId(materialTypeDTO.getOrgId());
 		materialTypeVO.setCreatedBy(materialTypeDTO.getCreatedBy());
-		materialTypeVO.setActive(materialTypeDTO.isActive());
+//		materialTypeVO.setActive(materialTypeDTO.isActive());
 
 		if (ObjectUtils.isNotEmpty(materialTypeVO.getId())) {
 			List<MaterialDetailVO> materialDetailVO1 = materialDetailRepo.findByMaterialTypeVO(materialTypeVO);

@@ -16,7 +16,7 @@ public class MaterialTypeDTO {
 	private String itemGroup;
 	private Long orgId;
 	private String createdBy;
-	private boolean active;
+//	private boolean active;
 	
   List<MaterialDetailDTO>materialDetailDTO;
 }
