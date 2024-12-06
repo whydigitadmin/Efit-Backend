@@ -28,9 +28,6 @@ public class ShiftDetailsVO {
 	@SequenceGenerator(name = "m_shiftdetgen", sequenceName = "m_shiftdetseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "shiftdetid")
 	private Long id;
-	
-	@Column(name = "sno", length = 50)
-    private String sno;
 
     @Column(name = "timeinhours", length = 20)
     private String timingInHours;
