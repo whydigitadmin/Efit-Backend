@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShiftDetailsDTO {
 
-	private String sno;
 	 private String timingInHours;
 }
