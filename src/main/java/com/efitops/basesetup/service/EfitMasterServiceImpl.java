@@ -402,7 +402,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		String screenCode = "MI";
 
 		if (measuringInstrumentsDTO.getId() != null) {
-			// Fetch existing ItemVO for update
+
 			measuringInstrumentsVO = measuringInstrumentsRepo.findById(measuringInstrumentsDTO.getId())
 					.orElseThrow(() -> new ApplicationException("MeasuringInstrument not found"));
 
@@ -456,7 +456,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 						measuringInstrumentsDTO.getInstrumentCode());
 				throw new ApplicationException(errorMessage);
 			}
-			// Create new ItemVO
+
 			measuringInstrumentsVO.setCreatedBy(measuringInstrumentsDTO.getCreatedBy());
 			measuringInstrumentsVO.setUpdatedBy(measuringInstrumentsDTO.getCreatedBy());
 			createUpdateMeasuringInstrumentVOByMeasuringInstrumentDTO(measuringInstrumentsDTO, measuringInstrumentsVO);
@@ -542,7 +542,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		String screenCode = "IPM";
 
 		if (itemWiseProcessMasterDTO.getId() != null) {
-			// Fetch existing ItemVO for update
+
 			itemWiseProcessMasterVO = itemWiseProcessMasterRepo.findById(itemWiseProcessMasterDTO.getId())
 					.orElseThrow(() -> new ApplicationException("ItemWiseProcessMaster not found"));
 
@@ -561,14 +561,14 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 
-			// Create new ItemVO
+
 			itemWiseProcessMasterVO.setCreatedBy(itemWiseProcessMasterDTO.getCreatedBy());
 			itemWiseProcessMasterVO.setUpdatedBy(itemWiseProcessMasterDTO.getCreatedBy());
 			createUpdateProcessMasterVOByProcessMasterDTO(itemWiseProcessMasterDTO, itemWiseProcessMasterVO);
 			message = "ItemWiseProcessMaster Created Successfully";
 		}
 
-		// Save the ItemVO
+
 		itemWiseProcessMasterRepo.save(itemWiseProcessMasterVO);
 
 		// Prepare response
@@ -1254,7 +1254,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		RackMasterVO rackMasterVO = new RackMasterVO();
 
 		if (rackMasterDTO.getId() != null) {
-			// Fetch existing ItemVO for update
+
 			rackMasterVO = rackMasterRepo.findById(rackMasterDTO.getId())
 					.orElseThrow(() -> new ApplicationException("RackMaster master not found"));
 			rackMasterVO.setUpdatedBy(rackMasterDTO.getCreatedBy());
@@ -1263,14 +1263,14 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 			
 		} else {
-			// Create new ItemVO
+
 			rackMasterVO.setCreatedBy(rackMasterDTO.getCreatedBy());
 			rackMasterVO.setUpdatedBy(rackMasterDTO.getCreatedBy());
 			createUpdateRackMasterVOByRackMasterDTO(rackMasterDTO, rackMasterVO);
 			message = "RackMaster Created Successfully";
 		}
 
-		// Save the ItemVO
+
 		rackMasterRepo.save(rackMasterVO);
 
 		// Prepare response

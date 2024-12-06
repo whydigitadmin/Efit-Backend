@@ -46,6 +46,16 @@ public interface InventoryService {
 	List<RouteCardEntryVO> getRouteCardEntryById(Long id);
 
 	String getRouteCardEntryDocId(Long orgId);
+	
+	List<Map<String, Object>> getCustomerNameAndCodeFromRouteCardEntry(Long orgId);
+	
+	List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Long orgId, String customer);
+	
+	List<Map<String, Object>> getFgPartNameAndDescAndQtyFromRouteCardEntry(Long orgId, String workOrderNo);
+	
+	List<Map<String, Object>> getOptrSignFromRouteCardEntry(Long orgId);
+
+
 
 	//PickList
 	Map<String, Object> updateCreatePickList(@Valid PickListDTO pickListDTO) throws ApplicationException;
@@ -65,6 +75,18 @@ public interface InventoryService {
 	List<ItemIssueToProductionVO> getItemIssToProdById(Long id);
 
 	String getItemIssueToProductionDocId(Long orgId);
+
+	List<Map<String, Object>> getPreparedByFromRouteCardEntry(Long orgId);
+
+	List<Map<String, Object>> getApprovedByFromRouteCardEntry(Long orgId);
+
+	List<Map<String, Object>> getQAManagerSignFromRouteCardEntry(Long orgId);
+
+	List<Map<String, Object>> getPlantManagerSignFromRouteCardEntry(Long orgId);
+
+
+
+
 
 	
 

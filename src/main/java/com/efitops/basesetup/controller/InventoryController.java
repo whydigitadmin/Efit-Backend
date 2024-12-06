@@ -388,6 +388,241 @@ public class InventoryController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getCustomerNameAndCodeFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getCustomerNameAndCodeFromRouteCardEntry(@RequestParam Long orgId) {
+		String methodName = "getCustomerNameAndCodeFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getCustomerNameAndCodeFromRouteCardEntry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer Details retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve Customer Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getWorkOrderNoFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getWorkOrderNoFromRouteCardEntry(@RequestParam Long orgId,@RequestParam String customer) {
+		String methodName = "getWorkOrderNoFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getWorkOrderNoFromRouteCardEntry(orgId,customer);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOrderNo Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve WorkOrderNo Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getFgPartNameAndDescAndQtyFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getFgPartNameAndDescAndQtyFromRouteCardEntry(@RequestParam Long orgId,@RequestParam String workOrderNo) {
+		String methodName = "getFgPartNameAndDescAndQtyFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getFgPartNameAndDescAndQtyFromRouteCardEntry(orgId,workOrderNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FgPartNameAndDescAndQty Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve FgPartNameAndDescAndQty Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@GetMapping("/getOptrSignFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getOptrSignFromRouteCardEntry(@RequestParam Long orgId) {
+		String methodName = "getOptrSignFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getOptrSignFromRouteCardEntry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "OPTRSign Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve OPTRSign Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getPreparedByFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getPreparedByFromRouteCardEntry(@RequestParam Long orgId) {
+		String methodName = "getPreparedByFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getPreparedByFromRouteCardEntry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PreparedBy Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PreparedBy Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getApprovedByFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getApprovedByFromRouteCardEntry(@RequestParam Long orgId) {
+		String methodName = "getApprovedByFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getApprovedByFromRouteCardEntry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ApprovedBy Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve ApprovedBy Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getQAManagerSignFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getQAManagerSignFromRouteCardEntry(@RequestParam Long orgId) {
+		String methodName = "getQAManagerSignFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getQAManagerSignFromRouteCardEntry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "QAManagerSign Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve QAManagerSign Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@GetMapping("/getPlantManagerSignFromRouteCardEntry")
+	public ResponseEntity<ResponseDTO> getPlantManagerSignFromRouteCardEntry(@RequestParam Long orgId) {
+		String methodName = "getPlantManagerSignFromRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = inventoryService.getPlantManagerSignFromRouteCardEntry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PlantManagerSign Detail from RouteCardEntry retrieved successfully");
+			responseObjectsMap.put("routeCardEntryVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PlantManagerSign Detail from RouteCardEntry",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
 	//PickList
 	
 	@PutMapping("/updateCreatePickList")
