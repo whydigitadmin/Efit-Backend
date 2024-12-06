@@ -32,7 +32,8 @@ public class RouteCardEntryDTO {
     private String narration;
     private Long orgId;
     private String createdBy;
-    
+	private String status;
+
 	@Column(name = "invoice")
 	private String invoice;
 	@Column(name = "invoicedate")

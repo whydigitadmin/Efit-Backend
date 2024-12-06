@@ -79,6 +79,8 @@ public interface EfitMasterService {
 	
 	List<Map<String, Object>> getProcessNameFromItemWiseProcess(Long orgId);
 	
+  		String getItemWiseProcessMasterDocId(Long orgId);
+
 
 
 	//Department
@@ -124,6 +126,8 @@ public interface EfitMasterService {
 
 		Map<String, Object> updateCreateDesignation(DesignationDTO designationdto) throws ApplicationException;
 
+  	String getDesignationDocId(Long orgId);
+
 		//UOM
 		
 		List<UomVO> getUomByOrgId(Long orgId);
@@ -148,8 +152,6 @@ public interface EfitMasterService {
 
 		Map<String, Object> updateCreateRackMaster(RackMasterDTO rackMasterDTO) throws ApplicationException;
 
-		String getDesignationDocId(Long orgId);
-
 		
 		//Bom Master
 		
@@ -160,6 +162,7 @@ public interface EfitMasterService {
 		List<BomVO> getAllBomId(Long id);
 
 		String getBomDocId(Long orgId);
+
 
 
 
