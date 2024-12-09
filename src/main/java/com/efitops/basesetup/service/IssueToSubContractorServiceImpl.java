@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +104,9 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Autowired
 	JobWorkOutDetailsRepo jobWorkOutDetailsRepo;
+	
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 
 	// IssueToSubContract
 	@Override
@@ -627,6 +631,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	private void createUpdatedSubContractQuotationVOFromSubContractQuotationDTO(
 			SubContractQuotationDTO subContractQuotationDTO, SubContractQuotationVO subContractQuotationVO) {
+
 		subContractQuotationVO.setEnquiryNo(subContractQuotationDTO.getEnquiryNo());
 		subContractQuotationVO.setEnquiryDate(subContractQuotationDTO.getEnquiryDate());
 		subContractQuotationVO.setSubContractorId(subContractQuotationDTO.getSubContractorId());
@@ -642,34 +647,69 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		subContractQuotationVO.setActive(subContractQuotationDTO.isActive());
 		subContractQuotationVO.setCreatedBy(subContractQuotationDTO.getCreatedBy());
 
+		BigDecimal grocessAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+
 		if (ObjectUtils.isNotEmpty(subContractQuotationDTO.getId())) {
 			List<SubContractQuotationDetailsVO> subContractQuotationDetailsVO1 = subContractQuotationDetailsRepo
 					.findBySubContractQuotationVO(subContractQuotationVO);
 			subContractQuotationDetailsRepo.deleteAll(subContractQuotationDetailsVO1);
-
 		}
 
 		List<SubContractQuotationDetailsVO> subContractQuotationDetailsVOs = new ArrayList<>();
+
 		for (SubContractQuotationDetailsDTO subContractQuotationDetailsDTO : subContractQuotationDTO
 				.getSubContractQuotationDetailsDTO()) {
+
 			SubContractQuotationDetailsVO subContractQuotationDetailsVO = new SubContractQuotationDetailsVO();
+
 			subContractQuotationDetailsVO.setPart(subContractQuotationDetailsDTO.getPart());
 			subContractQuotationDetailsVO.setPartDescription(subContractQuotationDetailsDTO.getPartDescription());
 			subContractQuotationDetailsVO.setProcess(subContractQuotationDetailsDTO.getProcess());
 			subContractQuotationDetailsVO.setQty(subContractQuotationDetailsDTO.getQty());
 			subContractQuotationDetailsVO.setRate(subContractQuotationDetailsDTO.getRate());
-			subContractQuotationDetailsVO.setAmount(subContractQuotationDetailsDTO.getAmount());
 			subContractQuotationDetailsVO.setDiscount(subContractQuotationDetailsDTO.getDiscount());
-			subContractQuotationDetailsVO.setDiscountAmount(subContractQuotationDetailsDTO.getDiscountAmount());
 			subContractQuotationDetailsVO.setTax(subContractQuotationDetailsDTO.getTax());
-			subContractQuotationDetailsVO.setQuotationAmount(subContractQuotationDetailsDTO.getQuotationAmount());
+
+			BigDecimal discountAmount = BigDecimal.ZERO;
+			BigDecimal afterDiscountAmount = BigDecimal.ZERO;
+			BigDecimal afterQuotationAmount = BigDecimal.ZERO;
+
+			BigDecimal amount = subContractQuotationDetailsDTO.getRate()
+					.multiply(subContractQuotationDetailsDTO.getQty());
+			subContractQuotationDetailsVO.setAmount(amount);
+			grocessAmount = grocessAmount.add(amount);
+
+			discountAmount = subContractQuotationDetailsVO.getAmount()
+					.multiply(subContractQuotationDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
+
+			subContractQuotationDetailsVO.setDiscountAmount(discountAmount);
+
+			afterDiscountAmount = amount.subtract(discountAmount);
+//			subContractQuotationDetailsVO.setAfterDiscountAmount(afterDiscountAmount);
+			subContractQuotationDetailsDTO.setAfterDiscountAmount(afterDiscountAmount);
+
+			afterQuotationAmount = subContractQuotationDetailsDTO.getAfterDiscountAmount()
+					.multiply(subContractQuotationDetailsDTO.getTax()).divide(BigDecimal.valueOf(100));
+
+//			subContractQuotationDetailsVO.setAfterQuotationAmount(afterQuotationAmount);
+			subContractQuotationDetailsDTO.setAfterQuotationAmount(afterQuotationAmount);
+
+			BigDecimal quotationAmount = afterDiscountAmount.add(afterQuotationAmount);
+			subContractQuotationDetailsVO.setQuotationAmount(quotationAmount);
+			netAmount = netAmount.add(quotationAmount);
+
 			subContractQuotationDetailsVO.setDeliveryDate(subContractQuotationDetailsDTO.getDeliveryDate());
 
 			subContractQuotationDetailsVO.setSubContractQuotationVO(subContractQuotationVO);
+
 			subContractQuotationDetailsVOs.add(subContractQuotationDetailsVO);
 		}
+
+		subContractQuotationVO.setGrossAmount(grocessAmount);
+		subContractQuotationVO.setNetAmount(netAmount);
+		subContractQuotationVO.setAmountInWords(amountInWordsConverterService.convert(subContractQuotationVO.getNetAmount().longValue()));
 		subContractQuotationVO.setSubContractQuotationDetailsVO(subContractQuotationDetailsVOs);
-		;
 	}
 
 	@Override
@@ -827,6 +867,55 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return result;
 	}
 
+	
+	@Override
+	public List<Map<String, Object>> getJobWorkOutOrderNo(Long orgId) {
+		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderNo(orgId);
+		return getWorkOrderOut(chType);
+	}
+
+	private List<Map<String, Object>> getWorkOrderOut(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("jobworkorderno", ch[0] != null ? ch[0].toString() : "");
+			map.put("jobworkorderdate", ch[1] != null ? ch[1].toString() : "");
+			map.put("dcno", ch[2] != null ? ch[2].toString() : "");
+			map.put("pono", ch[3] != null ? ch[3].toString() : "");
+			map.put("routecardno", ch[4] != null ? ch[4].toString() : "");
+			map.put("contractorname", ch[5] != null ? ch[5].toString() : "");
+			map.put("contractorcode", ch[6] != null ? ch[6].toString() : "");
+			map.put("subContractorAddress", ch[7] != null ? ch[7].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getJobWorkOutOrderFromPartNoAndDesc(Long orgId, String docId) {
+		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderFromPartNoAndDesc(orgId,docId);
+		return getJobWorkOutOrderFromPartNo(chType);
+	}
+
+	private List<Map<String, Object>> getJobWorkOutOrderFromPartNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("part", ch[0] != null ? ch[0].toString() : "");
+			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("chatOfAccount", ch[2] != null ? ch[2].toString() : "");
+			map.put("gst", ch[3] != null ? ch[3].toString() : "");
+			map.put("igst", ch[4] != null ? ch[4].toString() : "");
+			map.put("cgst", ch[5] != null ? ch[5].toString() : "");
+			map.put("contractorcode", ch[6] != null ? ch[6].toString() : "");
+			map.put("subContractorAddress", ch[7] != null ? ch[7].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	
 	// JoibWorkOut
 
 	@Override
@@ -874,8 +963,8 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		jobWorkOutVO.setContractorName(jobWorkOutDTO.getContractorName());
 		jobWorkOutVO.setContractorCode(jobWorkOutDTO.getContractorCode());
 		jobWorkOutVO.setDestination(jobWorkOutDTO.getDestination());
-		jobWorkOutVO.setDurationOfrocess(jobWorkOutDTO.getDurationOfrocess());
-		jobWorkOutVO.setDispatchedThrough(jobWorkOutDTO.getDurationOfrocess());
+		jobWorkOutVO.setDurationOfProcess(jobWorkOutDTO.getDurationOfProcess());
+		jobWorkOutVO.setDispatchedThrough(jobWorkOutDTO.getDispatchedThrough());
 		jobWorkOutVO.setGstType(jobWorkOutDTO.getGstType());
 		jobWorkOutVO.setTermsOfPay(jobWorkOutDTO.getTermsOfPay());
 		jobWorkOutVO.setTotalAmt(jobWorkOutDTO.getTotalAmt());
@@ -900,7 +989,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			jobWorkOutDetailsVO.setPartDesc(jobWorkOutDetailsDTO.getPartDesc());
 			jobWorkOutDetailsVO.setProcess(jobWorkOutDetailsDTO.getProcess());
 			jobWorkOutDetailsVO.setDueOn(jobWorkOutDetailsDTO.getDueOn());
-			jobWorkOutDetailsVO.setQuantity(jobWorkOutDetailsDTO.getQuantity());
+			jobWorkOutDetailsVO.setQuantityNos(jobWorkOutDetailsDTO.getQuantityNos());
 			jobWorkOutDetailsVO.setRate(jobWorkOutDetailsDTO.getRate());
 			jobWorkOutDetailsVO.setDiscount(jobWorkOutDetailsDTO.getDiscount());
 			jobWorkOutDetailsVO.setCgst(jobWorkOutDetailsDTO.getCgst());
@@ -959,4 +1048,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return List1;
 	}
 
+
+
+	
 }

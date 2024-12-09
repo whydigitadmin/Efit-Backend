@@ -428,8 +428,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 	
 	@Override
-	public List<Map<String, Object>> getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId, String customer) {
-		Set<Object[]> chType = quotationRepo.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customer);
+	public List<Map<String, Object>> getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId, String customerCode) {
+		Set<Object[]> chType = quotationRepo.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customerCode);
 		return getPartNoAndPartDes(chType);
 	}
 

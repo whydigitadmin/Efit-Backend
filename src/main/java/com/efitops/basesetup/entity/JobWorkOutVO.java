@@ -39,16 +39,16 @@ public class JobWorkOutVO {
 	private Long id;
 	@Column(name = "jobworkorderno", length = 150)
 	private String jobWorkOrderNo;
-	@Column(name="jobworkordedate")
+	@Column(name="jobworkorderdate")
 	private LocalDate jobWorkOrderDate= LocalDate.now();
 	@Column(name="dcno")
 	private String dcNo;
 	@Column(name="routecardno")
 	private String routeCardNo;
-	@Column(name="quoteno")
+	@Column(name="quotationno")
 	private String quotationNo;
 	@Column(name="pono")
-	private String poNo;
+	private String poNo;	
 	@Column(name="contractorname")
 	private String contractorName;
 	@Column(name="gsttype")
@@ -60,7 +60,7 @@ public class JobWorkOutVO {
 	@Column(name="dispatchedthrough")
 	private String dispatchedThrough;
 	@Column(name="durationofprocess")
-	private String durationOfrocess;
+	private String durationOfProcess;
 	@Column(name="customer")
 	private String customer; 
 	@Column(name="termsofpay")

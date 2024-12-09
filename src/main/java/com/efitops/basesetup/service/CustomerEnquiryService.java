@@ -48,7 +48,7 @@ public interface CustomerEnquiryService {
 	
 	List<Map<String,Object>>  getProductionManager(Long orgId);	
 	
-	List<Map<String,Object>>  getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId,String customer);	
+	List<Map<String,Object>>  getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId,String customerCode);	
 
 	// WorkOrder
 

@@ -25,7 +25,7 @@ public class JobWorkOutDetailsDTO {
 	
 	private String taxCode;
 	
-	private String quantity;
+	private String quantityNos;
 	
 	private Date dueOn;
 	

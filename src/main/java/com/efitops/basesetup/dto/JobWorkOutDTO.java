@@ -30,7 +30,7 @@ public class JobWorkOutDTO {
 	
 	private String dispatchedThrough;
 	
-	private String durationOfrocess;
+	private String durationOfProcess;
 	
 	private String customer; 
 	
@@ -52,5 +52,7 @@ public class JobWorkOutDTO {
 	private String scIssueNo;
 	
 	List<JobWorkOutDetailsDTO> jobWorkOutDetailsDTO;
+
+	
 
 }

@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_jobworkourdetails")
+@Table(name = "t_jobworkoutdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,9 +29,9 @@ import lombok.NoArgsConstructor;
 public class JobWorkOutDetailsVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkourdetailsgen")
-	@SequenceGenerator(name = "t_jobworkourdetailsgen", sequenceName = "t_jobworkourdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "jobworkourdetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkoutdetailsgen")
+	@SequenceGenerator(name = "t_jobworkoutdetailsgen", sequenceName = "t_jobworkoutdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "jobworkoutdetailsid")
 	private Long id;
 	@Column(name = "part", length = 150)
 	private String part;
@@ -41,12 +41,10 @@ public class JobWorkOutDetailsVO {
 	private String process;
 	@Column(name="taxcode")
 	private String taxCode;
-	@Column(name="quantity")
-	private String quantity;
+	@Column(name="quantitynos")
+	private String quantityNos;
 	@Column(name="dueon")
 	private Date dueOn;
-	@Column(name="inspectionable")
-	private String inspectionable;
 	@Column(name="rate")
 	private BigDecimal rate; 
 	@Column(name="grossamt")
@@ -69,7 +67,7 @@ public class JobWorkOutDetailsVO {
 	private BigDecimal landedValue;
 		
 	@ManyToOne
-	@JoinColumn(name = "t_jobworkoutid")
+	@JoinColumn(name = "jobworkoutid")
 	@JsonBackReference
 	private JobWorkOutVO jobWorkOutVO;
 
