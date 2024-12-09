@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
@@ -27,6 +29,7 @@ import com.efitops.basesetup.dto.PickListDTO;
 import com.efitops.basesetup.dto.PutawayDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
+import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListVO;
 import com.efitops.basesetup.entity.PutawayVO;
@@ -618,6 +621,33 @@ public class InventoryController extends BaseController{
 					errorMsg);
 		}
 
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@PostMapping("/uploadFileForRouteCardEntry")
+	public ResponseEntity<ResponseDTO> uploadFileForRouteCardEntry(@RequestParam("file") MultipartFile file,
+			@RequestParam Long id) {
+		String methodName = "uploadFileForRouteCardEntry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		RouteCardEntryVO routeCardEntryVO = null;
+		try {
+			routeCardEntryVO = inventoryService.uploadFileForRouteCardEntry(file, id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error("Unable To Upload File", methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FileUpload for RouteCardEntry Successfully Upload");
+			responseObjectsMap.put("routeCardEntryVO", routeCardEntryVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "FileUpload for RouteCardEntry Upload Failed", errorMsg);
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

@@ -76,9 +76,9 @@ public class RouteCardEntryVO {
 	@Column(name = "stockqty")
 	private int stockQty;
 
-//	@Lob
-//	@Column(name = "file_data")
-//	private byte[] fileData;
+	@Lob
+	@Column(name = "attachements", columnDefinition = "LONGBLOB")
+	private byte[] attachements;
 
 	@Column(name = "orgid")
 	private Long orgId;

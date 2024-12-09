@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.ItemIssueToProductionDTO;
 import com.efitops.basesetup.dto.ItemIssueToProductionDetailsDTO;
@@ -26,6 +28,7 @@ import com.efitops.basesetup.dto.RouteCardEngDeptDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.DrawingMaster2VO;
 import com.efitops.basesetup.entity.ItemIssueToProductionDetailsVO;
 import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListDetailsVO;
@@ -564,6 +567,13 @@ public class InventoryServiceImpl implements InventoryService {
 			List1.add(map);
 		}
 		return List1;
+	}
+	
+	@Override
+	public RouteCardEntryVO uploadFileForRouteCardEntry(MultipartFile file, Long id) throws IOException {
+		RouteCardEntryVO routeCardEntryVO = routeCardEntryRepo.findById(id).get();
+		routeCardEntryVO.setAttachements(file.getBytes());
+		return routeCardEntryRepo.save(routeCardEntryVO);
 	}
 	
 	//PickList

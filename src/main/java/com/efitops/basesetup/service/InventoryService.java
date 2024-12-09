@@ -1,11 +1,13 @@
 package com.efitops.basesetup.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.ItemIssueToProductionDTO;
 import com.efitops.basesetup.dto.PickListDTO;
@@ -55,7 +57,7 @@ public interface InventoryService {
 	
 	List<Map<String, Object>> getOptrSignFromRouteCardEntry(Long orgId);
 
-
+	RouteCardEntryVO uploadFileForRouteCardEntry(MultipartFile file, Long id) throws IOException;
 
 	//PickList
 	Map<String, Object> updateCreatePickList(@Valid PickListDTO pickListDTO) throws ApplicationException;
@@ -83,12 +85,6 @@ public interface InventoryService {
 	List<Map<String, Object>> getQAManagerSignFromRouteCardEntry(Long orgId);
 
 	List<Map<String, Object>> getPlantManagerSignFromRouteCardEntry(Long orgId);
-
-
-
-
-
-	
 
 
 }
