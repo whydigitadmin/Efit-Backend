@@ -97,6 +97,10 @@ public interface IssueToSubContractorService {
 	List<SubContractInvoiceVO> getSubContractInvoiceById(Long id);
 
 	String getSubContractInvoiceDocId(Long orgId);
+	
+	List<Map<String, Object>> getJobWorkOutOrderNo(Long orgId);
+	
+	List<Map<String, Object>> getJobWorkOutOrderFromPartNoAndDesc(Long orgId, String docId);
 
 	// JobWorkOut
 
