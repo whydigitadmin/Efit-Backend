@@ -108,8 +108,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 	@Autowired
 	AmountInWordsConverterService amountInWordsConverterService;
 
-	@Autowired
-	AmountInWordsConverterService amountInWordsConverterService;
+
 
 	// IssueToSubContract
 	@Override
