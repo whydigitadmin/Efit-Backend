@@ -1,5 +1,6 @@
 package com.efitops.basesetup.entity;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -54,8 +55,8 @@ public class GrnVO {
 	private String adress;
 	@Column(name="currency")
 	private String currency;
-	@Column(name="exchanderate")
-	private Long exchangeRate;
+	@Column(name="exchanderate",precision = 10,scale = 2)
+	private BigDecimal exchangeRate;
 	@Column(name="grncleartime")
 	private String grnClearTime;
 	@Column(name="invdcno")
@@ -64,6 +65,16 @@ public class GrnVO {
 	private Date invDcDate;
 	@Column(name="customer")
 	private String customer; 
+	@Column(name="grossamount",precision = 10,scale = 2)
+	private BigDecimal grossAmount;
+	@Column(name="netamount",precision = 10,scale = 2)
+	private BigDecimal netAmount;
+	@Column(name="toatlamounttax",precision = 10,scale = 2)
+	private BigDecimal totalAmountTax;
+	@Column(name="remarks")
+	private String remarks;
+	
+	
 	
 	
 	@Column(name = "orgid")

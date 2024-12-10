@@ -74,8 +74,6 @@ public class JobWorkOutVO {
 	@Column(name="narration")
 	private String narration;
 
-	
-	
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)

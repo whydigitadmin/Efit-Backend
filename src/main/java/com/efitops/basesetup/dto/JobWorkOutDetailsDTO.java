@@ -24,9 +24,9 @@ public class JobWorkOutDetailsDTO {
 	private String process;
 	
 	private String taxCode;
-	
+
 	private BigDecimal quantityNos;
-	
+
 	private Date dueOn;
 	
 	private String inspectionable;

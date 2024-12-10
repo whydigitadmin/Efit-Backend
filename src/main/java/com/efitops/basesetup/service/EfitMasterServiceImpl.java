@@ -1386,11 +1386,9 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("docId", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
-			map.put("docDate", ch[1] != null ? ch[1].toString() : "");
-			map.put("routeCardNo", ch[2] != null ? ch[2].toString() : "");
-			map.put("customerName", ch[3] != null ? ch[3].toString() : "");
-			map.put("gstin", ch[4] != null ? ch[4].toString() : "");
+			map.put("itemname", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("primaryunit", ch[2] != null ? ch[2].toString() : "");
 
 			List1.add(map);
 		}
@@ -1410,9 +1408,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			Map<String, Object> map = new HashMap<>();
 			map.put("itemname", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
 			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
-			map.put("itemtype", ch[2] != null ? ch[2].toString() : "");
-			map.put("primaryunit", ch[3] != null ? ch[3].toString() : "");
-
+			map.put("primaryunit", ch[2] != null ? ch[2].toString() : "");
+			map.put("itemtype", ch[3] != null ? ch[3].toString() : "");
 			List1.add(map);
 		}
 		return List1;

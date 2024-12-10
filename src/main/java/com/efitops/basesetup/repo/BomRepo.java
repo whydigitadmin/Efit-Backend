@@ -12,10 +12,10 @@ import com.efitops.basesetup.entity.BomVO;
 @Repository
 public interface BomRepo extends JpaRepository<BomVO, Long>{
 	
-	@Query(nativeQuery = true,value="select * from  t_bom where orgid=?1")
+	@Query(nativeQuery = true,value="select * from  m_bom where orgid=?1")
 	List<BomVO> getAllBomByOrgId(Long orgId);
 	
-	@Query(nativeQuery = true,value="select * from t_bom where bomid=?1")
+	@Query(nativeQuery = true,value="select * from m_bom where bomid=?1")
 	List<BomVO> getBomById(Long id);
 	
 	
