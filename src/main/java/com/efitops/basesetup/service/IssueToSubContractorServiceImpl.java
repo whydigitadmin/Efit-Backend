@@ -104,6 +104,9 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Autowired
 	JobWorkOutDetailsRepo jobWorkOutDetailsRepo;
+	
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 
 	@Autowired
 	AmountInWordsConverterService amountInWordsConverterService;
@@ -708,8 +711,10 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 		subContractQuotationVO.setGrossAmount(grocessAmount);
 		subContractQuotationVO.setNetAmount(netAmount);
+
 		subContractQuotationVO.setAmountInWords(
 				amountInWordsConverterService.convert(subContractQuotationVO.getNetAmount().longValue()));
+
 		subContractQuotationVO.setSubContractQuotationDetailsVO(subContractQuotationDetailsVOs);
 	}
 
@@ -885,6 +890,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			map.put("routeCardNo", ch[4] != null ? ch[4].toString() : "");
 			map.put("contractorCode", ch[5] != null ? ch[5].toString() : "");
 			map.put("contractorName", ch[6] != null ? ch[6].toString() : "");
+
 			map.put("subContractorAddress", ch[7] != null ? ch[7].toString() : "");
 			List1.add(map);
 		}
@@ -914,6 +920,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			map.put("totalTaxAmount", ch[10] != null ? ch[10].toString() : "");
 			map.put("netAmount", ch[11] != null ? ch[11].toString() : "");
 			map.put("amountInWords", ch[12] != null ? ch[12].toString() : "");
+
 			List1.add(map);
 		}
 		return List1;
@@ -1083,4 +1090,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return List1;
 	}
 
+
+
+	
 }

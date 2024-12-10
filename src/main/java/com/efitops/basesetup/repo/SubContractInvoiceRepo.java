@@ -28,5 +28,6 @@ public interface SubContractInvoiceRepo extends JpaRepository<SubContractInvoice
 			+ "			   t_jobworkout a1,t_jobworkoutdetails a where a1.orgid=?1 and a1.jobworkorderno=?2 and\r\n"
 			+ "               a.jobworkoutid=a1.jobworkoutid and a1.active=true  group by\r\n"
 			+ "			   a.part,a.partdesc,a.process,a.quantitynos,a.rate,a.grossamt,a.cgst,a.sgst,a.amount,a1.totalgrossamt,a1.totaltax,a1.totalamt,a1.amtinwords order by a.part")
+
 	Set<Object[]> getJobWorkOutOrderFromPartNoAndDesc(Long orgId, String docId);
 }

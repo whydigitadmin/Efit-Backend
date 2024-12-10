@@ -46,6 +46,7 @@ public class JobWorkOutDetailsVO {
 	@Column(name="dueon")
 	private Date dueOn;
 	@Column(name="rate",precision = 10,scale = 2)
+
 	private BigDecimal rate; 
 	@Column(name="grossamt",precision = 10,scale = 2)
 	private BigDecimal grossAmt;
