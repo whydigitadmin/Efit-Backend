@@ -54,4 +54,6 @@ public interface RouteCardEntryRepo extends JpaRepository<RouteCardEntryVO, Long
 			+ " a.employee order by  a.employee")
 	Set<Object[]> findPlantManagerSignFromRouteCardEntry(Long orgId);
 
+
+ 
 }

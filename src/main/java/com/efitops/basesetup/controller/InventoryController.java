@@ -873,4 +873,98 @@ public class InventoryController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getRouteCardEntryNoForItemIssueToProduction")
+	public ResponseEntity<ResponseDTO> getRouteCardEntryNoForItemIssueToProduction(
+			@RequestParam Long orgId) {
+
+		String methodName = "getRouteCardEntryNoForItemIssueToProduction()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemIssueToProduction = new ArrayList<>();
+		try {
+			itemIssueToProduction = inventoryService.getRouteCardEntryNoForItemIssueToProduction(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" RouteCardEntryNo For ItemIssueToProduction information retrieved successfully");
+			responseObjectsMap.put("itemIssueToProductionVO", itemIssueToProduction);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve  RouteCardEntryNo For ItemIssueToProduction information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getRouteCardEntryDetailsForItemIssueToProduction")
+	public ResponseEntity<ResponseDTO> getRouteCardEntryDetailsForItemIssueToProduction(
+			@RequestParam Long orgId , @RequestParam String routeCardNo) {
+
+		String methodName = "getRouteCardEntryDetailsForItemIssueToProduction()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemIssueToProduction = new ArrayList<>();
+		try {
+			itemIssueToProduction = inventoryService.getRouteCardEntryDetailsForItemIssueToProduction(orgId,routeCardNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" RouteCardEntryDetails For ItemIssueToProduction information retrieved successfully");
+			responseObjectsMap.put("itemIssueToProductionVO", itemIssueToProduction);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve  RouteCardEntryDetails For ItemIssueToProduction information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@GetMapping("/getItemIssueToProductionDetailsfromBom")
+	public ResponseEntity<ResponseDTO> getItemIssueToProductionDetailsfromBom(
+			@RequestParam Long orgId , @RequestParam String fgItemId) {
+
+		String methodName = "getItemIssueToProductionDetailsfromBom()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemIssueToProduction = new ArrayList<>();
+		try {
+			itemIssueToProduction = inventoryService.getItemIssueToProductionDetailsfromBom(orgId,fgItemId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" ItemIssueToProductionDetails from Bom information retrieved successfully");
+			responseObjectsMap.put("itemIssueToProductionVO", itemIssueToProduction);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve  ItemIssueToProductionDetails from Bom information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 }
