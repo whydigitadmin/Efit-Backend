@@ -233,10 +233,10 @@ public class CustomerEnquiryController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
-	@GetMapping("/getDrawingNoAndRevNo")
-	public ResponseEntity<ResponseDTO> getDrawingNoAndRevNo(@RequestParam Long orgId, @RequestParam String partNo) {
-		String methodName = "getDrawingNoAndRevNo()";
+	
+	@GetMapping("/getDrawingNoAndRevisionNo")
+	public ResponseEntity<ResponseDTO> getDrawingNoAndRevisionNo(@RequestParam String partNo,@RequestParam Long orgId) {
+		String methodName = "getDrawingNoAndRevisionNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -244,7 +244,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getDrawingNoAndRevNo(orgId, partNo);
+			mapp = customerEnquiryService.getDrawingNoAndRevisionNo(partNo, orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -252,17 +252,18 @@ public class CustomerEnquiryController extends BaseController {
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DrawingNo Details retrieved successfully");
-			responseObjectsMap.put("drawingVO", mapp);
+			responseObjectsMap.put("drawingMasterVO", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve DrawingNo Details",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve DrawingNo Details", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
+	
+	
+	
 	// Quotation
 
 	@GetMapping("/getAllQuotationByOrgId")
@@ -429,7 +430,7 @@ public class CustomerEnquiryController extends BaseController {
 	}
 	
 	@GetMapping("/getPartNoAndPartDesBasedOnEnquiryNo")
-	public ResponseEntity<ResponseDTO> getPartNoAndPartDesBasedOnEnquiryNo(@RequestParam Long orgId,@RequestParam String docId,@RequestParam String customer) {
+	public ResponseEntity<ResponseDTO> getPartNoAndPartDesBasedOnEnquiryNo(@RequestParam Long orgId,@RequestParam String docId,@RequestParam String customerCode) {
 		String methodName = "getPartNoAndPartDesBasedOnEnquiryNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -438,7 +439,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customer);
+			mapp = customerEnquiryService.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customerCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

@@ -1,7 +1,5 @@
 package com.efitops.basesetup.entity;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,38 +24,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_bom")
+@Table(name = "t_thirdpartyinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BomVO {
+public class ThirdPartyInspectionVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_bomgen")
-	@SequenceGenerator(name = "m_bomgen", sequenceName = "m_bomseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "bomid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_thirdpartyinspectiongen")
+	@SequenceGenerator(name = "t_thirdpartyinspectiongen", sequenceName = "t_thirdpartyinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "thirdpartyinspectionid")
 	private Long id;
-	@Column(name = "docid", length = 150)
-	private String docid;
-	@Column(name="docdate")
-	private LocalDate docdate= LocalDate.now();
-	@Column(name="producttype")
-	private String productType;
-	@Column(name="productcode")
-	private String productCode;
-	@Column(name="productname")
-	private String productName;
-	@Column(name="uom")
-	private String uom;
-	@Column(name="qty")
-	private BigDecimal qty;
-	@Column(name="revision")
-	private boolean revision; 
-	@Column(name="current")
-	private boolean current;
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate= LocalDate.now();
+	@Column(name = "grnno")
+	private String grnNo;
+	@Column(name = "workoutno")
+	private LocalDate workOutNo;
+	@Column(name = "pono")
+	private String poNo;
+	@Column(name = "customername")
+	private String customerName;
+	@Column(name = "suppliername")
+	private String supplierName;
+	@Column(name = "thirdpartydetails")
+	private String thirdPartyDetails;
+	@Column(name = "thirdpartyaddress")
+	private String thirdPartyAddress;
 	
 	
+	@Column(name = "narration")
+	private String narration;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -66,40 +66,32 @@ public class BomVO {
 	private String updatedBy;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
+	@Column(name = "screencode",length = 30)
+	private String screenCode ="TPI";
+	@Column(name = "screenname",length = 30)
+	private String screenName="THIRDPARTYINSPECTION";
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="BOM";
-	@Column(name = "screenname",length = 30)
-	private String screenName="BOM";
 	
-	@OneToMany(mappedBy = "bomVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "thirdPartyInspectionVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<BomDetailsVO> bomDetailsVO;
+	List<ThirdPartyInspectionDetailsVO> thirdPartyInspectionDetailsVO;
 	
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
 	
-	@JsonGetter("revision")
-	public String getRevision() {
-		return revision ? "YES" : "NO";
-	}
-	@JsonGetter("current")
-	public String getCurrent() {
-		return current ? "YES" : "NO";
-	}
-	
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-
+	
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	
 
 }

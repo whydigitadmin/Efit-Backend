@@ -39,20 +39,18 @@ public class JobWorkOutVO {
 	private Long id;
 	@Column(name = "jobworkorderno", length = 150)
 	private String jobWorkOrderNo;
-	@Column(name="jobworkordedate")
+	@Column(name="jobworkorderdate")
 	private LocalDate jobWorkOrderDate= LocalDate.now();
 	@Column(name="dcno")
 	private String dcNo;
 	@Column(name="routecardno")
 	private String routeCardNo;
-	@Column(name="quoteno")
+	@Column(name="quotationno")
 	private String quotationNo;
 	@Column(name="pono")
-	private String poNo;
+	private String poNo;	
 	@Column(name="contractorname")
 	private String contractorName;
-	@Column(name="gsttype")
-	private String gstType; 
 	@Column(name="destination")
 	private String destination;
 	@Column(name="contractorcode")
@@ -60,25 +58,22 @@ public class JobWorkOutVO {
 	@Column(name="dispatchedthrough")
 	private String dispatchedThrough;
 	@Column(name="durationofprocess")
-	private String durationOfrocess;
-	@Column(name="customer")
-	private String customer; 
-	@Column(name="termsofpay")
-	private String termsOfPay;
-	@Column(name="amtinwords")
-	private String amtInWords;
-	@Column(name="totalamt")
-	private BigDecimal totalAmt;
-	@Column(name="totalgrossamt")
+	private String durationOfProcess;
+	@Column(name="taxtype")
+	private String taxType;  
+	@Column(name="termsofpayment")
+	private String termsOfPayment;
+	@Column(name="amountinwords")
+	private String amountInWords;
+	@Column(name="totalamount",precision = 10,scale = 2)
+	private BigDecimal totalAmount;
+	@Column(name="totalgrossamt",precision = 10,scale = 2)
 	private BigDecimal totalGrossAmt;
-	@Column(name="totaltax")
+	@Column(name="totaltax",precision = 10,scale = 2)
 	private BigDecimal totalTax; 
 	@Column(name="narration")
 	private String narration;
-	@Column(name="scissueno")
-	private String scIssueNo;
-	
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)

@@ -24,22 +24,19 @@ public class JobWorkOutDetailsDTO {
 	private String process;
 	
 	private String taxCode;
-	
-	private String quantity;
-	
+
+	private BigDecimal quantityNos;
+
 	private Date dueOn;
 	
 	private String inspectionable;
 	
 	private BigDecimal rate; 
 	
-	private BigDecimal grossAmt;
 	
 	private BigDecimal discount;
 	
-	private BigDecimal discountAmt;
 	
-	private BigDecimal netAmount;
 	
 	private BigDecimal sgst;
 	
@@ -47,8 +44,6 @@ public class JobWorkOutDetailsDTO {
 	
 	private BigDecimal igst;
 	
-	private BigDecimal taxValue;
 	
-	private BigDecimal landedValue;
 
 }

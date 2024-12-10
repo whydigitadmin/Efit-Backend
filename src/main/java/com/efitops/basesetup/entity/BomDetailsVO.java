@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_bomdetails")
+@Table(name = "m_bomdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class BomDetailsVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_bomdetailsgen")
-	@SequenceGenerator(name = "t_bomdetailsgen", sequenceName = "t_bomdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_bomdetailsgen")
+	@SequenceGenerator(name = "m_bomdetailsgen", sequenceName = "m_bomdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "bomdetails")
 	private Long id;
 	@Column(name="itemtype")
@@ -45,7 +45,7 @@ public class BomDetailsVO {
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "t_bomid")
+	@JoinColumn(name = "bomid")
 	@JsonBackReference
 	private BomVO bomVO;
 

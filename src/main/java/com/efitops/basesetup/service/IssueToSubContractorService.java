@@ -21,60 +21,76 @@ import com.efitops.basesetup.exception.ApplicationException;
 
 @Service
 public interface IssueToSubContractorService {
-	
-	//IssueToSubContractor
-	Map<String, Object> createUpdateIssueToSubContractor(IssueToSubContractorDTO  issueToSubContractorDTO) throws ApplicationException;
+
+	// IssueToSubContractor
+	Map<String, Object> createUpdateIssueToSubContractor(IssueToSubContractorDTO issueToSubContractorDTO)
+			throws ApplicationException;
 
 	List<IssueToSubContractorVO> getAllIssueToSubContractorByOrgId(Long orgId);
 
 	List<IssueToSubContractorVO> getIssueToSubContractorById(Long id);
 
 	String getIssueToSubContractorDocId(Long orgId);
-		
+
 	List<Map<String, Object>> getRouteCardNoAndItemNo(Long orgId);
-	
+
 	List<Map<String, Object>> getDepartmentName(Long orgId);
 
-	List<Map<String, Object>> getProcessNameFormItemWiseProcess(Long orgId,String item);
-	
-	//DcForSubContracto
-	
+	List<Map<String, Object>> getProcessNameFormItemWiseProcess(Long orgId, String item);
+
+	// DcForSubContracto
+
 	List<DcForSubContractVO> getDcforSCByOrgId(Long orgId);
 
 	List<DcForSubContractVO> getDcforSCById(Long id);
-
 
 	Map<String, Object> updateCreateDcForSubContract(DcForSubContractDTO dcForSubContractDTO)
 			throws ApplicationException;
 
 	String getDcForSubContractDocId(Long orgId);
-	
-	//SubContractEnquiry
-	
-	Map<String, Object> createUpdateSubContractEnquiry(SubContractEnquiryDTO  subContractEnquiryDTO) throws ApplicationException;
+
+	List<Map<String, Object>> getIssueSCNoForDcForSubContracto(Long orgId);
+
+	List<Map<String, Object>> getAddressForDcForSubContract(Long orgId, String customerName);
+
+	// SubContractEnquiry
+
+	Map<String, Object> createUpdateSubContractEnquiry(SubContractEnquiryDTO subContractEnquiryDTO)
+			throws ApplicationException;
 
 	List<SubContractEnquiryVO> getAllSubContractEnquiryByOrgId(Long orgId);
 
 	List<SubContractEnquiryVO> getSubContractEnquiryById(Long id);
 
 	String getSubContractEnquiryDocId(Long orgId);
-	
-	
-	
-	//SubContractQuotation
-	
-	Map<String, Object> createUpdateSubContractQuotation(SubContractQuotationDTO  subContractQuotationDTO) throws ApplicationException;
+
+	List<Map<String, Object>> getSubContractCustomerNameAndCode(Long orgId);
+
+	List<Map<String, Object>> getSubContractContactNameAndNo(Long orgId, String partyCode);
+
+	List<Map<String, Object>> getSubContractPartNoAndDescription(Long orgId, String scIssueNo);
+
+	List<Map<String, Object>> getSubRouteCardNo(Long orgId);
+
+	List<Map<String, Object>> getScIssueNoFormSubContract(Long orgId, String routeCardNo);
+
+	// SubContractQuotation
+
+	Map<String, Object> createUpdateSubContractQuotation(SubContractQuotationDTO subContractQuotationDTO)
+			throws ApplicationException;
 
 	List<SubContractQuotationVO> getAllSubContractQuotationByOrgId(Long orgId);
 
 	List<SubContractQuotationVO> getSubContractQuotationById(Long id);
 
 	String getSubContractQuotationDocId(Long orgId);
-	
-	
-	//SubContractInvoice
-	
-	Map<String, Object> createUpdateSubContractInvoice(SubContractInvoiceDTO  subContractInvoiceDTO) throws ApplicationException;
+
+	List<Map<String, Object>> getPartNoAndPartDesBasedOnSubContractEnquiryNo(Long orgId, String docId);
+
+	// SubContractInvoice
+
+	Map<String, Object> createUpdateSubContractInvoice(SubContractInvoiceDTO subContractInvoiceDTO)
+			throws ApplicationException;
 
 	List<SubContractInvoiceVO> getAllSubContractInvoiceByOrgId(Long orgId);
 
@@ -82,15 +98,20 @@ public interface IssueToSubContractorService {
 
 	String getSubContractInvoiceDocId(Long orgId);
 	
+	List<Map<String, Object>> getJobWorkOutOrderNo(Long orgId);
+	
+	List<Map<String, Object>> getJobWorkOutOrderFromPartNoAndDesc(Long orgId, String docId);
 
-	//JobWorkOut
+	// JobWorkOut
 
-		Map<String, Object> createUpdateJobWorkOut(JobWorkOutDTO  jobWorkOutDTO) throws ApplicationException;
+	Map<String, Object> createUpdateJobWorkOut(JobWorkOutDTO jobWorkOutDTO) throws ApplicationException;
 
-		List<JobWorkOutVO> getAllJobWorkOutByOrgId(Long orgId);
+	List<JobWorkOutVO> getAllJobWorkOutByOrgId(Long orgId);
 
-		List<JobWorkOutVO> getAllJobWorkOutById(Long id);
+	List<JobWorkOutVO> getAllJobWorkOutById(Long id);
 
-		String getJobWorkOutDocId(Long orgId);
+	String getJobWorkOutDocId(Long orgId);
+
+	List<Map<String, Object>> getDcForSubContractForJobWorkOut(Long orgId);
 
 }

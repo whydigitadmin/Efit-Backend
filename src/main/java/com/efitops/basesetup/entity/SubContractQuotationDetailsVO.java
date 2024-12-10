@@ -53,6 +53,10 @@ public class SubContractQuotationDetailsVO {
 	private BigDecimal tax;
 	@Column(name="quotationamount",precision = 10,scale = 2)
 	private BigDecimal quotationAmount;
+//	@Column(name="afterdiscountamount",precision = 10,scale = 2)
+//	private BigDecimal afterDiscountAmount;
+//	@Column(name="afterquotationamount",precision = 10,scale = 2)
+//	private BigDecimal afterQuotationAmount;
 	@Column(name="deliverydate")
 	private LocalDate deliveryDate;
 	

@@ -33,7 +33,7 @@ public interface MachineMasterService {
 	
 	MachineMasterVO3 uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 	
-	String getMachineMasterDocId(Long orgId, String finYear, String screenCode);
+	String getMachineMasterDocId(Long orgId);
 
 	MachineMasterVO getMachineMasterByDocId(Long orgId, String docId);
 	
@@ -58,6 +58,10 @@ public interface MachineMasterService {
 	DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 
 	DrawingMaster2VO uploadAttachementsInBloob1(MultipartFile file, Long id)throws IOException;
+
+	List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Long orgId);
+
+	String getDrawingMasterDocId(Long orgId);
 
 
 

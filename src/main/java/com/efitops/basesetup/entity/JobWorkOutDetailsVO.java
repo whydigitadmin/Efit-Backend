@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_jobworkourdetails")
+@Table(name = "t_jobworkoutdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,9 +29,9 @@ import lombok.NoArgsConstructor;
 public class JobWorkOutDetailsVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkourdetailsgen")
-	@SequenceGenerator(name = "t_jobworkourdetailsgen", sequenceName = "t_jobworkourdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "jobworkourdetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkoutdetailsgen")
+	@SequenceGenerator(name = "t_jobworkoutdetailsgen", sequenceName = "t_jobworkoutdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "jobworkoutdetailsid")
 	private Long id;
 	@Column(name = "part", length = 150)
 	private String part;
@@ -41,35 +41,34 @@ public class JobWorkOutDetailsVO {
 	private String process;
 	@Column(name="taxcode")
 	private String taxCode;
-	@Column(name="quantity")
-	private String quantity;
+	@Column(name="quantitynos",precision = 10,scale = 2)
+	private BigDecimal quantityNos;
 	@Column(name="dueon")
 	private Date dueOn;
-	@Column(name="inspectionable")
-	private String inspectionable;
-	@Column(name="rate")
+	@Column(name="rate",precision = 10,scale = 2)
+
 	private BigDecimal rate; 
-	@Column(name="grossamt")
+	@Column(name="grossamt",precision = 10,scale = 2)
 	private BigDecimal grossAmt;
-	@Column(name="discount")
+	@Column(name="discount",precision = 10,scale = 2)
 	private BigDecimal discount;
-	@Column(name="discountamt")
-	private BigDecimal discountAmt;
-	@Column(name="netamount")
+	@Column(name="discountamount",precision = 10,scale = 2)
+	private BigDecimal discountAmount;
+	@Column(name="netamount",precision = 10,scale = 2)
 	private BigDecimal netAmount;
-	@Column(name="sgst")
+	@Column(name="sgst",precision = 10,scale = 2)
 	private BigDecimal sgst;
-	@Column(name="cgst")
+	@Column(name="cgst",precision = 10,scale = 2)
 	private BigDecimal cgst;
-	@Column(name="igst")
+	@Column(name="igst",precision = 10,scale = 2)
 	private BigDecimal igst;
-	@Column(name="taxvalue")
-	private BigDecimal taxValue;
-	@Column(name="landedvalue")
-	private BigDecimal landedValue;
+	@Column(name="taxamt",precision = 10,scale = 2)
+	private BigDecimal taxAmt;
+	@Column(name="amount",precision = 10,scale = 2)
+	private BigDecimal amount;
 		
 	@ManyToOne
-	@JoinColumn(name = "t_jobworkoutid")
+	@JoinColumn(name = "jobworkoutid")
 	@JsonBackReference
 	private JobWorkOutVO jobWorkOutVO;
 

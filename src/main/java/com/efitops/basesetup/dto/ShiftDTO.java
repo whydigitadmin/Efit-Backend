@@ -1,5 +1,7 @@
 package com.efitops.basesetup.dto;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -15,8 +17,8 @@ public class ShiftDTO {
 	private String shiftName;
 	private String shiftType;
 	private String shiftCode;
-	private String fromHour;
-	private String toHour;
+	private LocalDateTime fromHour;
+	private LocalDateTime toHour;
 	private String timing;
 	private Long orgId;
 	private String createdBy;

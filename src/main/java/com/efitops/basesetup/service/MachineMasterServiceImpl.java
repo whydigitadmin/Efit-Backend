@@ -95,7 +95,7 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 			machineMasterVO.setCreatedBy(machineMasterDTO.getCreatedBy());
 			machineMasterVO.setUpdatedBy(machineMasterDTO.getCreatedBy());
 			
-			String docId = machineMasterRepo.getMachineMasterByDocId(machineMasterDTO.getOrgId(),machineMasterDTO.getFinYear(),
+			String docId = machineMasterRepo.getMachineMasterByDocId(machineMasterDTO.getOrgId(),
 					screenCode);
 
 			machineMasterVO.setDocId(docId);
@@ -209,6 +209,8 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 			machineMasterVO2.setCycleTime(machineMasterDTO2.getCycleTime());
 			machineMasterVO2.setProdQtyHr(machineMasterDTO2.getProdQtyHr());
 			machineMasterVO2.setOperationName(machineMasterDTO2.getOperationName());
+			machineMasterVO2.setItemId(machineMasterDTO2.getItemId());
+
 			machineMasterVO2.setRemarks(machineMasterDTO2.getRemarks());
 
 			machineMasterVO2.setMachineMasterVO(machineMasterVO);
@@ -234,9 +236,9 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	}
 	
 	@Override
-	public String getMachineMasterDocId(Long orgId, String finYear, String screenCode) {
+	public String getMachineMasterDocId(Long orgId) {
 		String ScreenCode = "MM";
-		String result = machineMasterRepo.getMachineMasterByDocId(orgId, finYear, ScreenCode);
+		String result = machineMasterRepo.getMachineMasterByDocId(orgId, ScreenCode);
 		return result;
 	}
 
@@ -338,13 +340,25 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	@Override
 	public Map<String, Object> updateDrawingMaster(@Valid DrawingMasterDTO drawingMasterDTO) throws ApplicationException {
 		
-		DrawingMasterVO drawingMasterVO;
-
+		DrawingMasterVO drawingMasterVO = new DrawingMasterVO();
+		String screenCode ="DM";
 		String message = null;
 
 		if (ObjectUtils.isEmpty(drawingMasterDTO.getId())) {
 
 			drawingMasterVO = new DrawingMasterVO();
+			
+
+			// GETDOCID API
+						String docId = drawingMasterRepo.getDrawingMasterDocId(drawingMasterDTO.getOrgId(), screenCode);
+
+						drawingMasterVO.setDocId(docId);
+
+//						        							// GETDOCID LASTNO +1
+						DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+								.findByOrgIdAndScreenCode(drawingMasterDTO.getOrgId(), screenCode);
+						documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+						documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 			drawingMasterVO.setCreatedBy(drawingMasterDTO.getCreatedBy());
 
@@ -356,11 +370,12 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 
 		else {
 
+
 			drawingMasterVO = drawingMasterRepo.findById(drawingMasterDTO.getId()).orElseThrow(
 					() -> new ApplicationException("Drawing Master Not Found with id: " + drawingMasterDTO.getId()));
 			drawingMasterVO.setUpdatedBy(drawingMasterDTO.getCreatedBy());
 
-			message = "Stock Location Updation Successfully";
+			message = "Drawing Master Updation Successfully";
 
 		}
 
@@ -385,7 +400,7 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	    drawingMasterVO.setCreatedBy(drawingMasterDTO.getCreatedBy());
 	    drawingMasterVO.setCancelRemarks(drawingMasterDTO.getCancelRemarks());
 	    drawingMasterVO.setOrgId(drawingMasterDTO.getOrgId());
-	    
+	    drawingMasterVO.setActive(drawingMasterDTO.isActive());
 	    
 	    if(drawingMasterDTO.getId() !=null) {
 	    	
@@ -470,7 +485,33 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		return List1;
 
 	}
+	
+	@Override
+	public List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Long orgId) {
+		Set<Object[]> drawingMasterVO = drawingMasterRepo.findFGSFGPartDetailsForDrawingMaster(orgId);
+		return getFGSFGPartDetailsForDrawingMaster(drawingMasterVO);
+	}
 
+	private List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Set<Object[]> drawingMasterVO) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : drawingMasterVO) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemName", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("primaryUnit", ch[2] != null ? ch[2].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	@Override
+	public String getDrawingMasterDocId(Long orgId) {
+		String screenCode = "DM";
+		String result = drawingMasterRepo.getDrawingMasterDocId(orgId, screenCode);
+		return result;
+	}
 	
 	
 

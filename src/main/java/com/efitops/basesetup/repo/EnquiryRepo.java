@@ -31,12 +31,12 @@ public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 	@Query(nativeQuery = true,value = " select a.itemname,a.itemdesc,a.primaryunit from m_item a where a.orgid=?1 and active=1 and cancel=0 group by a.itemname,a.itemdesc,a.primaryunit  order by \r\n"
 			+ " a.itemname")
 	Set<Object[]> getPartNoAndDescription(Long orgId);	
-	
-	@Query(nativeQuery = true,value = "select a.drawingno,a.drawingrevno from m_drawingmaster a where a.partno=?1 and a.orgid=?2 and active=1 and  cancel=0  group by \r\n"
-			+ "  a.drawingno,a.drawingrevno order by a.drawingno")
-	Set<Object[]> getDrawingNoAndRevNo(Long orgId,String partNo);	
+
 			
-	
+	@Query(nativeQuery = true,value = " select a.drawingno,a.drawingrevno from m_drawingmaster a where a.partno=?1 and a.orgid=?2 and a.active=1  group by \r\n"
+			+ "			  a.drawingno,a.drawingrevno order by a.drawingno")
+	Set<Object[]> getDrawingNoAndRevisionNo(String partNo,Long orgId);	
+
 
 }
 

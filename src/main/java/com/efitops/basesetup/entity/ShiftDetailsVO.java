@@ -1,5 +1,7 @@
 package com.efitops.basesetup.entity;
 
+import java.time.LocalTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,10 +31,8 @@ public class ShiftDetailsVO {
 	@SequenceGenerator(name = "m_shiftdetgen", sequenceName = "m_shiftdetseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "shiftdetid")
 	private Long id;
-	
-	@Column(name = "sno", length = 50)
-    private String sno;
 
+    @JsonFormat(pattern = "HH:mm")
     @Column(name = "timeinhours", length = 20)
     private String timingInHours;
     

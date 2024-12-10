@@ -1,6 +1,7 @@
 package com.efitops.basesetup.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,10 @@ public interface SubContractQuotationRepo extends JpaRepository<SubContractQuota
 	
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getSubContractQuotationDocId(Long orgId, String screenCode);
+	
+	 
+	 @Query(nativeQuery = true, value = "select docid,docdate,subcontractorrefno,subcontractorrefdate,subcontractorname,routecardno,scissueno from \r\n"
+	 		+ "	 t_subcontractenquiry where orgid=?1 and active=true  and docid=?2 group by \r\n"
+	 		+ "	 docid,docdate,subcontractorrefno,subcontractorrefdate,subcontractorname,routecardno,scissueno order by docid")
+		Set<Object[]> getPartNoAndPartDesBasedOnSubContractEnquiryNo(Long orgId,String docId);
 }

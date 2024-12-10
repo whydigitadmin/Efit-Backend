@@ -390,7 +390,7 @@ public class MasterServiceImpl implements MasterService {
 		// Prepare the response
 		Map<String, Object> response = new HashMap<>();
 		response.put("message", message);
-		response.put("employeeVO", employeeVO);
+		response.put("createdEmployeeVO", employeeVO);
 
 		return response;
 	}
@@ -1737,6 +1737,7 @@ public class MasterServiceImpl implements MasterService {
 				partyAddressVO.setAddressLine3(partyAddressDTO.getAddressLine3());
 				partyAddressVO.setPincode(partyAddressDTO.getPincode());
 				partyAddressVO.setContact(partyAddressDTO.getContact()); // Changed from contactPerson to contact
+				partyAddressVO.setTaxType(partyAddressDTO.getTaxType()); 
 
 				partyAddressVO.setPartyMasterVO(partyMasterVO);
 				partyAddressVOs.add(partyAddressVO);

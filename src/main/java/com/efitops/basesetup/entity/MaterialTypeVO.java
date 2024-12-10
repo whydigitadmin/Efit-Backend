@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 public class MaterialTypeVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_materialgen")
-	@SequenceGenerator(name = "materialgen", sequenceName = "m_materialseq", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "m_materialgen", sequenceName = "m_materialseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "materialid")
 	private Long id;
 	@Column(name="materialtype")
@@ -47,18 +47,13 @@ public class MaterialTypeVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active;
+	private boolean active =true;
 	@Column(name = "cancel")
 	private boolean cancel;
 	
 	@OneToMany(mappedBy = "materialTypeVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<MaterialDetailVO> materialDetailVO;
-	
-	@JsonGetter("active")
-	public String getActive() {
-		return active ? "Active" : "In-Active";
-	}
 	
 	@JsonGetter("cancel")
 	public String getCancel() {
