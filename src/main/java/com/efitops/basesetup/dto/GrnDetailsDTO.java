@@ -1,6 +1,6 @@
 package com.efitops.basesetup.dto;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,22 +17,18 @@ import lombok.NoArgsConstructor;
 		private String hsnSacCode;
 		private String taxType;
 		private String primaryUnit;
-		private Long stock;
+		private BigDecimal stock;
 		private String inspectionable;
-		private Long poRate; 
-		private Long orderQty;
-		private Long challanQty;
-		private Long pendingQty;
-		private Long recievedQty;
-		private Long acceptQty;
-		private Long rejectQty;
-		private Long excessQty;
-		private Long amount;
-		private Long sgst;
-		private Long cgst;
-		private Long igst;
-		private Long taxValue;
-		private Long landedValue;
+		private BigDecimal poRate; 
+		private BigDecimal orderQty;
+		private BigDecimal challanQty;
+		private BigDecimal recievedQty;
+		private BigDecimal acceptQty;
+		private BigDecimal rejectQty;
+		private BigDecimal excessQty;
+		private BigDecimal sgst;
+		private BigDecimal cgst;
+		private BigDecimal igst;
 
 	}
 
