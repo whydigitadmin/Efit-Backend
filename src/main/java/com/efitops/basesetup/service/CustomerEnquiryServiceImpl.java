@@ -247,14 +247,15 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-
+	
+	
 	@Override
-	public List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo) {
-		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevNo(orgId, partNo);
-		return getDrawingNoAndRev(chType);
+	public List<Map<String, Object>> getDrawingNoAndRevisionNo(String partNo, Long orgId) {
+		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevisionNo(partNo, orgId);
+		return getDrawingNo(chType);
 	}
 
-	private List<Map<String, Object>> getDrawingNoAndRev(Set<Object[]> chType) {
+	private List<Map<String, Object>> getDrawingNo(Set<Object[]> chType) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
@@ -264,6 +265,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
+
+	
 
 	// Quotation
 

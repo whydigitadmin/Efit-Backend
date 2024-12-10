@@ -104,7 +104,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Autowired
 	JobWorkOutDetailsRepo jobWorkOutDetailsRepo;
-	
+
 	@Autowired
 	AmountInWordsConverterService amountInWordsConverterService;
 
@@ -708,7 +708,8 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 		subContractQuotationVO.setGrossAmount(grocessAmount);
 		subContractQuotationVO.setNetAmount(netAmount);
-		subContractQuotationVO.setAmountInWords(amountInWordsConverterService.convert(subContractQuotationVO.getNetAmount().longValue()));
+		subContractQuotationVO.setAmountInWords(
+				amountInWordsConverterService.convert(subContractQuotationVO.getNetAmount().longValue()));
 		subContractQuotationVO.setSubContractQuotationDetailsVO(subContractQuotationDetailsVOs);
 	}
 
@@ -867,7 +868,6 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return result;
 	}
 
-	
 	@Override
 	public List<Map<String, Object>> getJobWorkOutOrderNo(Long orgId) {
 		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderNo(orgId);
@@ -879,12 +879,12 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("jobworkorderno", ch[0] != null ? ch[0].toString() : "");
-			map.put("jobworkorderdate", ch[1] != null ? ch[1].toString() : "");
-			map.put("dcno", ch[2] != null ? ch[2].toString() : "");
-			map.put("pono", ch[3] != null ? ch[3].toString() : "");
-			map.put("routecardno", ch[4] != null ? ch[4].toString() : "");
-			map.put("contractorname", ch[5] != null ? ch[5].toString() : "");
-			map.put("contractorcode", ch[6] != null ? ch[6].toString() : "");
+			map.put("dcno", ch[1] != null ? ch[1].toString() : "");
+			map.put("deliverydDate", ch[2] != null ? ch[2].toString() : "");
+			map.put("dispatchedthrough", ch[3] != null ? ch[3].toString() : "");
+			map.put("routeCardNo", ch[4] != null ? ch[4].toString() : "");
+			map.put("contractorCode", ch[5] != null ? ch[5].toString() : "");
+			map.put("contractorName", ch[6] != null ? ch[6].toString() : "");
 			map.put("subContractorAddress", ch[7] != null ? ch[7].toString() : "");
 			List1.add(map);
 		}
@@ -893,7 +893,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Override
 	public List<Map<String, Object>> getJobWorkOutOrderFromPartNoAndDesc(Long orgId, String docId) {
-		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderFromPartNoAndDesc(orgId,docId);
+		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderFromPartNoAndDesc(orgId, docId);
 		return getJobWorkOutOrderFromPartNo(chType);
 	}
 
@@ -903,19 +903,22 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			Map<String, Object> map = new HashMap<>();
 			map.put("part", ch[0] != null ? ch[0].toString() : "");
 			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
-			map.put("chatOfAccount", ch[2] != null ? ch[2].toString() : "");
-			map.put("gst", ch[3] != null ? ch[3].toString() : "");
-			map.put("igst", ch[4] != null ? ch[4].toString() : "");
-			map.put("cgst", ch[5] != null ? ch[5].toString() : "");
-			map.put("contractorcode", ch[6] != null ? ch[6].toString() : "");
-			map.put("subContractorAddress", ch[7] != null ? ch[7].toString() : "");
+			map.put("process", ch[2] != null ? ch[2].toString() : "");
+			map.put("quantityNos", ch[3] != null ? ch[3].toString() : "");
+			map.put("rate", ch[4] != null ? ch[4].toString() : "");
+			map.put("amount", ch[5] != null ? ch[5].toString() : "");
+			map.put("cgst", ch[6] != null ? ch[6].toString() : "");
+			map.put("sgst", ch[7] != null ? ch[7].toString() : "");
+			map.put("landedAmount", ch[8] != null ? ch[8].toString() : "");
+			map.put("grossAmount", ch[9] != null ? ch[9].toString() : "");
+			map.put("totalTaxAmount", ch[10] != null ? ch[10].toString() : "");
+			map.put("netAmount", ch[11] != null ? ch[11].toString() : "");
+			map.put("amountInWords", ch[12] != null ? ch[12].toString() : "");
 			List1.add(map);
 		}
 		return List1;
 	}
-	
-	
-	
+
 	// JoibWorkOut
 
 	@Override
@@ -959,22 +962,21 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		jobWorkOutVO.setRouteCardNo(jobWorkOutDTO.getRouteCardNo());
 		jobWorkOutVO.setPoNo(jobWorkOutDTO.getPoNo());
 		jobWorkOutVO.setQuotationNo(jobWorkOutDTO.getQuotationNo());
-		jobWorkOutVO.setCustomer(jobWorkOutDTO.getCustomer());
 		jobWorkOutVO.setContractorName(jobWorkOutDTO.getContractorName());
 		jobWorkOutVO.setContractorCode(jobWorkOutDTO.getContractorCode());
 		jobWorkOutVO.setDestination(jobWorkOutDTO.getDestination());
 		jobWorkOutVO.setDurationOfProcess(jobWorkOutDTO.getDurationOfProcess());
 		jobWorkOutVO.setDispatchedThrough(jobWorkOutDTO.getDispatchedThrough());
-		jobWorkOutVO.setGstType(jobWorkOutDTO.getGstType());
-		jobWorkOutVO.setTermsOfPay(jobWorkOutDTO.getTermsOfPay());
-		jobWorkOutVO.setTotalAmt(jobWorkOutDTO.getTotalAmt());
-		jobWorkOutVO.setTotalGrossAmt(jobWorkOutDTO.getTotalGrossAmt());
-		jobWorkOutVO.setAmtInWords(jobWorkOutDTO.getAmtInWords());
-		jobWorkOutVO.setTotalTax(jobWorkOutDTO.getTotalTax());
-		jobWorkOutVO.setScIssueNo(jobWorkOutDTO.getScIssueNo());
+		jobWorkOutVO.setTaxType(jobWorkOutDTO.getTaxType());
+		jobWorkOutVO.setTermsOfPayment(jobWorkOutDTO.getTermsOfPayment());
+		jobWorkOutVO.setNarration(jobWorkOutDTO.getNarration());
 		jobWorkOutVO.setOrgId(jobWorkOutDTO.getOrgId());
 		jobWorkOutVO.setActive(jobWorkOutDTO.isActive());
 		jobWorkOutVO.setCreatedBy(jobWorkOutDTO.getCreatedBy());
+
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		BigDecimal totalGrossAmount = BigDecimal.ZERO;
+		BigDecimal totalTaxAmount = BigDecimal.ZERO;
 
 		if (ObjectUtils.isNotEmpty(jobWorkOutDTO.getId())) {
 			List<JobWorkOutDetailsVO> jobWorkOutDetailsVO1 = jobWorkOutDetailsRepo.findByJobWorkOutVO(jobWorkOutVO);
@@ -990,15 +992,48 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			jobWorkOutDetailsVO.setProcess(jobWorkOutDetailsDTO.getProcess());
 			jobWorkOutDetailsVO.setDueOn(jobWorkOutDetailsDTO.getDueOn());
 			jobWorkOutDetailsVO.setQuantityNos(jobWorkOutDetailsDTO.getQuantityNos());
-			jobWorkOutDetailsVO.setRate(jobWorkOutDetailsDTO.getRate());
 			jobWorkOutDetailsVO.setDiscount(jobWorkOutDetailsDTO.getDiscount());
+			jobWorkOutDetailsVO.setRate(jobWorkOutDetailsDTO.getRate());
 			jobWorkOutDetailsVO.setCgst(jobWorkOutDetailsDTO.getCgst());
 			jobWorkOutDetailsVO.setSgst(jobWorkOutDetailsDTO.getSgst());
 			jobWorkOutDetailsVO.setIgst(jobWorkOutDetailsDTO.getIgst());
-			jobWorkOutDetailsVO.setLandedValue(jobWorkOutDetailsDTO.getLandedValue());
+
+			BigDecimal taxAmountAll = BigDecimal.ZERO;
+			BigDecimal amount = BigDecimal.ZERO;
+
+			BigDecimal setAmountGross = jobWorkOutDetailsDTO.getQuantityNos().multiply(jobWorkOutDetailsDTO.getRate());
+			jobWorkOutDetailsVO.setGrossAmt(setAmountGross);
+
+			BigDecimal discountAmount = jobWorkOutDetailsVO.getGrossAmt().multiply(jobWorkOutDetailsDTO.getDiscount())
+					.divide(BigDecimal.valueOf(100));
+			jobWorkOutDetailsVO.setDiscountAmount(discountAmount);
+
+			BigDecimal netAmounts = jobWorkOutDetailsVO.getGrossAmt().subtract(jobWorkOutDetailsVO.getDiscountAmount());
+			jobWorkOutDetailsVO.setNetAmount(netAmounts);
+			totalGrossAmount = totalGrossAmount.add(jobWorkOutDetailsVO.getNetAmount());
+
+			BigDecimal sgstamount = jobWorkOutDetailsDTO.getSgst().multiply(jobWorkOutDetailsVO.getNetAmount())
+					.divide(BigDecimal.valueOf(100));
+			BigDecimal cgstamount = jobWorkOutDetailsDTO.getCgst().multiply(jobWorkOutDetailsVO.getNetAmount())
+					.divide(BigDecimal.valueOf(100));
+			BigDecimal igstamount = jobWorkOutDetailsDTO.getIgst().multiply(jobWorkOutDetailsVO.getNetAmount())
+					.divide(BigDecimal.valueOf(100));
+
+			taxAmountAll = taxAmountAll.add(cgstamount).add(sgstamount).add(igstamount);
+			jobWorkOutDetailsVO.setTaxAmt(taxAmountAll);
+			totalTaxAmount = totalTaxAmount.add(jobWorkOutDetailsVO.getTaxAmt());
+
+			amount = jobWorkOutDetailsVO.getNetAmount().add(jobWorkOutDetailsVO.getTaxAmt());
+			jobWorkOutDetailsVO.setAmount(amount);
+			totalAmount = totalAmount.add(jobWorkOutDetailsVO.getAmount());
+
 			jobWorkOutDetailsVO.setJobWorkOutVO(jobWorkOutVO);
 			jobWorkOutDetailsVOs.add(jobWorkOutDetailsVO);
 		}
+		jobWorkOutVO.setTotalAmount(totalAmount);
+		jobWorkOutVO.setTotalGrossAmt(totalGrossAmount);
+		jobWorkOutVO.setTotalTax(totalTaxAmount);
+		jobWorkOutVO.setAmountInWords(amountInWordsConverterService.convert(jobWorkOutVO.getTotalAmount().longValue()));
 		jobWorkOutVO.setJobWorkOutDetailsVO(jobWorkOutDetailsVOs);
 
 	}
@@ -1048,7 +1083,4 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return List1;
 	}
 
-
-
-	
 }
