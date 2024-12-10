@@ -120,25 +120,25 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 	@Autowired
 	DesignationRepo designationrepo;
-	
+
 	@Autowired
 	UomRepo uomrepo;
-	
+
 	@Autowired
 	ShiftRepo shiftRepo;
-	
+
 	@Autowired
 	ShiftDetailsRepo shiftDetailsRepo;
-	
+
 	@Autowired
 	ShiftRepo shiftrepo;
-	
+
 	@Autowired
 	RackMasterRepo rackMasterRepo;
-	
+
 	@Autowired
 	BomRepo bomRepo;
-	
+
 	@Autowired
 	BomDetailsRepo bomDetailsRepo;
 
@@ -253,7 +253,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		itemVO.setItemTaxSlabVO(itemTaxSlabVOs);
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getPrimaryCodeFromUomMaster(Long orgId) {
@@ -272,7 +272,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getStockLocationForItemMaster(Long orgId) {
@@ -291,7 +291,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getTaxSlabFromGst(Long orgId) {
@@ -310,12 +310,12 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getMaterialGroupFromMaterialType(Long orgId,String materialType) {
+	public List<Map<String, Object>> getMaterialGroupFromMaterialType(Long orgId, String materialType) {
 
-		Set<Object[]> result = itemRepo.findMaterialGroupFromMaterialType(orgId,materialType);
+		Set<Object[]> result = itemRepo.findMaterialGroupFromMaterialType(orgId, materialType);
 		return getMaterialGroupFromMaterialType(result);
 	}
 
@@ -329,12 +329,13 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId,String materialType,String materialGroup) {
+	public List<Map<String, Object>> getMaterialSubGroupFromMaterialType(Long orgId, String materialType,
+			String materialGroup) {
 
-		Set<Object[]> result = itemRepo.findMaterialSubGroupFromMaterialType(orgId,materialType,materialGroup);
+		Set<Object[]> result = itemRepo.findMaterialSubGroupFromMaterialType(orgId, materialType, materialGroup);
 		return getMaterialSubGroupFromMaterialType(result);
 	}
 
@@ -348,7 +349,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getMaterialTypeForItemMaster(Long orgId) {
@@ -389,7 +390,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return measuringInstrumentsVO;
 	}
-
 
 	@Override
 	public Map<String, Object> updateCreateMeasuringInstruments(@Valid MeasuringInstrumentsDTO measuringInstrumentsDTO)
@@ -548,7 +548,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			message = "ItemWiseProcessMaster Updated Successfully";
 		} else {
 
-			String docId = itemWiseProcessMasterRepo.getItemWiseProcessMasterDocId(itemWiseProcessMasterDTO.getOrgId(), screenCode);
+			String docId = itemWiseProcessMasterRepo.getItemWiseProcessMasterDocId(itemWiseProcessMasterDTO.getOrgId(),
+					screenCode);
 			itemWiseProcessMasterVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
@@ -557,14 +558,11 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
-
-
 			itemWiseProcessMasterVO.setCreatedBy(itemWiseProcessMasterDTO.getCreatedBy());
 			itemWiseProcessMasterVO.setUpdatedBy(itemWiseProcessMasterDTO.getCreatedBy());
 			createUpdateProcessMasterVOByProcessMasterDTO(itemWiseProcessMasterDTO, itemWiseProcessMasterVO);
 			message = "ItemWiseProcessMaster Created Successfully";
 		}
-
 
 		itemWiseProcessMasterRepo.save(itemWiseProcessMasterVO);
 
@@ -600,7 +598,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		itemWiseProcessMasterVO.setItemWiseProcessDetailsVO(itemWiseProcessDetailsVOs);
 
 	}
-	
+
 	@Override
 	public String getItemWiseProcessMasterDocId(Long orgId) {
 		String screenCode = "IPM";
@@ -622,13 +620,13 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("itemName", fs[0] != null ? fs[0].toString() : "");
 			part.put("itemDesc", fs[1] != null ? fs[1].toString() : "");
-			part.put("id",fs[2]!=null ? Integer.parseInt(fs[2].toString()):0);
+			part.put("id", fs[2] != null ? Integer.parseInt(fs[2].toString()) : 0);
 
 			details1.add(part);
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getProcessNameFromItemWiseProcess(Long orgId) {
@@ -889,7 +887,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		return result;
 	}
 
-	
 	@Override
 	public List<ProcessMasterVO> getAllProcessMasterByOrgId(Long orgId) {
 		List<ProcessMasterVO> processMasterVO = new ArrayList<>();
@@ -1000,10 +997,9 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		if (ObjectUtils.isNotEmpty(orgId)) {
 			LOGGER.info("Successfully Received ArapAdjustments BY OrgId : {}", orgId);
 			designationVO = designationrepo.getDesignationByOrgId(orgId);
-		} 
+		}
 		return designationVO;
 	}
-
 
 	@Override
 	public List<DesignationVO> getDesignationById(Long id) {
@@ -1011,10 +1007,10 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received ArapAdjustments BY Id : {}", id);
 			designationVO = designationrepo.getDesignationById(id);
-		} 
+		}
 		return designationVO;
 	}
-	
+
 	@Override
 	public Map<String, Object> updateCreateDesignation(@Valid DesignationDTO designationDTO)
 			throws ApplicationException {
@@ -1037,7 +1033,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 					.findByOrgIdAndScreenCode(designationDTO.getOrgId(), screenCode);
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
-			
+
 			designationVO.setCreatedBy(designationDTO.getCreatedBy());
 			designationVO.setUpdatedBy(designationDTO.getCreatedBy());
 			createUpdateDesignationVOByDesignationDTO(designationDTO, designationVO);
@@ -1056,16 +1052,16 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		designationVO.setDesignation(designationDTO.getDesignation());
 		designationVO.setOrgId(designationDTO.getOrgId());
 		designationVO.setActive(designationDTO.isActive());
-		
-		
+
 	}
+
 	@Override
 	public String getDesignationDocId(Long orgId) {
 		String screenCode = "DSG";
 		String result = designationrepo.getDesignationDocId(orgId, screenCode);
 		return result;
 	}
-	
+
 	@Override
 	public List<UomVO> getUomByOrgId(Long orgId) {
 		List<UomVO> uomVO = new ArrayList<>();
@@ -1092,9 +1088,9 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		UomVO uomVO = new UomVO();
 		String message;
 		if (ObjectUtils.isNotEmpty(uomDTO.getId())) {
-			uomVO = uomrepo.findById(uomDTO.getId()).orElseThrow(() -> new ApplicationException("Uom not found")); 
-			
-			 if (!uomVO.getUomCode().equalsIgnoreCase(uomDTO.getUomCode())) {
+			uomVO = uomrepo.findById(uomDTO.getId()).orElseThrow(() -> new ApplicationException("Uom not found"));
+
+			if (!uomVO.getUomCode().equalsIgnoreCase(uomDTO.getUomCode())) {
 				if (uomrepo.existsByUomCodeAndOrgId(uomDTO.getUomCode(), uomDTO.getOrgId())) {
 					String errorMessage = String.format("The UomCode: %s  already exists This Organization.",
 							uomDTO.getUomCode());
@@ -1131,21 +1127,19 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		uomVO.setOrgId(uomDTO.getOrgId());
 		uomVO.setActive(uomDTO.isActive());
 
-
 	}
-	//shift master 
-	
-		@Override
-		public List<ShiftVO> getShiftByOrgId(Long orgId) {
-			List<ShiftVO> shiftVO = new ArrayList<>();
-			if (ObjectUtils.isNotEmpty(orgId)) {
-				LOGGER.info("Successfully Received Uom BY OrgId : {}", orgId);
-				shiftVO = shiftRepo.getShiftByOrgId(orgId);
-			}
-			return shiftVO;
+	// shift master
+
+	@Override
+	public List<ShiftVO> getShiftByOrgId(Long orgId) {
+		List<ShiftVO> shiftVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received Uom BY OrgId : {}", orgId);
+			shiftVO = shiftRepo.getShiftByOrgId(orgId);
+		}
+		return shiftVO;
 	}
 
-	
 	@Override
 	public List<ShiftVO> getShiftById(Long id) {
 		List<ShiftVO> shiftVO = new ArrayList<>();
@@ -1155,6 +1149,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		}
 		return shiftVO;
 	}
+
 	@Override
 	public Map<String, Object> updateCreateShift(ShiftDTO shiftdto) throws ApplicationException {
 		String screenCode = "D";
@@ -1163,9 +1158,10 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 		String message;
 		if (ObjectUtils.isNotEmpty(shiftdto.getId())) {
-			shiftVO = shiftrepo.findById(shiftdto.getId()).orElseThrow(() -> new ApplicationException("SHIFT not found")); 
-			
-			 if (!shiftVO.getShiftName().equalsIgnoreCase(shiftdto.getShiftName())) {
+			shiftVO = shiftrepo.findById(shiftdto.getId())
+					.orElseThrow(() -> new ApplicationException("SHIFT not found"));
+
+			if (!shiftVO.getShiftName().equalsIgnoreCase(shiftdto.getShiftName())) {
 				if (shiftrepo.existsByShiftCodeAndOrgId(shiftdto.getShiftName(), shiftdto.getOrgId())) {
 					String errorMessage = String.format("The ShiftName: %s  already exists This Organization.",
 							shiftdto.getShiftName());
@@ -1173,11 +1169,10 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 				}
 			}
 
-			 List<ShiftDetailsVO> shiftDetailsVOs = shiftDetailsRepo
-						.findByShiftVO(shiftVO);
-				shiftDetailsRepo.deleteAll(shiftDetailsVOs);
-				
-			 shiftVO.setUpdatedBy(shiftdto.getCreatedBy());
+			List<ShiftDetailsVO> shiftDetailsVOs = shiftDetailsRepo.findByShiftVO(shiftVO);
+			shiftDetailsRepo.deleteAll(shiftDetailsVOs);
+
+			shiftVO.setUpdatedBy(shiftdto.getCreatedBy());
 			createUpdateShiftVOByShiftDTO(shiftdto, shiftVO);
 			message = "Shift  Updated Successfully";
 		} else {
@@ -1188,7 +1183,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 				throw new ApplicationException(errorMessage);
 			}
 			shiftVO.setCreatedBy(shiftdto.getCreatedBy());
-			shiftVO.setUpdatedBy(shiftdto.getCreatedBy());   
+			shiftVO.setUpdatedBy(shiftdto.getCreatedBy());
 			createUpdateShiftVOByShiftDTO(shiftdto, shiftVO);
 			message = "Shift Created Successfully";
 		}
@@ -1201,63 +1196,60 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	}
 
 	private void createUpdateShiftVOByShiftDTO(@Valid ShiftDTO shiftDTO, ShiftVO shiftVO) throws ApplicationException {
-		
+
 		// Extracting LocalTime from LocalDateTime
-	    if (shiftDTO.getFromHour() != null) {
-	        shiftVO.setFromHour(shiftDTO.getFromHour().toLocalTime());
-	    }
-	    if (shiftDTO.getToHour() != null) {
-	        shiftVO.setToHour(shiftDTO.getToHour().toLocalTime());
-	    }
-	    
-	        shiftVO.setTiming(shiftDTO.getTiming());
-	    
+		if (shiftDTO.getFromHour() != null) {
+			shiftVO.setFromHour(shiftDTO.getFromHour().toLocalTime());
+		}
+		if (shiftDTO.getToHour() != null) {
+			shiftVO.setToHour(shiftDTO.getToHour().toLocalTime());
+		}
 
-	    shiftVO.setShiftName(shiftDTO.getShiftName());
-	    shiftVO.setShiftType(shiftDTO.getShiftType());
-	    shiftVO.setShiftCode(shiftDTO.getShiftCode());
-	    shiftVO.setOrgId(shiftDTO.getOrgId());
-	    shiftVO.setActive(shiftDTO.isActive());
+		shiftVO.setTiming(shiftDTO.getTiming());
 
-	    // Map shift details
-	    List<ShiftDetailsVO> shiftDetailsVOs = new ArrayList<>();
-	    for (ShiftDetailsDTO shiftDetailsDTO : shiftDTO.getShiftDetailsDTO()) {
-	        ShiftDetailsVO shiftDetailsVO = new ShiftDetailsVO();
+		shiftVO.setShiftName(shiftDTO.getShiftName());
+		shiftVO.setShiftType(shiftDTO.getShiftType());
+		shiftVO.setShiftCode(shiftDTO.getShiftCode());
+		shiftVO.setOrgId(shiftDTO.getOrgId());
+		shiftVO.setActive(shiftDTO.isActive());
 
-	        if (shiftDetailsDTO.getTimingInHours() != null) {
-	            shiftDetailsVO.setTimingInHours(shiftDetailsDTO.getTimingInHours());
-	        }
+		// Map shift details
+		List<ShiftDetailsVO> shiftDetailsVOs = new ArrayList<>();
+		for (ShiftDetailsDTO shiftDetailsDTO : shiftDTO.getShiftDetailsDTO()) {
+			ShiftDetailsVO shiftDetailsVO = new ShiftDetailsVO();
 
-	        // Set the reference in the child entity
-	        shiftDetailsVO.setShiftVO(shiftVO);
-	        shiftDetailsVOs.add(shiftDetailsVO);
-	    }
-	    shiftVO.setShiftDetailsVO(shiftDetailsVOs);
-	
+			if (shiftDetailsDTO.getTimingInHours() != null) {
+				shiftDetailsVO.setTimingInHours(shiftDetailsDTO.getTimingInHours());
+			}
+
+			// Set the reference in the child entity
+			shiftDetailsVO.setShiftVO(shiftVO);
+			shiftDetailsVOs.add(shiftDetailsVO);
+		}
+		shiftVO.setShiftDetailsVO(shiftDetailsVOs);
+
 	}
-	
-	
+
 	@Override
 	public List<RackMasterVO> getRackMasterByOrgId(Long orgId) {
 		List<RackMasterVO> rackMasterVO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(orgId)) {
 			LOGGER.info("Successfully Received RackMaster BY OrgId : {}", orgId);
 			rackMasterVO = rackMasterRepo.getRackMasterByOrgId(orgId);
-		} 
+		}
 		return rackMasterVO;
 	}
-	
+
 	@Override
 	public List<RackMasterVO> getRackMasterById(Long id) {
 		List<RackMasterVO> rackMasterVO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received RackMaster BY Id : {}", id);
 			rackMasterVO = rackMasterRepo.getRackMasterById(id);
-		} 
+		}
 		return rackMasterVO;
 	}
-	
-	
+
 	@Override
 	public Map<String, Object> updateCreateRackMaster(@Valid RackMasterDTO rackMasterDTO) throws ApplicationException {
 		String message;
@@ -1272,7 +1264,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			createUpdateRackMasterVOByRackMasterDTO(rackMasterDTO, rackMasterVO);
 			message = "RackMaster Updated Successfully";
 
-			
 		} else {
 
 			rackMasterVO.setCreatedBy(rackMasterDTO.getCreatedBy());
@@ -1280,7 +1271,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			createUpdateRackMasterVOByRackMasterDTO(rackMasterDTO, rackMasterVO);
 			message = "RackMaster Created Successfully";
 		}
-
 
 		rackMasterRepo.save(rackMasterVO);
 
@@ -1291,7 +1281,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		return response;
 	}
 
-	private void createUpdateRackMasterVOByRackMasterDTO(@Valid RackMasterDTO rackMasterDTO, RackMasterVO rackMasterVO) {
+	private void createUpdateRackMasterVOByRackMasterDTO(@Valid RackMasterDTO rackMasterDTO,
+			RackMasterVO rackMasterVO) {
 		rackMasterVO.setRackNo(rackMasterDTO.getRackNo());
 		rackMasterVO.setRackLocation(rackMasterDTO.getRackLocation());
 		rackMasterVO.setOrgId(rackMasterDTO.getOrgId());
@@ -1299,9 +1290,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 	}
 
-	
-	//Bom Master
-	
+	// Bom Master
+
 	@Override
 	public Map<String, Object> createUpdateBom(BomDTO bomDTO) throws ApplicationException {
 		BomVO bomVO = new BomVO();
@@ -1310,13 +1300,16 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		if (ObjectUtils.isNotEmpty(bomDTO.getId())) {
 			bomVO = bomRepo.findById(bomDTO.getId())
 					.orElseThrow(() -> new ApplicationException("SubContractEnquiry Enquiry details"));
+			
+			List<BomDetailsVO> bomDetailsVO1 = bomDetailsRepo.findByBomVO(bomVO);
+			bomDetailsRepo.deleteAll(bomDetailsVO1);
+			
 			message = "jobWorkOut Updated Successfully";
 			bomVO.setUpdatedBy(bomDTO.getCreatedBy());
 
 		} else {
 
-			String docId = bomRepo.getBomDocId(bomDTO.getOrgId(),
-					screenCode);
+			String docId = bomRepo.getBomDocId(bomDTO.getOrgId(), screenCode);
 			bomVO.setDocid(docId);
 
 			// GETDOCID LASTNO +1
@@ -1338,8 +1331,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		return response;
 	}
 
-	private void createUpdatedBomVOFromBomDTO(BomDTO bomDTO,
-			BomVO bomVO) {
+	private void createUpdatedBomVOFromBomDTO(BomDTO bomDTO, BomVO bomVO) {
 		bomVO.setProductCode(bomDTO.getProductCode());
 		bomVO.setProductName(bomDTO.getProductName());
 		bomVO.setProductType(bomDTO.getProductType());
@@ -1348,14 +1340,8 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		bomVO.setActive(bomDTO.isActive());
 		bomVO.setRevision(bomDTO.isRevision());
 		bomVO.setCurrent(bomDTO.isCurrent());
+		bomVO.setOrgId(bomDTO.getOrgId());
 
-
-		if (ObjectUtils.isNotEmpty(bomDTO.getId())) {
-			List<BomDetailsVO> bomDetailsVO1 = bomDetailsRepo
-					.findByBomVO(bomVO);
-			bomDetailsRepo.deleteAll(bomDetailsVO1);
-
-		}
 
 		List<BomDetailsVO> bomDetailsVOs = new ArrayList<>();
 		for (BomDetailsDTO bomDetailsDTO : bomDTO.getBomDetailsDTO()) {
@@ -1365,14 +1351,11 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			bomDetailsVO.setItemType(bomDetailsDTO.getItemType());
 			bomDetailsVO.setQty(bomDetailsDTO.getQty());
 			bomDetailsVO.setUom(bomDetailsDTO.getUom());
-			
+			bomDetailsVO.setBomVO(bomVO);
+			bomDetailsVOs.add(bomDetailsVO);
 		}
 		bomVO.setBomDetailsVO(bomDetailsVOs);
-
-	
 	}
-
-	
 
 	@Override
 	public String getBomDocId(Long orgId) {
@@ -1380,7 +1363,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		String result = bomRepo.getBomDocId(orgId, ScreenCode);
 		return result;
 	}
-
 
 	@Override
 	public List<BomVO> getAllBomOrgId(Long orgId) {
@@ -1393,13 +1375,13 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		// TODO Auto-generated method stub
 		return bomRepo.getBomById(id);
 	}
-	
-	
+
 	@Override
-	public List<Map<String, Object>> getFGSFGPartDetailsForBOM(Long orgId , String productType) {
-		Set<Object[]> FgSfg = bomRepo.findFGSFGPartDetails(orgId,productType);
+	public List<Map<String, Object>> getFGSFGPartDetailsForBOM(Long orgId, String productType) {
+		Set<Object[]> FgSfg = bomRepo.findFGSFGPartDetails(orgId, productType);
 		return getFGSFGPartDetailsForBOM(FgSfg);
 	}
+
 	private List<Map<String, Object>> getFGSFGPartDetailsForBOM(Set<Object[]> chCode) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chCode) {
@@ -1421,6 +1403,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		Set<Object[]> SfgItem = bomRepo.findSFGItemDetails(orgId);
 		return getSFGItemDetailsForBOM(SfgItem);
 	}
+
 	private List<Map<String, Object>> getSFGItemDetailsForBOM(Set<Object[]> chCode) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chCode) {
@@ -1429,12 +1412,11 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
 			map.put("itemtype", ch[2] != null ? ch[2].toString() : "");
 			map.put("primaryunit", ch[3] != null ? ch[3].toString() : "");
-			
 
 			List1.add(map);
 		}
 		return List1;
 
 	}
-	
+
 }

@@ -76,9 +76,9 @@ public class RouteCardEntryVO {
 	@Column(name = "stockqty")
 	private int stockQty;
 
-//	@Lob
-//	@Column(name = "file_data")
-//	private byte[] fileData;
+	@Lob
+	@Column(name = "attachements", columnDefinition = "LONGBLOB")
+	private byte[] attachements;
 
 	@Column(name = "orgid")
 	private Long orgId;
@@ -87,7 +87,7 @@ public class RouteCardEntryVO {
 	@Column(name = "modifyby", length = 25)
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "cancelremarks", length = 150)
