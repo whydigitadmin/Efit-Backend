@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +104,9 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Autowired
 	JobWorkOutDetailsRepo jobWorkOutDetailsRepo;
+
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 
 	// IssueToSubContract
 	@Override
@@ -627,6 +631,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	private void createUpdatedSubContractQuotationVOFromSubContractQuotationDTO(
 			SubContractQuotationDTO subContractQuotationDTO, SubContractQuotationVO subContractQuotationVO) {
+
 		subContractQuotationVO.setEnquiryNo(subContractQuotationDTO.getEnquiryNo());
 		subContractQuotationVO.setEnquiryDate(subContractQuotationDTO.getEnquiryDate());
 		subContractQuotationVO.setSubContractorId(subContractQuotationDTO.getSubContractorId());
@@ -642,34 +647,70 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		subContractQuotationVO.setActive(subContractQuotationDTO.isActive());
 		subContractQuotationVO.setCreatedBy(subContractQuotationDTO.getCreatedBy());
 
+		BigDecimal grocessAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+
 		if (ObjectUtils.isNotEmpty(subContractQuotationDTO.getId())) {
 			List<SubContractQuotationDetailsVO> subContractQuotationDetailsVO1 = subContractQuotationDetailsRepo
 					.findBySubContractQuotationVO(subContractQuotationVO);
 			subContractQuotationDetailsRepo.deleteAll(subContractQuotationDetailsVO1);
-
 		}
 
 		List<SubContractQuotationDetailsVO> subContractQuotationDetailsVOs = new ArrayList<>();
+
 		for (SubContractQuotationDetailsDTO subContractQuotationDetailsDTO : subContractQuotationDTO
 				.getSubContractQuotationDetailsDTO()) {
+
 			SubContractQuotationDetailsVO subContractQuotationDetailsVO = new SubContractQuotationDetailsVO();
+
 			subContractQuotationDetailsVO.setPart(subContractQuotationDetailsDTO.getPart());
 			subContractQuotationDetailsVO.setPartDescription(subContractQuotationDetailsDTO.getPartDescription());
 			subContractQuotationDetailsVO.setProcess(subContractQuotationDetailsDTO.getProcess());
 			subContractQuotationDetailsVO.setQty(subContractQuotationDetailsDTO.getQty());
 			subContractQuotationDetailsVO.setRate(subContractQuotationDetailsDTO.getRate());
-			subContractQuotationDetailsVO.setAmount(subContractQuotationDetailsDTO.getAmount());
 			subContractQuotationDetailsVO.setDiscount(subContractQuotationDetailsDTO.getDiscount());
-			subContractQuotationDetailsVO.setDiscountAmount(subContractQuotationDetailsDTO.getDiscountAmount());
 			subContractQuotationDetailsVO.setTax(subContractQuotationDetailsDTO.getTax());
-			subContractQuotationDetailsVO.setQuotationAmount(subContractQuotationDetailsDTO.getQuotationAmount());
+
+			BigDecimal discountAmount = BigDecimal.ZERO;
+			BigDecimal afterDiscountAmount = BigDecimal.ZERO;
+			BigDecimal afterQuotationAmount = BigDecimal.ZERO;
+
+			BigDecimal amount = subContractQuotationDetailsDTO.getRate()
+					.multiply(subContractQuotationDetailsDTO.getQty());
+			subContractQuotationDetailsVO.setAmount(amount);
+			grocessAmount = grocessAmount.add(amount);
+
+			discountAmount = subContractQuotationDetailsVO.getAmount()
+					.multiply(subContractQuotationDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
+
+			subContractQuotationDetailsVO.setDiscountAmount(discountAmount);
+
+			afterDiscountAmount = amount.subtract(discountAmount);
+//			subContractQuotationDetailsVO.setAfterDiscountAmount(afterDiscountAmount);
+			subContractQuotationDetailsDTO.setAfterDiscountAmount(afterDiscountAmount);
+
+			afterQuotationAmount = subContractQuotationDetailsDTO.getAfterDiscountAmount()
+					.multiply(subContractQuotationDetailsDTO.getTax()).divide(BigDecimal.valueOf(100));
+
+//			subContractQuotationDetailsVO.setAfterQuotationAmount(afterQuotationAmount);
+			subContractQuotationDetailsDTO.setAfterQuotationAmount(afterQuotationAmount);
+
+			BigDecimal quotationAmount = afterDiscountAmount.add(afterQuotationAmount);
+			subContractQuotationDetailsVO.setQuotationAmount(quotationAmount);
+			netAmount = netAmount.add(quotationAmount);
+
 			subContractQuotationDetailsVO.setDeliveryDate(subContractQuotationDetailsDTO.getDeliveryDate());
 
 			subContractQuotationDetailsVO.setSubContractQuotationVO(subContractQuotationVO);
+
 			subContractQuotationDetailsVOs.add(subContractQuotationDetailsVO);
 		}
+
+		subContractQuotationVO.setGrossAmount(grocessAmount);
+		subContractQuotationVO.setNetAmount(netAmount);
+		subContractQuotationVO.setAmountInWords(
+				amountInWordsConverterService.convert(subContractQuotationVO.getNetAmount().longValue()));
 		subContractQuotationVO.setSubContractQuotationDetailsVO(subContractQuotationDetailsVOs);
-		;
 	}
 
 	@Override
@@ -827,6 +868,57 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> getJobWorkOutOrderNo(Long orgId) {
+		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderNo(orgId);
+		return getWorkOrderOut(chType);
+	}
+
+	private List<Map<String, Object>> getWorkOrderOut(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("jobworkorderno", ch[0] != null ? ch[0].toString() : "");
+			map.put("dcno", ch[1] != null ? ch[1].toString() : "");
+			map.put("deliverydDate", ch[2] != null ? ch[2].toString() : "");
+			map.put("dispatchedthrough", ch[3] != null ? ch[3].toString() : "");
+			map.put("routeCardNo", ch[4] != null ? ch[4].toString() : "");
+			map.put("contractorCode", ch[5] != null ? ch[5].toString() : "");
+			map.put("contractorName", ch[6] != null ? ch[6].toString() : "");
+			map.put("subContractorAddress", ch[7] != null ? ch[7].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getJobWorkOutOrderFromPartNoAndDesc(Long orgId, String docId) {
+		Set<Object[]> chType = subContractInvoiceRepo.getJobWorkOutOrderFromPartNoAndDesc(orgId, docId);
+		return getJobWorkOutOrderFromPartNo(chType);
+	}
+
+	private List<Map<String, Object>> getJobWorkOutOrderFromPartNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("part", ch[0] != null ? ch[0].toString() : "");
+			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("process", ch[2] != null ? ch[2].toString() : "");
+			map.put("quantityNos", ch[3] != null ? ch[3].toString() : "");
+			map.put("rate", ch[4] != null ? ch[4].toString() : "");
+			map.put("amount", ch[5] != null ? ch[5].toString() : "");
+			map.put("cgst", ch[6] != null ? ch[6].toString() : "");
+			map.put("sgst", ch[7] != null ? ch[7].toString() : "");
+			map.put("landedAmount", ch[8] != null ? ch[8].toString() : "");
+			map.put("grossAmount", ch[9] != null ? ch[9].toString() : "");
+			map.put("totalTaxAmount", ch[10] != null ? ch[10].toString() : "");
+			map.put("netAmount", ch[11] != null ? ch[11].toString() : "");
+			map.put("amountInWords", ch[12] != null ? ch[12].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
 	// JoibWorkOut
 
 	@Override
@@ -870,22 +962,21 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		jobWorkOutVO.setRouteCardNo(jobWorkOutDTO.getRouteCardNo());
 		jobWorkOutVO.setPoNo(jobWorkOutDTO.getPoNo());
 		jobWorkOutVO.setQuotationNo(jobWorkOutDTO.getQuotationNo());
-		jobWorkOutVO.setCustomer(jobWorkOutDTO.getCustomer());
 		jobWorkOutVO.setContractorName(jobWorkOutDTO.getContractorName());
 		jobWorkOutVO.setContractorCode(jobWorkOutDTO.getContractorCode());
 		jobWorkOutVO.setDestination(jobWorkOutDTO.getDestination());
-		jobWorkOutVO.setDurationOfrocess(jobWorkOutDTO.getDurationOfrocess());
-		jobWorkOutVO.setDispatchedThrough(jobWorkOutDTO.getDurationOfrocess());
-		jobWorkOutVO.setGstType(jobWorkOutDTO.getGstType());
-		jobWorkOutVO.setTermsOfPay(jobWorkOutDTO.getTermsOfPay());
-		jobWorkOutVO.setTotalAmt(jobWorkOutDTO.getTotalAmt());
-		jobWorkOutVO.setTotalGrossAmt(jobWorkOutDTO.getTotalGrossAmt());
-		jobWorkOutVO.setAmtInWords(jobWorkOutDTO.getAmtInWords());
-		jobWorkOutVO.setTotalTax(jobWorkOutDTO.getTotalTax());
-		jobWorkOutVO.setScIssueNo(jobWorkOutDTO.getScIssueNo());
+		jobWorkOutVO.setDurationOfProcess(jobWorkOutDTO.getDurationOfProcess());
+		jobWorkOutVO.setDispatchedThrough(jobWorkOutDTO.getDispatchedThrough());
+		jobWorkOutVO.setTaxType(jobWorkOutDTO.getTaxType());
+		jobWorkOutVO.setTermsOfPayment(jobWorkOutDTO.getTermsOfPayment());
+		jobWorkOutVO.setNarration(jobWorkOutDTO.getNarration());
 		jobWorkOutVO.setOrgId(jobWorkOutDTO.getOrgId());
 		jobWorkOutVO.setActive(jobWorkOutDTO.isActive());
 		jobWorkOutVO.setCreatedBy(jobWorkOutDTO.getCreatedBy());
+
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		BigDecimal totalGrossAmount = BigDecimal.ZERO;
+		BigDecimal totalTaxAmount = BigDecimal.ZERO;
 
 		if (ObjectUtils.isNotEmpty(jobWorkOutDTO.getId())) {
 			List<JobWorkOutDetailsVO> jobWorkOutDetailsVO1 = jobWorkOutDetailsRepo.findByJobWorkOutVO(jobWorkOutVO);
@@ -900,16 +991,49 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			jobWorkOutDetailsVO.setPartDesc(jobWorkOutDetailsDTO.getPartDesc());
 			jobWorkOutDetailsVO.setProcess(jobWorkOutDetailsDTO.getProcess());
 			jobWorkOutDetailsVO.setDueOn(jobWorkOutDetailsDTO.getDueOn());
-			jobWorkOutDetailsVO.setQuantity(jobWorkOutDetailsDTO.getQuantity());
-			jobWorkOutDetailsVO.setRate(jobWorkOutDetailsDTO.getRate());
+			jobWorkOutDetailsVO.setQuantityNos(jobWorkOutDetailsDTO.getQuantityNos());
 			jobWorkOutDetailsVO.setDiscount(jobWorkOutDetailsDTO.getDiscount());
+			jobWorkOutDetailsVO.setRate(jobWorkOutDetailsDTO.getRate());
 			jobWorkOutDetailsVO.setCgst(jobWorkOutDetailsDTO.getCgst());
 			jobWorkOutDetailsVO.setSgst(jobWorkOutDetailsDTO.getSgst());
 			jobWorkOutDetailsVO.setIgst(jobWorkOutDetailsDTO.getIgst());
-			jobWorkOutDetailsVO.setLandedValue(jobWorkOutDetailsDTO.getLandedValue());
+
+			BigDecimal taxAmountAll = BigDecimal.ZERO;
+			BigDecimal amount = BigDecimal.ZERO;
+
+			BigDecimal setAmountGross = jobWorkOutDetailsDTO.getQuantityNos().multiply(jobWorkOutDetailsDTO.getRate());
+			jobWorkOutDetailsVO.setGrossAmt(setAmountGross);
+
+			BigDecimal discountAmount = jobWorkOutDetailsVO.getGrossAmt().multiply(jobWorkOutDetailsDTO.getDiscount())
+					.divide(BigDecimal.valueOf(100));
+			jobWorkOutDetailsVO.setDiscountAmount(discountAmount);
+
+			BigDecimal netAmounts = jobWorkOutDetailsVO.getGrossAmt().subtract(jobWorkOutDetailsVO.getDiscountAmount());
+			jobWorkOutDetailsVO.setNetAmount(netAmounts);
+			totalGrossAmount = totalGrossAmount.add(jobWorkOutDetailsVO.getNetAmount());
+
+			BigDecimal sgstamount = jobWorkOutDetailsDTO.getSgst().multiply(jobWorkOutDetailsVO.getNetAmount())
+					.divide(BigDecimal.valueOf(100));
+			BigDecimal cgstamount = jobWorkOutDetailsDTO.getCgst().multiply(jobWorkOutDetailsVO.getNetAmount())
+					.divide(BigDecimal.valueOf(100));
+			BigDecimal igstamount = jobWorkOutDetailsDTO.getIgst().multiply(jobWorkOutDetailsVO.getNetAmount())
+					.divide(BigDecimal.valueOf(100));
+
+			taxAmountAll = taxAmountAll.add(cgstamount).add(sgstamount).add(igstamount);
+			jobWorkOutDetailsVO.setTaxAmt(taxAmountAll);
+			totalTaxAmount = totalTaxAmount.add(jobWorkOutDetailsVO.getTaxAmt());
+
+			amount = jobWorkOutDetailsVO.getNetAmount().add(jobWorkOutDetailsVO.getTaxAmt());
+			jobWorkOutDetailsVO.setAmount(amount);
+			totalAmount = totalAmount.add(jobWorkOutDetailsVO.getAmount());
+
 			jobWorkOutDetailsVO.setJobWorkOutVO(jobWorkOutVO);
 			jobWorkOutDetailsVOs.add(jobWorkOutDetailsVO);
 		}
+		jobWorkOutVO.setTotalAmount(totalAmount);
+		jobWorkOutVO.setTotalGrossAmt(totalGrossAmount);
+		jobWorkOutVO.setTotalTax(totalTaxAmount);
+		jobWorkOutVO.setAmountInWords(amountInWordsConverterService.convert(jobWorkOutVO.getTotalAmount().longValue()));
 		jobWorkOutVO.setJobWorkOutDetailsVO(jobWorkOutDetailsVOs);
 
 	}

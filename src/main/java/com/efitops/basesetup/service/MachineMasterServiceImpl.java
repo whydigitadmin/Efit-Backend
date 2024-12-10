@@ -401,8 +401,6 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	    drawingMasterVO.setCancelRemarks(drawingMasterDTO.getCancelRemarks());
 	    drawingMasterVO.setOrgId(drawingMasterDTO.getOrgId());
 	    drawingMasterVO.setActive(drawingMasterDTO.isActive());
-
-	    
 	    
 	    if(drawingMasterDTO.getId() !=null) {
 	    	
