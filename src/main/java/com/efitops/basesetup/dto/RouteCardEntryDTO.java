@@ -40,7 +40,6 @@ public class RouteCardEntryDTO {
 	private LocalDate invoiceDate;
 	@Column(name = "qty")
 	private int qty;
-	@Column(name = "stockqty")
 	private int stockQty;
 	
 //    private MultipartFile file;

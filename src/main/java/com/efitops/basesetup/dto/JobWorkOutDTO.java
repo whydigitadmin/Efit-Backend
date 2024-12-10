@@ -1,6 +1,5 @@
 package com.efitops.basesetup.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class JobWorkOutDTO {
 	private String poNo;
 	private String contractorName;
 	
-	private String gstType; 
+	private String taxType; 
 	
 	private String destination;
 	
@@ -32,17 +31,9 @@ public class JobWorkOutDTO {
 	
 	private String durationOfProcess;
 	
-	private String customer; 
 	
-	private String termsOfPay;
+	private String termsOfPayment;
 	
-	private String amtInWords;
-	
-	private BigDecimal totalAmt;
-	
-	private BigDecimal totalGrossAmt;
-	
-	private BigDecimal totalTax; 
 	
 	private Long orgId;
 	

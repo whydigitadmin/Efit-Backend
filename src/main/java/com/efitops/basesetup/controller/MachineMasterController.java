@@ -73,8 +73,7 @@ public class MachineMasterController extends BaseController {
 	}
 	
 	@GetMapping("/getMachineMasterDocId")
-	public ResponseEntity<ResponseDTO> getMachineMasterDocId(@RequestParam Long orgId,@RequestParam String finYear,
-			@RequestParam String screenCode) {
+	public ResponseEntity<ResponseDTO> getMachineMasterDocId(@RequestParam Long orgId) {
 
 		String methodName = "getMachineMasterDocId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -84,7 +83,7 @@ public class MachineMasterController extends BaseController {
 		String mapp = "";
 
 		try {
-			mapp = machineMasterService.getMachineMasterDocId(orgId,finYear,screenCode);
+			mapp = machineMasterService.getMachineMasterDocId(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -92,7 +91,7 @@ public class MachineMasterController extends BaseController {
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "MachineMaster DocId information retrieved successfully");
-			responseObjectsMap.put("purchaseIndent DocId", mapp);
+			responseObjectsMap.put("machineMasterDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
@@ -131,7 +130,7 @@ public class MachineMasterController extends BaseController {
 	}
 	
 	@GetMapping("/getAllMachineMasterByOrgId")
-	public ResponseEntity<ResponseDTO> getAllCostInvoiceByOrgId(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getAllMachineMasterByOrgId(@RequestParam(required = false) Long orgId) {
 		String methodName = "getAllMachineMasterByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -186,7 +185,7 @@ public class MachineMasterController extends BaseController {
 	}
 	
 	@PostMapping("/uploadMachineAttachementsInBloob")
-	public ResponseEntity<ResponseDTO> uploadMachineAttachementsInBloob1(@RequestParam("file") MultipartFile file,
+	public ResponseEntity<ResponseDTO> uploadMachineAttachementsInBloob(@RequestParam("file") MultipartFile file,
 			@RequestParam Long id) {
 		String methodName = "uploadMachineAttachementsInBloob1()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -394,6 +393,7 @@ public class MachineMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
+		
 	}
 	
 	@PostMapping("/uploadAttachementsInBloob")
@@ -448,6 +448,63 @@ public class MachineMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getFGSFGPartDetailsForDrawingMaster")
+	public ResponseEntity<ResponseDTO> getFGSFGPartDetailsForDrawingMaster(@RequestParam(required = false) Long orgId) {
+		String methodName = "getFGSFGPartDetailsForDrawingMaster()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> drawingMasterVO = new ArrayList<>();
+		try {
+			drawingMasterVO = machineMasterService.getFGSFGPartDetailsForDrawingMaster(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FGSFGPartDetails information get successfully By OrgId");
+			responseObjectsMap.put("drawingMasterVO", drawingMasterVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"FGSFGPartDetails information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getDrawingMasterDocId")
+	public ResponseEntity<ResponseDTO> getDrawingMasterDocId(@RequestParam Long orgId) {
+
+		String methodName = "getDrawingMasterDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = machineMasterService.getDrawingMasterDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DrawingMaster DocId information retrieved successfully");
+			responseObjectsMap.put("drawingMasterDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve DrawingMaster DocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 	
 	
 }

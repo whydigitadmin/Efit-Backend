@@ -51,8 +51,6 @@ public class JobWorkOutVO {
 	private String poNo;	
 	@Column(name="contractorname")
 	private String contractorName;
-	@Column(name="gsttype")
-	private String gstType; 
 	@Column(name="destination")
 	private String destination;
 	@Column(name="contractorcode")
@@ -61,24 +59,21 @@ public class JobWorkOutVO {
 	private String dispatchedThrough;
 	@Column(name="durationofprocess")
 	private String durationOfProcess;
-	@Column(name="customer")
-	private String customer; 
-	@Column(name="termsofpay")
-	private String termsOfPay;
-	@Column(name="amtinwords")
-	private String amtInWords;
-	@Column(name="totalamt")
-	private BigDecimal totalAmt;
-	@Column(name="totalgrossamt")
+	@Column(name="taxtype")
+	private String taxType;  
+	@Column(name="termsofpayment")
+	private String termsOfPayment;
+	@Column(name="amountinwords")
+	private String amountInWords;
+	@Column(name="totalamount",precision = 10,scale = 2)
+	private BigDecimal totalAmount;
+	@Column(name="totalgrossamt",precision = 10,scale = 2)
 	private BigDecimal totalGrossAmt;
-	@Column(name="totaltax")
+	@Column(name="totaltax",precision = 10,scale = 2)
 	private BigDecimal totalTax; 
 	@Column(name="narration")
 	private String narration;
-	@Column(name="scissueno")
-	private String scIssueNo;
-	
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)

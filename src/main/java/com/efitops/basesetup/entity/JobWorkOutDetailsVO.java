@@ -41,30 +41,31 @@ public class JobWorkOutDetailsVO {
 	private String process;
 	@Column(name="taxcode")
 	private String taxCode;
-	@Column(name="quantitynos")
-	private String quantityNos;
+	@Column(name="quantitynos",precision = 10,scale = 2)
+	private BigDecimal quantityNos;
 	@Column(name="dueon")
 	private Date dueOn;
-	@Column(name="rate")
+	@Column(name="rate",precision = 10,scale = 2)
+
 	private BigDecimal rate; 
-	@Column(name="grossamt")
+	@Column(name="grossamt",precision = 10,scale = 2)
 	private BigDecimal grossAmt;
-	@Column(name="discount")
+	@Column(name="discount",precision = 10,scale = 2)
 	private BigDecimal discount;
-	@Column(name="discountamt")
-	private BigDecimal discountAmt;
-	@Column(name="netamount")
+	@Column(name="discountamount",precision = 10,scale = 2)
+	private BigDecimal discountAmount;
+	@Column(name="netamount",precision = 10,scale = 2)
 	private BigDecimal netAmount;
-	@Column(name="sgst")
+	@Column(name="sgst",precision = 10,scale = 2)
 	private BigDecimal sgst;
-	@Column(name="cgst")
+	@Column(name="cgst",precision = 10,scale = 2)
 	private BigDecimal cgst;
-	@Column(name="igst")
+	@Column(name="igst",precision = 10,scale = 2)
 	private BigDecimal igst;
-	@Column(name="taxvalue")
-	private BigDecimal taxValue;
-	@Column(name="landedvalue")
-	private BigDecimal landedValue;
+	@Column(name="taxamt",precision = 10,scale = 2)
+	private BigDecimal taxAmt;
+	@Column(name="amount",precision = 10,scale = 2)
+	private BigDecimal amount;
 		
 	@ManyToOne
 	@JoinColumn(name = "jobworkoutid")

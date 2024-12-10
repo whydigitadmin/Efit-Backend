@@ -32,8 +32,7 @@ public interface CustomerEnquiryService {
 
 	List<Map<String, Object>> getPartNoAndDescription(Long orgId);
 
-	List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo);
-
+	List<Map<String, Object>>  getDrawingNoAndRevisionNo(String partNo,Long orgId);	
 	// Quotation
 
 	Map<String, Object> createUpdateQuotation(QuotationDTO quotationDTO) throws ApplicationException;

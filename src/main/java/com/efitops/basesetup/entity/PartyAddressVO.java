@@ -61,6 +61,9 @@ public class PartyAddressVO {
 
     @Column(name = "contact", length = 15) 
     private String contact;
+    
+    @Column(name = "taxtype", length = 15) 
+    private String taxType;
 
 	@ManyToOne
 	@JoinColumn(name = "partymasterid")

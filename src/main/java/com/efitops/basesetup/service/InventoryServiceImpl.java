@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.ItemIssueToProductionDTO;
 import com.efitops.basesetup.dto.ItemIssueToProductionDetailsDTO;
@@ -26,6 +28,7 @@ import com.efitops.basesetup.dto.RouteCardEngDeptDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDTO;
 import com.efitops.basesetup.dto.RouteCardEntryDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.DrawingMaster2VO;
 import com.efitops.basesetup.entity.ItemIssueToProductionDetailsVO;
 import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 import com.efitops.basesetup.entity.PickListDetailsVO;
@@ -566,6 +569,13 @@ public class InventoryServiceImpl implements InventoryService {
 		return List1;
 	}
 	
+	@Override
+	public RouteCardEntryVO uploadFileForRouteCardEntry(MultipartFile file, Long id) throws IOException {
+		RouteCardEntryVO routeCardEntryVO = routeCardEntryRepo.findById(id).get();
+		routeCardEntryVO.setAttachements(file.getBytes());
+		return routeCardEntryRepo.save(routeCardEntryVO);
+	}
+	
 	//PickList
 
 	@Override
@@ -758,9 +768,9 @@ public class InventoryServiceImpl implements InventoryService {
 			itemIssueToProductionDetailsVO.setUnit(itemIssueToProductionDetailsDTO.getUnit());
 			itemIssueToProductionDetailsVO.setHoldQty(itemIssueToProductionDetailsDTO.getHoldQty());
 			itemIssueToProductionDetailsVO.setReqQty(itemIssueToProductionDetailsDTO.getReqQty());
-			itemIssueToProductionDetailsVO.setAvgQty(itemIssueToProductionDetailsDTO.getAvgQty());	
+//			itemIssueToProductionDetailsVO.setAvgQty(itemIssueToProductionDetailsDTO.getAvgQty());	
 			itemIssueToProductionDetailsVO.setIssueQty(itemIssueToProductionDetailsDTO.getIssueQty());
-			itemIssueToProductionDetailsVO.setPendingQty(itemIssueToProductionDetailsDTO.getPendingQty());
+			itemIssueToProductionDetailsVO.setPendingQty(itemIssueToProductionDetailsDTO.getReqQty() - itemIssueToProductionDetailsDTO.getIssueQty());
 
 			itemIssueToProductionDetailsVO.setItemIssueToProductionVO(itemIssueToProductionVO); // Set the reference in child entity
 			itemIssueToProductionDetailsVOs.add(itemIssueToProductionDetailsVO);
@@ -776,5 +786,67 @@ public class InventoryServiceImpl implements InventoryService {
 		String result = itemIssueToProductionRepo .getItemIssueToProductionDocId(orgId, ScreenCode);
 		return result;
 	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getRouteCardEntryNoForItemIssueToProduction(Long orgId) {
+		Set<Object[]> itemIssueToProduction = itemIssueToProductionRepo.findRouteCardEntryNoForItemIssueToProduction(orgId);
+		return getRouteCardEntryNoForItemIssueToProduction(itemIssueToProduction);
+	}
+
+	private List<Map<String, Object>> getRouteCardEntryNoForItemIssueToProduction(Set<Object[]> itemIssueToProduction) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemIssueToProduction) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardEntryNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getRouteCardEntryDetailsForItemIssueToProduction(Long orgId,String routeCardNo) {
+		Set<Object[]> itemIssueToProduction = itemIssueToProductionRepo.findRouteCardEntryDetailsForItemIssueToProduction(orgId,routeCardNo);
+		return getRouteCardEntryDetailsForItemIssueToProduction(itemIssueToProduction);
+	}
+
+	private List<Map<String, Object>> getRouteCardEntryDetailsForItemIssueToProduction(Set<Object[]> itemIssueToProduction) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemIssueToProduction) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgItemId", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgItemDesc", ch[2] != null ? ch[2].toString() : "");
+			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
+
+
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getItemIssueToProductionDetailsfromBom(Long orgId,String fgItemId) {
+		Set<Object[]> itemIssueToProduction = itemIssueToProductionRepo.findItemIssueToProductionDetailsfromBom(orgId,fgItemId);
+		return getItemIssueToProductionDetailsfromBom(itemIssueToProduction);
+	}
+
+	private List<Map<String, Object>> getItemIssueToProductionDetailsfromBom(Set<Object[]> itemIssueToProduction) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemIssueToProduction) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("item", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("unit", ch[2] != null ? ch[2].toString() : "");
+			map.put("bomQty", ch[3] != null ? ch[3].toString() : "");
+
+
+			List1.add(map);
+		}
+		return List1;
+	}
+	
 
 }
