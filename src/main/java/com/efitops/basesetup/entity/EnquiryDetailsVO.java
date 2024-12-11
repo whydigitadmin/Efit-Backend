@@ -37,9 +37,9 @@ public class EnquiryDetailsVO {
 	@Column(name="partdescription")
 	private String partDescription;
 	@Column(name="drawingno")
-	private Long drawingNo;
+	private String drawingNo;
 	@Column(name="revisionno")
-	private Long revisionNo;
+	private String revisionNo;
 	@Column(name="unit")
 	private String unit;
 	@Column(name="requireqty")
