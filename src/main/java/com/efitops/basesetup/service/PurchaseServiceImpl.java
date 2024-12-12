@@ -125,6 +125,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 		purchaseIndentVO.setIndentType(purchaseIndentDTO.getIndentType());
 		purchaseIndentVO.setCustomerName(purchaseIndentDTO.getCustomerName());
+		purchaseIndentVO.setCustomerCode(purchaseIndentDTO.getCustomerCode());
 		purchaseIndentVO.setWorkOrderNo(purchaseIndentDTO.getWorkOrderNo());
 		purchaseIndentVO.setDepartment(purchaseIndentDTO.getDepartment());
 		purchaseIndentVO.setFgPart(purchaseIndentDTO.getFgPart());
@@ -305,8 +306,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Long orgId, String customerName) {
-		Set<Object[]> workOrderNo = purchaseIndentRepo.findWorkOrderNoForPurchaseIndent(orgId, customerName);
+	public List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Long orgId, String customerCode) {
+		Set<Object[]> workOrderNo = purchaseIndentRepo.findWorkOrderNoForPurchaseIndent(orgId, customerCode);
 		return getWorkOrderNoForPurchaseIndent(workOrderNo);
 	}
 
@@ -446,6 +447,80 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return purchaseEnquiryRepo.getPurchaseEnquiryDocId(orgId,finYear,screenCode);
 	}
 
+	@Override
+	public List<Map<String, Object>> getSupplierNameForPurchaseEnquiry(Long orgId) {
+		Set<Object[]> supplierName = purchaseEnquiryRepo.findSupplierNameForPurchaseEnquiry(orgId);
+		return getSupplierNameForPurchaseEnquiry(supplierName);
+	}
 
+	private List<Map<String, Object>> getSupplierNameForPurchaseEnquiry(Set<Object[]> supplierName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : supplierName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("supplierName", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("supplierCode", ch[1] != null ? ch[1].toString() : "");
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getContactPersonDetailsForPurchaseEnquiry(Long orgId ,String supplierCode) {
+		Set<Object[]> ContactPersonDetails = purchaseEnquiryRepo.findContactPersonDetailsForPurchaseEnquiry(orgId,supplierCode);
+		return getContactPersonDetailsForPurchaseEnquiry(ContactPersonDetails);
+	}
+
+	private List<Map<String, Object>> getContactPersonDetailsForPurchaseEnquiry(Set<Object[]> ContactPersonDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : ContactPersonDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("contactPerson", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("contactNo", ch[1] != null ? ch[1].toString() : "");
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode) {
+		Set<Object[]> purchaseIndentNo = purchaseEnquiryRepo.findPurchaseIndentNoForPurchaseEnquiry(orgId, customerCode);
+		return getPurchaseIndentNoForPurchaseEnquiry(purchaseIndentNo);
+	}
+
+	private List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Set<Object[]> purchaseIndentNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : purchaseIndentNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("purchaseIndentNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo,String fgItem) {
+		Set<Object[]> itemDetails = purchaseEnquiryRepo.findItemDetailsForPurchaseEnquiry(orgId, purchaseIndentNo,fgItem);
+		return getItemDetailsForPurchaseEnquiry(itemDetails);
+	}
+
+	private List<Map<String, Object>> getItemDetailsForPurchaseEnquiry(Set<Object[]> itemDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("item", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("itemQty", ch[2] != null ? ch[2].toString() : "");
+			map.put("qtyRequired", ch[3] != null ? Integer.parseInt(ch[3].toString()) : 0);
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
 	
 }

@@ -20,8 +20,29 @@ public interface ThirdPartyInspectionRepo extends JpaRepository<ThirdPartyInspec
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getThirdPartyInspectionDocId(Long orgId, String screenCode);
 
+	
 	@Query(nativeQuery = true, value ="SELECT grnno,inwardno,pono,customer,suppliername FROM efit_ops.t_grn where cancel=0 and orgid=?1")
-	Set<Object[]> findGRNDetForThirdPartyInsp(Long orgId);
+	Set<Object[]> findGRNForThirdPartyInspDetails(Long orgId);
+
+	@Query(
+		    nativeQuery = true,
+		    value = "SELECT partyname, " +
+		            "CONCAT(" +
+		            "    COALESCE(a.addressline1, ''), ', ', " +
+		            "    COALESCE(a.addressline2, ''), ', ', " +
+		            "    COALESCE(a.addressline3, ''), ', ', " +
+		            "    COALESCE(a.city, ''), ', ', " +
+		            "    COALESCE(a.pincode, ''), ', ', " +
+		            "    COALESCE(a.state, '')" +
+		            ") AS fulladdress " +
+		            "FROM efit_ops.partymaster b " +
+		            "JOIN efit_ops.partyaddress a " +
+		            "ON a.partymasterid = b.partymasterid " +
+		            "WHERE UPPER(addresstype) = 'BILLING ADDRESS' " +
+		            "AND orgid = ?1"
+		)
+		Set<Object[]> findgetThirdPartyDetailsForThirdPartyInsp(Long orgId);
+
 
 	
 

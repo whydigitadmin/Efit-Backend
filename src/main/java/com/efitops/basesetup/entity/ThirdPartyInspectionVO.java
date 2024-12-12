@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -55,6 +56,10 @@ public class ThirdPartyInspectionVO {
 	@Column(name = "thirdpartyaddress")
 	private String thirdPartyAddress;
 	
+	@Lob
+	@Column(name = "attachements", columnDefinition = "LONGBLOB")
+	private byte[] attachements;
+	
 	
 	@Column(name = "narration")
 	private String narration;
@@ -78,6 +83,10 @@ public class ThirdPartyInspectionVO {
 	@OneToMany(mappedBy = "thirdPartyInspectionVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<ThirdPartyInspectionDetailsVO> thirdPartyInspectionDetailsVO;
+	
+	@OneToMany(mappedBy = "thirdPartyInspectionVO",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	List<ThirdPartyAttachmentVO> thirdPartyAttachmentVO;
 	
 	@JsonGetter("active")
 	public String getActive() {
