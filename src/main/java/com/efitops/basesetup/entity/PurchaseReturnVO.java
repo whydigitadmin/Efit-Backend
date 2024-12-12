@@ -1,6 +1,7 @@
 package com.efitops.basesetup.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,49 +25,70 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_quotation")
+@Table(name = "t_purchasereturn")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuotationVO {
+public class PurchaseReturnVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_quotationgen")
-	@SequenceGenerator(name = "t_quotationgen", sequenceName = "t_quotationseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "quotationid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchasereturngen")
+	@SequenceGenerator(name = "t_purchasereturngen", sequenceName = "t_purchasereturnseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "purchasereturnid")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate= LocalDate.now();
+	@Column(name="suppliername")
+	private String supplierName;
+	@Column(name="suppliercode")
+	private String supplierCode;
 	@Column(name="customername")
-    private String customerName;
-	@Column(name="customerid")
-	private String customerId;
-	@Column(name="enquiryno")
-	private String enquiryNo;
-	@Column(name="enquirydate")
-	private LocalDate enquiryDate;
-	@Column(name="validtill")
-	private LocalDate validTill;
-	@Column(name="kindattention")
-	private String kindAttention;
-	@Column(name="contactno")
-	private Long contactNo;
-	@Column(name="taxcode")
-	private String taxCode;
-	@Column(name="productionmanager")
-	private String productionManager;
+	private String customerName;
+	@Column(name="purchaseinvoiceno")
+	private String purchaseInvoiceNo;
+	@Column(name="purchaseinvoicedate")
+	private LocalDate purchaseInvoiceDate;
+	@Column(name="grntime")
+	private LocalTime grnTime=LocalTime.now(); 
+	@Column(name="pono")
+	private String poNo;
+	@Column(name="gstNo")
+	private String gstNo;
+	@Column(name="gststate")
+	private int gstState;
+	@Column(name="address")
+	private String address;
+	@Column(name="gatepassno")
+	private String gatePassNo;
+	@Column(name="isreversechrg")
+	private String isReverseChrg;
 	@Column(name="currency")
 	private String currency;
-	
-	@Column(name="grossamount",precision = 10,scale = 2)
-	private BigDecimal grossAmount;
+	@Column(name="exchangerate",precision = 10,scale = 2)
+	private BigDecimal exchangeRate;
+	@Column(name="invdcno")
+	private String invDcNo;
+	@Column(name="invdcdate")
+	private LocalDate invDcDate;
+	@Column(name="gsttype")
+	private String gstType;
+	@Column(name="tolocation")
+	private String toLocation;
+	@Column(name="totalamounttax",precision = 10,scale = 2)
+	private BigDecimal totalAmountTax;
 	@Column(name="netamount",precision = 10,scale = 2)
 	private BigDecimal netAmount;
+	@Column(name="totalamount",precision = 10,scale = 2)
+	private BigDecimal totalAmount;
 	@Column(name = "amountinwords",length = 150)
 	private String amountInWords;
+	@Column(name = "remarks")
+	private String remarks;
+	
+	
 	
 	@Column(name = "orgid")
 	private Long orgId;
@@ -80,16 +102,17 @@ public class QuotationVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30) 
-	private String screenCode ="QOT";
+	@Column(name = "screencode",length = 30)
+	private String screenCode ="PCR";
 	@Column(name = "screenname",length = 30)
-	private String screenName="QUOTATION";
+	private String screenName="PURCHASERETURN";
 	
-	@OneToMany(mappedBy = "quotationVO", cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy = "purchaseReturnVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<QuotationDetailsVO> quotationDetailsVO;
+	List<PurchaseReturnItemVO>purchaseReturnItemVO;
 	
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
@@ -103,4 +126,6 @@ public class QuotationVO {
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
+	
 }
