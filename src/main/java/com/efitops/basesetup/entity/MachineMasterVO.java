@@ -118,8 +118,8 @@ public class MachineMasterVO {
     @Column(name = "cancelremarks")
     private String cancelRemarks;
     
-    @Column(name = "finyear")
-    private String finYear;
+//    @Column(name = "finyear")
+//    private String finYear;
     
     @Column(name = "screencode")
     private String screenCode="MM";

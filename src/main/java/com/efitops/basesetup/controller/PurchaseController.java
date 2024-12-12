@@ -30,10 +30,10 @@ import com.efitops.basesetup.entity.PurchaseIndentVO;
 import com.efitops.basesetup.service.PurchaseService;
 
 @RestController
-@RequestMapping("/api/documentType")
+@RequestMapping("/api/purchase")
 public class PurchaseController extends BaseController{
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(DocumentTypeController.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(PurchaseController.class);
 	
 	@Autowired
 	PurchaseService purchaseService;
@@ -129,12 +129,12 @@ public class PurchaseController extends BaseController{
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CustomerName information get successfully By OrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CustomerName for PurchaseIndent information get successfully By OrgId");
 			responseObjectsMap.put("customerNameList", customerNameList);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"CustomerName information receive failed By OrgId", errorMsg);
+					"CustomerName for PurchaseIndent information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -142,7 +142,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getIndentType")
-	public ResponseEntity<ResponseDTO> getIndentType() {
+	public ResponseEntity<ResponseDTO> getIndentType(@RequestParam(required = false) Long orgId) {
 		String methodName = "getCustomerNameForPurchaseIndent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -150,18 +150,18 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> indentType = new ArrayList<>();
 		try {
-			indentType = purchaseService.getIndentType();
+			indentType = purchaseService.getIndentType(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "IndentType information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "IndentType for PurchaseIndent  information get successfully");
 			responseObjectsMap.put("indentType", indentType);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"IndentType information receive failed", errorMsg);
+					"IndentType for PurchaseIndent information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -169,7 +169,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getDepartmentForPurchase")
-	public ResponseEntity<ResponseDTO> getDepartmentForPurchase() {
+	public ResponseEntity<ResponseDTO> getDepartmentForPurchase(@RequestParam(required = false) Long orgId) {
 		String methodName = "getDepartmentForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -177,18 +177,18 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> department = new ArrayList<>();
 		try {
-			department = purchaseService.getDepartmentForPurchase();
+			department = purchaseService.getDepartmentForPurchase(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Department information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Department for PurchaseIndent information get successfully");
 			responseObjectsMap.put("department", department);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Department information receive failed", errorMsg);
+					"Department for PurchaseIndent information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -196,7 +196,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getRequestedByForPurchase")
-	public ResponseEntity<ResponseDTO> getRequestedByForPurchase() {
+	public ResponseEntity<ResponseDTO> getRequestedByForPurchase(@RequestParam(required = false) Long orgId) {
 		String methodName = "getRequestedByForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -204,45 +204,73 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> department = new ArrayList<>();
 		try {
-			department = purchaseService.getRequestedByForPurchase();
+			department = purchaseService.getRequestedByForPurchase(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RequestedBy information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RequestedBy for PurchaseIndent information get successfully");
 			responseObjectsMap.put("RequestedBy", department);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"RequestedBy information receive failed", errorMsg);
+					"RequestedBy for PurchaseIndent information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
 	
-	@GetMapping("/getItemDetailsForPurchase")
-	public ResponseEntity<ResponseDTO> getItemDetailsForPurchase(@RequestParam(required =false) String itemName) {
-		String methodName = "getItemDetailsForPurchase()";
+	@GetMapping("/getVerifiedByForPurchase")
+	public ResponseEntity<ResponseDTO> getVerifiedByForPurchase(@RequestParam(required = false) Long orgId) {
+		String methodName = "getVerifiedByForPurchase()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> Employee = new ArrayList<>();
+		try {
+			Employee = purchaseService.getVerifiedByForPurchase(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VerifiedBy for PurchaseIndent information get successfully");
+			responseObjectsMap.put("VerifiedBy", Employee);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"VerifiedBy for PurchaseIndent information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getBomItemDetailsForPurchase")
+	public ResponseEntity<ResponseDTO> getBomItemDetailsForPurchase(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String fgPart) {
+		String methodName = "getBomItemDetailsForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> itemDetails = new ArrayList<>();
 		try {
-			itemDetails = purchaseService.getItemDetailsForPurchase(itemName);
+			itemDetails = purchaseService.getBomItemDetailsForPurchase(orgId,fgPart);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Item information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Item for purchaseIndent information get successfully");
 			responseObjectsMap.put("itemDetails", itemDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Item information receive failed", errorMsg);
+					"Item for purchaseIndent information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -250,8 +278,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getpurchaseIndentDocId")
-	public ResponseEntity<ResponseDTO> getpurchaseIndentDocId(@RequestParam Long orgId,@RequestParam String finYear,
-			@RequestParam String screenCode) {
+	public ResponseEntity<ResponseDTO> getpurchaseIndentDocId(@RequestParam Long orgId) {
 
 		String methodName = "getpurchaseIndentDocId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -261,7 +288,7 @@ public class PurchaseController extends BaseController{
 		String mapp = "";
 
 		try {
-			mapp = purchaseService.getpurchaseIndentDocId(orgId,finYear,screenCode);
+			mapp = purchaseService.getpurchaseIndentDocId(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -269,7 +296,7 @@ public class PurchaseController extends BaseController{
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseIndent DocId information retrieved successfully");
-			responseObjectsMap.put("purchaseIndent DocId", mapp);
+			responseObjectsMap.put("purchaseIndentDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
@@ -280,6 +307,32 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getWorkOrderNoForPurchaseIndent")
+	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseIndent(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String customerName) {
+		String methodName = "getWorkOrderNoForPurchaseIndent()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> workOrderNo = new ArrayList<>();
+		try {
+			workOrderNo = purchaseService.getWorkOrderNoForPurchaseIndent(orgId,customerName);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOrderNo for PurchaseIndent information get successfully By OrgId");
+			responseObjectsMap.put("workOrderNo", workOrderNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"WorkOrderNo for PurchaseIndent information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
 	
 	//PurchaseEnquiry
 
@@ -352,7 +405,7 @@ public class PurchaseController extends BaseController{
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseEnquiry DocId information retrieved successfully");
-			responseObjectsMap.put("purchaseIndent DocId", mapp);
+			responseObjectsMap.put("purchaseIndentDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
