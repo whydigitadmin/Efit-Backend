@@ -41,6 +41,8 @@ public class WorkOrderVO {
 	private LocalDate docDate= LocalDate.now();
 	@Column(name="customername")
 	private String  customerName; 
+	@Column(name="customercode")
+	private String customerCode;
 	@Column(name="customerpono")
 	private String customerPoNo;
 	@Column(name="quotationno")

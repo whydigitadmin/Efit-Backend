@@ -43,7 +43,7 @@ public interface CustomerEnquiryService {
 
 	String getQuotationDocId(Long orgId);
 	
-	List<Map<String,Object>>  getEnquiryNoAndDate(Long orgId,String customer);	
+	List<Map<String,Object>>  getEnquiryNoAndDate(Long orgId,String customerCode);	
 	
 	List<Map<String,Object>>  getProductionManager(Long orgId);	
 	
@@ -59,9 +59,9 @@ public interface CustomerEnquiryService {
 
 	String getWorkOrderDocId(Long orgId);
 	
-	List<Map<String,Object>>  getQuotationNumber(Long orgId,String customerName);	
+	List<Map<String,Object>>  getQuotationNumber(Long orgId,String custmoerId);	
 	
 	
-	List<Map<String,Object>>  getWorkOrderPartNo(Long orgId,String docId,String custmoerName);	
+	List<Map<String,Object>>  getWorkOrderPartNo(Long orgId,String docId,String custmoerId);	
 
 }
