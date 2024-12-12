@@ -28,5 +28,6 @@ public class ThirdPartyInspectionDTO {
 	private String createdBy;
 	private boolean cancel;
 	List<ThirdPartyInspectionDetailsDTO> thirdPartyInspectionDetailsDTO;
+	List<ThirdPartyAttachmentDTO>thirdPartyAttachmentDTO;
 
 }
