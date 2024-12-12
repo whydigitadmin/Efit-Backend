@@ -23,6 +23,5 @@ public interface DepartmentRepo extends JpaRepository<DepartmentVO, Long> {
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getDepartmentDocId(Long orgId,String screenCode);
 	
-	@Query(value ="select departid,departmentname from department where active=1 order by 2" ,nativeQuery=true)
-	Set<Object[]> getDepartmentDetails();
+	
 }

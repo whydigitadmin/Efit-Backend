@@ -158,7 +158,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			enquirySummaryVO.setExpectedTimeForDeliverySample(enquirySummaryDTO.getExpectedTimeForDeliverySample());
 			enquirySummaryVO.setRegularProduction(enquirySummaryDTO.getRegularProduction());
 			enquirySummaryVO.setInitialReviewComments(enquirySummaryDTO.getInitialReviewComments());
-			enquirySummaryVO.setDetailreview(enquirySummaryDTO.getDetailreview());
+			enquirySummaryVO.setDetailReview(enquirySummaryDTO.getDetailReview());
 			enquirySummaryVO.setConclusion(enquirySummaryDTO.getConclusion());
 			enquirySummaryVO.setRemarks(enquirySummaryDTO.getRemarks());
 			enquirySummaryVO.setEnquiryVO(enquiryVO);
@@ -310,7 +310,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		quotationVO.setCustomerId(quotationDTO.getCustomerId());
 		quotationVO.setEnquiryNo(quotationDTO.getEnquiryNo());
 		quotationVO.setEnquiryDate(quotationDTO.getEnquiryDate());
-		quotationVO.setVaidTill(quotationDTO.getVaidTill());
+		quotationVO.setValidTill(quotationDTO.getValidTill());
 		quotationVO.setKindAttention(quotationDTO.getKindAttention());
 		quotationVO.setTaxCode(quotationDTO.getTaxCode());
 		quotationVO.setProductionManager(quotationDTO.getProductionManager());
@@ -445,6 +445,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			map.put("drawingNo", ch[2] != null ? ch[2].toString() : "");
 			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
 			map.put("unit", ch[4] != null ? ch[4].toString() : "");
+			map.put("qtyOffered", ch[5] != null ? ch[5].toString() : "");
 			List1.add(map);
 		}
 		return List1;
