@@ -31,7 +31,7 @@ public interface MachineMasterService {
 
 	Optional<MachineMasterVO> getAllMachineMasterById(Long id);
 	
-	MachineMasterVO3 uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException;
+	MachineMasterVO uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 	
 	String getMachineMasterDocId(Long orgId);
 

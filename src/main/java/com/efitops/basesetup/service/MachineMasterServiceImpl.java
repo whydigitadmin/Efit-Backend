@@ -262,10 +262,10 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	}
 
 	@Override
-	public MachineMasterVO3 uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException {
-		MachineMasterVO3 machineMasterVO3 = machineMasterRepo3.findById(id).get();
-		machineMasterVO3.setAttachements(file.getBytes());
-		return machineMasterRepo3.save(machineMasterVO3);
+	public MachineMasterVO uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException {
+		MachineMasterVO machineMasterVO = machineMasterRepo.findById(id).get();
+		machineMasterVO.setAttachements(file.getBytes());
+		return machineMasterRepo.save(machineMasterVO);
 	}
 
 	

@@ -73,8 +73,8 @@ public class PurchaseIndentVO {
     private String screenCode="PI";
     @Column(name="screenname")
     private String screenName="PURCHASEINDENT";
-    @Column(name="finyear")
-    private String finYear;
+//    @Column(name="finyear")
+//    private String finYear;
     
     @OneToMany(mappedBy ="purchaseIndentVO",cascade =CascadeType.ALL)
     @JsonManagedReference
