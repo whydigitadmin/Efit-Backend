@@ -187,21 +187,21 @@ public class MachineMasterController extends BaseController {
 	@PostMapping("/uploadMachineAttachementsInBloob")
 	public ResponseEntity<ResponseDTO> uploadMachineAttachementsInBloob(@RequestParam("file") MultipartFile file,
 			@RequestParam Long id) {
-		String methodName = "uploadMachineAttachementsInBloob1()";
+		String methodName = "uploadMachineAttachementsInBloob()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		MachineMasterVO3 machineMasterVO3 = null;
+		MachineMasterVO machineMasterVO = null;
 		try {
-			machineMasterVO3 = machineMasterService.uploadMachineAttachementsInBloob(file, id);
+			machineMasterVO = machineMasterService.uploadMachineAttachementsInBloob(file, id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error("Unable To Upload attachements", methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Attachments Successfully Upload");
-			responseObjectsMap.put("machineMasterVO3", machineMasterVO3);
+			responseObjectsMap.put("machineMasterVO", machineMasterVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Attachments Upload Failed", errorMsg);

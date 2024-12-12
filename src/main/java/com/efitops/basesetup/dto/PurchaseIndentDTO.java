@@ -35,7 +35,7 @@ public class PurchaseIndentDTO {
 	
 	private String createdBy;
 	
-	 private String finYear;
+//	 private String finYear;
 	
 	private List<PurchaseIndentDTO1> purchaseIndentDTO1;
 	

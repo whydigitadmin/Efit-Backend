@@ -133,7 +133,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseIndentVO.setRequestedBy(purchaseIndentDTO.getRequestedBy());
 		purchaseIndentVO.setCustomerPoNo(purchaseIndentDTO.getCustomerPoNo());
 		purchaseIndentVO.setOrgId(purchaseIndentDTO.getOrgId());
-		purchaseIndentVO.setFinYear(purchaseIndentDTO.getFinYear());
+//		purchaseIndentVO.setFinYear(purchaseIndentDTO.getFinYear());
 
 		if (purchaseIndentDTO.getId() != null) {
 
@@ -154,7 +154,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 			purchaseIndentVO1.setUom(purchaseIndentDTO1.getUom());
 			purchaseIndentVO1.setReqQty(purchaseIndentDTO1.getReqQty());
 			purchaseIndentVO1.setAvlStock(purchaseIndentDTO1.getAvlStock());
-			purchaseIndentVO1.setIndentQty(purchaseIndentDTO1.getIndentQty());
+			purchaseIndentVO1.setIndentQty(purchaseIndentDTO.getFgQty() * purchaseIndentDTO1.getReqQty());
 
 			purchaseIndentVO1.setPurchaseIndentVO(purchaseIndentVO);
 			purchaseIndentVO1s.add(purchaseIndentVO1);
@@ -179,9 +179,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	@Override
-	public String getpurchaseIndentDocId(Long orgId,String finYear,String screenCode) {
+	public String getpurchaseIndentDocId(Long orgId) {
 		String ScreenCode = "PI";
-		String result = purchaseIndentRepo.getpurchaseIndentDocId(orgId,finYear,ScreenCode);
+		String result = purchaseIndentRepo.getpurchaseIndentDocId(orgId,ScreenCode);
 		return result;
 	}
 
@@ -197,7 +197,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	@Override
 	public List<Map<String, Object>> getCustomerNameForPurchaseIndent(Long orgId) {
-		Set<Object[]> cstname = partyMasterRepo.findCustomerDetails(orgId);
+		Set<Object[]> cstname = purchaseIndentRepo.findCustomerDetails(orgId);
 		return getCustomerDetails(cstname);
 	}
 
@@ -205,9 +205,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("customerCode", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
-			map.put("customerName", ch[1] != null ? ch[1].toString() : "");
-
+			map.put("customerName", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("customerCode", ch[1] != null ? ch[1].toString() : "");
+			
 			List1.add(map);
 		}
 		return List1;
@@ -215,16 +215,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getIndentType() {
-		Set<Object[]> itemDetails = itemRepo.findItemDetails();
-		return getItem(itemDetails);
+	public List<Map<String, Object>> getIndentType(Long orgId) {
+		Set<Object[]> materialType = purchaseIndentRepo.findIndentType(orgId);
+		return getItem(materialType);
 	}
 
-	private List<Map<String, Object>> getItem(Set<Object[]> chCode) {
+	private List<Map<String, Object>> getItem(Set<Object[]> materialType) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
-		for (Object[] ch : chCode) {
+		for (Object[] ch : materialType) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("itemType", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("materialType", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
 
 			List1.add(map);
 		}
@@ -233,8 +233,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getDepartmentForPurchase() {
-		Set<Object[]> departmentDetails = departmentRepo.getDepartmentDetails();
+	public List<Map<String, Object>> getDepartmentForPurchase(Long orgId) {
+		Set<Object[]> departmentDetails = purchaseIndentRepo.getDepartmentDetails(orgId);
 		return getDepart(departmentDetails);
 	}
 
@@ -242,8 +242,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("departmentId", ch[0] != null ? Integer.parseInt(ch[0].toString()) : 0);
-			map.put("departmentName", ch[1] != null ? ch[1].toString() : "");
+//			map.put("departmentId", ch[0] != null ? Integer.parseInt(ch[0].toString()) : 0);
+			map.put("departmentName", ch[0] != null ? ch[0].toString() : "");
 			List1.add(map);
 		}
 		return List1;
@@ -251,8 +251,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getRequestedByForPurchase() {
-		Set<Object[]> requestedByDetails = employeeRepo.getRequestedByDetails();
+	public List<Map<String, Object>> getRequestedByForPurchase(Long orgId) {
+		Set<Object[]> requestedByDetails = purchaseIndentRepo.getRequestedByDetails(orgId);
 		return getRequested(requestedByDetails);
 	}
 
@@ -260,8 +260,24 @@ public class PurchaseServiceImpl implements PurchaseService {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("employeeId", ch[0] != null ? Integer.parseInt(ch[0].toString()) : 0);
-			map.put("employeeName", ch[1] != null ? ch[1].toString() : "");
+//			map.put("employeeId", ch[0] != null ? Integer.parseInt(ch[0].toString()) : 0);
+			map.put("employeeName", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	@Override
+	public List<Map<String, Object>> getVerifiedByForPurchase(Long orgId) {
+		Set<Object[]> verifiedByDetails = purchaseIndentRepo.getVerifiedByForPurchase(orgId);
+		return getVerifiedByForPurchase(verifiedByDetails);
+	}
+
+	private List<Map<String, Object>> getVerifiedByForPurchase(Set<Object[]> chCode) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chCode) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("employeeName", ch[0] != null ? ch[0].toString() : "");
 			List1.add(map);
 		}
 		return List1;
@@ -269,8 +285,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getItemDetailsForPurchase(String itemName) {
-		Set<Object[]> item = itemRepo.getItemDetails(itemName);
+	public List<Map<String, Object>> getBomItemDetailsForPurchase(Long orgId, String fgPart) {
+		Set<Object[]> item = purchaseIndentRepo.findBomItemDetailsForPurchase(orgId,fgPart);
 		return getItem1(item);
 	}
 
@@ -278,9 +294,32 @@ public class PurchaseServiceImpl implements PurchaseService {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : it) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("itemId", ch[0] != null ? Integer.parseInt(ch[0].toString()) : 0);
+			map.put("item", ch[0] != null ? ch[0].toString() : "");
 			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
 			map.put("primaryUnit", ch[2] != null ? ch[2].toString() : "");
+			map.put("bomQty", ch[3] != null ? ch[3].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Long orgId, String customerName) {
+		Set<Object[]> workOrderNo = purchaseIndentRepo.findWorkOrderNoForPurchaseIndent(orgId, customerName);
+		return getWorkOrderNoForPurchaseIndent(workOrderNo);
+	}
+
+	private List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Set<Object[]> workOrderNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPart", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
+			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
+			map.put("customerPoNo", ch[4] != null ? ch[4].toString() : "");
+
 			List1.add(map);
 		}
 		return List1;
