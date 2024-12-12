@@ -19,6 +19,7 @@ public class PartyAddressDTO {
     private String addressLine3;
     private Long pincode;
     private String contact;
+    private String contactPerson;
     private String taxType;
 
 }
