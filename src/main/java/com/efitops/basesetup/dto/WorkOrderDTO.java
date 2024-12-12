@@ -15,6 +15,7 @@ public class WorkOrderDTO {
 	private String  customerName; 
 	private String customerPoNo;
 	private String quotationNo;
+	private String customerCode;
 	private String currency;
 	private LocalDate customerDueDate;
 	private LocalDate vapDueDate;
