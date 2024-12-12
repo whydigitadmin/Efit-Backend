@@ -25,16 +25,20 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> getCustomerNameForPurchaseIndent(Long orgId);
 
-	List<Map<String, Object>> getIndentType();
+	List<Map<String, Object>> getIndentType(Long orgId);
 
-	List<Map<String, Object>> getDepartmentForPurchase();
+	List<Map<String, Object>> getDepartmentForPurchase(Long orgId);
 
-	List<Map<String, Object>> getRequestedByForPurchase(); 
+	List<Map<String, Object>> getRequestedByForPurchase(Long orgId); 
 
-	List<Map<String, Object>> getItemDetailsForPurchase(String itemName);
+	List<Map<String, Object>> getBomItemDetailsForPurchase(Long orgId, String fgPart);
 	
-	String getpurchaseIndentDocId(Long orgId, String finYear, String screenCode);
+	String getpurchaseIndentDocId(Long orgId);
 	
+	List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Long orgId, String customerName);
+
+	List<Map<String, Object>> getVerifiedByForPurchase(Long orgId);
+
 	
 	//PurchaseEnquiry
 
@@ -45,6 +49,9 @@ public interface PurchaseService {
 	Optional<PurchaseEnquiryVO> getAllPurchaseEnquiryById(Long id);
 
 	String getPurchaseEnquiryDocId(Long orgId, String finYear, String screenCode);
+
+
+
 
 	
 
