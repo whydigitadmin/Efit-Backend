@@ -308,7 +308,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getWorkOrderNoForPurchaseIndent")
-	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseIndent(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String customerName) {
+	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseIndent(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String customerCode) {
 		String methodName = "getWorkOrderNoForPurchaseIndent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -316,7 +316,7 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> workOrderNo = new ArrayList<>();
 		try {
-			workOrderNo = purchaseService.getWorkOrderNoForPurchaseIndent(orgId,customerName);
+			workOrderNo = purchaseService.getWorkOrderNoForPurchaseIndent(orgId,customerCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -416,4 +416,113 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getSupplierNameForPurchaseEnquiry")
+	public ResponseEntity<ResponseDTO> getSupplierNameForPurchaseEnquiry(@RequestParam(required = false) Long orgId) {
+		String methodName = "getSupplierNameForPurchaseEnquiry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> supplierNameList = new ArrayList<>();
+		try {
+			supplierNameList = purchaseService.getSupplierNameForPurchaseEnquiry(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "SupplierName for PurchaseEnquiry information get successfully By OrgId");
+			responseObjectsMap.put("SupplierNameList", supplierNameList);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"SupplierName for PurchaseEnquiry information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getContactPersonDetailsForPurchaseEnquiry")
+	public ResponseEntity<ResponseDTO> getContactPersonDetailsForPurchaseEnquiry(@RequestParam(required = false) Long orgId,@RequestParam String supplierCode) {
+		String methodName = "getContactPersonDetailsForPurchaseEnquiry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> ContactPersonDetails = new ArrayList<>();
+		try {
+			ContactPersonDetails = purchaseService.getContactPersonDetailsForPurchaseEnquiry(orgId,supplierCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ContactPersonDetails for PurchaseEnquiry information get successfully By OrgId");
+			responseObjectsMap.put("purchaseEnquiryVO", ContactPersonDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ContactPersonDetails for PurchaseEnquiry information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getPurchaseIndentNoForPurchaseEnquiry")
+	public ResponseEntity<ResponseDTO> getPurchaseIndentNoForPurchaseEnquiry(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String customerCode) {
+		String methodName = "getPurchaseIndentNoForPurchaseEnquiry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> purchaseIndentNo = new ArrayList<>();
+		try {
+			purchaseIndentNo = purchaseService.getPurchaseIndentNoForPurchaseEnquiry(orgId,customerCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseIndentNo for PurchaseEnquiry information get successfully By OrgId");
+			responseObjectsMap.put("purchaseIndentNo", purchaseIndentNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"PurchaseIndentNo for PurchaseEnquiry information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getItemDetailsForPurchaseEnquiry")
+	public ResponseEntity<ResponseDTO> getItemDetailsForPurchaseEnquiry(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String purchaseIndentNo,@RequestParam(required =false) String fgItem) {
+		String methodName = "getItemDetailsForPurchaseEnquiry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemDetails = new ArrayList<>();
+		try {
+			itemDetails = purchaseService.getItemDetailsForPurchaseEnquiry(orgId,purchaseIndentNo,fgItem);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemDetails for PurchaseEnquiry information get successfully By OrgId");
+			responseObjectsMap.put("itemDetails", itemDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ItemDetails for PurchaseEnquiry information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
 }

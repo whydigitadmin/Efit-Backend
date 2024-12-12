@@ -44,6 +44,8 @@ public class PurchaseIndentVO {
 	private String indentType;
 	@Column(name="customername")
 	private String customerName;
+	@Column(name="customercode")
+	private String customerCode;
 	@Column(name="workorderno")
 	private String workOrderNo;
 	@Column(name="department")

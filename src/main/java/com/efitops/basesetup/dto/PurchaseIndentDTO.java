@@ -17,6 +17,8 @@ public class PurchaseIndentDTO {
 	
 	private String customerName;
 	
+	private String customerCode;
+
 	private String workOrderNo;
 	
 	private String department;
