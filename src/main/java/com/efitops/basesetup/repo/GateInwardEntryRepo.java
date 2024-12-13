@@ -17,8 +17,6 @@ public interface GateInwardEntryRepo extends JpaRepository<GateInwardEntryVO, Lo
 	@Query(nativeQuery = true, value = "select * from t_gateinwardentry where gateinwardentryid=?1")
 	List<GateInwardEntryVO> findgetGateInwardEntryById(Long id);
 
-	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and  screencode=?2")
-	String getGateInwardEntryByDocId(Long orgId, String screenCode);
 
 	@Query(nativeQuery = true,value="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getGateInwardEntryDocId(Long orgId, String screenCode);

@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.Column;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,13 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseQuotationDTO {
 
+	private Long id;
+
 	private String customerName;
 	
 	private String workOrderNo;
 	
 	private String enquiryNo;
 	
-	private String enquiryDate;
+	private LocalDate enquiryDate;
 
 	private String supplierName;
 	
@@ -40,9 +40,7 @@ public class PurchaseQuotationDTO {
 	private String qStatus;
 	
 	private String createdBy;
-	
-	private String finYear;
-	
+		
 	private Long orgId;
 	
 	private boolean active;
@@ -54,5 +52,7 @@ public class PurchaseQuotationDTO {
 	private String amountInWords;
 	
 	List<PurchaseQuotation1DTO> purchaseQuotation1DTO;
+	
+	List<PurchaseQuotationAttachmentDTO> purchaseQuotationAttachmentDTO;
 	
 }

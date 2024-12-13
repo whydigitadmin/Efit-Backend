@@ -24,6 +24,7 @@ import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.PurchaseEnquiryDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO;
+import com.efitops.basesetup.dto.PurchaseQuotationDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
@@ -62,7 +63,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getAllPurchaseIndentByOrgId")
-	public ResponseEntity<ResponseDTO> getAllPurchaseIndentByOrgId(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getAllPurchaseIndentByOrgId(@RequestParam Long orgId) {
 		String methodName = "getAllPurchaseIndentByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -89,7 +90,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getPurchaseIndentById")
-	public ResponseEntity<ResponseDTO> getPurchaseIndentById(@RequestParam(required = false) Long id) {
+	public ResponseEntity<ResponseDTO> getPurchaseIndentById(@RequestParam Long id) {
 		String methodName = "getPurchaseIndentById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -116,7 +117,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getCustomerNameForPurchaseIndent")
-	public ResponseEntity<ResponseDTO> getCustomerNameForPurchaseIndent(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getCustomerNameForPurchaseIndent(@RequestParam Long orgId) {
 		String methodName = "getCustomerNameForPurchaseIndent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -143,7 +144,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getIndentType")
-	public ResponseEntity<ResponseDTO> getIndentType(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getIndentType(@RequestParam Long orgId) {
 		String methodName = "getCustomerNameForPurchaseIndent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -170,7 +171,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getDepartmentForPurchase")
-	public ResponseEntity<ResponseDTO> getDepartmentForPurchase(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getDepartmentForPurchase(@RequestParam Long orgId) {
 		String methodName = "getDepartmentForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -197,7 +198,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getRequestedByForPurchase")
-	public ResponseEntity<ResponseDTO> getRequestedByForPurchase(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getRequestedByForPurchase(@RequestParam Long orgId) {
 		String methodName = "getRequestedByForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -224,7 +225,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getVerifiedByForPurchase")
-	public ResponseEntity<ResponseDTO> getVerifiedByForPurchase(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getVerifiedByForPurchase(@RequestParam Long orgId) {
 		String methodName = "getVerifiedByForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -252,7 +253,7 @@ public class PurchaseController extends BaseController{
 	
 	
 	@GetMapping("/getBomItemDetailsForPurchase")
-	public ResponseEntity<ResponseDTO> getBomItemDetailsForPurchase(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String fgPart) {
+	public ResponseEntity<ResponseDTO> getBomItemDetailsForPurchase(@RequestParam Long orgId,@RequestParam String fgPart) {
 		String methodName = "getBomItemDetailsForPurchase()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -309,7 +310,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getWorkOrderNoForPurchaseIndent")
-	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseIndent(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String customerCode) {
+	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseIndent(@RequestParam Long orgId,@RequestParam String customerCode) {
 		String methodName = "getWorkOrderNoForPurchaseIndent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -360,7 +361,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getAllPurchaseEnquiryById")
-	public ResponseEntity<ResponseDTO> getAllPurchaseEnquiryById(@RequestParam(required = false) Long id) {
+	public ResponseEntity<ResponseDTO> getAllPurchaseEnquiryById(@RequestParam Long id) {
 		String methodName = "getAllPurchaseEnquiryById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -418,7 +419,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getSupplierNameForPurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> getSupplierNameForPurchaseEnquiry(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getSupplierNameForPurchaseEnquiry(@RequestParam Long orgId) {
 		String methodName = "getSupplierNameForPurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -446,7 +447,7 @@ public class PurchaseController extends BaseController{
 	
 	
 	@GetMapping("/getContactPersonDetailsForPurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> getContactPersonDetailsForPurchaseEnquiry(@RequestParam(required = false) Long orgId,@RequestParam String supplierCode) {
+	public ResponseEntity<ResponseDTO> getContactPersonDetailsForPurchaseEnquiry(@RequestParam Long orgId,@RequestParam String supplierCode) {
 		String methodName = "getContactPersonDetailsForPurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -473,7 +474,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getPurchaseIndentNoForPurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> getPurchaseIndentNoForPurchaseEnquiry(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String customerCode) {
+	public ResponseEntity<ResponseDTO> getPurchaseIndentNoForPurchaseEnquiry(@RequestParam Long orgId,@RequestParam String customerCode) {
 		String methodName = "getPurchaseIndentNoForPurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -501,7 +502,7 @@ public class PurchaseController extends BaseController{
 	
 	
 	@GetMapping("/getItemDetailsForPurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> getItemDetailsForPurchaseEnquiry(@RequestParam(required = false) Long orgId,@RequestParam(required =false) String purchaseIndentNo,@RequestParam(required =false) String fgItem) {
+	public ResponseEntity<ResponseDTO> getItemDetailsForPurchaseEnquiry(@RequestParam Long orgId,@RequestParam String purchaseIndentNo,@RequestParam String fgItem) {
 		String methodName = "getItemDetailsForPurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -530,7 +531,7 @@ public class PurchaseController extends BaseController{
 	//PurchaseQuotation
 	
 	@GetMapping("/getAllPurchaseQuotationByOrgId")
-	public ResponseEntity<ResponseDTO> getAllPurchaseQuotationByOrgId(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getAllPurchaseQuotationByOrgId(@RequestParam Long orgId) {
 		String methodName = "getAllPurchaseQuotationByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -557,7 +558,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getPurchaseQuotationById")
-	public ResponseEntity<ResponseDTO> getPurchaseQuotationById(@RequestParam(required = false) Long id) {
+	public ResponseEntity<ResponseDTO> getPurchaseQuotationById(@RequestParam Long id) {
 		String methodName = "getPurchaseQuotationById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -582,6 +583,60 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	
+	@PutMapping("/updateCreatePurchaseQuotation")
+	public ResponseEntity<ResponseDTO> updateCreatePurchaseQuotation(@Valid @RequestBody PurchaseQuotationDTO purchaseQuotationDTO) {
+		String methodName = "updateCreatePurchaseQuotation()"; 
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+
+		try {
+			Map<String, Object> purchaseQuotationVO = purchaseService.updateCreatePurchaseQuotation(purchaseQuotationDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, purchaseQuotationVO.get("message"));
+			responseObjectsMap.put("purchaseQuotationVO", purchaseQuotationVO.get("purchaseQuotationVO")); // Corrected key
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getpurchaseQuotationDocId")
+	public ResponseEntity<ResponseDTO> getpurchaseQuotationDocId(@RequestParam Long orgId) {
+
+		String methodName = "getpurchaseQuotationDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = purchaseService.getpurchaseQuotationDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseQuotation DocId information retrieved successfully");
+			responseObjectsMap.put("purchaseQuotationDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve purchaseQuotation DocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 	
 	
 }

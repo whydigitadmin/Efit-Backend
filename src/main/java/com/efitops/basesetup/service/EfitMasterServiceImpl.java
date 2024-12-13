@@ -1295,11 +1295,11 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	@Override
 	public Map<String, Object> createUpdateBom(BomDTO bomDTO) throws ApplicationException {
 		BomVO bomVO = new BomVO();
-		String message;
+		String message= null;
 		String screenCode = "BOM";
 		if (ObjectUtils.isNotEmpty(bomDTO.getId())) {
 			bomVO = bomRepo.findById(bomDTO.getId())
-					.orElseThrow(() -> new ApplicationException("SubContractEnquiry Enquiry details"));
+					.orElseThrow(() -> new ApplicationException("BOM  detailsNot Found with id: " + bomDTO.getId()));
 			
 			List<BomDetailsVO> bomDetailsVO1 = bomDetailsRepo.findByBomVO(bomVO);
 			bomDetailsRepo.deleteAll(bomDetailsVO1);
@@ -1321,7 +1321,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 			bomVO.setCreatedBy(bomDTO.getCreatedBy());
 			bomVO.setUpdatedBy(bomDTO.getCreatedBy());
 
-			message = "jobWorkOut Created Successfully";
+			message = "Bom Created Successfully";
 		}
 		createUpdatedBomVOFromBomDTO(bomDTO, bomVO);
 		bomRepo.save(bomVO);

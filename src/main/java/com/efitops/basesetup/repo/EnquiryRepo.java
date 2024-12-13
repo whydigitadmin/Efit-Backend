@@ -33,7 +33,7 @@ public interface EnquiryRepo extends JpaRepository<EnquiryVO, Long> {
 	Set<Object[]> getPartNoAndDescription(Long orgId);	
 
 			
-	@Query(nativeQuery = true,value = " select a.drawingno,a.drawingrevno from m_drawingmaster a where a.partno=?1 and a.orgid=?2 and a.active=1  group by \r\n"
+	@Query(nativeQuery = true,value = " select a.drawingno,a.drawingrevno from m_drawingmaster a where a.fgpartno=?1 and a.orgid=?2 and a.active=1  group by \r\n"
 			+ "			  a.drawingno,a.drawingrevno order by a.drawingno")
 	Set<Object[]> getDrawingNoAndRevisionNo(String partNo,Long orgId);	
 

@@ -67,6 +67,8 @@ public interface GrnService {
 
 	
 	String getPurchaseOrderDocId(Long orgId);
+	
+	List<Map<String, Object>> getSupplierAddressForPurchaseOrder (Long orgId, String supplierName);
 
 	
 }

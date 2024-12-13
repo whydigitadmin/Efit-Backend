@@ -17,5 +17,9 @@ public interface PurchaseQuotationRepo extends JpaRepository<PurchaseQuotationVO
 
 	@Query(nativeQuery = true, value = "SELECT * FROM t_purchasequotationdetails where purchasequotationid=?1")
 	Optional<PurchaseQuotationVO> getAllPurchaseQuotationById(Long id);
+	
+	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and  screencode=?2")
+	String getPurchaseQuotationByDocId(Long orgId, String screenCode);
+
 
 }
