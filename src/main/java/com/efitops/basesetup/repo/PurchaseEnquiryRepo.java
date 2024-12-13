@@ -13,7 +13,7 @@ import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 @Repository
 public interface PurchaseEnquiryRepo extends JpaRepository<PurchaseEnquiryVO, Long>
 {
-
+ 
 	@Query(nativeQuery =true,value = "select * from t_purchaseenquiry where orgid=?1")
 	List<PurchaseEnquiryVO> getPurchaseEnquiry(Long orgId);
 	
@@ -36,7 +36,7 @@ public interface PurchaseEnquiryRepo extends JpaRepository<PurchaseEnquiryVO, Lo
 	@Query(nativeQuery=true,value ="SELECT a.docid FROM t_purchaseindent a  WHERE a.orgid = ?1 AND a.customercode = ?2 AND a.active = 1 AND a.docid NOT IN (SELECT c.purchaseintentno FROM t_purchaseenquiry c WHERE c.orgid = ?1) ORDER BY a.docid" )
 	Set<Object[]> findPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode);
 
-	@Query(nativeQuery=true,value ="select distinct b.item,b.itemdesc,b.uom,b.reqqty from t_purchaseindent a join t_purchaseindent1 b \r\n"
+	@Query(nativeQuery=true,value ="select distinct b.item,b.itemd esc,b.uom,b.reqqty from t_purchaseindent a join t_purchaseindent1 b \r\n"
 			+ "ON a.purchaseindentid=b.purchaseindentid where  a.orgid=?1 and a.docid=?2  and active=1 \r\n"
 			+ "UNION (select d.itemcode,d.itemdesc,d.uom,0 as qty  from m_bom c join m_bomdetails d where c.bomid=d.bomid and c.orgid=?1 and ?2='Null' and productcode=?3 )order by 1" )
 	Set<Object[]> findItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
