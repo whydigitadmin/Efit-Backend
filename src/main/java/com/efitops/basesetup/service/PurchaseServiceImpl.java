@@ -20,14 +20,18 @@ import com.efitops.basesetup.dto.PurchaseEnquiryDetailsDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO1;
 import com.efitops.basesetup.dto.PurchaseIndentDTO2;
+import com.efitops.basesetup.dto.PurchaseQuotation1DTO;
+import com.efitops.basesetup.dto.PurchaseQuotationAttachmentDTO;
+import com.efitops.basesetup.dto.PurchaseQuotationDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.PurchaseEnquiryDetailsVO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO1;
 import com.efitops.basesetup.entity.PurchaseIndentVO2;
+import com.efitops.basesetup.entity.PurchaseQuotation1VO;
+import com.efitops.basesetup.entity.PurchaseQuotationAttachmentVO;
 import com.efitops.basesetup.entity.PurchaseQuotationVO;
-import com.efitops.basesetup.entity.PurchaseQuotationVO1;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DepartmentRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
@@ -40,6 +44,7 @@ import com.efitops.basesetup.repo.PurchaseIndentRepo;
 import com.efitops.basesetup.repo.PurchaseIndentRepo1;
 import com.efitops.basesetup.repo.PurchaseIndentRepo2;
 import com.efitops.basesetup.repo.PurchaseQuotation1Repo;
+import com.efitops.basesetup.repo.PurchaseQuotationAttachmentRepo;
 import com.efitops.basesetup.repo.PurchaseQuotationRepo;
 
 @Repository
@@ -82,6 +87,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Autowired
 	PurchaseQuotation1Repo purchaseQuotation1Repo;
+	
+	@Autowired
+	PurchaseQuotationAttachmentRepo purchaseQuotationAttachmentRepo;
 	
 	@Override
 	public Map<String, Object> updateCreatePurchaseIndent(@Valid PurchaseIndentDTO purchaseIndentDTO)
@@ -192,7 +200,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public String getpurchaseIndentDocId(Long orgId) {
 		String ScreenCode = "PI";
-		String result = purchaseIndentRepo.getpurchaseIndentDocId(orgId,ScreenCode);
+		String result = purchaseIndentRepo.getPurchaseIndentByDocId(orgId,ScreenCode);
 		return result;
 	}
 
@@ -543,6 +551,127 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public Optional<PurchaseQuotationVO> getPurchaseQuotationById(Long id) {
 		return purchaseQuotationRepo.getAllPurchaseQuotationById(id);
+	}
+	
+	
+	@Override
+	public Map<String, Object> updateCreatePurchaseQuotation(@Valid PurchaseQuotationDTO purchaseQuotationDTO)
+			throws ApplicationException {
+
+		PurchaseQuotationVO purchaseQuotationVO = new PurchaseQuotationVO();
+		String message = null;
+		String screenCode="PQ";
+
+		if (ObjectUtils.isEmpty(purchaseQuotationDTO.getId())) {
+
+			
+			purchaseQuotationVO.setCreatedBy(purchaseQuotationDTO.getCreatedBy());
+			purchaseQuotationVO.setUpdatedBy(purchaseQuotationDTO.getCreatedBy());
+			
+			String docId = purchaseQuotationRepo.getPurchaseQuotationByDocId(purchaseQuotationDTO.getOrgId(),
+					screenCode);
+
+			purchaseQuotationVO.setDocId(docId);
+
+//        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(purchaseQuotationDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			
+			message = "PurchaseQuotation Creation SuccessFully";
+			
+		} else {
+
+			List<PurchaseQuotation1VO> purchaseQuotation1VOs = purchaseQuotation1Repo.findByPurchaseQuotationVO(purchaseQuotationVO);
+			purchaseQuotation1Repo.deleteAll(purchaseQuotation1VOs);
+
+			List<PurchaseQuotationAttachmentVO> purchaseQuotationAttachmentVOs = purchaseQuotationAttachmentRepo.findByPurchaseQuotationVO(purchaseQuotationVO);
+			purchaseQuotationAttachmentRepo.deleteAll(purchaseQuotationAttachmentVOs);
+			
+			purchaseQuotationVO = purchaseQuotationRepo.findById(purchaseQuotationDTO.getId()).orElseThrow(
+					() -> new ApplicationException("PurchaseQuotation  Not Found with id: " + purchaseQuotationDTO.getId()));
+			purchaseQuotationVO.setUpdatedBy(purchaseQuotationDTO.getCreatedBy());
+
+			message = "PurchaseQuotation Updation Successfully";
+			
+		}
+
+		purchaseQuotationVO = getPurchaseQuotationVOFromPurchaseQuotationDTO(purchaseQuotationVO, purchaseQuotationDTO);
+		purchaseQuotationRepo.save(purchaseQuotationVO);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", message);
+		response.put("purchaseQuotationVO", purchaseQuotationVO);
+		return response;
+
+	}
+
+	private PurchaseQuotationVO getPurchaseQuotationVOFromPurchaseQuotationDTO(PurchaseQuotationVO purchaseQuotationVO,
+			@Valid PurchaseQuotationDTO purchaseQuotationDTO) {
+
+		purchaseQuotationVO.setCustomerName(purchaseQuotationDTO.getCustomerName());
+		purchaseQuotationVO.setWorkOrderNo(purchaseQuotationDTO.getWorkOrderNo());
+		purchaseQuotationVO.setEnquiryNo(purchaseQuotationDTO.getEnquiryNo());
+		purchaseQuotationVO.setEnquiryDate(purchaseQuotationDTO.getEnquiryDate());
+		purchaseQuotationVO.setSuppliername(purchaseQuotationDTO.getSupplierName());
+		purchaseQuotationVO.setSupplierId(purchaseQuotationDTO.getSupplierId());
+		purchaseQuotationVO.setValidTill(purchaseQuotationDTO.getValidTill());
+		purchaseQuotationVO.setKindAttention(purchaseQuotationDTO.getKindAttention());
+		purchaseQuotationVO.setTaxCode(purchaseQuotationDTO.getTaxCode());
+		purchaseQuotationVO.setContactPerson(purchaseQuotationDTO.getContactPerson());
+		purchaseQuotationVO.setContactNo(purchaseQuotationDTO.getContactNo());
+		purchaseQuotationVO.setQStatus(purchaseQuotationDTO.getQStatus());
+		purchaseQuotationVO.setActive(purchaseQuotationDTO.isActive());
+		purchaseQuotationVO.setGrossAmount(purchaseQuotationDTO.getGrossAmount());
+		purchaseQuotationVO.setNetAmount(purchaseQuotationDTO.getNetAmount());
+		purchaseQuotationVO.setTotalDiscount(purchaseQuotationDTO.getTotalDiscount());
+		purchaseQuotationVO.setNarration(purchaseQuotationDTO.getNarration());
+		purchaseQuotationVO.setAmountInWords(purchaseQuotationDTO.getAmountInWords());
+		purchaseQuotationVO.setOrgId(purchaseQuotationDTO.getOrgId());
+	
+
+		List<PurchaseQuotation1VO> purchaseQuotation1VOs = new ArrayList<>();
+		for (PurchaseQuotation1DTO purchaseQuotation1DTO : purchaseQuotationDTO.getPurchaseQuotation1DTO()) {
+
+			PurchaseQuotation1VO purchaseQuotation1VO = new PurchaseQuotation1VO();
+			purchaseQuotation1VO.setItem(purchaseQuotation1DTO.getItem());
+			purchaseQuotation1VO.setItemDesc(purchaseQuotation1DTO.getItemDesc());
+			purchaseQuotation1VO.setUnit(purchaseQuotation1DTO.getUnit());
+			purchaseQuotation1VO.setQty(purchaseQuotation1DTO.getQty());
+			purchaseQuotation1VO.setUnitPrice(purchaseQuotation1DTO.getUnitPrice());
+			purchaseQuotation1VO.setBasicPrice(purchaseQuotation1DTO.getBasicPrice());
+			purchaseQuotation1VO.setDiscount(purchaseQuotation1DTO.getDiscount());
+			purchaseQuotation1VO.setDiscountAmount(purchaseQuotation1DTO.getBasicPrice());
+			purchaseQuotation1VO.setQuoteAmount(purchaseQuotation1DTO.getQuoteAmount());
+
+
+			purchaseQuotation1VO.setPurchaseQuotationVO(purchaseQuotationVO);
+			purchaseQuotation1VOs.add(purchaseQuotation1VO);
+		}
+
+		purchaseQuotationVO.setPurchaseQuotation1VO(purchaseQuotation1VOs);
+
+		List<PurchaseQuotationAttachmentVO> purchaseQuotationAttachmentVOs = new ArrayList<>();
+		for (PurchaseQuotationAttachmentDTO purchaseQuotationAttachmentDTO : purchaseQuotationDTO.getPurchaseQuotationAttachmentDTO()) {
+
+			PurchaseQuotationAttachmentVO purchaseQuotationAttachmentVO = new PurchaseQuotationAttachmentVO();
+
+			purchaseQuotationAttachmentVO.setFileName(purchaseQuotationAttachmentDTO.getFileName());
+
+			purchaseQuotationAttachmentVO.setPurchaseQuotationVO(purchaseQuotationVO);
+			purchaseQuotationAttachmentVOs.add(purchaseQuotationAttachmentVO);
+		} 
+
+		purchaseQuotationVO.setPurchaseQuotationAttachmentVO(purchaseQuotationAttachmentVOs);
+		return purchaseQuotationVO;
+	}
+	
+	@Override
+	public String getpurchaseQuotationDocId(Long orgId) {
+		String ScreenCode = "PQ";
+		String result = purchaseQuotationRepo.getPurchaseQuotationByDocId(orgId,ScreenCode);
+		return result;
 	}
 	
 }

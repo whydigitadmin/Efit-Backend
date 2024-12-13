@@ -91,7 +91,7 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 		} else {
 			
 			// GETDOCID API
-						String docId = gateInwardEntryRepo.getGateInwardEntryByDocId(gateInwardEntryDTO.getOrgId(),
+						String docId = gateInwardEntryRepo.getGateInwardEntryDocId(gateInwardEntryDTO.getOrgId(),
 								screenCode);
 
 						gateInwardEntryVO.setDocId(docId);
