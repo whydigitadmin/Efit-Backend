@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PurchaseQuotationVO1 {
+public class PurchaseQuotation1VO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_purchasequotationdetailsgen")
@@ -56,7 +56,7 @@ public class PurchaseQuotationVO1 {
 	
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="purchaseQuotationVO1")
+	@JoinColumn(name ="purchaseQuotationid")
     private PurchaseQuotationVO purchaseQuotationVO; 
 }
       

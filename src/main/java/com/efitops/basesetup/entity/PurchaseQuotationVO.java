@@ -95,7 +95,7 @@ public class PurchaseQuotationVO {
     
     @OneToMany(mappedBy ="purchaseQuotationVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<PurchaseQuotationVO1> purchaseQuotationVO1;
+    private List<PurchaseQuotation1VO> purchaseQuotation1VO;
     
     @OneToMany(mappedBy ="purchaseQuotationVO",cascade =CascadeType.ALL)
     @JsonManagedReference
