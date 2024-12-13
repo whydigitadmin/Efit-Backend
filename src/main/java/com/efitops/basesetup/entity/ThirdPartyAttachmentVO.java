@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -36,8 +37,9 @@ public class ThirdPartyAttachmentVO {
 	private Long id;
 	@Column(name = "itemid")
 	private String itemId;
-	@Column(name = "attachment")
-	private String attachment ;
+	@Lob
+	@Column(name = "attachement", columnDefinition = "LONGBLOB")
+	private byte[] attachement;
 
 	 @ManyToOne
 		@JoinColumn(name = "thirdpartyinspectionid")

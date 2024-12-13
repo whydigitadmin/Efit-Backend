@@ -43,8 +43,8 @@ public class ThirdPartyInspectionVO {
 	private LocalDate docDate= LocalDate.now();
 	@Column(name = "grnno")
 	private String grnNo;
-	@Column(name = "workoutno")
-	private LocalDate workOutNo;
+	@Column(name = "workorderno")
+	private String workOrderNo;
 	@Column(name = "pono")
 	private String poNo;
 	@Column(name = "customername")
@@ -56,13 +56,8 @@ public class ThirdPartyInspectionVO {
 	@Column(name = "thirdpartyaddress")
 	private String thirdPartyAddress;
 	
-	@Lob
-	@Column(name = "attachements", columnDefinition = "LONGBLOB")
-	private byte[] attachements;
 	
 	
-	@Column(name = "narration")
-	private String narration;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)

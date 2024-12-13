@@ -23,10 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.GrnDTO;
+import com.efitops.basesetup.dto.PurchaseOrderDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.ThirdPartyInspectionDTO;
 import com.efitops.basesetup.entity.GrnVO;
+import com.efitops.basesetup.entity.PurchaseOrderVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
+import com.efitops.basesetup.entity.ThirdPartyAttachmentVO;
 import com.efitops.basesetup.entity.ThirdPartyInspectionVO;
 import com.efitops.basesetup.service.GrnService;
 
@@ -460,20 +463,130 @@ public class GrnController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		ThirdPartyInspectionVO thirdPartyInspectionVO = null;
+		ThirdPartyAttachmentVO thirdPartyAttachmentVO = null;
 		try {
-			thirdPartyInspectionVO = grnService.uploadFileForThirdPartyInspection(file, id);
+			thirdPartyAttachmentVO = grnService.uploadFileForThirdPartyInspection(file, id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error("Unable To Upload File", methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FileUpload for RouteCardEntry Successfully Upload");
-			responseObjectsMap.put("thirdPartyInspectionVO", thirdPartyInspectionVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FileUpload for Third Party attachment Successfully Upload");
+			responseObjectsMap.put("thirdPartyAttachmentVO", thirdPartyAttachmentVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "FileUpload for RouteCardEntry Upload Failed",
+			responseDTO = createServiceResponseError(responseObjectsMap, "FileUpload for Third Party attachment Upload Failed",
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	// Purchase Order
+	
+	@GetMapping("/getPurchaseOrderByOrgId")
+	public ResponseEntity<ResponseDTO> getPurchaseOrderByOrgId(@RequestParam Long orgId) {
+		String methodName = "getPurchaseOrderByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
+		try {
+			purchaseOrderVO = grnService.getPurchaseOrderByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Third Party information get successfully ByOrgId");
+			responseObjectsMap.put("purchaseOrderVO", purchaseOrderVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Third Party information information receive failedByOrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+		
+		@GetMapping("/getPurchaseOrderById")
+		public ResponseEntity<ResponseDTO> getPurchaseOrderById(@RequestParam Long id) {
+			String methodName = "getPurchaseOrderById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
+			try {
+				purchaseOrderVO = grnService.getPurchaseOrderById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Purchase Order information get successfully By Id");
+				responseObjectsMap.put("thirdPartyInspectionVO", purchaseOrderVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Purchase Order information receive failed By Id", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		
+	}
+		
+
+		@GetMapping("/getPurchaseOrderDocId")
+		public ResponseEntity<ResponseDTO> getPurchaseOrderDocId(@RequestParam Long orgId) {
+
+			String methodName = "getPurchaseOrderDocId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			String mapp = "";
+
+			try {
+				mapp = grnService.getPurchaseOrderDocId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"Purchase Order DocId information retrieved successfully");
+				responseObjectsMap.put("poNo", mapp);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve Purchase Order DocId information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+	@PutMapping("/updateCreatePurchaseOrder")
+	public ResponseEntity<ResponseDTO> updateCreatePurchaseOrder(
+			@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
+		String methodName = "updateCreatePurchaseOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> purchaseOrderVO = grnService.updateCreatePurchaseOrder(purchaseOrderDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, purchaseOrderVO.get("message"));
+			responseObjectsMap.put("purchaseOrderVO", purchaseOrderVO.get("purchaseOrderVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
