@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.efitops.basesetup.dto.CreatedUpdatedDate;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -34,42 +37,48 @@ public class PurchaseOrderVO {
 	@SequenceGenerator(name = "t_purchaseordergen", sequenceName = "t_purchaseorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchaseorderid")
 	private Long id;
-	@Column(name = "grnno", length = 150)
-	private String grnNo;
-	@Column(name="grndate")
-	private LocalDate grnDate= LocalDate.now();
-	@Column(name="location")
-	private String location;
-	@Column(name="inwardno")
-	private String InwardNo;
+	@Column(name = "pono", length = 150)
+	private String poNo;
+	@Column(name="podate")
+	private LocalDate poDate= LocalDate.now();
+	@Column(name="customername")
+	private String customerName;
+	@Column(name="customercode")
+	private String customerCode;
+	@Column(name="workorderno")
+	private String workOrderNo;
+	@Column(name="basedon")
+	private String basedOn;
+	@Column(name="quotationno")
+	private String quotationNo;
+	@Column(name="purchaseindentno")
+	private String purchaseIndentNo; 
 	@Column(name="suppliername")
 	private String supplierName;
-	@Column(name="pono")
-	private String poNo;
-	@Column(name="gstno")
-	private String gstNo;
-	@Column(name="gsttype")
-	private String gstType; 
+	@Column(name="contactperson")
+	private long contactperson;
+	@Column(name="mobileno")
+	private String mobileNo;
+	@Column(name="eMail")
+	private String eMail;
+	@Column(name="city")
+	private String city;
+	@Column(name="state")
+	private Date state;
+	@Column(name="country")
+	private String country; 
+	@Column(name="taxcode")
+	private String taxCode; 
 	@Column(name="address")
-	private String adress;
-	@Column(name="currency")
-	private String currency;
-	@Column(name="exchanderate",precision = 10,scale = 2)
-	private BigDecimal exchangeRate;
-	@Column(name="grncleartime")
-	private String grnClearTime;
-	@Column(name="invdcno")
-	private String invDcNo;
-	@Column(name="invdcdate")
-	private Date invDcDate;
-	@Column(name="customer")
-	private String customer; 
+	private String address; 
 	@Column(name="grossamount",precision = 10,scale = 2)
 	private BigDecimal grossAmount;
 	@Column(name="netamount",precision = 10,scale = 2)
 	private BigDecimal netAmount;
 	@Column(name="toatlamounttax",precision = 10,scale = 2)
 	private BigDecimal totalAmountTax;
+	@Column(name="amtinwords")
+	private String amtInWords;
 	@Column(name="remarks")
 	private String remarks;
 	
@@ -89,14 +98,29 @@ public class PurchaseOrderVO {
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "screencode",length = 30)
-	private String screenCode ="GRN";
+	private String screenCode ="PONO";
 	@Column(name = "screenname",length = 30)
-	private String screenName="GRN";
+	private String screenName="PURCHASEORDER";
 	
 	
-	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "purchaseOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<GrnDetailsVO> grnDetailsVO;
+	List<PurchaseOrderDetailsVO> purchaseOrderDetailsVO;
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
+	}
+
+	@Embedded
+	@Builder.Default
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	
 	
 
 

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ThirdPartyAttachmentDTO {
 	private String itemId;
-	private String attachment;
+	
 
 }

@@ -19,12 +19,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.GrnDTO;
 import com.efitops.basesetup.dto.GrnDetailsDTO;
+import com.efitops.basesetup.dto.PurchaseOrderDTO;
+import com.efitops.basesetup.dto.PurchaseOrderDetailsDTO;
 import com.efitops.basesetup.dto.ThirdPartyAttachmentDTO;
 import com.efitops.basesetup.dto.ThirdPartyInspectionDTO;
 import com.efitops.basesetup.dto.ThirdPartyInspectionDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.GrnDetailsVO;
 import com.efitops.basesetup.entity.GrnVO;
+import com.efitops.basesetup.entity.PurchaseEnquiryDetailsVO;
+import com.efitops.basesetup.entity.PurchaseOrderDetailsVO;
+import com.efitops.basesetup.entity.PurchaseOrderVO;
 import com.efitops.basesetup.entity.ThirdPartyAttachmentVO;
 import com.efitops.basesetup.entity.ThirdPartyInspectionDetailsVO;
 import com.efitops.basesetup.entity.ThirdPartyInspectionVO;
@@ -32,6 +37,9 @@ import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.GrnDetailsRepo;
 import com.efitops.basesetup.repo.GrnRepo;
+import com.efitops.basesetup.repo.PurchaseEnquiryDetailsRepo;
+import com.efitops.basesetup.repo.PurchaseOrderDetailsRepo;
+import com.efitops.basesetup.repo.PurchaseOrderRepo;
 import com.efitops.basesetup.repo.ThirdPartyAttachmentRepo;
 import com.efitops.basesetup.repo.ThirdPartyInspectionDetailsRepo;
 import com.efitops.basesetup.repo.ThirdPartyInspectionRepo;
@@ -57,6 +65,12 @@ public class GrnServiceImpl implements GrnService {
 
 	@Autowired
 	ThirdPartyAttachmentRepo thirdPartyAttachmentRepo;
+	
+	@Autowired
+	PurchaseOrderRepo purchaseOrderRepo;
+	
+	@Autowired
+	PurchaseOrderDetailsRepo purchaseOrderDetailsRepo;
 
 	@Override
 	public List<GrnVO> getGrnByOrgId(Long orgId) {
@@ -336,13 +350,15 @@ public class GrnServiceImpl implements GrnService {
 			@Valid ThirdPartyInspectionDTO thirdPartyInspectionDTO, ThirdPartyInspectionVO thirdPartyInspectionVO)
 			throws ApplicationException {
 		thirdPartyInspectionVO.setId(thirdPartyInspectionDTO.getId());
+		thirdPartyInspectionVO.setOrgId(thirdPartyInspectionDTO.getOrgId());
 		thirdPartyInspectionVO.setGrnNo(thirdPartyInspectionDTO.getGrnNo());
-		thirdPartyInspectionVO.setWorkOutNo(thirdPartyInspectionDTO.getWorkOutNo());
+		thirdPartyInspectionVO.setWorkOrderNo(thirdPartyInspectionDTO.getWorkOrderNo());
 		thirdPartyInspectionVO.setPoNo(thirdPartyInspectionDTO.getPoNo());
 		thirdPartyInspectionVO.setCustomerName(thirdPartyInspectionDTO.getCustomerName());
 		thirdPartyInspectionVO.setSupplierName(thirdPartyInspectionDTO.getSupplierName());
 		thirdPartyInspectionVO.setThirdPartyDetails(thirdPartyInspectionDTO.getThirdPartyDetails());
 		thirdPartyInspectionVO.setThirdPartyAddress(thirdPartyInspectionDTO.getThirdPartyAddress());
+		
 
 		if (ObjectUtils.isNotEmpty(thirdPartyInspectionVO.getId())) {
 			List<ThirdPartyInspectionDetailsVO> thirdPartyInspectionDetailsVO1 = thirdPartyInspectionDetailsRepo
@@ -359,6 +375,7 @@ public class GrnServiceImpl implements GrnService {
 				.getThirdPartyInspectionDetailsDTO()) {
 			ThirdPartyInspectionDetailsVO thirdPartyInspectionDetailsVO = new ThirdPartyInspectionDetailsVO();
 			thirdPartyInspectionDetailsVO.setItemId(thirdPartyInspectionDetailsDTO.getItemId());
+			thirdPartyInspectionDetailsVO.setItemDesc(thirdPartyInspectionDetailsDTO.getItemDesc());
 			thirdPartyInspectionDetailsVO.setInspectionType(thirdPartyInspectionDetailsDTO.getInspectionType());
 			thirdPartyInspectionDetailsVO.setCertificateNo(thirdPartyInspectionDetailsDTO.getCertificateNo());
 			thirdPartyInspectionDetailsVO.setRemarks(thirdPartyInspectionDetailsDTO.getRemarks());
@@ -372,7 +389,6 @@ public class GrnServiceImpl implements GrnService {
 		for (ThirdPartyAttachmentDTO thirdPartyAttachmentDTO : thirdPartyInspectionDTO.getThirdPartyAttachmentDTO()) {
 			ThirdPartyAttachmentVO thirdPartyAttachmentVO = new ThirdPartyAttachmentVO();
 			thirdPartyAttachmentVO.setItemId(thirdPartyAttachmentDTO.getItemId());
-			thirdPartyAttachmentVO.setAttachment(thirdPartyAttachmentDTO.getAttachment());
 
 			thirdPartyAttachmentVO.setThirdPartyInspectionVO(thirdPartyInspectionVO); // Set the reference in child
 																						// entity
@@ -389,10 +405,10 @@ public class GrnServiceImpl implements GrnService {
 	}
 
 	@Override
-	public ThirdPartyInspectionVO uploadFileForThirdPartyInspection(MultipartFile file, Long id) throws IOException {
-		ThirdPartyInspectionVO thirdPartyInspectionVO = thirdPartyInspectionRepo.findById(id).get();
-		thirdPartyInspectionVO.setAttachements(file.getBytes());
-		return thirdPartyInspectionRepo.save(thirdPartyInspectionVO);
+	public ThirdPartyAttachmentVO uploadFileForThirdPartyInspection(MultipartFile file, Long id) throws IOException {
+		ThirdPartyAttachmentVO thirdPartyAttachmentVO = thirdPartyAttachmentRepo.findById(id).get();
+		thirdPartyAttachmentVO.setAttachement(file.getBytes());
+		return thirdPartyAttachmentRepo.save(thirdPartyAttachmentVO);
 	}
 
 	@Override
@@ -463,6 +479,153 @@ public class GrnServiceImpl implements GrnService {
 		}
 		return List1;
 	}
+
+	
+	//purchase Order
+	@Override
+	public List<PurchaseOrderVO> getPurchaseOrderByOrgId(Long orgId) {
+		List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received Item BY OrgId : {}", orgId);
+			purchaseOrderVO = purchaseOrderRepo.findPurchaseOrderByOrgId(orgId);
+		}
+		return purchaseOrderVO;
+	}
+
+	@Override
+	public List<PurchaseOrderVO> getPurchaseOrderById(Long id) {
+		List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received Shift BY Id : {}", id);
+			purchaseOrderVO = purchaseOrderRepo.getPurchaseOrderById(id);
+		}
+		return purchaseOrderVO;
+	}
+
+	@Override
+	public Map<String, Object> updateCreatePurchaseOrder(PurchaseOrderDTO purchaseOrderDTO)throws ApplicationException {
+	PurchaseOrderVO purchaseOrderVO = new PurchaseOrderVO();
+	String message;
+	String screenCode = "PONO";
+	if (ObjectUtils.isNotEmpty(purchaseOrderDTO.getId())) {
+		purchaseOrderVO = purchaseOrderRepo.findById(purchaseOrderDTO.getId()).orElseThrow(() -> new ApplicationException("Invalid PO details"));
+		message = "Purchase Order Updated Successfully";
+		purchaseOrderVO.setUpdatedBy(purchaseOrderDTO.getCreatedBy());
+
+	} else {
+
+		String docId = purchaseOrderRepo.getPurchaseDocId(purchaseOrderDTO.getOrgId(), screenCode);
+		purchaseOrderVO.setPoNo(docId);
+
+		// GETDOCID LASTNO +1
+		DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+				.findByOrgIdAndScreenCode(purchaseOrderDTO.getOrgId(), screenCode);
+		documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+		documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+		purchaseOrderVO.setCreatedBy(purchaseOrderDTO.getCreatedBy());
+		purchaseOrderVO.setUpdatedBy(purchaseOrderDTO.getCreatedBy());
+
+		message = "Enquiry Created Successfully";
+	}
+	createUpdatePurchaseorderVOByPurchaseorderDTO(purchaseOrderDTO, purchaseOrderVO);
+	purchaseOrderRepo.save(purchaseOrderVO);
+	Map<String, Object> response = new HashMap<>();
+	response.put("purchaseOrderVO", purchaseOrderVO);
+	response.put("message", message);
+	return response;
+
+}
+
+private void createUpdatePurchaseorderVOByPurchaseorderDTO(@Valid PurchaseOrderDTO purchaseOrderDTO, PurchaseOrderVO purchaseOrderVO) throws ApplicationException {
+	purchaseOrderVO.setPoDate(purchaseOrderDTO.getPoDate());
+	purchaseOrderVO.setCustomerName(purchaseOrderDTO.getCustomerName());
+	purchaseOrderVO.setCustomerCode(purchaseOrderDTO.getCustomerCode());
+	purchaseOrderVO.setWorkOrderNo(purchaseOrderDTO.getWorkOrderNo());
+	purchaseOrderVO.setBasedOn(purchaseOrderDTO.getBasedOn());
+	purchaseOrderVO.setQuotationNo(purchaseOrderDTO.getQuotationNo());
+	purchaseOrderVO.setPurchaseIndentNo(purchaseOrderDTO.getPurchaseIndentNo());
+	purchaseOrderVO.setSupplierName(purchaseOrderDTO.getSupplierName());
+	purchaseOrderVO.setContactperson(purchaseOrderDTO.getContactperson());
+	purchaseOrderVO.setMobileNo(purchaseOrderDTO.getMobileNo());
+	purchaseOrderVO.setEMail(purchaseOrderDTO.getEMail());
+	purchaseOrderVO.setState(purchaseOrderDTO.getState());
+	purchaseOrderVO.setCountry(purchaseOrderDTO.getCountry());
+	purchaseOrderVO.setTaxCode(purchaseOrderDTO.getTaxCode());
+	purchaseOrderVO.setAddress(purchaseOrderDTO.getAddress());
+	purchaseOrderVO.setRemarks(purchaseOrderDTO.getRemarks());
+	
+
+
+	BigDecimal grossAmount = BigDecimal.ZERO;
+	BigDecimal netAmount = BigDecimal.ZERO;
+	BigDecimal totalTaxAmount = BigDecimal.ZERO;
+
+	if (ObjectUtils.isNotEmpty(purchaseOrderVO.getId())) {
+		List<PurchaseOrderDetailsVO> purchaseOrderDetailsVo1 = purchaseOrderDetailsRepo.findByPurchaseOrderVO(purchaseOrderVO);
+		purchaseOrderDetailsRepo.deleteAll(purchaseOrderDetailsVo1);
+	}
+
+	List<PurchaseOrderDetailsVO> purchaseOrderDetailsVOs = new ArrayList<>();
+	for (PurchaseOrderDetailsDTO purchaseOrderDetailsDTO : purchaseOrderDTO.getPurchaseOrderDetailsDTO()) {
+		PurchaseOrderDetailsVO purchaseOrderDetailsVO = new PurchaseOrderDetailsVO();
+		purchaseOrderDetailsVO.setItem(purchaseOrderDetailsDTO.getItem());
+		purchaseOrderDetailsVO.setItemDesc(purchaseOrderDetailsDTO.getItemDesc());
+		purchaseOrderDetailsVO.setHsnSacCode(purchaseOrderDetailsDTO.getHsnSacCode());
+		purchaseOrderDetailsVO.setTaxType(purchaseOrderDetailsDTO.getTaxType());
+		purchaseOrderDetailsVO.setUom(purchaseOrderDetailsDTO.getUom());
+		purchaseOrderDetailsVO.setQty(purchaseOrderDetailsDTO.getQty());
+		purchaseOrderDetailsVO.setPrice(purchaseOrderDetailsDTO.getPrice());
+		purchaseOrderDetailsVO.setPrevRate(purchaseOrderDetailsDTO.getPrevRate());
+		purchaseOrderDetailsVO.setDiscount(purchaseOrderDetailsDTO.getDiscount());
+		
+		
+		purchaseOrderDetailsVO.setIgst(purchaseOrderDetailsDTO.getIgst());
+		purchaseOrderDetailsVO.setSgst(purchaseOrderDetailsDTO.getSgst());
+		purchaseOrderDetailsVO.setHsnSacCode(purchaseOrderDetailsDTO.getHsnSacCode());
+		purchaseOrderDetailsVO.setCgst(purchaseOrderDetailsDTO.getCgst());
+
+		
+		BigDecimal taxAmount = BigDecimal.ZERO;
+		BigDecimal landedValues = BigDecimal.ZERO;
+
+		BigDecimal amountSet = purchaseOrderDetailsDTO.getPrice().multiply(purchaseOrderDetailsDTO.getQty());
+		purchaseOrderDetailsVO.setAmount(amountSet);
+		grossAmount = grossAmount.add(purchaseOrderDetailsVO.getAmount());
+
+		BigDecimal sgstamount = purchaseOrderDetailsDTO.getSgst().multiply(purchaseOrderDetailsVO.getAmount())
+				.divide(BigDecimal.valueOf(100));
+		BigDecimal cgstamount = purchaseOrderDetailsDTO.getCgst().multiply(purchaseOrderDetailsVO.getAmount())
+				.divide(BigDecimal.valueOf(100));
+		BigDecimal igstamount = purchaseOrderDetailsDTO.getIgst().multiply(purchaseOrderDetailsVO.getAmount())
+				.divide(BigDecimal.valueOf(100));
+
+		taxAmount = taxAmount.add(cgstamount).add(sgstamount).add(igstamount);
+		purchaseOrderDetailsVO.setTaxValue(taxAmount);
+		totalTaxAmount = totalTaxAmount.add(purchaseOrderDetailsVO.getTaxValue());
+
+		landedValues = purchaseOrderDetailsVO.getAmount().add(purchaseOrderDetailsVO.getTaxValue());
+		purchaseOrderDetailsVO.setLandedValue(landedValues);
+		netAmount = netAmount.add(purchaseOrderDetailsVO.getLandedValue());
+
+		purchaseOrderDetailsVO.setPurchaseOrderVO(purchaseOrderVO); // Set the reference in child entity
+		purchaseOrderDetailsVOs.add(purchaseOrderDetailsVO);
+	}
+
+	purchaseOrderVO.setGrossAmount(grossAmount);
+	purchaseOrderVO.setNetAmount(netAmount);
+	purchaseOrderVO.setTotalAmountTax(totalTaxAmount);
+
+	purchaseOrderVO.setPurchaseOrderDetailsVO(purchaseOrderDetailsVOs);
+
+}
+
+@Override
+public String getPurchaseOrderDocId(Long orgId) {
+	String screenCode = "TPI";
+	String result = purchaseOrderRepo.getPurchaseOrderDocId(orgId, screenCode);
+	return result;
+}
 
 
 }

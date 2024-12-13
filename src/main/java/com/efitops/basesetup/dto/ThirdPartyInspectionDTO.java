@@ -13,16 +13,15 @@ import lombok.NoArgsConstructor;
 public class ThirdPartyInspectionDTO {
 	
 	private Long id;
-	private String docId;
 	private LocalDate docDate;
 	private String grnNo;
-	private LocalDate workOutNo;
+	private String workOrderNo;
 	private String poNo;
 	private String customerName;
 	private String supplierName;
 	private String thirdPartyDetails;
 	private String thirdPartyAddress;
-	private String narration;
+
 	
 	private Long orgId;
 	private String createdBy;
