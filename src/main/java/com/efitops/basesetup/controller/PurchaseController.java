@@ -27,6 +27,7 @@ import com.efitops.basesetup.dto.PurchaseIndentDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
+import com.efitops.basesetup.entity.PurchaseQuotationVO;
 import com.efitops.basesetup.service.PurchaseService;
 
 @RestController
@@ -525,4 +526,62 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	//PurchaseQuotation
+	
+	@GetMapping("/getAllPurchaseQuotationByOrgId")
+	public ResponseEntity<ResponseDTO> getAllPurchaseQuotationByOrgId(@RequestParam(required = false) Long orgId) {
+		String methodName = "getAllPurchaseQuotationByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PurchaseQuotationVO> purchaseQuotationVO = new ArrayList<>();
+		try {
+			purchaseQuotationVO = purchaseService.getAllPurchaseQuotationByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseQuotation information get successfully By OrgId");
+			responseObjectsMap.put("purchaseQuotationVO", purchaseQuotationVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"purchaseQuotation information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getPurchaseQuotationById")
+	public ResponseEntity<ResponseDTO> getPurchaseQuotationById(@RequestParam(required = false) Long id) {
+		String methodName = "getPurchaseQuotationById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Optional<PurchaseQuotationVO>  purchaseQuotationVO  =null;
+		try {
+			purchaseQuotationVO = purchaseService.getPurchaseQuotationById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseQuotation information get successfully By Id");
+			responseObjectsMap.put("purchaseQuotationVO", purchaseQuotationVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"purchaseQuotation information receive failed By Id", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
 }

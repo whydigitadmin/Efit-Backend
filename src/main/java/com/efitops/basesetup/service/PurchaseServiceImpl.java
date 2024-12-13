@@ -26,6 +26,8 @@ import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO1;
 import com.efitops.basesetup.entity.PurchaseIndentVO2;
+import com.efitops.basesetup.entity.PurchaseQuotationVO;
+import com.efitops.basesetup.entity.PurchaseQuotationVO1;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DepartmentRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
@@ -37,6 +39,8 @@ import com.efitops.basesetup.repo.PurchaseEnquiryRepo;
 import com.efitops.basesetup.repo.PurchaseIndentRepo;
 import com.efitops.basesetup.repo.PurchaseIndentRepo1;
 import com.efitops.basesetup.repo.PurchaseIndentRepo2;
+import com.efitops.basesetup.repo.PurchaseQuotation1Repo;
+import com.efitops.basesetup.repo.PurchaseQuotationRepo;
 
 @Repository
 public class PurchaseServiceImpl implements PurchaseService {
@@ -72,6 +76,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	PurchaseQuotationRepo purchaseQuotationRepo;
+	
+	@Autowired
+	PurchaseQuotation1Repo purchaseQuotation1Repo;
 	
 	@Override
 	public Map<String, Object> updateCreatePurchaseIndent(@Valid PurchaseIndentDTO purchaseIndentDTO)
@@ -521,6 +531,18 @@ public class PurchaseServiceImpl implements PurchaseService {
 		}
 		return List1;
 
+	}
+	
+	//PurchaseQuotation
+	
+	@Override
+	public List<PurchaseQuotationVO> getAllPurchaseQuotationByOrgId(Long orgId) {
+		return purchaseQuotationRepo.getAllPurchaseQuotationByOrgId(orgId);
+	}
+
+	@Override
+	public Optional<PurchaseQuotationVO> getPurchaseQuotationById(Long id) {
+		return purchaseQuotationRepo.getAllPurchaseQuotationById(id);
 	}
 	
 }
