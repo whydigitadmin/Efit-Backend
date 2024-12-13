@@ -627,5 +627,28 @@ public String getPurchaseOrderDocId(Long orgId) {
 	return result;
 }
 
+@Override
+public List<Map<String, Object>> getSupplierAddressForPurchaseOrder(Long orgId, String supplierName) {
+	Set<Object[]> chType = purchaseOrderRepo.findgetSupplierAddressForPurchaseOrder(orgId,supplierName);
+	return getSupplierAddressForPurchaseOrder(chType);
+}
+private List<Map<String, Object>> getSupplierAddressForPurchaseOrder(Set<Object[]> chType) {
+	List<Map<String, Object>> List1 = new ArrayList<>();
+	for (Object[] ch : chType) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("contactperson", ch[0] != null ? ch[0].toString() : "");
+		map.put("contact", ch[1] != null ? ch[1].toString() : "");
+		map.put("full_address", ch[2] != null ? ch[2].toString() : "");
+		map.put("stategstin", ch[3] != null ? ch[3].toString() : "");
+		map.put("taxtype", ch[4] != null ? ch[4].toString() : "");
+		map.put("state", ch[5] != null ? ch[5].toString() : "");
+		map.put("pincode", ch[5] != null ? ch[5].toString() : "");
+		map.put("city", ch[5] != null ? ch[5].toString() : "");
+
+		List1.add(map);
+	}
+	return List1;
+}
+
 
 }

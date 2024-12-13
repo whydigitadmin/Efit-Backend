@@ -40,17 +40,22 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 
 	
 	
-	@Query(nativeQuery = true, value =("SELECT \r\n"
-			+ "    CONCAT(\r\n"
-			+ "        COALESCE(a.addressline1, ''), ', ', \r\n"
-			+ "        COALESCE(a.addressline2, ''), ', ', \r\n"
-			+ "        COALESCE(a.addressline3, ''), ', ', \r\n"
-			+ "        COALESCE(a.city, ''), ', ', \r\n"
-			+ "        COALESCE(a.pincode, ''), ', ', \r\n"
+	@Query (nativeQuery = true, value ="SELECT CONCAT(\r\n"
+			+ "        COALESCE(a.addressline1, ''), ', ',\r\n"
+			+ "        COALESCE(a.addressline2, ''), ', ',\r\n"
+			+ "        COALESCE(a.addressline3, ''), ', ',\r\n"
+			+ "        COALESCE(a.city, ''), ', ',\r\n"
+			+ "        COALESCE(a.pincode, ''), ', ',\r\n"
 			+ "        COALESCE(a.state, '')\r\n"
-			+ "    ) AS full_address,stategstin,taxtype,a.state,a.pincodea.city \r\n"
-			+ "FROM  efit_ops.partyaddress JOIN efit_ops.partymaster b  ON a.partymasterid = b.partymasterid WHERE b.cancel = 0  AND b.active = 1  and partytype = 'SUPPLIER' AND a.orgid = ?1 \r\n"
-			+ "    AND b.partyname = ?2"))
+			+ "    ) AS full_address,\r\n"
+			+ "    a.stategstin,\r\n"
+			+ "    a.taxtype,\r\n"
+			+ "    a.state,\r\n"
+			+ "    a.pincode,\r\n"
+			+ "    a.city\r\n"
+			+ "FROM \r\n"
+			+ "    efit_ops.partyaddress a JOIN efit_ops.partymaster b  ON a.partymasterid = b.partymasterid\r\n"
+			+ "    WHERE b.cancel = 0  AND b.active = 1  and partytype = 'SUPPLIER')")
 	Set<Object[]> findSupplierAddressDetails(Long orgId, String supplierName);
 
 	

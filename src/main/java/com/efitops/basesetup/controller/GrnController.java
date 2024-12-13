@@ -591,5 +591,33 @@ public class GrnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getSupplierAddressForPurchaseOrder")
+	public ResponseEntity<ResponseDTO> getSupplierAddressForPurchaseOrder(@RequestParam(required = false) Long orgId,String supplierName) {
+		String methodName = "getSupplierAddressForPurchaseOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> chCode = new ArrayList<>();
+		try {
+			chCode = grnService.getSupplierAddressForPurchaseOrder(orgId,supplierName);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" supplier contact and Address information get successfully By OrgId");
+			responseObjectsMap.put("chCode", chCode);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"supplier contact and Address information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
 
 }
