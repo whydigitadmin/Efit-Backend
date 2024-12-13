@@ -601,8 +601,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			map.put("uom", ch[4] != null ? ch[4].toString() : "");
 			map.put("orderQty", ch[5] != null ? ch[5].toString() : "");
 			map.put("productionManager", ch[6] != null ? ch[6].toString() : "");
-			map.put("orderQty", ch[7] != null ? ch[7].toString() : "");
-			map.put("orderQty", ch[8] != null ? ch[8].toString() : "");
+			map.put("customerName", ch[7] != null ? ch[7].toString() : "");
+			map.put("customerCode", ch[8] != null ? ch[8].toString() : "");
 
 			List1.add(map);
 		}
