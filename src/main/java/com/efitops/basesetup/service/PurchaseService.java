@@ -12,6 +12,8 @@ import com.efitops.basesetup.dto.PurchaseEnquiryDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
+import com.efitops.basesetup.entity.PurchaseQuotationVO;
+import com.efitops.basesetup.entity.PurchaseQuotationVO1;
 import com.efitops.basesetup.exception.ApplicationException;
 
 @Service
@@ -57,6 +59,13 @@ public interface PurchaseService {
 	List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode);
 
 	List<Map<String, Object>> getItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
+
+	//PurchaseQuotation
+	
+	List<PurchaseQuotationVO> getAllPurchaseQuotationByOrgId(Long orgId);
+
+	Optional<PurchaseQuotationVO> getPurchaseQuotationById(Long id);
+
 
 
 
