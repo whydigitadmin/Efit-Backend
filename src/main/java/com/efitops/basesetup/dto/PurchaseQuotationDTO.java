@@ -17,6 +17,8 @@ public class PurchaseQuotationDTO {
 
 	private String customerName;
 	
+	private String customerCode;
+
 	private String workOrderNo;
 	
 	private String enquiryNo;
@@ -45,11 +47,11 @@ public class PurchaseQuotationDTO {
 	
 	private boolean active;
 	
-	private BigDecimal grossAmount;
-	private BigDecimal netAmount;
-	private BigDecimal totalDiscount;
+//	private BigDecimal grossAmount;
+//	private BigDecimal netAmount;
+//	private BigDecimal totalDiscount;
 	private String narration;
-	private String amountInWords;
+//	private String amountInWords;
 	
 	List<PurchaseQuotation1DTO> purchaseQuotation1DTO;
 	

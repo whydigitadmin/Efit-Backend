@@ -18,9 +18,9 @@ public class PurchaseQuotation1DTO {
 	private String unit;
 	private BigDecimal qty;
 	private BigDecimal unitPrice;
-	private BigDecimal basicPrice;
+//	private BigDecimal basicPrice;
 	private BigDecimal discount;
-	private BigDecimal discountAmount;
-	private BigDecimal quoteAmount;
+//	private BigDecimal discountAmount;
+//	private BigDecimal quoteAmount;
 
 }

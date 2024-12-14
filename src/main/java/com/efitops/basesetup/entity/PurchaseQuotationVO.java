@@ -43,6 +43,8 @@ public class PurchaseQuotationVO {
 	private LocalDate docDate=LocalDate.now();
 	@Column(name="customername")
 	private String customerName;
+	@Column(name="customercode")
+	private String customerCode;
 	@Column(name="workorderno")
 	private String workOrderNo;
 	@Column(name="enquiryno")

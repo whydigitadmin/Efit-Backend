@@ -1,5 +1,7 @@
 package com.efitops.basesetup.service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.PurchaseEnquiryDTO;
 import com.efitops.basesetup.dto.PurchaseEnquiryDetailsDTO;
@@ -90,6 +93,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Autowired
 	PurchaseQuotationAttachmentRepo purchaseQuotationAttachmentRepo;
+	
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 	
 	@Override
 	public Map<String, Object> updateCreatePurchaseIndent(@Valid PurchaseIndentDTO purchaseIndentDTO)
@@ -401,12 +407,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseEnquiryVO.setPurchaseEnquiryNo(purchaseEnquiryDTO.getPurchaseEnquiryNo());
 		purchaseEnquiryVO.setPurchaseEnquiryDate(purchaseEnquiryDTO.getPurchaseEnquiryDate());
 		purchaseEnquiryVO.setCustomerName(purchaseEnquiryDTO.getCustomerName());
+		purchaseEnquiryVO.setCustomerCode(purchaseEnquiryDTO.getCustomerCode());
 		purchaseEnquiryVO.setWorkOrderNo(purchaseEnquiryDTO.getWorkOrderNo());
 		purchaseEnquiryVO.setPurchaseIndentNo(purchaseEnquiryDTO.getPurchaseIndentNo());
 		purchaseEnquiryVO.setCustomerPoNo(purchaseEnquiryDTO.getCustomerPoNo());
 		purchaseEnquiryVO.setFgPartName(purchaseEnquiryDTO.getFgPartName());
 		purchaseEnquiryVO.setFgPartDesc(purchaseEnquiryDTO.getFgPartDesc());
 		purchaseEnquiryVO.setSupplierName(purchaseEnquiryDTO.getSupplierName());
+		purchaseEnquiryVO.setSupplierCode(purchaseEnquiryDTO.getSupplierCode());
 		purchaseEnquiryVO.setContactPerson(purchaseEnquiryDTO.getContactPerson());
 		purchaseEnquiryVO.setContactNo(purchaseEnquiryDTO.getContactNo());
 		purchaseEnquiryVO.setEnquiryType(purchaseEnquiryDTO.getEnquiryType());
@@ -496,6 +504,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 			Map<String, Object> map = new HashMap<>();
 			map.put("contactPerson", ch[0] != null ? ch[0].toString() : ""); 
 			map.put("contactNo", ch[1] != null ? ch[1].toString() : "");
+			map.put("taxType", ch[2] != null ? ch[2].toString() : "");
+
 			
 			List1.add(map);
 		}
@@ -504,8 +514,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode) {
-		Set<Object[]> purchaseIndentNo = purchaseEnquiryRepo.findPurchaseIndentNoForPurchaseEnquiry(orgId, customerCode);
+	public List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode,String workOrderNo) {
+		Set<Object[]> purchaseIndentNo = purchaseEnquiryRepo.findPurchaseIndentNoForPurchaseEnquiry(orgId, customerCode, workOrderNo);
 		return getPurchaseIndentNoForPurchaseEnquiry(purchaseIndentNo);
 	}
 
@@ -532,7 +542,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 			Map<String, Object> map = new HashMap<>();
 			map.put("item", ch[0] != null ? ch[0].toString() : "");
 			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
-			map.put("itemQty", ch[2] != null ? ch[2].toString() : "");
+			map.put("uom", ch[2] != null ? ch[2].toString() : "");
 			map.put("qtyRequired", ch[3] != null ? Integer.parseInt(ch[3].toString()) : 0);
 
 			List1.add(map);
@@ -582,12 +592,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 			message = "PurchaseQuotation Creation SuccessFully";
 			
 		} else {
-
-			List<PurchaseQuotation1VO> purchaseQuotation1VOs = purchaseQuotation1Repo.findByPurchaseQuotationVO(purchaseQuotationVO);
-			purchaseQuotation1Repo.deleteAll(purchaseQuotation1VOs);
-
-			List<PurchaseQuotationAttachmentVO> purchaseQuotationAttachmentVOs = purchaseQuotationAttachmentRepo.findByPurchaseQuotationVO(purchaseQuotationVO);
-			purchaseQuotationAttachmentRepo.deleteAll(purchaseQuotationAttachmentVOs);
 			
 			purchaseQuotationVO = purchaseQuotationRepo.findById(purchaseQuotationDTO.getId()).orElseThrow(
 					() -> new ApplicationException("PurchaseQuotation  Not Found with id: " + purchaseQuotationDTO.getId()));
@@ -607,10 +611,50 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	}
 
+	BigDecimal basicPrice = BigDecimal.ZERO;
+	BigDecimal discountAmount = BigDecimal.ZERO;
+	BigDecimal quoteAmount = BigDecimal.ZERO;
 	private PurchaseQuotationVO getPurchaseQuotationVOFromPurchaseQuotationDTO(PurchaseQuotationVO purchaseQuotationVO,
 			@Valid PurchaseQuotationDTO purchaseQuotationDTO) {
+		
+		if (purchaseQuotationDTO.getId() != null) {
+		List<PurchaseQuotation1VO> purchaseQuotation1VOs = purchaseQuotation1Repo.findByPurchaseQuotationVO(purchaseQuotationVO);
+		purchaseQuotation1Repo.deleteAll(purchaseQuotation1VOs);
 
+		List<PurchaseQuotationAttachmentVO> purchaseQuotationAttachmentVOs = purchaseQuotationAttachmentRepo.findByPurchaseQuotationVO(purchaseQuotationVO);
+		purchaseQuotationAttachmentRepo.deleteAll(purchaseQuotationAttachmentVOs);
+		}
+		
+		List<PurchaseQuotation1VO> purchaseQuotation1VOs = new ArrayList<>();
+		for (PurchaseQuotation1DTO purchaseQuotation1DTO : purchaseQuotationDTO.getPurchaseQuotation1DTO()) {
+
+			PurchaseQuotation1VO purchaseQuotation1VO = new PurchaseQuotation1VO();
+			purchaseQuotation1VO.setItem(purchaseQuotation1DTO.getItem());
+			purchaseQuotation1VO.setItemDesc(purchaseQuotation1DTO.getItemDesc());
+			purchaseQuotation1VO.setUnit(purchaseQuotation1DTO.getUnit());
+			purchaseQuotation1VO.setQty(purchaseQuotation1DTO.getQty());
+			purchaseQuotation1VO.setUnitPrice(purchaseQuotation1DTO.getUnitPrice());
+		    
+			 basicPrice = purchaseQuotation1DTO.getQty().multiply(purchaseQuotation1DTO.getUnitPrice());
+			purchaseQuotation1VO.setBasicPrice(basicPrice);
+			
+			purchaseQuotation1VO.setDiscount(purchaseQuotation1DTO.getDiscount());
+			
+		    discountAmount =	basicPrice.divide(BigDecimal.valueOf(100)).multiply(purchaseQuotation1DTO.getDiscount());
+			purchaseQuotation1VO.setDiscountAmount(discountAmount);
+			
+			quoteAmount = basicPrice.subtract(discountAmount);
+			purchaseQuotation1VO.setQuoteAmount(quoteAmount);
+
+			purchaseQuotation1VO.setPurchaseQuotationVO(purchaseQuotationVO);
+			purchaseQuotation1VOs.add(purchaseQuotation1VO);
+		}
+
+		purchaseQuotationVO.setPurchaseQuotation1VO(purchaseQuotation1VOs);
+
+        //Header
 		purchaseQuotationVO.setCustomerName(purchaseQuotationDTO.getCustomerName());
+		purchaseQuotationVO.setCustomerCode(purchaseQuotationDTO.getCustomerCode());
 		purchaseQuotationVO.setWorkOrderNo(purchaseQuotationDTO.getWorkOrderNo());
 		purchaseQuotationVO.setEnquiryNo(purchaseQuotationDTO.getEnquiryNo());
 		purchaseQuotationVO.setEnquiryDate(purchaseQuotationDTO.getEnquiryDate());
@@ -623,34 +667,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseQuotationVO.setContactNo(purchaseQuotationDTO.getContactNo());
 		purchaseQuotationVO.setQStatus(purchaseQuotationDTO.getQStatus());
 		purchaseQuotationVO.setActive(purchaseQuotationDTO.isActive());
-		purchaseQuotationVO.setGrossAmount(purchaseQuotationDTO.getGrossAmount());
-		purchaseQuotationVO.setNetAmount(purchaseQuotationDTO.getNetAmount());
-		purchaseQuotationVO.setTotalDiscount(purchaseQuotationDTO.getTotalDiscount());
+		purchaseQuotationVO.setGrossAmount(basicPrice);
+		purchaseQuotationVO.setNetAmount(quoteAmount);
+		purchaseQuotationVO.setTotalDiscount(discountAmount);
 		purchaseQuotationVO.setNarration(purchaseQuotationDTO.getNarration());
-		purchaseQuotationVO.setAmountInWords(purchaseQuotationDTO.getAmountInWords());
+		//Convert AmountInWords
+		purchaseQuotationVO.setAmountInWords(
+				amountInWordsConverterService.convert(quoteAmount.longValue()));
+        
 		purchaseQuotationVO.setOrgId(purchaseQuotationDTO.getOrgId());
 	
-
-		List<PurchaseQuotation1VO> purchaseQuotation1VOs = new ArrayList<>();
-		for (PurchaseQuotation1DTO purchaseQuotation1DTO : purchaseQuotationDTO.getPurchaseQuotation1DTO()) {
-
-			PurchaseQuotation1VO purchaseQuotation1VO = new PurchaseQuotation1VO();
-			purchaseQuotation1VO.setItem(purchaseQuotation1DTO.getItem());
-			purchaseQuotation1VO.setItemDesc(purchaseQuotation1DTO.getItemDesc());
-			purchaseQuotation1VO.setUnit(purchaseQuotation1DTO.getUnit());
-			purchaseQuotation1VO.setQty(purchaseQuotation1DTO.getQty());
-			purchaseQuotation1VO.setUnitPrice(purchaseQuotation1DTO.getUnitPrice());
-			purchaseQuotation1VO.setBasicPrice(purchaseQuotation1DTO.getBasicPrice());
-			purchaseQuotation1VO.setDiscount(purchaseQuotation1DTO.getDiscount());
-			purchaseQuotation1VO.setDiscountAmount(purchaseQuotation1DTO.getBasicPrice());
-			purchaseQuotation1VO.setQuoteAmount(purchaseQuotation1DTO.getQuoteAmount());
-
-
-			purchaseQuotation1VO.setPurchaseQuotationVO(purchaseQuotationVO);
-			purchaseQuotation1VOs.add(purchaseQuotation1VO);
-		}
-
-		purchaseQuotationVO.setPurchaseQuotation1VO(purchaseQuotation1VOs);
 
 		List<PurchaseQuotationAttachmentVO> purchaseQuotationAttachmentVOs = new ArrayList<>();
 		for (PurchaseQuotationAttachmentDTO purchaseQuotationAttachmentDTO : purchaseQuotationDTO.getPurchaseQuotationAttachmentDTO()) {
@@ -664,7 +690,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		} 
 
 		purchaseQuotationVO.setPurchaseQuotationAttachmentVO(purchaseQuotationAttachmentVOs);
-		return purchaseQuotationVO;
+		return purchaseQuotationVO; 
 	}
 	
 	@Override
@@ -672,6 +698,55 @@ public class PurchaseServiceImpl implements PurchaseService {
 		String ScreenCode = "PQ";
 		String result = purchaseQuotationRepo.getPurchaseQuotationByDocId(orgId,ScreenCode);
 		return result;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getPurchaseEnquiryNoForPurchaseQuotation(Long orgId, String customerCode,String workOrderNo) {
+		Set<Object[]> purchaseEnquiryNo = purchaseQuotationRepo.findPurchaseEnquiryNoForPurchaseQuotation(orgId, customerCode, workOrderNo);
+		return getPurchaseEnquiryNoForPurchaseQuotation(purchaseEnquiryNo);
+	}
+
+	private List<Map<String, Object>> getPurchaseEnquiryNoForPurchaseQuotation(Set<Object[]> purchaseEnquiryNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : purchaseEnquiryNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("purchaseEnquiryNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("purchaseDate", ch[2] != null ? ch[1].toString() : "");
+			map.put("SupplierNo", ch[3] != null ? ch[2].toString() : "");
+			map.put("SupplierId", ch[4] != null ? ch[3].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getItemDetailsForPurchaseQuotation(Long orgId, String purchaseIndentNo) {
+		Set<Object[]> itemDetails = purchaseQuotationRepo.findItemDetailsForPurchaseQuotation(orgId, purchaseIndentNo);
+		return getItemDetailsForPurchaseQuotation(itemDetails);
+	}
+
+	private List<Map<String, Object>> getItemDetailsForPurchaseQuotation(Set<Object[]> itemDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("item", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("uom", ch[2] != null ? ch[2].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public PurchaseQuotationAttachmentVO uploadPurchaseQuatationAttachementsInBloob(MultipartFile file, Long id) throws IOException {
+		PurchaseQuotationAttachmentVO purchaseQuotationAttachmentVO = purchaseQuotationAttachmentRepo.findById(id).get();
+		purchaseQuotationAttachmentVO.setAttachements(file.getBytes());
+		return purchaseQuotationAttachmentRepo.save(purchaseQuotationAttachmentVO);
 	}
 	
 }
