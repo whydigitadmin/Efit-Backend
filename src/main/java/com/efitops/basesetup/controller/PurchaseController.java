@@ -14,11 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
@@ -28,6 +30,7 @@ import com.efitops.basesetup.dto.PurchaseQuotationDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
+import com.efitops.basesetup.entity.PurchaseQuotationAttachmentVO;
 import com.efitops.basesetup.entity.PurchaseQuotationVO;
 import com.efitops.basesetup.service.PurchaseService;
 
@@ -474,7 +477,7 @@ public class PurchaseController extends BaseController{
 	}
 	
 	@GetMapping("/getPurchaseIndentNoForPurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> getPurchaseIndentNoForPurchaseEnquiry(@RequestParam Long orgId,@RequestParam String customerCode) {
+	public ResponseEntity<ResponseDTO> getPurchaseIndentNoForPurchaseEnquiry(@RequestParam Long orgId,@RequestParam String customerCode,@RequestParam String workOrderNo) {
 		String methodName = "getPurchaseIndentNoForPurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -482,7 +485,7 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> purchaseIndentNo = new ArrayList<>();
 		try {
-			purchaseIndentNo = purchaseService.getPurchaseIndentNoForPurchaseEnquiry(orgId,customerCode);
+			purchaseIndentNo = purchaseService.getPurchaseIndentNoForPurchaseEnquiry(orgId,customerCode,workOrderNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -637,6 +640,85 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getPurchaseEnquiryNoForPurchaseQuotation")
+	public ResponseEntity<ResponseDTO> getPurchaseEnquiryNoForPurchaseQuotation(@RequestParam Long orgId,@RequestParam String customerCode,@RequestParam String workOrderNo) {
+		String methodName = "getPurchaseEnquiryNoForPurchaseQuotation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> purchaseEnquiryNo = new ArrayList<>();
+		try {
+			purchaseEnquiryNo = purchaseService.getPurchaseEnquiryNoForPurchaseQuotation(orgId,customerCode,workOrderNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseEnquiryNo for PurchaseQuotation information get successfully By OrgId");
+			responseObjectsMap.put("purchaseEnquiryNo", purchaseEnquiryNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"PurchaseEnquiryNo for PurchaseQuotation information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getItemDetailsForPurchaseQuotation")
+	public ResponseEntity<ResponseDTO> getItemDetailsForPurchaseQuotation(@RequestParam Long orgId,@RequestParam String purchaseEnquiryNo) {
+		String methodName = "getItemDetailsForPurchaseQuotation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemDetails = new ArrayList<>();
+		try {
+			itemDetails = purchaseService.getItemDetailsForPurchaseQuotation(orgId,purchaseEnquiryNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemDetails for PurchaseQuotation information get successfully By OrgId");
+			responseObjectsMap.put("itemDetails", itemDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ItemDetails for PurchaseQuotation information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@PostMapping("/uploadPurchaseQuatationAttachementsInBloob")
+	public ResponseEntity<ResponseDTO> uploadPurchaseQuatationAttachementsInBloob(@RequestParam("file") MultipartFile file,
+			@RequestParam Long id) {
+		String methodName = "uploadPurchaseQuatationAttachementsInBloob()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		PurchaseQuotationAttachmentVO purchaseQuotationAttachmentVO = null;
+		try {
+			purchaseQuotationAttachmentVO = purchaseService.uploadPurchaseQuatationAttachementsInBloob(file, id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error("Unable To Upload attachements", methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseQuatation Attachments Successfully Upload");
+			responseObjectsMap.put("purchaseQuotationAttachmentVO", purchaseQuotationAttachmentVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Attachments Upload Failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -7,12 +8,14 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.PurchaseEnquiryDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO;
 import com.efitops.basesetup.dto.PurchaseQuotationDTO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
+import com.efitops.basesetup.entity.PurchaseQuotationAttachmentVO;
 import com.efitops.basesetup.entity.PurchaseQuotationVO;
 import com.efitops.basesetup.exception.ApplicationException;
 
@@ -56,7 +59,7 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> getContactPersonDetailsForPurchaseEnquiry(Long orgId, String supplierCode);
 
-	List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode);
+	List<Map<String, Object>> getPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode, String workOrderNo);
 
 	List<Map<String, Object>> getItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
 
@@ -68,6 +71,12 @@ public interface PurchaseService {
 
 	Map<String, Object> updateCreatePurchaseQuotation(@Valid PurchaseQuotationDTO purchaseQuotationDTO) throws ApplicationException;
 
-	String getpurchaseQuotationDocId(Long orgId);	
+	String getpurchaseQuotationDocId(Long orgId);
+
+	List<Map<String, Object>> getPurchaseEnquiryNoForPurchaseQuotation(Long orgId, String customerCode,String workOrderNo);
+
+	List<Map<String, Object>> getItemDetailsForPurchaseQuotation(Long orgId, String purchaseEnquiryNo);
+
+	PurchaseQuotationAttachmentVO uploadPurchaseQuatationAttachementsInBloob(MultipartFile file, Long id) throws IOException;	
 	
 }
