@@ -55,6 +55,8 @@ public class PurchaseOrderVO {
 	private String purchaseIndentNo; 
 	@Column(name="suppliername")
 	private String supplierName;
+	@Column(name="suppliercode")
+	private String supplierCode;
 	@Column(name="contactperson")
 	private long contactperson;
 	@Column(name="mobileno")
@@ -64,7 +66,7 @@ public class PurchaseOrderVO {
 	@Column(name="city")
 	private String city;
 	@Column(name="state")
-	private Date state;
+	private String state;
 	@Column(name="country")
 	private String country; 
 	@Column(name="taxcode")
@@ -75,6 +77,8 @@ public class PurchaseOrderVO {
 	private BigDecimal grossAmount;
 	@Column(name="netamount",precision = 10,scale = 2)
 	private BigDecimal netAmount;
+	@Column(name="totallandedamount",precision = 10,scale = 2)
+	private BigDecimal totalLandedAmount;
 	@Column(name="toatlamounttax",precision = 10,scale = 2)
 	private BigDecimal totalAmountTax;
 	@Column(name="amtinwords")
