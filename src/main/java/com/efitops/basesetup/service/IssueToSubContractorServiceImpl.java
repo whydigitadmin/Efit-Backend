@@ -689,13 +689,12 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 			afterDiscountAmount = amount.subtract(discountAmount);
 //			subContractQuotationDetailsVO.setAfterDiscountAmount(afterDiscountAmount);
-			subContractQuotationDetailsDTO.setAfterDiscountAmount(afterDiscountAmount);
+//			subContractQuotationDetailsDTO.setAfterDiscountAmount(afterDiscountAmount);
 
-			afterQuotationAmount = subContractQuotationDetailsDTO.getAfterDiscountAmount()
-					.multiply(subContractQuotationDetailsDTO.getTax()).divide(BigDecimal.valueOf(100));
+			afterQuotationAmount = afterDiscountAmount.multiply(subContractQuotationDetailsDTO.getTax()).divide(BigDecimal.valueOf(100));
 
 //			subContractQuotationDetailsVO.setAfterQuotationAmount(afterQuotationAmount);
-			subContractQuotationDetailsDTO.setAfterQuotationAmount(afterQuotationAmount);
+//			subContractQuotationDetailsDTO.setAfterQuotationAmount(afterQuotationAmount);
 
 			BigDecimal quotationAmount = afterDiscountAmount.add(afterQuotationAmount);
 			subContractQuotationDetailsVO.setQuotationAmount(quotationAmount);

@@ -22,5 +22,9 @@ public interface QualityService {
 	IncomingMaterialInspectionVO getIncomingMaterialInspectionById(Long id);
 
 	String getIncomingMaterialInspectionDocId(Long orgId);
+	
+	List<Map<String, Object>> getGrnNoFromGrnScreen(Long orgId,String grnNo);
+	
+	List<Map<String, Object>> getItemNoFromGrn(Long orgId,String grnNo);
 
 }
