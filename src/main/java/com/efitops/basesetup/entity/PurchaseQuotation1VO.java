@@ -56,7 +56,7 @@ public class PurchaseQuotation1VO {
 	
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="purchaseQuotationid")
+	@JoinColumn(name ="purchasequotationid")
     private PurchaseQuotationVO purchaseQuotationVO; 
 }
       

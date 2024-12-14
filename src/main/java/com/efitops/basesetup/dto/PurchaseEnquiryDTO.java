@@ -15,12 +15,14 @@ public class PurchaseEnquiryDTO {
     private String purchaseEnquiryNo;
     private String purchaseEnquiryDate;
     private String customerName;
+	private String customerCode;
     private String workOrderNo;
     private String purchaseIndentNo;
     private String customerPoNo;
     private String fgPartName;
     private String fgPartDesc;
     private String supplierName;
+	private String supplierCode;
     private String contactPerson;
     private String contactNo;
     private String enquiryType;
