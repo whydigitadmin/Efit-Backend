@@ -66,8 +66,8 @@ public class PurchaseIndentVO {
 	private String createdBy;
 	@Column(name="modifiedby")
 	private String updatedBy;
-	private boolean active;
-	private boolean cancel;
+	private boolean active=true;
+	private boolean cancel=false;
 	@Column(name="cancelremarks")
 	private String cancelRemarks;
     private String	status;

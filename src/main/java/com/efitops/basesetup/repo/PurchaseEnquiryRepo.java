@@ -33,12 +33,15 @@ public interface PurchaseEnquiryRepo extends JpaRepository<PurchaseEnquiryVO, Lo
 	Set<Object[]> findContactPersonDetailsForPurchaseEnquiry(Long orgId, String supplierCode);
 
 	
-	@Query(nativeQuery=true,value ="SELECT a.docid FROM t_purchaseindent a  WHERE a.orgid = ?1 AND a.customercode = ?2 and workorderno=?3 AND a.active = 1 AND a.docid NOT IN (SELECT c.purchaseintentno FROM t_purchaseenquiry c WHERE c.orgid = ?1) ORDER BY a.docid" )
+	@Query(nativeQuery=true,value ="SELECT a.docid FROM t_purchaseindent a  WHERE a.orgid = ?1 AND a.customercode = ?2 and workorderno=?3 AND a.active = 1 AND a.docid NOT IN (SELECT c.purchaseindentno FROM t_purchaseenquiry c WHERE c.orgid = ?1) ORDER BY a.docid" )
 	Set<Object[]> findPurchaseIndentNoForPurchaseEnquiry(Long orgId, String customerCode, String workOrderNo);
 
 	@Query(nativeQuery=true,value ="select distinct b.item,b.itemdesc,b.uom,b.reqqty from t_purchaseindent a join t_purchaseindent1 b \r\n"
 			+ "ON a.purchaseindentid=b.purchaseindentid where  a.orgid=?1 and a.docid=?2  and active=1 \r\n"
 			+ "UNION (select d.itemcode,d.itemdesc,d.uom,0 as qty  from m_bom c join m_bomdetails d where c.bomid=d.bomid and c.orgid=?1 and ?2='Null' and productcode=?3 )order by 1" )
 	Set<Object[]> findItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
+
+	@Query(nativeQuery=true,value ="SELECT a.docid, b.partno, b.partname, b.requiredqty, a.customerpono FROM t_workorder a JOIN t_itemparticulars b ON a.workorderid = b.workorderid WHERE a.orgid = ?1 AND a.customercode = ?2 AND a.active = 1 AND a.docid NOT IN (SELECT c.workorderno FROM t_purchaseenquiry c WHERE c.orgid = ?1) ORDER BY a.docid" )
+	Set<Object[]> findWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode);
 
 }
