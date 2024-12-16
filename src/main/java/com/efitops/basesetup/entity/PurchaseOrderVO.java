@@ -37,8 +37,8 @@ public class PurchaseOrderVO {
 	@SequenceGenerator(name = "t_purchaseordergen", sequenceName = "t_purchaseorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchaseorderid")
 	private Long id;
-	@Column(name = "pono", length = 150)
-	private String poNo;
+	@Column(name = "docid", length = 150)
+	private String docId;
 	@Column(name="podate")
 	private LocalDate poDate= LocalDate.now();
 	@Column(name="customername")

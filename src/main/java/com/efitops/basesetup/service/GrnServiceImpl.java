@@ -518,7 +518,7 @@ public class GrnServiceImpl implements GrnService {
 		} else {
 
 			String docId = purchaseOrderRepo.getPurchaseDocId(purchaseOrderDTO.getOrgId(), screenCode);
-			purchaseOrderVO.setPoNo(docId);
+			purchaseOrderVO.setDocId(docId);
 
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
