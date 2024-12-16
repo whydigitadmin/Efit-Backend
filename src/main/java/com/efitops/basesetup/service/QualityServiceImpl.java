@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -193,4 +194,41 @@ public class QualityServiceImpl implements QualityService {
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> getGrnNoFromGrnScreen(Long orgId, String grnNo) {
+		Set<Object[]> chType = incomingMaterialInspectionRepo.getGrnNoFromGrnScreen(orgId, grnNo);
+		return getGrnNo(chType);
+	}
+
+	private List<Map<String, Object>> getGrnNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("grnNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("poNo", ch[1] != null ? ch[1].toString() : "");
+			map.put("supplierName", ch[2] != null ? ch[2].toString() : "");
+			map.put("dcInvNo", ch[3] != null ? ch[3].toString() : "");
+			map.put("qtyReceived", ch[4] != null ? ch[4].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+}
+
+	@Override
+	public List<Map<String, Object>> getItemNoFromGrn(Long orgId, String grnNo) {
+		Set<Object[]> chType = incomingMaterialInspectionRepo.getItemNoFromGrn(orgId, grnNo);
+		return getItemNo(chType);
+	}
+
+	private List<Map<String, Object>> getItemNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemCode", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+}
 }
