@@ -551,6 +551,29 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	}
 	
+	@Override
+	public List<Map<String, Object>> getWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode) {
+		Set<Object[]> workOrderNo = purchaseEnquiryRepo.findWorkOrderNoForPurchaseEnquiry(orgId, customerCode);
+		return getWorkOrderNoForPurchaseEnquiry(workOrderNo);
+	}
+
+	private List<Map<String, Object>> getWorkOrderNoForPurchaseEnquiry(Set<Object[]> workOrderNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPart", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
+			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
+			map.put("customerPoNo", ch[4] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	
 	//PurchaseQuotation
 	
 	@Override
@@ -747,6 +770,28 @@ public class PurchaseServiceImpl implements PurchaseService {
 		PurchaseQuotationAttachmentVO purchaseQuotationAttachmentVO = purchaseQuotationAttachmentRepo.findById(id).get();
 		purchaseQuotationAttachmentVO.setAttachements(file.getBytes());
 		return purchaseQuotationAttachmentRepo.save(purchaseQuotationAttachmentVO);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getWorkOrderNoForPurchaseQuotation(Long orgId, String customerCode) {
+		Set<Object[]> workOrderNo = purchaseQuotationRepo.findWorkOrderNoForPurchaseQuotation(orgId, customerCode);
+		return getWorkOrderNoForPurchaseQuotation(workOrderNo);
+	}
+
+	private List<Map<String, Object>> getWorkOrderNoForPurchaseQuotation(Set<Object[]> workOrderNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPart", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
+			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
+			map.put("customerPoNo", ch[4] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
 	}
 	
 }

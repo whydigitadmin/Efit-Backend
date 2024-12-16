@@ -29,5 +29,9 @@ public class PickListDetailsDTO {
 
 	private int pickedQty;
 
+	private int actualQty  ;
+
 	private int remainingQty;
+	
+	private boolean flag;
 }
