@@ -71,8 +71,11 @@ public class GrnVO {
 	private BigDecimal netAmount;
 	@Column(name="totalamounttax",precision = 10,scale = 2)
 	private BigDecimal totalAmountTax;
+	@Column(name="totallandedamount",precision = 10,scale = 2)
+	private BigDecimal totalLandedAmount;
 	@Column(name="remarks")
 	private String remarks;
+	
 	
 	
 	

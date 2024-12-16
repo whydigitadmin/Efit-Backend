@@ -28,9 +28,9 @@ import lombok.NoArgsConstructor;
 public class PurchaseOrderDetailsVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_grndetailsgen")
-	@SequenceGenerator(name = "t_grndetailsgen", sequenceName = "t_grndetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "grndetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseorderdetailsgen")
+	@SequenceGenerator(name = "t_purchaseorderdetailsgen", sequenceName = "t_purchaseorderdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "purchaseorderdetailsid")
 	private Long id;
 	@Column(name = "item", length = 150)
 	private String item;
@@ -48,12 +48,14 @@ public class PurchaseOrderDetailsVO {
 	private BigDecimal price; 
 	@Column(name="qty",precision = 10,scale = 2)
 	private BigDecimal qty;
+	@Column(name="amount",precision = 10,scale = 2)
+	private BigDecimal amount;
 	@Column(name="discount",precision = 10,scale = 2)
 	private BigDecimal discount;
 	@Column(name="discountamt",precision = 10,scale = 2)
 	private BigDecimal discountAmt;
-	@Column(name="amount",precision = 10,scale = 2)
-	private BigDecimal amount;
+	@Column(name="netamount",precision = 10,scale = 2)
+	private BigDecimal netAmount;
 	@Column(name="sgst",precision = 10,scale = 2)
 	private BigDecimal sgst;
 	@Column(name="cgst",precision = 10,scale = 2)
