@@ -28,14 +28,15 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
  
 	
 	
-	@Query (nativeQuery = true, value ="select a.itemname,a.itemdesc,a.inwardqty,a.invoiceqty,a.poqty,uom,hsncode,inspection,needqcapproval,price,taxslab from efit_ops.t_gateinwardentrydetails a\r\n"
-			+ "			join efit_ops.t_gateinwardentry b on a.gateinwardentryid = b.gateinwardentryid\r\n"
-			+ "			join efit_ops.m_item c on a.itemname = c.itemname\r\n"
-			+ "			join efit_ops.m_itempriceslab d on c.itemid = d.itemid\r\n"
-			+ "            join efit_ops.m_itemtaxslab e on e.itemid = c.itemid\r\n"
-			+ "            where b.docid=?2 and b.orgid =?1\r\n"
-			+ "            and taxeffectivefrom= (SELECT MAX(priceeffectivefrom) FROM efit_ops.itempriceslab WHERE itemid = d.itemid) \r\n"
-			+ "            and priceeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.m_itemtaxslab  WHERE itemid = e.itemid)")
+@Query(nativeQuery = true, value="select a.itemname,a.itemdesc,a.inwardqty,a.invoiceqty,a.poqty,uom,hsncode,inspection,needqcapproval,price,taxslab  \r\n"
+		+ " from efit_ops.t_gateinwardentrydetails a   \r\n"
+		+ "				join efit_ops.t_gateinwardentry b on a.gateinwardentryid = b.gateinwardentryid  \r\n"
+		+ "					join efit_ops.m_item c on a.itemname = c.itemname\r\n"
+		+ "				join efit_ops.m_itempriceslab d on c.itemid = d.itemid\r\n"
+		+ "			          join efit_ops.m_itemtaxslab e on e.itemid = c.itemid\r\n"
+		+ "			          where b.docid=?2 and b.orgid =?1\r\n"
+		+ "			         and taxeffectivefrom= (SELECT MAX(priceeffectivefrom) FROM efit_ops.itempriceslab WHERE itemid = d.itemid) \r\n"
+		+ "			         and priceeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.m_itemtaxslab  WHERE itemid = e.itemid)")
 	Set<Object[]> findItemForGRNDetails(Long orgId, String inwardNo);
 
 	

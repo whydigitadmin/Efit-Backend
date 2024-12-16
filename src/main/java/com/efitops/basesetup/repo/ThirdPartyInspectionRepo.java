@@ -38,8 +38,9 @@ public interface ThirdPartyInspectionRepo extends JpaRepository<ThirdPartyInspec
 		            "FROM efit_ops.partymaster b " +
 		            "JOIN efit_ops.partyaddress a " +
 		            "ON a.partymasterid = b.partymasterid " +
-		            "WHERE UPPER(addresstype) = 'BILLING ADDRESS' " +
-		            "AND orgid = ?1"
+		            "WHERE UPPER(addresstype) = 'BILLING' " +
+		            "AND orgid = ?1" +
+		            "and b.partytype='THIRD PARTY'"
 		)
 		Set<Object[]> findgetThirdPartyDetailsForThirdPartyInsp(Long orgId);
 

@@ -70,5 +70,10 @@ public interface GrnService {
 	
 	List<Map<String, Object>> getSupplierAddressForPurchaseOrder (Long orgId, String supplierName);
 
+	List<Map<String, Object>> getPurchaseIndentForPurchaseOrder (Long orgId, String customerCode, String workorderno,String basedOn);
 	
+	List<Map<String, Object>> getQuotationForPurchaseOrder (Long orgId, String customerCode, String workorderno,String basedOn);
+	
+	List<Map<String, Object>> getItemForPurchaseOrder (Long orgId,String purchaseIndentNo,String quotationNo);
+
 }
