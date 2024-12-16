@@ -24,24 +24,26 @@ public interface ThirdPartyInspectionRepo extends JpaRepository<ThirdPartyInspec
 	@Query(nativeQuery = true, value ="SELECT grnno,inwardno,pono,customer,suppliername FROM efit_ops.t_grn where cancel=0 and orgid=?1")
 	Set<Object[]> findGRNForThirdPartyInspDetails(Long orgId);
 
+		
+	
 	@Query(
 		    nativeQuery = true,
-		    value = "SELECT partyname, " +
-		            "CONCAT(" +
-		            "    COALESCE(a.addressline1, ''), ', ', " +
-		            "    COALESCE(a.addressline2, ''), ', ', " +
-		            "    COALESCE(a.addressline3, ''), ', ', " +
-		            "    COALESCE(a.city, ''), ', ', " +
-		            "    COALESCE(a.pincode, ''), ', ', " +
-		            "    COALESCE(a.state, '')" +
-		            ") AS fulladdress " +
-		            "FROM efit_ops.partymaster b " +
-		            "JOIN efit_ops.partyaddress a " +
-		            "ON a.partymasterid = b.partymasterid " +
-		            "WHERE UPPER(addresstype) = 'BILLING' " +
-		            "AND orgid = ?1" +
-		            "and b.partytype='THIRD PARTY'"
-		)
+		    value = "SELECT partyname,  SELECT CONCAT(\r\n"
+			+ "        COALESCE(a.addressline1, ''), ', ',\r\n"
+			+ "        COALESCE(a.addressline2, ''), ', ',\r\n"
+			+ "        COALESCE(a.addressline3, ''), ', ',\r\n"
+			+ "        COALESCE(a.city, ''), ', ',\r\n"
+			+ "        COALESCE(a.pincode, ''), ', ',\r\n"
+			+ "        COALESCE(a.state, '')\r\n"
+			+ "    ) AS full_address,\r\n"
+			+ "    a.stategstin,\r\n"
+			+ "    a.taxtype,\r\n"
+			+ "    a.state,\r\n"
+			+ "    a.pincode,\r\n"
+			+ "    a.city\r\n"
+			+ "FROM \r\n"
+			+ "    efit_ops.partyaddress a JOIN efit_ops.partymaster b  ON a.partymasterid = b.partymasterid\r\n"
+			+ "    WHERE b.cancel = 0  AND b.active = 1  and partyname = ?2  and  UPPER(addresstype) = 'BILLING' and b.orgid =?1 and partytype = 'THIRD PARTY')")
 		Set<Object[]> findgetThirdPartyDetailsForThirdPartyInsp(Long orgId);
 
 
