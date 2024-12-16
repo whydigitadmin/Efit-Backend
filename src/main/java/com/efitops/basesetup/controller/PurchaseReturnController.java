@@ -143,6 +143,97 @@ public class PurchaseReturnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getPurchaseInvoiceNumberFromPurchaseInvoice")
+	public ResponseEntity<ResponseDTO> getPurchaseInvoiceNumberFromPurchaseInvoice(@RequestParam Long orgId,
+			@RequestParam String purchaseInvoiceNo, @RequestParam String supplierCode) {
+		String methodName = "getPurchaseInvoiceNumberFromPurchaseInvoice()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId, purchaseInvoiceNo,
+					supplierCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"PurchaseInvoiceNumber Details retrieved successfully");
+			responseObjectsMap.put("purchaseInvoiceVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PurchaseInvoiceNumber Details", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getLocationFromStockLocation")
+	public ResponseEntity<ResponseDTO> getLocationFromStockLocation(@RequestParam Long orgId) {
+		String methodName = "getLocationFromStockLocation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getLocationFromStockLocation(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "location Details retrieved successfully");
+			responseObjectsMap.put("stockLocationVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve location Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getItemCodeAndItemDescFromPurchsaeInvoice")
+	public ResponseEntity<ResponseDTO> getItemCodeAndItemDescFromPurchsaeInvoice(@RequestParam Long orgId,
+			@RequestParam String purchaseInvoiceNo) {
+		String methodName = "getItemCodeAndItemDescFromPurchsaeInvoice()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getItemCodeAndItemDescFromPurchsaeInvoice(orgId, purchaseInvoiceNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemCode Details retrieved successfully");
+			responseObjectsMap.put("purchaseInvoiceVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve ItemCode Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 	// PurchaseInvoice
 
 	@GetMapping("/getAllPurchaseInvoiceByOrgId")
@@ -251,4 +342,93 @@ public class PurchaseReturnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	@GetMapping("/getPurchaseOrderPoNumber")
+	public ResponseEntity<ResponseDTO> getPurchaseOrderPoNumber(@RequestParam Long orgId,
+			@RequestParam String supplierName) {
+		String methodName = "getPurchaseOrderPoNumber()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getPurchaseOrderPoNumber(orgId, supplierName);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PoNo Details retrieved successfully");
+			responseObjectsMap.put("purchaseOrderVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PoNo Details", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGrnNoAndGrnDateFromGrnDetails")
+	public ResponseEntity<ResponseDTO> getGrnNoAndGrnDateFromGrnDetails(@RequestParam Long orgId,
+			@RequestParam String poNo, @RequestParam String grnNo) {
+		String methodName = "getGrnNoAndGrnDateFromGrnDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getGrnNoAndGrnDateFromGrnDetails(orgId, poNo, grnNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GrnNo Details retrieved successfully");
+			responseObjectsMap.put("grnVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve GrnNo Details", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getItemCodeAndItemDescFromGrn")
+	public ResponseEntity<ResponseDTO> getItemCodeAndItemDescFromGrn(@RequestParam Long orgId,
+			@RequestParam String grnNo) {
+		String methodName = "getItemCodeAndItemDescFromGrn()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getItemCodeAndItemDescFromGrn(orgId, grnNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemCode Details retrieved successfully");
+			responseObjectsMap.put("grnVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve ItemCode Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

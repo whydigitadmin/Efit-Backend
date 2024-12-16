@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_picklistdetails")
+@Table(name = "t_picklistdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

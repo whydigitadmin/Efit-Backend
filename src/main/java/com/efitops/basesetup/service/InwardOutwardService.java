@@ -21,6 +21,10 @@ public interface InwardOutwardService {
 	Map<String, Object> updateCreateGateInwardEntry(GateInwardEntryDTO gateInwardEntryDTO) throws ApplicationException;
 
 	String getGateInwardEntryDocId(Long orgId);
+	
+	List<Map<String, Object>> getPurchaseOrderNoForGateInward(Long orgId, String supplierCode);
+
+	List<Map<String, Object>> getItemDetailsForGateInwardEntry(Long orgId, String purchaseOrderNo);
 
 	//GateOutwardEntry
 	List<GateOutwardEntryVO> getGateOutwardEntryByOrgId(Long orgId);
@@ -28,5 +32,6 @@ public interface InwardOutwardService {
 	List<GateOutwardEntryVO> getGateOutwardEntryById(Long id);
 
 	Map<String, Object> updateCreateGateOutwardEntry(GateOutwardEntryDTO gateOutwardEntryDTO) throws ApplicationException;
+
 
 }
