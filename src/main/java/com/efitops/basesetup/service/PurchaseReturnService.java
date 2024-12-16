@@ -24,7 +24,13 @@ public interface PurchaseReturnService {
 
 	String getPurchaseReturnDocId(Long orgId);
 
-	// PurchaseReturn
+	List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierName);
+
+	List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo,String grnNo);
+
+	List<Map<String, Object>> getItemCodeAndItemDescFromGrn(Long orgId, String grnNo);
+
+	// PurchaseInvoice
 
 	Map<String, Object> createUpdatePurchaseInvoice(PurchaseInvoiceDTO purchaseInvoiceDTO) throws ApplicationException;
 
@@ -33,5 +39,12 @@ public interface PurchaseReturnService {
 	PurchaseInvoiceVO getPurchaseInvoiceById(Long id);
 
 	String getPurchaseInvoiceDocId(Long orgId);
+
+	List<Map<String, Object>>  getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String purchaseInvoiceNo,
+			String supplierCode);
+
+	List<Map<String, Object>> getLocationFromStockLocation(Long orgId);
+
+	List<Map<String, Object>>  getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo);
 
 }
