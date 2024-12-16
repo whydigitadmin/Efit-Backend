@@ -50,6 +50,9 @@ public class GrnServiceImpl implements GrnService {
 
 	@Autowired
 	GrnRepo grnRepo;
+	
+	@Autowired
+	AmountInWordsConverterService amountInWordsConverterService;
 
 	@Autowired
 	GrnDetailsRepo grnDetailsRepo;
@@ -65,10 +68,10 @@ public class GrnServiceImpl implements GrnService {
 
 	@Autowired
 	ThirdPartyAttachmentRepo thirdPartyAttachmentRepo;
-	
+
 	@Autowired
 	PurchaseOrderRepo purchaseOrderRepo;
-	
+
 	@Autowired
 	PurchaseOrderDetailsRepo purchaseOrderDetailsRepo;
 
@@ -358,7 +361,6 @@ public class GrnServiceImpl implements GrnService {
 		thirdPartyInspectionVO.setSupplierName(thirdPartyInspectionDTO.getSupplierName());
 		thirdPartyInspectionVO.setThirdPartyDetails(thirdPartyInspectionDTO.getThirdPartyDetails());
 		thirdPartyInspectionVO.setThirdPartyAddress(thirdPartyInspectionDTO.getThirdPartyAddress());
-		
 
 		if (ObjectUtils.isNotEmpty(thirdPartyInspectionVO.getId())) {
 			List<ThirdPartyInspectionDetailsVO> thirdPartyInspectionDetailsVO1 = thirdPartyInspectionDetailsRepo
@@ -467,6 +469,7 @@ public class GrnServiceImpl implements GrnService {
 		Set<Object[]> chType = thirdPartyInspectionRepo.findgetThirdPartyDetailsForThirdPartyInsp(orgId);
 		return getThirdPartyDetailsForThirdPartyInsp(chType);
 	}
+
 	private List<Map<String, Object>> getThirdPartyDetailsForThirdPartyInsp(Set<Object[]> chType) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chType) {
@@ -474,14 +477,12 @@ public class GrnServiceImpl implements GrnService {
 			map.put("partyName", ch[0] != null ? ch[0].toString() : "");
 			map.put("address", ch[1] != null ? ch[1].toString() : "");
 
-
 			List1.add(map);
 		}
 		return List1;
 	}
 
-	
-	//purchase Order
+	// purchase Order
 	@Override
 	public List<PurchaseOrderVO> getPurchaseOrderByOrgId(Long orgId) {
 		List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
@@ -503,152 +504,223 @@ public class GrnServiceImpl implements GrnService {
 	}
 
 	@Override
-	public Map<String, Object> updateCreatePurchaseOrder(PurchaseOrderDTO purchaseOrderDTO)throws ApplicationException {
-	PurchaseOrderVO purchaseOrderVO = new PurchaseOrderVO();
-	String message;
-	String screenCode = "PONO";
-	if (ObjectUtils.isNotEmpty(purchaseOrderDTO.getId())) {
-		purchaseOrderVO = purchaseOrderRepo.findById(purchaseOrderDTO.getId()).orElseThrow(() -> new ApplicationException("Invalid PO details"));
-		message = "Purchase Order Updated Successfully";
-		purchaseOrderVO.setUpdatedBy(purchaseOrderDTO.getCreatedBy());
+	public Map<String, Object> updateCreatePurchaseOrder(PurchaseOrderDTO purchaseOrderDTO)
+			throws ApplicationException {
+		PurchaseOrderVO purchaseOrderVO = new PurchaseOrderVO();
+		String message;
+		String screenCode = "PONO";
+		if (ObjectUtils.isNotEmpty(purchaseOrderDTO.getId())) {
+			purchaseOrderVO = purchaseOrderRepo.findById(purchaseOrderDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid PO details"));
+			message = "Purchase Order Updated Successfully";
+			purchaseOrderVO.setUpdatedBy(purchaseOrderDTO.getCreatedBy());
 
-	} else {
+		} else {
 
-		String docId = purchaseOrderRepo.getPurchaseDocId(purchaseOrderDTO.getOrgId(), screenCode);
-		purchaseOrderVO.setPoNo(docId);
+			String docId = purchaseOrderRepo.getPurchaseDocId(purchaseOrderDTO.getOrgId(), screenCode);
+			purchaseOrderVO.setDocId(docId);
 
-		// GETDOCID LASTNO +1
-		DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
-				.findByOrgIdAndScreenCode(purchaseOrderDTO.getOrgId(), screenCode);
-		documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
-		documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(purchaseOrderDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
-		purchaseOrderVO.setCreatedBy(purchaseOrderDTO.getCreatedBy());
-		purchaseOrderVO.setUpdatedBy(purchaseOrderDTO.getCreatedBy());
+			purchaseOrderVO.setCreatedBy(purchaseOrderDTO.getCreatedBy());
+			purchaseOrderVO.setUpdatedBy(purchaseOrderDTO.getCreatedBy());
 
-		message = "Enquiry Created Successfully";
-	}
-	createUpdatePurchaseorderVOByPurchaseorderDTO(purchaseOrderDTO, purchaseOrderVO);
-	purchaseOrderRepo.save(purchaseOrderVO);
-	Map<String, Object> response = new HashMap<>();
-	response.put("purchaseOrderVO", purchaseOrderVO);
-	response.put("message", message);
-	return response;
+			message = "Enquiry Created Successfully";
+		}
+		createUpdatePurchaseorderVOByPurchaseorderDTO(purchaseOrderDTO, purchaseOrderVO);
+		purchaseOrderRepo.save(purchaseOrderVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("purchaseOrderVO", purchaseOrderVO);
+		response.put("message", message);
+		return response;
 
-}
-
-private void createUpdatePurchaseorderVOByPurchaseorderDTO(@Valid PurchaseOrderDTO purchaseOrderDTO, PurchaseOrderVO purchaseOrderVO) throws ApplicationException {
-	purchaseOrderVO.setPoDate(purchaseOrderDTO.getPoDate());
-	purchaseOrderVO.setCustomerName(purchaseOrderDTO.getCustomerName());
-	purchaseOrderVO.setCustomerCode(purchaseOrderDTO.getCustomerCode());
-	purchaseOrderVO.setWorkOrderNo(purchaseOrderDTO.getWorkOrderNo());
-	purchaseOrderVO.setBasedOn(purchaseOrderDTO.getBasedOn());
-	purchaseOrderVO.setQuotationNo(purchaseOrderDTO.getQuotationNo());
-	purchaseOrderVO.setPurchaseIndentNo(purchaseOrderDTO.getPurchaseIndentNo());
-	purchaseOrderVO.setSupplierName(purchaseOrderDTO.getSupplierName());
-	purchaseOrderVO.setContactperson(purchaseOrderDTO.getContactperson());
-	purchaseOrderVO.setMobileNo(purchaseOrderDTO.getMobileNo());
-	purchaseOrderVO.setEMail(purchaseOrderDTO.getEMail());
-	purchaseOrderVO.setState(purchaseOrderDTO.getState());
-	purchaseOrderVO.setCountry(purchaseOrderDTO.getCountry());
-	purchaseOrderVO.setTaxCode(purchaseOrderDTO.getTaxCode());
-	purchaseOrderVO.setAddress(purchaseOrderDTO.getAddress());
-	purchaseOrderVO.setRemarks(purchaseOrderDTO.getRemarks());
-	
-
-
-	BigDecimal grossAmount = BigDecimal.ZERO;
-	BigDecimal netAmount = BigDecimal.ZERO;
-	BigDecimal totalTaxAmount = BigDecimal.ZERO;
-
-	if (ObjectUtils.isNotEmpty(purchaseOrderVO.getId())) {
-		List<PurchaseOrderDetailsVO> purchaseOrderDetailsVo1 = purchaseOrderDetailsRepo.findByPurchaseOrderVO(purchaseOrderVO);
-		purchaseOrderDetailsRepo.deleteAll(purchaseOrderDetailsVo1);
 	}
 
-	List<PurchaseOrderDetailsVO> purchaseOrderDetailsVOs = new ArrayList<>();
-	for (PurchaseOrderDetailsDTO purchaseOrderDetailsDTO : purchaseOrderDTO.getPurchaseOrderDetailsDTO()) {
-		PurchaseOrderDetailsVO purchaseOrderDetailsVO = new PurchaseOrderDetailsVO();
-		purchaseOrderDetailsVO.setItem(purchaseOrderDetailsDTO.getItem());
-		purchaseOrderDetailsVO.setItemDesc(purchaseOrderDetailsDTO.getItemDesc());
-		purchaseOrderDetailsVO.setHsnSacCode(purchaseOrderDetailsDTO.getHsnSacCode());
-		purchaseOrderDetailsVO.setTaxType(purchaseOrderDetailsDTO.getTaxType());
-		purchaseOrderDetailsVO.setUom(purchaseOrderDetailsDTO.getUom());
-		purchaseOrderDetailsVO.setQty(purchaseOrderDetailsDTO.getQty());
-		purchaseOrderDetailsVO.setPrice(purchaseOrderDetailsDTO.getPrice());
-		purchaseOrderDetailsVO.setPrevRate(purchaseOrderDetailsDTO.getPrevRate());
-		purchaseOrderDetailsVO.setDiscount(purchaseOrderDetailsDTO.getDiscount());
+	private void createUpdatePurchaseorderVOByPurchaseorderDTO(@Valid PurchaseOrderDTO purchaseOrderDTO,
+			PurchaseOrderVO purchaseOrderVO) throws ApplicationException {
+		purchaseOrderVO.setCustomerName(purchaseOrderDTO.getCustomerName());
+		purchaseOrderVO.setCustomerCode(purchaseOrderDTO.getCustomerCode());
+		purchaseOrderVO.setWorkOrderNo(purchaseOrderDTO.getWorkOrderNo());
+		purchaseOrderVO.setBasedOn(purchaseOrderDTO.getBasedOn());
+		purchaseOrderVO.setQuotationNo(purchaseOrderDTO.getQuotationNo());
+		purchaseOrderVO.setPurchaseIndentNo(purchaseOrderDTO.getPurchaseIndentNo());
+		purchaseOrderVO.setSupplierName(purchaseOrderDTO.getSupplierName());
+		purchaseOrderVO.setSupplierCode(purchaseOrderDTO.getSupplierCode());
+		purchaseOrderVO.setContactperson(purchaseOrderDTO.getContactperson());
+		purchaseOrderVO.setMobileNo(purchaseOrderDTO.getMobileNo());
+		purchaseOrderVO.setEMail(purchaseOrderDTO.getEMail());
+		purchaseOrderVO.setState(purchaseOrderDTO.getState());
+		purchaseOrderVO.setCountry(purchaseOrderDTO.getCountry());
+		purchaseOrderVO.setTaxCode(purchaseOrderDTO.getTaxCode());
+		purchaseOrderVO.setAddress(purchaseOrderDTO.getAddress());
+		purchaseOrderVO.setRemarks(purchaseOrderDTO.getRemarks());
+
+		BigDecimal grossAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+		BigDecimal totalTaxAmount = BigDecimal.ZERO;
+		BigDecimal totalLandedAmount =BigDecimal.ZERO;
+
+
+		if (ObjectUtils.isNotEmpty(purchaseOrderVO.getId())) {
+			List<PurchaseOrderDetailsVO> purchaseOrderDetailsVo1 = purchaseOrderDetailsRepo
+					.findByPurchaseOrderVO(purchaseOrderVO);
+			purchaseOrderDetailsRepo.deleteAll(purchaseOrderDetailsVo1);
+		}
+
+		List<PurchaseOrderDetailsVO> purchaseOrderDetailsVOs = new ArrayList<>();
+		for (PurchaseOrderDetailsDTO purchaseOrderDetailsDTO : purchaseOrderDTO.getPurchaseOrderDetailsDTO()) {
+			PurchaseOrderDetailsVO purchaseOrderDetailsVO = new PurchaseOrderDetailsVO();
+			purchaseOrderDetailsVO.setItem(purchaseOrderDetailsDTO.getItem());
+			purchaseOrderDetailsVO.setItemDesc(purchaseOrderDetailsDTO.getItemDesc());
+			purchaseOrderDetailsVO.setHsnSacCode(purchaseOrderDetailsDTO.getHsnSacCode());
+			purchaseOrderDetailsVO.setTaxType(purchaseOrderDetailsDTO.getTaxType());
+			purchaseOrderDetailsVO.setUom(purchaseOrderDetailsDTO.getUom());
+			purchaseOrderDetailsVO.setQty(purchaseOrderDetailsDTO.getQty());
+			purchaseOrderDetailsVO.setPrice(purchaseOrderDetailsDTO.getPrice());
+			purchaseOrderDetailsVO.setPrevRate(purchaseOrderDetailsDTO.getPrevRate());
+			purchaseOrderDetailsVO.setDiscount(purchaseOrderDetailsDTO.getDiscount());
+
+			purchaseOrderDetailsVO.setIgst(purchaseOrderDetailsDTO.getIgst());
+			purchaseOrderDetailsVO.setSgst(purchaseOrderDetailsDTO.getSgst());
+			purchaseOrderDetailsVO.setHsnSacCode(purchaseOrderDetailsDTO.getHsnSacCode());
+			purchaseOrderDetailsVO.setCgst(purchaseOrderDetailsDTO.getCgst());
+
+			BigDecimal taxAmount = BigDecimal.ZERO;
+			BigDecimal landedValues = BigDecimal.ZERO;
 		
+			BigDecimal amountSet = purchaseOrderDetailsDTO.getPrice().multiply(purchaseOrderDetailsDTO.getQty());
+			purchaseOrderDetailsVO.setAmount(amountSet);
+			
+			
+			grossAmount = grossAmount.add(purchaseOrderDetailsVO.getAmount());
+			BigDecimal discountAmount =     purchaseOrderDetailsVO.getAmount().multiply(purchaseOrderDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
+			purchaseOrderDetailsVO.setDiscountAmt(discountAmount);
+			BigDecimal amountSubtractDiscountAmount = purchaseOrderDetailsVO.getAmount().subtract(purchaseOrderDetailsVO.getDiscountAmt());
+			 purchaseOrderDetailsVO.setNetAmount(amountSubtractDiscountAmount);
+			 netAmount=netAmount.add(amountSubtractDiscountAmount);
+			
+			
+			BigDecimal sgstamount = purchaseOrderDetailsDTO.getSgst().multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
+			BigDecimal cgstamount = purchaseOrderDetailsDTO.getCgst().multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
+			BigDecimal igstamount = purchaseOrderDetailsDTO.getIgst().multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
+			
+			taxAmount = taxAmount.add(cgstamount).add(sgstamount).add(igstamount);
+			purchaseOrderDetailsVO.setTaxValue(taxAmount);
+			totalTaxAmount = totalTaxAmount.add(purchaseOrderDetailsVO.getTaxValue());
+
+			landedValues = amountSubtractDiscountAmount.add(purchaseOrderDetailsVO.getTaxValue());
+			purchaseOrderDetailsVO.setLandedValue(landedValues);
+			totalLandedAmount = totalLandedAmount.add(purchaseOrderDetailsVO.getLandedValue());
+
+			purchaseOrderDetailsVO.setPurchaseOrderVO(purchaseOrderVO); // Set the reference in child entity
+			purchaseOrderDetailsVOs.add(purchaseOrderDetailsVO);
+		}
+
+		purchaseOrderVO.setGrossAmount(grossAmount);
+		purchaseOrderVO.setNetAmount(netAmount);
+		purchaseOrderVO.setTotalLandedAmount(totalLandedAmount);
 		
-		purchaseOrderDetailsVO.setIgst(purchaseOrderDetailsDTO.getIgst());
-		purchaseOrderDetailsVO.setSgst(purchaseOrderDetailsDTO.getSgst());
-		purchaseOrderDetailsVO.setHsnSacCode(purchaseOrderDetailsDTO.getHsnSacCode());
-		purchaseOrderDetailsVO.setCgst(purchaseOrderDetailsDTO.getCgst());
+		purchaseOrderVO.setTotalAmountTax(totalTaxAmount);
+		purchaseOrderVO.setAmtInWords(
+				amountInWordsConverterService.convert(purchaseOrderVO.getTotalLandedAmount().longValue()));
 
-		
-		BigDecimal taxAmount = BigDecimal.ZERO;
-		BigDecimal landedValues = BigDecimal.ZERO;
+		purchaseOrderVO.setPurchaseOrderDetailsVO(purchaseOrderDetailsVOs);
 
-		BigDecimal amountSet = purchaseOrderDetailsDTO.getPrice().multiply(purchaseOrderDetailsDTO.getQty());
-		purchaseOrderDetailsVO.setAmount(amountSet);
-		grossAmount = grossAmount.add(purchaseOrderDetailsVO.getAmount());
-
-		BigDecimal sgstamount = purchaseOrderDetailsDTO.getSgst().multiply(purchaseOrderDetailsVO.getAmount())
-				.divide(BigDecimal.valueOf(100));
-		BigDecimal cgstamount = purchaseOrderDetailsDTO.getCgst().multiply(purchaseOrderDetailsVO.getAmount())
-				.divide(BigDecimal.valueOf(100));
-		BigDecimal igstamount = purchaseOrderDetailsDTO.getIgst().multiply(purchaseOrderDetailsVO.getAmount())
-				.divide(BigDecimal.valueOf(100));
-
-		taxAmount = taxAmount.add(cgstamount).add(sgstamount).add(igstamount);
-		purchaseOrderDetailsVO.setTaxValue(taxAmount);
-		totalTaxAmount = totalTaxAmount.add(purchaseOrderDetailsVO.getTaxValue());
-
-		landedValues = purchaseOrderDetailsVO.getAmount().add(purchaseOrderDetailsVO.getTaxValue());
-		purchaseOrderDetailsVO.setLandedValue(landedValues);
-		netAmount = netAmount.add(purchaseOrderDetailsVO.getLandedValue());
-
-		purchaseOrderDetailsVO.setPurchaseOrderVO(purchaseOrderVO); // Set the reference in child entity
-		purchaseOrderDetailsVOs.add(purchaseOrderDetailsVO);
 	}
 
-	purchaseOrderVO.setGrossAmount(grossAmount);
-	purchaseOrderVO.setNetAmount(netAmount);
-	purchaseOrderVO.setTotalAmountTax(totalTaxAmount);
-
-	purchaseOrderVO.setPurchaseOrderDetailsVO(purchaseOrderDetailsVOs);
-
-}
-
-@Override
-public String getPurchaseOrderDocId(Long orgId) {
-	String screenCode = "TPI";
-	String result = purchaseOrderRepo.getPurchaseOrderDocId(orgId, screenCode);
-	return result;
-}
-
-@Override
-public List<Map<String, Object>> getSupplierAddressForPurchaseOrder(Long orgId, String supplierName) {
-	Set<Object[]> chType = purchaseOrderRepo.findgetSupplierAddressForPurchaseOrder(orgId,supplierName);
-	return getSupplierAddressForPurchaseOrder(chType);
-}
-private List<Map<String, Object>> getSupplierAddressForPurchaseOrder(Set<Object[]> chType) {
-	List<Map<String, Object>> List1 = new ArrayList<>();
-	for (Object[] ch : chType) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("contactperson", ch[0] != null ? ch[0].toString() : "");
-		map.put("contact", ch[1] != null ? ch[1].toString() : "");
-		map.put("full_address", ch[2] != null ? ch[2].toString() : "");
-		map.put("stategstin", ch[3] != null ? ch[3].toString() : "");
-		map.put("taxtype", ch[4] != null ? ch[4].toString() : "");
-		map.put("state", ch[5] != null ? ch[5].toString() : "");
-		map.put("pincode", ch[5] != null ? ch[5].toString() : "");
-		map.put("city", ch[5] != null ? ch[5].toString() : "");
-
-		List1.add(map);
+	@Override
+	public String getPurchaseOrderDocId(Long orgId) {
+		String screenCode = "TPI";
+		String result = purchaseOrderRepo.getPurchaseOrderDocId(orgId, screenCode);
+		return result;
 	}
-	return List1;
-}
 
+	@Override
+	public List<Map<String, Object>> getSupplierAddressForPurchaseOrder(Long orgId, String supplierName) {
+		Set<Object[]> chType = purchaseOrderRepo.findgetSupplierAddressForPurchaseOrder(orgId, supplierName);
+		return getSupplierAddressForPurchaseOrder(chType);
+	}
 
+	private List<Map<String, Object>> getSupplierAddressForPurchaseOrder(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("contactperson", ch[0] != null ? ch[0].toString() : "");
+			map.put("contact", ch[1] != null ? ch[1].toString() : "");
+			map.put("full_address", ch[2] != null ? ch[2].toString() : "");
+			map.put("stategstin", ch[3] != null ? ch[3].toString() : "");
+			map.put("taxtype", ch[4] != null ? ch[4].toString() : "");
+			map.put("state", ch[5] != null ? ch[5].toString() : "");
+			map.put("pincode", ch[5] != null ? ch[5].toString() : "");
+			map.put("city", ch[5] != null ? ch[5].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getPurchaseIndentForPurchaseOrder(Long orgId, String customerCode,
+			String workorderno, String basedOn) {
+		Set<Object[]> chType = purchaseOrderRepo.findgetPurchaseIndentForPurchaseOrder(orgId, customerCode, workorderno,
+				basedOn);
+		return getPurchaseIndentForPurchaseOrder(chType);
+	}
+
+	private List<Map<String, Object>> getPurchaseIndentForPurchaseOrder(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("docid", ch[0] != null ? ch[0].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getQuotationForPurchaseOrder(Long orgId, String customerCode, String workorderno,
+			String basedOn) {
+		Set<Object[]> chType = purchaseOrderRepo.findgetQuotationForPurchaseOrder(orgId, customerCode, workorderno,
+				basedOn);
+		return getQuotationForPurchaseOrder(chType);
+	}
+
+	private List<Map<String, Object>> getQuotationForPurchaseOrder(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("docid", ch[0] != null ? ch[0].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getItemForPurchaseOrder(Long orgId, String purchaseIndentNo,String quotationNo) {
+		Set<Object[]> chType = purchaseOrderRepo.findgetItemForPurchaseOrder(orgId, purchaseIndentNo,quotationNo);
+		return getItemForPurchaseOrder(chType);
+	}
+
+	private List<Map<String, Object>> getItemForPurchaseOrder(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("item", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("indentqty", ch[2] != null ? ch[2].toString() : "");
+			map.put("uom", ch[3] != null ? ch[3].toString() : "");
+			map.put("taxslab", ch[4] != null ? ch[4].toString() : "");
+			map.put("price", ch[5] != null ? ch[5].toString() : "");
+			
+
+			List1.add(map);
+		}
+		return List1;
+	}
 }
