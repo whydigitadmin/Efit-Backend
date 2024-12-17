@@ -18,5 +18,5 @@ public interface ProductionPlanService {
 
 	Map<String, Object> createUpdateProductionPlan(ProductionPlanDTO productionPlanDTO) throws ApplicationException;
 
-
+	String getProductionPlanDocId(Long orgId, String finYear, String branchCode, String screenCode);
 }

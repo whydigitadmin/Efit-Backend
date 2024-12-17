@@ -140,4 +140,9 @@ public class ProductionPlanServiceImpl implements ProductionPlanService {
 		}
 		productionPlanVO.setProductionPlanDetailsVO(productionPlanDetailsVOs);
 	}
+
+	@Override
+	public String getProductionPlanDocId(Long orgId, String finYear, String branchCode, String screenCode) {
+		return productionPlanRepo.getProductionPlanDocId(orgId, finYear, branchCode, screenCode);
+	}
 }

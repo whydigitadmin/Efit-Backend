@@ -18,4 +18,6 @@ public interface JobOrderService {
 
 	Map<String, Object> createUpdateJobOrder(JobOrderDTO jobOrderDTO) throws ApplicationException;
 
+	String getJobOrderDocId(Long orgId, String finYear, String branchCode, String screenCode);
+
 }

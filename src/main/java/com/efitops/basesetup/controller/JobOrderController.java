@@ -20,6 +20,7 @@ import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.JobOrderDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.JobOrderVO;
+import com.efitops.basesetup.entity.JobOrderVO;
 import com.efitops.basesetup.service.JobOrderService;
 
 @RestController
@@ -102,5 +103,33 @@ public class JobOrderController extends BaseController {
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getJobOrderByDocId")
+	public ResponseEntity<ResponseDTO> getJobOrderByDocId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branchCode, @RequestParam String screenCode) {
+		String methodName = "getJobOrderByDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String jobOrderVO = null;
+		try {
+			jobOrderVO = jobOrderService.getJobOrderDocId(orgId, finYear, branchCode, screenCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "OriginBill information get successfully By docid");
+			responseObjectsMap.put("jobOrderVO", jobOrderVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"OriginBill information receive failed By docid", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
 	}
 }

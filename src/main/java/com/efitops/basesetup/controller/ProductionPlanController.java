@@ -104,4 +104,33 @@ public class ProductionPlanController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	@GetMapping("/getProductionPlanByDocId")
+	public ResponseEntity<ResponseDTO> getProductionPlanByDocId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branchCode, @RequestParam String screenCode) {
+		String methodName = "getProductionPlanByDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String productionPlanVO = null;
+		try {
+			productionPlanVO = productionPlanService.getProductionPlanDocId(orgId, finYear, branchCode, screenCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"ProductionPlan  information get successfully By docid");
+			responseObjectsMap.put("productionPlanVO", productionPlanVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"OriginBill information receive failed By docid", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
 }

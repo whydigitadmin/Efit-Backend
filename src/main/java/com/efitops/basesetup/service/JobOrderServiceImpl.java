@@ -135,4 +135,9 @@ public class JobOrderServiceImpl implements JobOrderService {
 		}
 		jobOrderVO.setJobOrderDetailsVO(jobOrderDetailsVOs);
 	}
+
+	@Override
+	public String getJobOrderDocId(Long orgId, String finYear, String branchCode, String screenCode) {
+		return jobOrderRepo.getJobOrderDocId(orgId, finYear, branchCode, screenCode);
+	}
 }
