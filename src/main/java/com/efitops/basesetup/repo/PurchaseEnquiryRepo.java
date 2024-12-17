@@ -29,7 +29,7 @@ public interface PurchaseEnquiryRepo extends JpaRepository<PurchaseEnquiryVO, Lo
 	@Query(nativeQuery = true, value = "select distinct partyname,partycode from partymaster where partytype = 'SUPPLIER' and orgid=?1 and active=1 order by 1")
 	Set<Object[]> findSupplierNameForPurchaseEnquiry(Long orgId);
 
-	@Query(nativeQuery = true, value = "select distinct b.contactperson,b.contact,a.tactype from partymaster a join partyaddress b ON a.partymasterid= b.partymasterid where  a.partytype = 'SUPPLIER' and a.orgid=?1 and a.partycode=?2  and active=1 order by 1")
+	@Query(nativeQuery = true, value = "select distinct b.contactperson,b.contact,b.taxtype from partymaster a join partyaddress b ON a.partymasterid= b.partymasterid where  a.partytype = 'SUPPLIER' and a.orgid=?1 and a.partycode=?2  and active=1 order by 1")
 	Set<Object[]> findContactPersonDetailsForPurchaseEnquiry(Long orgId, String supplierCode);
 
 	
