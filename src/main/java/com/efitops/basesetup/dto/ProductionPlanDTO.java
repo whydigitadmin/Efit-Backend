@@ -32,6 +32,8 @@ public class ProductionPlanDTO {
 	private String branchCode;
 	private String finYear;
 	private String createdBy;
+	private boolean active = true;
+
 	
 	List<ProductionPlanDetailsDTO> productionPlanDetailsDTO;
 }
