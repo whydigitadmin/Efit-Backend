@@ -342,7 +342,7 @@ public class PurchaseController extends BaseController{
 	//PurchaseEnquiry
 
 	@PutMapping("/updateCreatePurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> updateCreatePurchaseEnquiry(@Valid @RequestBody PurchaseEnquiryDTO purchaseIndentDTO) {
+	public ResponseEntity<ResponseDTO> updateCreatePurchaseEnquiry(@Valid @RequestBody PurchaseEnquiryDTO purchaseEnquiryDTO) {
 		String methodName = "updateCreatePurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -350,7 +350,7 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 
 		try {
-			Map<String, Object> purchaseEnquiryVO = purchaseService.updateCreatePurchaseEnquiry(purchaseIndentDTO);
+			Map<String, Object> purchaseEnquiryVO = purchaseService.updateCreatePurchaseEnquiry(purchaseEnquiryDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, purchaseEnquiryVO.get("message"));
 			responseObjectsMap.put("purchaseEnquiryVO", purchaseEnquiryVO.get("purchaseEnquiryVO")); // Corrected key
 			responseDTO = createServiceResponse(responseObjectsMap);

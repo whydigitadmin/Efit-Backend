@@ -22,7 +22,7 @@ public interface PurchaseQuotationRepo extends JpaRepository<PurchaseQuotationVO
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and  screencode=?2")
 	String getPurchaseQuotationByDocId(Long orgId, String screenCode);
 
-	@Query(nativeQuery=true,value ="SELECT a.docid,a.docdate,a.suppliername,a.suppliercode FROM t_purchaseenquiry a  WHERE a.orgid = ?1 AND a.customercode = ?2 and workorderno=?3 AND a.active = 1 AND a.docid NOT IN (SELECT c.purchaseenquiryno FROM t_purchasequotation c WHERE c.orgid = ?1) ORDER BY a.docid" )
+	@Query(nativeQuery=true,value ="SELECT a.docid,a.docdate,a.suppliername,a.suppliercode FROM t_purchaseenquiry a  WHERE a.orgid = ?1 AND a.customercode = ?2 and workorderno=?3 AND a.active = 1 AND a.docid NOT IN (SELECT c.enquiryno FROM t_purchasequotation c WHERE c.orgid = ?1) ORDER BY a.docid" )
 	Set<Object[]> findPurchaseEnquiryNoForPurchaseQuotation(Long orgId, String customerCode, String workOrderNo);
 
 	@Query(nativeQuery=true,value ="select distinct b.item,b.itemdesc,b.unit from t_purchaseenquiry a join t_purchaseenquirydetails b \r\n"
