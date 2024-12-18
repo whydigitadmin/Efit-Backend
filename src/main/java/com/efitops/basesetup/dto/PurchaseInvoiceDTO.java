@@ -31,6 +31,7 @@ public class PurchaseInvoiceDTO {
 	private String gstType;
 	private String customerName;
 	private Long orgId;
+	private String cnt;
 	private String createdBy;
 	private boolean active;
 	private String remarks;
