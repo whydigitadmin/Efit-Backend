@@ -29,7 +29,7 @@ public class ProductionPlanDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productionplandetailsgen")
 	@SequenceGenerator(name = "productionplandetailsgen", sequenceName = "productionplandetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "productionplanid")
+	@Column(name = "productionplandetailsid")
 	private Long id;
 	@Column(name = "process")
 	private String process;
