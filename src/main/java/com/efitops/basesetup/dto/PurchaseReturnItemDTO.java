@@ -17,11 +17,8 @@ public class PurchaseReturnItemDTO {
 	private BigDecimal poRate;
 	private BigDecimal rejectQty;
 	private BigDecimal unitPrice;
-	private BigDecimal amount;
 	private BigDecimal sgst;
 	private BigDecimal cgst;
 	private BigDecimal igst;
-	private BigDecimal taxValue;
-	private BigDecimal landedValue;
 
 }

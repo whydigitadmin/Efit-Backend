@@ -19,12 +19,9 @@ public class PurchaseInvoiceItemDTO {
 	private BigDecimal rejectQty;
 	private BigDecimal acceptQty;
 	private BigDecimal unitPrice;
-	private BigDecimal amount;
 	private BigDecimal sgst;
 	private BigDecimal cgst;
 	private BigDecimal igst;
-	private BigDecimal taxValue;
-	private BigDecimal landedValue;
 	
 
 }
