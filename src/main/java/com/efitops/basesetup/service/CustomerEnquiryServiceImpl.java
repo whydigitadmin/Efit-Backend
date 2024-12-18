@@ -579,6 +579,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("quotationNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("productionmanager", ch[1] != null ? ch[1].toString() : "");
 			List1.add(map);
 		}
 		return List1;
@@ -600,9 +601,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
 			map.put("uom", ch[4] != null ? ch[4].toString() : "");
 			map.put("orderQty", ch[5] != null ? ch[5].toString() : "");
-			map.put("productionManager", ch[6] != null ? ch[6].toString() : "");
-			map.put("customerName", ch[7] != null ? ch[7].toString() : "");
-			map.put("customerCode", ch[8] != null ? ch[8].toString() : "");
+			map.put("customerName", ch[6] != null ? ch[6].toString() : "");
+			map.put("customerCode", ch[7] != null ? ch[7].toString() : "");
 
 			List1.add(map);
 		}

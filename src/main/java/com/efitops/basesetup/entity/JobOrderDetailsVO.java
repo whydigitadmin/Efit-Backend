@@ -46,7 +46,7 @@ public class JobOrderDetailsVO {
 	private String remarks;
 
 	@ManyToOne
-	@JoinColumn(name = "joborderdetailsid")
+	@JoinColumn(name = "joborderid")
 	@JsonBackReference
 	private JobOrderVO jobOrderVO;
 }
