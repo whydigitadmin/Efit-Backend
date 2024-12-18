@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +114,10 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 		purchaseReturnVO.setActive(purchaseReturnDTO.isActive());
 		purchaseReturnVO.setCreatedBy(purchaseReturnDTO.getCreatedBy());
 
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+		BigDecimal totalTaxAmount = BigDecimal.ZERO;
+		
 		if (ObjectUtils.isNotEmpty(purchaseReturnDTO.getId())) {
 			List<PurchaseReturnItemVO> purchaseReturnItemVO1 = purchaseReturnItemRepo
 					.findByPurchaseReturnVO(purchaseReturnVO);
@@ -134,15 +139,62 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			purchaseReturnItemVO.setSgst(purchaseReturnItemDTO.getSgst());
 			purchaseReturnItemVO.setCgst(purchaseReturnItemDTO.getCgst());
 			purchaseReturnItemVO.setIgst(purchaseReturnItemDTO.getIgst());
-			purchaseReturnItemVO.setTaxValue(purchaseReturnItemDTO.getTaxValue());
-			purchaseReturnItemVO.setLandedValue(purchaseReturnItemDTO.getLandedValue());
+			
+			
+			BigDecimal taxAmount = BigDecimal.ZERO;
+			BigDecimal landedValues = BigDecimal.ZERO;
+
+			BigDecimal amountSet = purchaseReturnItemDTO.getUnitPrice().multiply(purchaseReturnItemDTO.getRejectQty());
+			purchaseReturnItemVO.setAmount(amountSet);
+
+			if (purchaseReturnVO.getGstType() == null || purchaseReturnVO.getGstType().isEmpty()
+					|| !purchaseReturnVO.getGstType().equalsIgnoreCase("INTRA")
+							&& !purchaseReturnVO.getGstType().equalsIgnoreCase("INTER")) {
+				purchaseReturnItemVO.setIgst(BigDecimal.ZERO);
+				purchaseReturnItemVO.setCgst(BigDecimal.ZERO);
+				purchaseReturnItemVO.setSgst(BigDecimal.ZERO);
+				purchaseReturnItemVO.setTaxValue(BigDecimal.ZERO);
+			} else {
+				if (purchaseReturnVO.getGstType().equalsIgnoreCase("INTER")) {
+					purchaseReturnItemVO.setIgst(purchaseReturnItemDTO.getIgst());
+					BigDecimal igstAmount = purchaseReturnItemDTO.getIgst().multiply(purchaseReturnItemVO.getAmount())
+							.divide(BigDecimal.valueOf(100));
+					purchaseReturnItemVO.setCgst(BigDecimal.ZERO);
+					purchaseReturnItemVO.setSgst(BigDecimal.ZERO);
+					taxAmount = igstAmount;
+					purchaseReturnItemVO.setTaxValue(taxAmount);
+				} else if (purchaseReturnVO.getGstType().equalsIgnoreCase("INTRA")) {
+					purchaseReturnItemVO.setCgst(purchaseReturnItemDTO.getCgst());
+					purchaseReturnItemVO.setSgst(purchaseReturnItemDTO.getSgst());
+					BigDecimal sgstAmount = purchaseReturnItemDTO.getSgst().multiply(purchaseReturnItemVO.getAmount())
+							.divide(BigDecimal.valueOf(100));
+					BigDecimal cgstAmount = purchaseReturnItemDTO.getCgst().multiply(purchaseReturnItemVO.getAmount())
+							.divide(BigDecimal.valueOf(100));
+					purchaseReturnItemVO.setIgst(BigDecimal.ZERO);
+					taxAmount = cgstAmount.add(sgstAmount);
+					purchaseReturnItemVO.setTaxValue(taxAmount);
+				}
+			}
+			totalTaxAmount = totalTaxAmount.add(purchaseReturnItemVO.getTaxValue());
+
+			landedValues = purchaseReturnItemVO.getAmount().add(purchaseReturnItemVO.getTaxValue());
+			purchaseReturnItemVO.setLandedValue(landedValues);
+			netAmount = netAmount.add(purchaseReturnItemVO.getLandedValue());
+			totalAmount=purchaseReturnItemVO.getTaxValue().add(purchaseReturnItemVO.getLandedValue());
 
 			purchaseReturnItemVO.setPurchaseReturnVO(purchaseReturnVO);
 			purchaseReturnItemVOs.add(purchaseReturnItemVO);
 		}
+
+		purchaseReturnVO.setTotalAmount(totalAmount);
+		purchaseReturnVO.setNetAmount(netAmount);
+		purchaseReturnVO.setTotalAmountTax(totalTaxAmount);
+		purchaseReturnVO.setAmountInWords(
+				amountInWordsConverterService.convert(purchaseReturnVO.getTotalAmount().longValue()));
 		purchaseReturnVO.setPurchaseReturnItemVO(purchaseReturnItemVOs);
 
 	}
+
 
 	@Override
 	public List<PurchaseReturnVO> getAllPurchaseReturnByOrgId(Long orgId) {
@@ -289,9 +341,14 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 		purchaseInvoiceVO.setGstType(purchaseInvoiceDTO.getGstType());
 		purchaseInvoiceVO.setCustomerName(purchaseInvoiceDTO.getCustomerName());
 		purchaseInvoiceVO.setRemarks(purchaseInvoiceDTO.getRemarks());
+		purchaseInvoiceVO.setCnt(purchaseInvoiceDTO.getCnt());
 		purchaseInvoiceVO.setOrgId(purchaseInvoiceDTO.getOrgId());
 		purchaseInvoiceVO.setActive(purchaseInvoiceDTO.isActive());
 		purchaseInvoiceVO.setCreatedBy(purchaseInvoiceDTO.getCreatedBy());
+
+		BigDecimal grossAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+		BigDecimal totalTaxAmount = BigDecimal.ZERO;
 
 		if (ObjectUtils.isNotEmpty(purchaseInvoiceDTO.getId())) {
 			List<PurchaseInvoiceItemVO> purchaseInvoiceItemVO1 = purchaseInvoiceItemRepo
@@ -312,15 +369,55 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			purchaseInvoiceItemVO.setRejectQty(purchaseInvoiceItemDTO.getRejectQty());
 			purchaseInvoiceItemVO.setAcceptQty(purchaseInvoiceItemDTO.getAcceptQty());
 			purchaseInvoiceItemVO.setUnitPrice(purchaseInvoiceItemDTO.getUnitPrice());
-			purchaseInvoiceItemVO.setSgst(purchaseInvoiceItemDTO.getSgst());
-			purchaseInvoiceItemVO.setCgst(purchaseInvoiceItemDTO.getCgst());
-			purchaseInvoiceItemVO.setIgst(purchaseInvoiceItemDTO.getIgst());
-			purchaseInvoiceItemVO.setTaxValue(purchaseInvoiceItemDTO.getTaxValue());
-			purchaseInvoiceItemVO.setLandedValue(purchaseInvoiceItemDTO.getLandedValue());
+
+			BigDecimal taxAmount = BigDecimal.ZERO;
+			BigDecimal landedValues = BigDecimal.ZERO;
+
+			BigDecimal amountSet = purchaseInvoiceItemDTO.getPoRate().multiply(purchaseInvoiceItemDTO.getAcceptQty());
+			purchaseInvoiceItemVO.setAmount(amountSet);
+			grossAmount = grossAmount.add(purchaseInvoiceItemVO.getAmount());
+
+			if (purchaseInvoiceVO.getGstType() == null || purchaseInvoiceVO.getGstType().isEmpty()
+					|| !purchaseInvoiceVO.getGstType().equalsIgnoreCase("INTRA")
+							&& !purchaseInvoiceVO.getGstType().equalsIgnoreCase("INTER")) {
+				purchaseInvoiceItemVO.setIgst(BigDecimal.ZERO);
+				purchaseInvoiceItemVO.setCgst(BigDecimal.ZERO);
+				purchaseInvoiceItemVO.setSgst(BigDecimal.ZERO);
+				purchaseInvoiceItemVO.setTaxValue(BigDecimal.ZERO);
+			} else {
+				if (purchaseInvoiceVO.getGstType().equalsIgnoreCase("INTER")) {
+					purchaseInvoiceItemVO.setIgst(purchaseInvoiceItemDTO.getIgst());
+					BigDecimal igstAmount = purchaseInvoiceItemDTO.getIgst().multiply(purchaseInvoiceItemVO.getAmount())
+							.divide(BigDecimal.valueOf(100));
+					purchaseInvoiceItemVO.setCgst(BigDecimal.ZERO);
+					purchaseInvoiceItemVO.setSgst(BigDecimal.ZERO);
+					taxAmount = igstAmount;
+					purchaseInvoiceItemVO.setTaxValue(taxAmount);
+				} else if (purchaseInvoiceVO.getGstType().equalsIgnoreCase("INTRA")) {
+					purchaseInvoiceItemVO.setCgst(purchaseInvoiceItemDTO.getCgst());
+					purchaseInvoiceItemVO.setSgst(purchaseInvoiceItemDTO.getSgst());
+					BigDecimal sgstAmount = purchaseInvoiceItemDTO.getSgst().multiply(purchaseInvoiceItemVO.getAmount())
+							.divide(BigDecimal.valueOf(100));
+					BigDecimal cgstAmount = purchaseInvoiceItemDTO.getCgst().multiply(purchaseInvoiceItemVO.getAmount())
+							.divide(BigDecimal.valueOf(100));
+					purchaseInvoiceItemVO.setIgst(BigDecimal.ZERO);
+					taxAmount = cgstAmount.add(sgstAmount);
+					purchaseInvoiceItemVO.setTaxValue(taxAmount);
+				}
+			}
+			totalTaxAmount = totalTaxAmount.add(purchaseInvoiceItemVO.getTaxValue());
+
+			landedValues = purchaseInvoiceItemVO.getAmount().add(purchaseInvoiceItemVO.getTaxValue());
+			purchaseInvoiceItemVO.setLandedValue(landedValues);
+			netAmount = netAmount.add(purchaseInvoiceItemVO.getLandedValue());
 
 			purchaseInvoiceItemVO.setPurchaseInvoiceVO(purchaseInvoiceVO);
 			purchaseInvoiceItemVOs.add(purchaseInvoiceItemVO);
 		}
+
+		purchaseInvoiceVO.setGrossAmount(grossAmount);
+		purchaseInvoiceVO.setNetAmount(netAmount);
+		purchaseInvoiceVO.setTotalAmountTax(totalTaxAmount);
 		purchaseInvoiceVO.setPurchaseInvoiceItemVO(purchaseInvoiceItemVOs);
 
 	}
@@ -357,7 +454,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			map.put("poNo", ch[0] != null ? ch[0].toString() : "");
 			List1.add(map);
 		}
-		return List1;
+		return List1; 
 	}
 
 	@Override
