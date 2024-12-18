@@ -20,4 +20,8 @@ public interface DispatchPlanService {
 
 	String getDispatchPlanDocId(Long orgId);
 
+	List<Map<String, Object>> getRouteCardDetailsForDispatchPlan(Long orgId);
+
+	List<Map<String, Object>> getItemDetailsForDispatchPlan(Long orgId, String routeCardNo, String workOrderNo);
+
 }

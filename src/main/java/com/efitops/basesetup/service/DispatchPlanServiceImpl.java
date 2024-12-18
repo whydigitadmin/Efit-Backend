@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -135,4 +136,49 @@ public class DispatchPlanServiceImpl implements DispatchPlanService{
 		return result;
 	}
 
+	
+
+	@Override
+	public List<Map<String, Object>> getRouteCardDetailsForDispatchPlan(Long orgId) {
+		Set<Object[]> routeCardDetails = dispatchPlanRepo.findRouteCardDetailsForDispatchPlan(orgId);
+		return getRouteCardDetailsForDispatchPlan(routeCardDetails);
+	}
+
+	private List<Map<String, Object>> getRouteCardDetailsForDispatchPlan(Set<Object[]> routeCardDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : routeCardDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNo", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("customerCode", ch[1] != null ? ch[1].toString() : "");
+			map.put("customerName", ch[2] != null ? ch[2].toString() : "");
+			map.put("workOrderNo", ch[3] != null ? ch[3].toString() : "");
+
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getItemDetailsForDispatchPlan(Long orgId, String routeCardNo, String workOrderNo) {
+		Set<Object[]> itemDetails = dispatchPlanRepo.findItemDetailsForDispatchPlan(orgId,routeCardNo,workOrderNo);
+		return getItemDetailsForDispatchPlan(itemDetails);
+	}
+
+	private List<Map<String, Object>> getItemDetailsForDispatchPlan(Set<Object[]> itemDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemCode", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("itemName", ch[1] != null ? ch[1].toString() : "");
+			map.put("unit", ch[2] != null ? ch[2].toString() : "");
+
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
 }

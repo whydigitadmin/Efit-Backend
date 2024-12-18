@@ -44,6 +44,8 @@ public class RouteCardEntryVO {
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "customername")
 	private String customerName;
+	@Column(name = "customercode")
+	private String customerCode;
 	@Column(name = "wono")
 	private String woNo;
 	@Column(name = "fgpartname")
