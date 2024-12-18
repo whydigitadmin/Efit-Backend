@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseEnquiryDetailsDTO {
-	
-	private String item;
-    private String itemDesc;
-    private String Unit;
-    private BigDecimal qtyRequired;
-    private String remarks;
+public class DispatchPlanDetailsDTO {
 
+	private String item;
+	private String itemDesc;
+	private String unit;
+	private BigDecimal orderQty;
+	private BigDecimal deliveryQty;
+	private String remarks;
 }

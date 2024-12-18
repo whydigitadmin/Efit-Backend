@@ -47,7 +47,7 @@ public interface PurchaseService {
 	
 	//PurchaseEnquiry
 
-	Map<String, Object> updateCreatePurchaseEnquiry(@Valid PurchaseEnquiryDTO purchaseIndentDTO) throws ApplicationException;
+	Map<String, Object> updateCreatePurchaseEnquiry(@Valid PurchaseEnquiryDTO purchaseEnquiryDTO) throws ApplicationException;
 
 	List<PurchaseEnquiryVO> getAllPurchaseEnquiryByOrgId(Long orgId);
 

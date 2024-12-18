@@ -384,7 +384,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 			purchaseEnquiryVO = purchaseEnquiryRepo.findById(purchaseEnquiryDTO.getId())
 					.orElseThrow(() -> new ApplicationException(
-							"purchaseIndentD  Not Found with id: " + purchaseEnquiryDTO.getId()));
+							"purchaseenquiry  Not Found with id: " + purchaseEnquiryDTO.getId()));
 			purchaseEnquiryVO.setUpdatedBy(purchaseEnquiryDTO.getCreatedBy());
 
 			message = "PurchaseEnquiry Updation Successfully";
