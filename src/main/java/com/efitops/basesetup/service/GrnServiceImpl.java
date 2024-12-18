@@ -27,7 +27,6 @@ import com.efitops.basesetup.dto.ThirdPartyInspectionDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.GrnDetailsVO;
 import com.efitops.basesetup.entity.GrnVO;
-import com.efitops.basesetup.entity.PurchaseEnquiryDetailsVO;
 import com.efitops.basesetup.entity.PurchaseOrderDetailsVO;
 import com.efitops.basesetup.entity.PurchaseOrderVO;
 import com.efitops.basesetup.entity.ThirdPartyAttachmentVO;
@@ -37,9 +36,10 @@ import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.GrnDetailsRepo;
 import com.efitops.basesetup.repo.GrnRepo;
-import com.efitops.basesetup.repo.PurchaseEnquiryDetailsRepo;
 import com.efitops.basesetup.repo.PurchaseOrderDetailsRepo;
 import com.efitops.basesetup.repo.PurchaseOrderRepo;
+import com.efitops.basesetup.repo.RecieveFromSubcontractDetailsRepo;
+import com.efitops.basesetup.repo.RecieveFromSubcontractRepo;
 import com.efitops.basesetup.repo.ThirdPartyAttachmentRepo;
 import com.efitops.basesetup.repo.ThirdPartyInspectionDetailsRepo;
 import com.efitops.basesetup.repo.ThirdPartyInspectionRepo;
@@ -50,7 +50,7 @@ public class GrnServiceImpl implements GrnService {
 
 	@Autowired
 	GrnRepo grnRepo;
-	
+
 	@Autowired
 	AmountInWordsConverterService amountInWordsConverterService;
 
@@ -74,6 +74,12 @@ public class GrnServiceImpl implements GrnService {
 
 	@Autowired
 	PurchaseOrderDetailsRepo purchaseOrderDetailsRepo;
+
+	@Autowired
+	RecieveFromSubcontractRepo recieveFromSubcontractRepo;
+
+	@Autowired
+	RecieveFromSubcontractDetailsRepo recieveFromSubcontractDetailsRepo;
 
 	@Override
 	public List<GrnVO> getGrnByOrgId(Long orgId) {
@@ -562,8 +568,7 @@ public class GrnServiceImpl implements GrnService {
 		BigDecimal grossAmount = BigDecimal.ZERO;
 		BigDecimal netAmount = BigDecimal.ZERO;
 		BigDecimal totalTaxAmount = BigDecimal.ZERO;
-		BigDecimal totalLandedAmount =BigDecimal.ZERO;
-
+		BigDecimal totalLandedAmount = BigDecimal.ZERO;
 
 		if (ObjectUtils.isNotEmpty(purchaseOrderVO.getId())) {
 			List<PurchaseOrderDetailsVO> purchaseOrderDetailsVo1 = purchaseOrderDetailsRepo
@@ -591,23 +596,26 @@ public class GrnServiceImpl implements GrnService {
 
 			BigDecimal taxAmount = BigDecimal.ZERO;
 			BigDecimal landedValues = BigDecimal.ZERO;
-		
+
 			BigDecimal amountSet = purchaseOrderDetailsDTO.getPrice().multiply(purchaseOrderDetailsDTO.getQty());
 			purchaseOrderDetailsVO.setAmount(amountSet);
-			
-			
+
 			grossAmount = grossAmount.add(purchaseOrderDetailsVO.getAmount());
-			BigDecimal discountAmount =     purchaseOrderDetailsVO.getAmount().multiply(purchaseOrderDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
+			BigDecimal discountAmount = purchaseOrderDetailsVO.getAmount()
+					.multiply(purchaseOrderDetailsDTO.getDiscount()).divide(BigDecimal.valueOf(100));
 			purchaseOrderDetailsVO.setDiscountAmt(discountAmount);
-			BigDecimal amountSubtractDiscountAmount = purchaseOrderDetailsVO.getAmount().subtract(purchaseOrderDetailsVO.getDiscountAmt());
-			 purchaseOrderDetailsVO.setNetAmount(amountSubtractDiscountAmount);
-			 netAmount=netAmount.add(amountSubtractDiscountAmount);
-			
-			
-			BigDecimal sgstamount = purchaseOrderDetailsDTO.getSgst().multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
-			BigDecimal cgstamount = purchaseOrderDetailsDTO.getCgst().multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
-			BigDecimal igstamount = purchaseOrderDetailsDTO.getIgst().multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
-			
+			BigDecimal amountSubtractDiscountAmount = purchaseOrderDetailsVO.getAmount()
+					.subtract(purchaseOrderDetailsVO.getDiscountAmt());
+			purchaseOrderDetailsVO.setNetAmount(amountSubtractDiscountAmount);
+			netAmount = netAmount.add(amountSubtractDiscountAmount);
+
+			BigDecimal sgstamount = purchaseOrderDetailsDTO.getSgst()
+					.multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
+			BigDecimal cgstamount = purchaseOrderDetailsDTO.getCgst()
+					.multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
+			BigDecimal igstamount = purchaseOrderDetailsDTO.getIgst()
+					.multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
+
 			taxAmount = taxAmount.add(cgstamount).add(sgstamount).add(igstamount);
 			purchaseOrderDetailsVO.setTaxValue(taxAmount);
 			totalTaxAmount = totalTaxAmount.add(purchaseOrderDetailsVO.getTaxValue());
@@ -623,7 +631,7 @@ public class GrnServiceImpl implements GrnService {
 		purchaseOrderVO.setGrossAmount(grossAmount);
 		purchaseOrderVO.setNetAmount(netAmount);
 		purchaseOrderVO.setTotalLandedAmount(totalLandedAmount);
-		
+
 		purchaseOrderVO.setTotalAmountTax(totalTaxAmount);
 		purchaseOrderVO.setAmtInWords(
 				amountInWordsConverterService.convert(purchaseOrderVO.getTotalLandedAmount().longValue()));
@@ -702,8 +710,8 @@ public class GrnServiceImpl implements GrnService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getItemForPurchaseOrder(Long orgId, String purchaseIndentNo,String quotationNo) {
-		Set<Object[]> chType = purchaseOrderRepo.findgetItemForPurchaseOrder(orgId, purchaseIndentNo,quotationNo);
+	public List<Map<String, Object>> getItemForPurchaseOrder(Long orgId, String purchaseIndentNo, String quotationNo) {
+		Set<Object[]> chType = purchaseOrderRepo.findgetItemForPurchaseOrder(orgId, purchaseIndentNo, quotationNo);
 		return getItemForPurchaseOrder(chType);
 	}
 
@@ -717,10 +725,10 @@ public class GrnServiceImpl implements GrnService {
 			map.put("uom", ch[3] != null ? ch[3].toString() : "");
 			map.put("taxslab", ch[4] != null ? ch[4].toString() : "");
 			map.put("price", ch[5] != null ? ch[5].toString() : "");
-			
 
 			List1.add(map);
 		}
 		return List1;
 	}
+
 }
