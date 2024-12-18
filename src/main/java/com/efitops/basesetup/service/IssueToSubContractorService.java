@@ -3,17 +3,21 @@ package com.efitops.basesetup.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
 import com.efitops.basesetup.dto.JobWorkOutDTO;
+import com.efitops.basesetup.dto.RecieveFromSubcontractDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
 import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.entity.JobWorkOutVO;
+import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
 import com.efitops.basesetup.entity.SubContractQuotationVO;
@@ -113,5 +117,15 @@ public interface IssueToSubContractorService {
 	String getJobWorkOutDocId(Long orgId);
 
 	List<Map<String, Object>> getDcForSubContractForJobWorkOut(Long orgId);
+	
+	
+	//RECIEVE FROM SUB-CONTRACT 
+
+		List<RecieveFromSubcontractVO> getRecieveFromSubcontractByOrgId(Long orgId);
+		
+		List<RecieveFromSubcontractVO> getRecieveFromSubcontractById(Long id);
+		
+		Map<String, Object> updateCreateRecieveFromSubcontract( @Valid RecieveFromSubcontractDTO recieveFromSubcontractDTO) throws ApplicationException;
+	
 
 }

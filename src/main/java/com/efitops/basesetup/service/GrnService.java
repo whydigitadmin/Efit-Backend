@@ -9,9 +9,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.GrnDTO;
 import com.efitops.basesetup.dto.PurchaseOrderDTO;
+import com.efitops.basesetup.dto.RecieveFromSubcontractDTO;
 import com.efitops.basesetup.dto.ThirdPartyInspectionDTO;
 import com.efitops.basesetup.entity.GrnVO;
 import com.efitops.basesetup.entity.PurchaseOrderVO;
+import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
 import com.efitops.basesetup.entity.ThirdPartyAttachmentVO;
 import com.efitops.basesetup.entity.ThirdPartyInspectionVO;
@@ -75,5 +77,8 @@ public interface GrnService {
 	List<Map<String, Object>> getQuotationForPurchaseOrder (Long orgId, String customerCode, String workorderno,String basedOn);
 	
 	List<Map<String, Object>> getItemForPurchaseOrder (Long orgId,String purchaseIndentNo,String quotationNo);
+	
+	
 
+	
 }

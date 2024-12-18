@@ -25,6 +25,7 @@ import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
 import com.efitops.basesetup.dto.JobWorkOutDTO;
+import com.efitops.basesetup.dto.RecieveFromSubcontractDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
@@ -32,6 +33,7 @@ import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.entity.JobWorkOutVO;
+import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
 import com.efitops.basesetup.entity.SubContractQuotationVO;
@@ -1122,4 +1124,86 @@ public class IssueToSubContractorController extends BaseController {
 
 	}
 
+	
+	
+	//RecieveFromSubContract
+
+	@GetMapping("/getRecieveFromSubcontractByOrgId")
+	public ResponseEntity<ResponseDTO> getRecieveFromSubcontractByOrgId(@RequestParam Long orgId) {
+		String methodName = "getRecieveFromSubcontractByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<RecieveFromSubcontractVO> recieveFromSubcontractVO = new ArrayList<>();
+		try {
+			recieveFromSubcontractVO = issueToSubContractorService.getRecieveFromSubcontractByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Recieve From Subcontract information get successfully ByOrgId");
+			responseObjectsMap.put("recieveFromSubcontractVO", recieveFromSubcontractVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Recieve From Subcontract information receive failedByOrgId",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+
+	@GetMapping("/getRecieveFromSubcontractById")
+	public ResponseEntity<ResponseDTO> getRecieveFromSubcontractById(@RequestParam Long id) {
+		String methodName = "getRecieveFromSubcontractById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<RecieveFromSubcontractVO> recieveFromSubcontractVO = new ArrayList<>();
+		try {
+			recieveFromSubcontractVO = issueToSubContractorService.getRecieveFromSubcontractById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Recieve From Subcontract information get successfully By Id");
+			responseObjectsMap.put("recieveFromSubcontractVO", recieveFromSubcontractVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Recieve From Subcontract information receive failed By Id",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@PutMapping("/updateCreateRecieveFromSubcontract")
+	public ResponseEntity<ResponseDTO> updateCreateRecieveFromSubcontract(
+			@Valid @RequestBody RecieveFromSubcontractDTO recieveFromSubcontractDTO) {
+		String methodName = "updateCreateRecieveFromSubcontract()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> recieveFromSubcontractVO = issueToSubContractorService
+					.updateCreateRecieveFromSubcontract(recieveFromSubcontractDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, recieveFromSubcontractVO.get("message"));
+			responseObjectsMap.put("recieveFromSubcontractVO", recieveFromSubcontractVO.get("recieveFromSubcontractVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
 }

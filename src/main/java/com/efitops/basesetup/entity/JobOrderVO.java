@@ -20,46 +20,50 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "productionplan")
+@Table(name = "joborder")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductionPlanVO {
+public class JobOrderVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productionplangen")
-	@SequenceGenerator(name = "productionplangen", sequenceName = "productionplanseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "productionplanid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobordergen")
+	@SequenceGenerator(name = "jobordergen", sequenceName = "joborderseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "joborderid")
 	private Long id;
-	@Column(name = "docid")
-	private String docId;
-	@Column(name = "docdate")
-	private LocalDate docDate;
-	@Column(name = "routecardno")
-	private String routeCardNo;
-	@Column(name = "wosono")
-	private String woSoNo;
-	@Column(name = "wosodate")
-	private LocalDate woSoDate;
-	@Column(name = "customername")
-	private String customerName;
-	@Column(name = "part")
-	private String part;
-	@Column(name = "partdesc")
-	private String partDesc;
-	@Column(name = "productionqty")
-	private String productionQty;
-	@Column(name = "productionstartdate")
-	private LocalDate productionStartDate;
-	@Column(name = "productionenddate")
-	private LocalDate productionEndDate;
-	@Column(name = "rawmaterial")
-	private String rawMaterial;
-	@Column(name = "rawmaterialdesc")
-	private String rawMaterialDesc;
-	@Column(name = "narration")
-	private String narration;
 	
+//	Main Fields
+	@Column(name="docid")
+	private String docId;
+	@Column(name="docdate")
+	private LocalDate docDate;
+	@Column(name="shift")
+	private String shift;
+	@Column(name="routecardno")
+	private String routeCardNo;
+	@Column(name="workorderno")
+	private String workOrderNo;
+	@Column(name="customername")
+	private String customerName;
+	@Column(name="customerpono")
+	private String customerPoNo;
+	@Column(name="supplier")
+	private String supplier;
+	@Column(name="partname")
+	private String partName;
+	@Column(name="partno")
+	private String partNo;
+	@Column(name="operationname")
+	private String operationName;
+	@Column(name="cycletimeinsecs")
+	private String cycleTimeInSecs;
+	@Column(name="normshr")
+	private String normsHr;
+	@Column(name="status")
+	private String status;
+	@Column(name="operatorname")
+	private String operatorName;
+//	Defaul Fields
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "branch",length = 30)
@@ -79,13 +83,14 @@ public class ProductionPlanVO {
 	@Column(name = "cancelremarks",length = 150)
 	private String cancelRemarks;
 	@Column(name = "screencode",length = 30)
-	private String screenCode="PP";
+	private String screenCode="JO";
 	@Column(name = "screenname",length = 30)
-	private String screenName="PRODUCTION PLAN";
+	private String screenName="JOB ORDER";
+//	Summary Fields
+	@Column(name="narration")
+	private String narration;
 	
-	@OneToMany(mappedBy = "productionPlanVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "jobOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<ProductionPlanDetailsVO> productionPlanDetailsVO;
-	
-
+	private List<JobOrderDetailsVO> jobOrderDetailsVO;
 }
