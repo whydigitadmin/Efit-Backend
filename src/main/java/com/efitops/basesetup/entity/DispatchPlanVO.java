@@ -22,71 +22,57 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Entity
-@Table(name = "t_purchaseindent")
+@Table(name = "t_dispatchplan")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PurchaseIndentVO {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "purchaseindentgen")
-	@SequenceGenerator(name = "purchaseindentgen", sequenceName = "purchaseindentseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchaseindentid")
+public class DispatchPlanVO {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_dispatchplangen")
+	@SequenceGenerator(name = "t_dispatchplangen", sequenceName = "t_dispatchplanseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "dispatchplanid")
 	private Long id;
 	@Column(name="docid")
 	private String docId;
 	@Column(name="docdate")
 	private LocalDate docDate=LocalDate.now();
-	@Column(name="indenttype")
-	private String indentType;
+	@Column(name="routecardentry")
+	private String routeCardEntry;
 	@Column(name="customername")
 	private String customerName;
 	@Column(name="customercode")
 	private String customerCode;
 	@Column(name="workorderno")
 	private String workOrderNo;
-	@Column(name="department")
-	private String department;
-	@Column(name="fgpart")
-	private String fgPart;
-	@Column(name="fgpartdesc")
-	private String fgPartDesc;
-	@Column(name="fgqty")
-	private Long fgQty;
-	@Column(name="requestedby")
-	private String requestedBy;
-	@Column(name="customerpono")
-	private String customerPoNo;
-	@Column(name="orgid")
-	private Long orgId;
+	@Column(name="scheduledispatchdate")
+	private LocalDate scheduleDispatchDate;
+	@Column(name="dispatchdate")
+	private LocalDate dispatchDate;
+	@Column(name="narration")
+	private String narration;
+	
 	@Column(name="createdby")
 	private String createdBy;
 	@Column(name="modifiedby")
-	private String updatedBy;
+	private String updatedBy; 
+	@Column(name="orgid")
+	private Long orgId;
+	@Column(name="active")
 	private boolean active=true;
+	@Column(name="cancel")
 	private boolean cancel=false;
-	@Column(name="cancelremarks")
-	private String cancelRemarks;
-    private String	status;
-    @Column(name="screencode")
-    private String screenCode="PI";
-    @Column(name="screenname")
-    private String screenName="PURCHASEINDENT";
-//    @Column(name="finyear")
-//    private String finYear;
-    
-    @OneToMany(mappedBy ="purchaseIndentVO",cascade =CascadeType.ALL)
+	@Column(name="screencode")
+	private String screenCode="DP";
+	@Column(name="screenname")
+	private String screenName="DISPATCHPLAN";
+	
+    @OneToMany(mappedBy ="dispatchPlanVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<PurchaseIndentVO1> purchaseIndentVO1;
-    
-    @OneToMany(mappedBy ="purchaseIndentVO",cascade =CascadeType.ALL)
-    @JsonManagedReference
-    private List<PurchaseIndentVO2> purchaseIndentVO2;
-    
-    
+    private List<DispatchPlanDetailsVO> dispatchPlanDetailsVO;
 	
 	@JsonGetter("active")
 	public String getActive() {
@@ -102,6 +88,5 @@ public class PurchaseIndentVO {
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
- 
 	
 }

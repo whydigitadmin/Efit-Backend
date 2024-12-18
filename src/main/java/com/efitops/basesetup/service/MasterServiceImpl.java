@@ -1701,7 +1701,7 @@ public class MasterServiceImpl implements MasterService {
 			partyMasterVO.setUpdatedBy(partyMasterDTO.getCreatedBy());
 		}
 		partyMasterVO = partyMasterRepo.save(partyMasterVO);
-
+        
 		if (ObjectUtils.isNotEmpty(partyMasterDTO.getId())) {
 			List<PartyStateVO> partyStateVOList = partyStateRepo.findByPartyMasterVO(partyMasterVO);
 			partyStateRepo.deleteAll(partyStateVOList);
