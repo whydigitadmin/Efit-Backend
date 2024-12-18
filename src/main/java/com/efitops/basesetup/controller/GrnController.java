@@ -28,6 +28,7 @@ import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.dto.ThirdPartyInspectionDTO;
 import com.efitops.basesetup.entity.GrnVO;
 import com.efitops.basesetup.entity.PurchaseOrderVO;
+import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 import com.efitops.basesetup.entity.RouteCardEntryVO;
 import com.efitops.basesetup.entity.ThirdPartyAttachmentVO;
 import com.efitops.basesetup.entity.ThirdPartyInspectionVO;
@@ -619,5 +620,93 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	@GetMapping("/getPurchaseIndentForPurchaseOrder")
+	public ResponseEntity<ResponseDTO> getPurchaseIndentForPurchaseOrder(@RequestParam(required = false) Long orgId, String customerCode,
+			String workorderno, String basedOn) {
+		String methodName = "getPurchaseIndentForPurchaseOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> chCode = new ArrayList<>();
+		try {
+			chCode = grnService.getPurchaseIndentForPurchaseOrder(orgId,customerCode,workorderno,basedOn);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" Purchase Indent information get successfully By OrgId");
+			responseObjectsMap.put("chCode", chCode);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Purchase Indent information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 
+	}
+	
+	@GetMapping("/getQuotationForPurchaseOrder")
+	public ResponseEntity<ResponseDTO> getQuotationForPurchaseOrder(@RequestParam(required = false) Long orgId, String customerCode,
+			String workorderno, String basedOn) {
+		String methodName = "getQuotationForPurchaseOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> chCode = new ArrayList<>();
+		try {
+			chCode = grnService.getQuotationForPurchaseOrder(orgId,customerCode,workorderno,basedOn);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" Quotation information get successfully By OrgId");
+			responseObjectsMap.put("chCode", chCode);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Quotation information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+
+	@GetMapping("/getItemForPurchaseOrder")
+	public ResponseEntity<ResponseDTO> getItemForPurchaseOrder(@RequestParam(required = false)Long orgId, String purchaseIndentNo,String quotationNo) {
+		String methodName = "getItemForPurchaseOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> chCode = new ArrayList<>();
+		try {
+			chCode = grnService.getItemForPurchaseOrder(orgId,purchaseIndentNo,quotationNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" PO Item information get successfully By OrgId");
+			responseObjectsMap.put("chCode", chCode);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"PO Item information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	
 }
