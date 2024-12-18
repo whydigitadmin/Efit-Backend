@@ -734,8 +734,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 			Map<String, Object> map = new HashMap<>();
 			map.put("purchaseEnquiryNo", ch[0] != null ? ch[0].toString() : "");
 			map.put("purchaseDate", ch[1] != null ? ch[1].toString() : "");
-			map.put("SupplierNo", ch[2] != null ? ch[2].toString() : "");
-			map.put("SupplierId", ch[3] != null ? ch[3].toString() : "");
+			map.put("SupplierName", ch[2] != null ? ch[2].toString() : "");
+			map.put("SupplierCode", ch[3] != null ? ch[3].toString() : "");
 
 			List1.add(map);
 		}
