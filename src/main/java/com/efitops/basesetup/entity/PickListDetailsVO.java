@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_picklistdetails")
+@Table(name = "t_picklistdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,6 +53,12 @@ public class PickListDetailsVO {
 
 	@Column(name = "remainingqty")
 	private int remainingQty  ;
+	
+	@Column(name = "actualqty")
+	private int actualQty  ;
+
+	@Column(name = "flag")
+	private boolean flag;
 
 	@ManyToOne
 	@JoinColumn(name = "picklistid")

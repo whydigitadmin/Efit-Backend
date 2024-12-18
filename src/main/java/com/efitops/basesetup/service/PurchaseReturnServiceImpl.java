@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -162,6 +163,74 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String purchaseInvoiceNo,
+			String supplierCode) {
+		Set<Object[]> chType = purchaseReturnRepo.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId, purchaseInvoiceNo,
+				supplierCode);
+		return getPurchaseInvoiceNumber(chType);
+	}
+
+	private List<Map<String, Object>> getPurchaseInvoiceNumber(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("purchaseInvoiceNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("purchaseInvoiceDate", ch[1] != null ? ch[1].toString() : "");
+			map.put("grnTime", ch[2] != null ? ch[2].toString() : "");
+			map.put("poNo", ch[3] != null ? ch[3].toString() : "");
+			map.put("gstNo", ch[4] != null ? ch[4].toString() : "");
+			map.put("gstState", ch[5] != null ? ch[5].toString() : "");
+			map.put("address", ch[6] != null ? ch[6].toString() : "");
+			map.put("gatePassNo", ch[7] != null ? ch[7].toString() : "");
+			map.put("currency", ch[8] != null ? ch[8].toString() : "");
+			map.put("exchangeRate", ch[9] != null ? ch[9].toString() : "");
+			map.put("invdcNo", ch[10] != null ? ch[10].toString() : "");
+			map.put("invdcDate", ch[11] != null ? ch[11].toString() : "");
+			map.put("gstType", ch[12] != null ? ch[12].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getLocationFromStockLocation(Long orgId) {
+		Set<Object[]> chType = purchaseReturnRepo.getLocationFromStockLocation(orgId);
+		return getLocation(chType);
+	}
+
+	private List<Map<String, Object>> getLocation(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("location", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo) {
+		Set<Object[]> chType = purchaseReturnRepo.getItemCodeAndItemDescFromPurchsaeInvoice(orgId, purchaseInvoiceNo);
+		return getItemCodeAndItemDesc(chType);
+	}
+
+	private List<Map<String, Object>> getItemCodeAndItemDesc(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemCode", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemName", ch[1] != null ? ch[1].toString() : "");
+			map.put("hsnScaCode", ch[2] != null ? ch[2].toString() : "");
+			map.put("taxType", ch[3] != null ? ch[3].toString() : "");
+			map.put("primaryUnit", ch[4] != null ? ch[4].toString() : "");
+			map.put("poRate", ch[5] != null ? ch[5].toString() : "");
+			map.put("unitPrice", ch[6] != null ? ch[6].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
 	// purchaseInvoice
 
 	@Override
@@ -275,4 +344,73 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierName) {
+		Set<Object[]> chType = purchaseInvoiceRepo.getPurchaseOrderPoNumber(orgId, supplierName);
+		return getPoNo(chType);
+	}
+
+	private List<Map<String, Object>> getPoNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("poNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo, String grnNo) {
+		Set<Object[]> chType = purchaseInvoiceRepo.getGrnNoAndGrnDateFromGrnDetails(orgId, poNo, grnNo);
+		return getGrnNoAndGrnDate(chType);
+	}
+
+	private List<Map<String, Object>> getGrnNoAndGrnDate(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("grnNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("grnDate", ch[1] != null ? ch[1].toString() : "");
+			map.put("location", ch[2] != null ? ch[2].toString() : "");
+			map.put("inwordNo", ch[3] != null ? ch[3].toString() : "");
+			map.put("supplierCode", ch[4] != null ? ch[4].toString() : "");
+			map.put("gstNo", ch[5] != null ? ch[5].toString() : "");
+			map.put("gstState", ch[6] != null ? ch[6].toString() : "");
+			map.put("address", ch[7] != null ? ch[7].toString() : "");
+			map.put("currency", ch[8] != null ? ch[8].toString() : "");
+			map.put("exchangeRate", ch[9] != null ? ch[9].toString() : "");
+			map.put("grnClearTime", ch[10] != null ? ch[10].toString() : "");
+			map.put("invdcNo", ch[11] != null ? ch[11].toString() : "");
+			map.put("invdcDate", ch[12] != null ? ch[12].toString() : "");
+			map.put("gstType", ch[13] != null ? ch[13].toString() : "");
+			map.put("customerName", ch[14] != null ? ch[14].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getItemCodeAndItemDescFromGrn(Long orgId, String grnNo) {
+		Set<Object[]> chType = purchaseInvoiceRepo.getItemCodeAndItemDescFromGrn(orgId, grnNo);
+		return getItemCode(chType);
+	}
+
+	private List<Map<String, Object>> getItemCode(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemCode", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemName", ch[1] != null ? ch[1].toString() : "");
+			map.put("hsnScaCode", ch[2] != null ? ch[2].toString() : "");
+			map.put("taxType", ch[3] != null ? ch[3].toString() : "");
+			map.put("primaryUnit", ch[4] != null ? ch[4].toString() : "");
+			map.put("poRate", ch[5] != null ? ch[5].toString() : "");
+			map.put("receivedQty", ch[6] != null ? ch[6].toString() : "");
+			map.put("acceptQty", ch[7] != null ? ch[7].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
 }

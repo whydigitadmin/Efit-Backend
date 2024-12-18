@@ -342,7 +342,7 @@ public class PurchaseController extends BaseController{
 	//PurchaseEnquiry
 
 	@PutMapping("/updateCreatePurchaseEnquiry")
-	public ResponseEntity<ResponseDTO> updateCreatePurchaseEnquiry(@Valid @RequestBody PurchaseEnquiryDTO purchaseIndentDTO) {
+	public ResponseEntity<ResponseDTO> updateCreatePurchaseEnquiry(@Valid @RequestBody PurchaseEnquiryDTO purchaseEnquiryDTO) {
 		String methodName = "updateCreatePurchaseEnquiry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -350,7 +350,7 @@ public class PurchaseController extends BaseController{
 		ResponseDTO responseDTO = null;
 
 		try {
-			Map<String, Object> purchaseEnquiryVO = purchaseService.updateCreatePurchaseEnquiry(purchaseIndentDTO);
+			Map<String, Object> purchaseEnquiryVO = purchaseService.updateCreatePurchaseEnquiry(purchaseEnquiryDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, purchaseEnquiryVO.get("message"));
 			responseObjectsMap.put("purchaseEnquiryVO", purchaseEnquiryVO.get("purchaseEnquiryVO")); // Corrected key
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -530,6 +530,34 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	@GetMapping("/getWorkOrderNoForPurchaseEnquiry")
+	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseEnquiry(@RequestParam Long orgId,@RequestParam String customerCode) {
+		String methodName = "getWorkOrderNoForPurchaseEnquiry()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> workOrderNo = new ArrayList<>();
+		try {
+			workOrderNo = purchaseService.getWorkOrderNoForPurchaseEnquiry(orgId,customerCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOrderNo for PurchaseEnquiry information get successfully By OrgId");
+			responseObjectsMap.put("workOrderNo", workOrderNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"WorkOrderNo for PurchaseEnquiry information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
 	
 	//PurchaseQuotation
 	
@@ -718,6 +746,33 @@ public class PurchaseController extends BaseController{
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getWorkOrderNoForPurchaseQuotation")
+	public ResponseEntity<ResponseDTO> getWorkOrderNoForPurchaseQuotation(@RequestParam Long orgId,@RequestParam String customerCode) {
+		String methodName = "getWorkOrderNoForPurchaseQuotation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> workOrderNo = new ArrayList<>();
+		try {
+			workOrderNo = purchaseService.getWorkOrderNoForPurchaseQuotation(orgId,customerCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOrderNo for PurchaseQuotation information get successfully By OrgId");
+			responseObjectsMap.put("workOrderNo", workOrderNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"WorkOrderNo for PurchaseQuotation information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
 	}
 	
 	

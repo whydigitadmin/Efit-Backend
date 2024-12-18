@@ -47,7 +47,7 @@ public interface PurchaseService {
 	
 	//PurchaseEnquiry
 
-	Map<String, Object> updateCreatePurchaseEnquiry(@Valid PurchaseEnquiryDTO purchaseIndentDTO) throws ApplicationException;
+	Map<String, Object> updateCreatePurchaseEnquiry(@Valid PurchaseEnquiryDTO purchaseEnquiryDTO) throws ApplicationException;
 
 	List<PurchaseEnquiryVO> getAllPurchaseEnquiryByOrgId(Long orgId);
 
@@ -63,6 +63,8 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> getItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
 
+	List<Map<String, Object>> getWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode);	
+
 	//PurchaseQuotation
 	
 	List<PurchaseQuotationVO> getAllPurchaseQuotationByOrgId(Long orgId);
@@ -77,6 +79,9 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> getItemDetailsForPurchaseQuotation(Long orgId, String purchaseEnquiryNo);
 
-	PurchaseQuotationAttachmentVO uploadPurchaseQuatationAttachementsInBloob(MultipartFile file, Long id) throws IOException;	
+	PurchaseQuotationAttachmentVO uploadPurchaseQuatationAttachementsInBloob(MultipartFile file, Long id) throws IOException;
+
+	List<Map<String, Object>> getWorkOrderNoForPurchaseQuotation(Long orgId, String customerCode);
+
 	
 }

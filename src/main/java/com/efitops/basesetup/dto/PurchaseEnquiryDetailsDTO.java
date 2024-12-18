@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseEnquiryDetailsDTO {
 	
-	private Long id;
 	private String item;
     private String itemDesc;
     private String Unit;

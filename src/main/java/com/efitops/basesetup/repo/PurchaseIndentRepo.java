@@ -35,7 +35,7 @@ public interface PurchaseIndentRepo extends JpaRepository<PurchaseIndentVO, Long
 			+ " a.employee order by  a.employee")
 	Set<Object[]> getRequestedByDetails(Long orgId);
 	
-	@Query(nativeQuery=true,value ="select departmentname from department where orgid=?1 and  active=1 order by 1" )
+	@Query(nativeQuery=true,value ="select departmentname from m_department where orgid=?1 and  active=1 order by 1" )
 	Set<Object[]> getDepartmentDetails(Long orgId);
 
 	@Query(nativeQuery=true,value ="select b.itemcode,b.itemdesc,b.uom,b.qty from m_bom a join m_bomdetails b where a.bomid = b.bomid and a.orgid=?1 and a.productcode=?2 and active=1 order by 1" )
