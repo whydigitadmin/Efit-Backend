@@ -21,16 +21,14 @@ public interface PurchaseInvoiceRepo extends JpaRepository<PurchaseInvoiceVO, Lo
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getPurchaseInvoiceDocId(Long orgId, String screenCode);
 
-	@Query(nativeQuery = true, value = "select a.pono from t_purchaseorder a where a.orgid=?1 and a.suppliername=?2 and a.active group by\r\n"
-			+ " a.pono order by a.pono")
-	Set<Object[]> getPurchaseOrderPoNumber(Long orgId, String supplierName);
+	@Query(nativeQuery = true, value = "select a.docid from t_purchaseorder a where a.orgid=?1 and a.suppliercode=?2 and a.active group by a.docid order by a.docid")
+	Set<Object[]> getPurchaseOrderPoNumber(Long orgId, String supplierCode);
 
-	@Query(nativeQuery = true, value = " select a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a2.state,a.address,\r\n"
-			+ " a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer from\r\n"
-			+ " t_grn a,partymaster a1,partyaddress a2 where a.orgid=?1 and a.pono=?2 and grnno=?3 and a.suppliername=a1.partyname and  a1.partymasterid=a2.partymasterid \r\n"
-			+ " and a2.addresstype='BILLING' and\r\n"
-			+ " a.active group by  a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a2.state,a.address,\r\n"
-			+ " a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer order by a.grnno")
+	@Query(nativeQuery = true, value = "select a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a.address,\r\n"
+			+ "		 a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer from\r\n"
+			+ "		 t_grn a,partymaster a1 where a.orgid=?1 and a.pono=?2 and grnno=?3 and a.suppliername=a1.partyname  and\r\n"
+			+ "		 a.active group by  a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a.address,\r\n"
+			+ "		a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer order by a.grnno")
 	Set<Object[]> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo,String grnNo);
 
 	@Query(nativeQuery = true, value = "select a.itemcode,a.itemdesc,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"

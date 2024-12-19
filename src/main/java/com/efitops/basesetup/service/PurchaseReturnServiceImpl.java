@@ -117,7 +117,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 		BigDecimal totalAmount = BigDecimal.ZERO;
 		BigDecimal netAmount = BigDecimal.ZERO;
 		BigDecimal totalTaxAmount = BigDecimal.ZERO;
-		
+
 		if (ObjectUtils.isNotEmpty(purchaseReturnDTO.getId())) {
 			List<PurchaseReturnItemVO> purchaseReturnItemVO1 = purchaseReturnItemRepo
 					.findByPurchaseReturnVO(purchaseReturnVO);
@@ -139,8 +139,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			purchaseReturnItemVO.setSgst(purchaseReturnItemDTO.getSgst());
 			purchaseReturnItemVO.setCgst(purchaseReturnItemDTO.getCgst());
 			purchaseReturnItemVO.setIgst(purchaseReturnItemDTO.getIgst());
-			
-			
+
 			BigDecimal taxAmount = BigDecimal.ZERO;
 			BigDecimal landedValues = BigDecimal.ZERO;
 
@@ -180,7 +179,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			landedValues = purchaseReturnItemVO.getAmount().add(purchaseReturnItemVO.getTaxValue());
 			purchaseReturnItemVO.setLandedValue(landedValues);
 			netAmount = netAmount.add(purchaseReturnItemVO.getLandedValue());
-			totalAmount=purchaseReturnItemVO.getTaxValue().add(purchaseReturnItemVO.getLandedValue());
+			totalAmount = purchaseReturnItemVO.getTaxValue().add(purchaseReturnItemVO.getLandedValue());
 
 			purchaseReturnItemVO.setPurchaseReturnVO(purchaseReturnVO);
 			purchaseReturnItemVOs.add(purchaseReturnItemVO);
@@ -189,12 +188,11 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 		purchaseReturnVO.setTotalAmount(totalAmount);
 		purchaseReturnVO.setNetAmount(netAmount);
 		purchaseReturnVO.setTotalAmountTax(totalTaxAmount);
-		purchaseReturnVO.setAmountInWords(
-				amountInWordsConverterService.convert(purchaseReturnVO.getTotalAmount().longValue()));
+		purchaseReturnVO
+				.setAmountInWords(amountInWordsConverterService.convert(purchaseReturnVO.getTotalAmount().longValue()));
 		purchaseReturnVO.setPurchaseReturnItemVO(purchaseReturnItemVOs);
 
 	}
-
 
 	@Override
 	public List<PurchaseReturnVO> getAllPurchaseReturnByOrgId(Long orgId) {
@@ -232,14 +230,13 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			map.put("grnTime", ch[2] != null ? ch[2].toString() : "");
 			map.put("poNo", ch[3] != null ? ch[3].toString() : "");
 			map.put("gstNo", ch[4] != null ? ch[4].toString() : "");
-			map.put("gstState", ch[5] != null ? ch[5].toString() : "");
-			map.put("address", ch[6] != null ? ch[6].toString() : "");
-			map.put("gatePassNo", ch[7] != null ? ch[7].toString() : "");
-			map.put("currency", ch[8] != null ? ch[8].toString() : "");
-			map.put("exchangeRate", ch[9] != null ? ch[9].toString() : "");
-			map.put("invdcNo", ch[10] != null ? ch[10].toString() : "");
-			map.put("invdcDate", ch[11] != null ? ch[11].toString() : "");
-			map.put("gstType", ch[12] != null ? ch[12].toString() : "");
+			map.put("address", ch[5] != null ? ch[5].toString() : "");
+			map.put("gatePassNo", ch[6] != null ? ch[6].toString() : "");
+			map.put("currency", ch[7] != null ? ch[7].toString() : "");
+			map.put("exchangeRate", ch[8] != null ? ch[8].toString() : "");
+			map.put("invdcNo", ch[9] != null ? ch[9].toString() : "");
+			map.put("invdcDate", ch[10] != null ? ch[10].toString() : "");
+			map.put("gstType", ch[11] != null ? ch[11].toString() : "");
 			List1.add(map);
 		}
 		return List1;
@@ -442,8 +439,8 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierName) {
-		Set<Object[]> chType = purchaseInvoiceRepo.getPurchaseOrderPoNumber(orgId, supplierName);
+	public List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierCode) {
+		Set<Object[]> chType = purchaseInvoiceRepo.getPurchaseOrderPoNumber(orgId, supplierCode);
 		return getPoNo(chType);
 	}
 
@@ -454,7 +451,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			map.put("poNo", ch[0] != null ? ch[0].toString() : "");
 			List1.add(map);
 		}
-		return List1; 
+		return List1;
 	}
 
 	@Override
@@ -473,15 +470,14 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			map.put("inwordNo", ch[3] != null ? ch[3].toString() : "");
 			map.put("supplierCode", ch[4] != null ? ch[4].toString() : "");
 			map.put("gstNo", ch[5] != null ? ch[5].toString() : "");
-			map.put("gstState", ch[6] != null ? ch[6].toString() : "");
-			map.put("address", ch[7] != null ? ch[7].toString() : "");
-			map.put("currency", ch[8] != null ? ch[8].toString() : "");
-			map.put("exchangeRate", ch[9] != null ? ch[9].toString() : "");
-			map.put("grnClearTime", ch[10] != null ? ch[10].toString() : "");
-			map.put("invdcNo", ch[11] != null ? ch[11].toString() : "");
-			map.put("invdcDate", ch[12] != null ? ch[12].toString() : "");
-			map.put("gstType", ch[13] != null ? ch[13].toString() : "");
-			map.put("customerName", ch[14] != null ? ch[14].toString() : "");
+			map.put("address", ch[6] != null ? ch[6].toString() : "");
+			map.put("currency", ch[7] != null ? ch[7].toString() : "");
+			map.put("exchangeRate", ch[8] != null ? ch[8].toString() : "");
+			map.put("grnClearTime", ch[9] != null ? ch[9].toString() : "");
+			map.put("invdcNo", ch[10] != null ? ch[10].toString() : "");
+			map.put("invdcDate", ch[11] != null ? ch[11].toString() : "");
+			map.put("gstType", ch[12] != null ? ch[12].toString() : "");
+			map.put("customerName", ch[13] != null ? ch[13].toString() : "");
 			List1.add(map);
 		}
 		return List1;
