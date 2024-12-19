@@ -22,6 +22,6 @@ public interface DispatchPlanService {
 
 	List<Map<String, Object>> getRouteCardDetailsForDispatchPlan(Long orgId);
 
-	List<Map<String, Object>> getItemDetailsForDispatchPlan(Long orgId, String routeCardNo, String workOrderNo);
+	List<Map<String, Object>> getItemDetailsForDispatchPlan(Long orgId, String workOrderNo);
 
 }

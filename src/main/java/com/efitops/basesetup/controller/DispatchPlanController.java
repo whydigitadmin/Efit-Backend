@@ -168,7 +168,7 @@ public class DispatchPlanController extends BaseController {
 	}
 	
 	@GetMapping("/getItemDetailsForDispatchPlan")
-	public ResponseEntity<ResponseDTO> getItemDetailsForDispatchPlan(@RequestParam Long orgId, @RequestParam String routeCardNo ,@RequestParam String workOrderNo) {
+	public ResponseEntity<ResponseDTO> getItemDetailsForDispatchPlan(@RequestParam Long orgId,@RequestParam String workOrderNo) {
 		String methodName = "getItemDetailsForDispatchPlan()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -176,7 +176,7 @@ public class DispatchPlanController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> itemDetails = new ArrayList<>();
 		try {
-			itemDetails = dispatchPlanService.getItemDetailsForDispatchPlan(orgId,routeCardNo,workOrderNo);
+			itemDetails = dispatchPlanService.getItemDetailsForDispatchPlan(orgId,workOrderNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

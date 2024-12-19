@@ -161,8 +161,8 @@ public class DispatchPlanServiceImpl implements DispatchPlanService{
 	}
 	
 	@Override
-	public List<Map<String, Object>> getItemDetailsForDispatchPlan(Long orgId, String routeCardNo, String workOrderNo) {
-		Set<Object[]> itemDetails = dispatchPlanRepo.findItemDetailsForDispatchPlan(orgId,routeCardNo,workOrderNo);
+	public List<Map<String, Object>> getItemDetailsForDispatchPlan(Long orgId, String workOrderNo) {
+		Set<Object[]> itemDetails = dispatchPlanRepo.findItemDetailsForDispatchPlan(orgId,workOrderNo);
 		return getItemDetailsForDispatchPlan(itemDetails);
 	}
 
@@ -173,7 +173,7 @@ public class DispatchPlanServiceImpl implements DispatchPlanService{
 			map.put("itemCode", ch[0] != null ? ch[0].toString() : ""); 
 			map.put("itemName", ch[1] != null ? ch[1].toString() : "");
 			map.put("unit", ch[2] != null ? ch[2].toString() : "");
-
+			map.put("unit", ch[3] != null ? ch[3].toString() : "");
 			
 			List1.add(map);
 		}
