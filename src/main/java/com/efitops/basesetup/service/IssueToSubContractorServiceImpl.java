@@ -597,6 +597,8 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("scIssueNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("docdate", ch[1] != null ? ch[1].toString() : "");
+			map.put("department", ch[2] != null ? ch[2].toString() : "");
 			List1.add(map);
 		}
 		return List1;

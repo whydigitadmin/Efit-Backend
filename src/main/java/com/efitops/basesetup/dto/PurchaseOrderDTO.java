@@ -25,8 +25,8 @@ public class PurchaseOrderDTO {
 	private String purchaseIndentNo; 
 	private String supplierName;
 	private String supplierCode;
-	private long contactperson;
-	private String mobileNo;
+	private String contactPerson;
+	private long   mobileNo;
 	private String eMail;
 	private String state;
 	private String country; 
