@@ -374,7 +374,7 @@ public class PurchaseReturnController extends BaseController {
 
 	@GetMapping("/getGrnNoAndGrnDateFromGrnDetails")
 	public ResponseEntity<ResponseDTO> getGrnNoAndGrnDateFromGrnDetails(@RequestParam Long orgId,
-			@RequestParam String poNo, @RequestParam String grnNo) {
+			@RequestParam String poNo) {
 		String methodName = "getGrnNoAndGrnDateFromGrnDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -383,7 +383,7 @@ public class PurchaseReturnController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = purchaseReturnService.getGrnNoAndGrnDateFromGrnDetails(orgId, poNo, grnNo);
+			mapp = purchaseReturnService.getGrnNoAndGrnDateFromGrnDetails(orgId, poNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -430,5 +430,36 @@ public class PurchaseReturnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getPoDetailsId")
+	public ResponseEntity<ResponseDTO> getPoDetailsId(@RequestParam Long docId,
+			@RequestParam String itemDesc,@RequestParam Long orgId) {
+		String methodName = "getPoDetailsId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = purchaseReturnService.getPoDetailsId(docId,itemDesc,orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PoDetailsId Details retrieved successfully");
+			responseObjectsMap.put("purchaseOrderDetailsVO", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PoDetailsId Details",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 
 }

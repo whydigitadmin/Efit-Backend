@@ -1,4 +1,5 @@
 package com.efitops.basesetup.entity;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,25 +34,25 @@ public class EnquiryVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_enquirygen")
 	@SequenceGenerator(name = "t_enquirygen", sequenceName = "t_enquiryseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "enquiryid")
+	@Column(name = "enquiryid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name="enquirytype")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "enquirytype")
 	private String enquiryType;
-	@Column(name="customer")
+	@Column(name = "customer")
 	private String customer;
-	@Column(name="customercode")
+	@Column(name = "customercode")
 	private String customerCode;
-	@Column(name="enquiryduedate")
+	@Column(name = "enquiryduedate")
 	private LocalDate enquiryDueDate;
-	@Column(name="contactname")
+	@Column(name = "contactname")
 	private String contactName;
-	@Column(name="contactno")
-	private Long contactNo; 
-	
+	@Column(name = "contactno")
+	private Long contactNo;
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -64,26 +65,24 @@ public class EnquiryVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="ENY";
-	@Column(name = "screenname",length = 30)
-	private String screenName="ENQUIRY";
-	
-	
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "ENY";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "ENQUIRY";
+
 	@OneToMany(mappedBy = "enquiryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<EnquiryDetailsVO> enquiryDetailsVO;
-	
+
 	@OneToMany(mappedBy = "enquiryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<EnquirySummaryVO> enquirySummaryVO;
-	
 
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
@@ -94,4 +93,3 @@ public class EnquiryVO {
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
 }
-

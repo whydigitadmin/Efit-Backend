@@ -1,4 +1,5 @@
 package com.efitops.basesetup.entity;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,12 +33,12 @@ public class SubContractEnquiryVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontractenquirygen")
 	@SequenceGenerator(name = "t_subcontractenquirygen", sequenceName = "t_subcontractenquiryseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "subcontractenquiryid")
+	@Column(name = "subcontractenquiryid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "enquirytype")
 	private String enquiryType;
 	@Column(name = "subcontractorname")
@@ -52,9 +53,9 @@ public class SubContractEnquiryVO {
 	private String routeCardNo;
 	@Column(name = "contactname")
 	private String contactName;
-	@Column(name="contactno")
+	@Column(name = "contactno")
 	private Long contactNo;
-	@Column(name="scissueno")
+	@Column(name = "scissueno")
 	private String scIssueNo;
 	@Column(name = "narration")
 	private String narration;
@@ -66,34 +67,31 @@ public class SubContractEnquiryVO {
 	private String updatedBy;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="SUB";
-	@Column(name = "screenname",length = 30)
-	private String screenName="SUBCONTRACTENQUIRY";
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "SUB";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "SUBCONTRACTENQUIRY";
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	
-	@OneToMany(mappedBy = "subContractEnquiryVO",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "subContractEnquiryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<SubContractEnquiryDetailsVO> subContractEnquiryDetailsVO;
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-	
+
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
-	
 
 }
-

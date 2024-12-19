@@ -1,4 +1,5 @@
 package com.efitops.basesetup.entity;
+
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ public class IncomingMaterialInspectionDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_incomingmaterialinspectiondetailsgen")
 	@SequenceGenerator(name = "t_incomingmaterialinspectiondetailsgen", sequenceName = "t_incomingmaterialinspectiondetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "incomingmaterialinspectiondetailsid")
+	@Column(name = "incomingmaterialinspectiondetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "parameter")
 	private String parameter;
@@ -60,7 +61,7 @@ public class IncomingMaterialInspectionDetailsVO {
 	private String remarks;
 
 	@ManyToOne
-	@JoinColumn(name = "incomingmaterialinspectionid")
+	@JoinColumn(name = "incomingmaterialinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	IncomingMaterialInspectionVO incomingMaterialInspectionVO;
 

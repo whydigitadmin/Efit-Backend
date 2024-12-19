@@ -30,28 +30,28 @@ public class EnquiryDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_enquirydetailsgen")
 	@SequenceGenerator(name = "t_enquirydetailsgen", sequenceName = "t_enquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "enquirydetailsid")
+	@Column(name = "enquirydetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="partcode")
+	@Column(name = "partcode")
 	private String partCode;
-	@Column(name="partdescription")
+	@Column(name = "partdescription")
 	private String partDescription;
-	@Column(name="drawingno")
+	@Column(name = "drawingno")
 	private String drawingNo;
-	@Column(name="revisionno")
+	@Column(name = "revisionno")
 	private String revisionNo;
-	@Column(name="unit")
+	@Column(name = "unit")
 	private String unit;
-	@Column(name="requireqty")
+	@Column(name = "requireqty")
 	private Long requireQty;
-	@Column(name="deliverydate")
+	@Column(name = "deliverydate")
 	private LocalDate deliveryDate;
-	@Column(name="remarks")
+	@Column(name = "remarks")
 	private String remarks;
-	
+
 	@ManyToOne
-	@JoinColumn(name="enquiryid")
+	@JoinColumn(name = "enquiryid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	EnquiryVO enquiryVO;
-	
+
 }

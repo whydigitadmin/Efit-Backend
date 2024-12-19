@@ -30,39 +30,39 @@ public class PurchaseReturnItemVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchasereturnitemgen")
 	@SequenceGenerator(name = "t_purchasereturnitemgen", sequenceName = "t_purchasereturnitemseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchasereturnitemid")
+	@Column(name = "purchasereturnitemid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="itemcode")
+	@Column(name = "itemcode")
 	private String itemCode;
-	@Column(name="itemname")
+	@Column(name = "itemname")
 	private String itemName;
-	@Column(name="hsnsaccode")
+	@Column(name = "hsnsaccode")
 	private String hsnSacCode;
-	@Column(name="taxcode")
+	@Column(name = "taxcode")
 	private String taxCode;
-	@Column(name="primaryunit")
+	@Column(name = "primaryunit")
 	private String primaryUnit;
-	@Column(name="porate",precision = 10,scale = 2)
+	@Column(name = "porate", precision = 10, scale = 2)
 	private BigDecimal poRate;
-	@Column(name="rejectqty",precision = 10,scale = 2)
+	@Column(name = "rejectqty", precision = 10, scale = 2)
 	private BigDecimal rejectQty;
-	@Column(name="unitprice",precision = 10,scale = 2)
+	@Column(name = "unitprice", precision = 10, scale = 2)
 	private BigDecimal unitPrice;
-	@Column(name="amount",precision = 10,scale = 2)
+	@Column(name = "amount", precision = 10, scale = 2)
 	private BigDecimal amount;
-	@Column(name="sgst",precision = 10,scale = 2)
+	@Column(name = "sgst", precision = 10, scale = 2)
 	private BigDecimal sgst;
-	@Column(name="cgst",precision = 10,scale = 2)
+	@Column(name = "cgst", precision = 10, scale = 2)
 	private BigDecimal cgst;
-	@Column(name="igst",precision = 10,scale = 2)
+	@Column(name = "igst", precision = 10, scale = 2)
 	private BigDecimal igst;
-	@Column(name="taxvalue",precision = 10,scale = 2)
+	@Column(name = "taxvalue", precision = 10, scale = 2)
 	private BigDecimal taxValue;
-	@Column(name="landedvalue",precision = 10,scale = 2)
+	@Column(name = "landedvalue", precision = 10, scale = 2)
 	private BigDecimal landedValue;
-	
+
 	@ManyToOne
-	@JoinColumn(name="purchasereturnid")
+	@JoinColumn(name = "purchasereturnid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	PurchaseReturnVO purchaseReturnVO;
 }

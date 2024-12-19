@@ -26,7 +26,7 @@ public interface PurchaseReturnService {
 
 	List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierName);
 
-	List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo,String grnNo);
+	List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo);
 
 	List<Map<String, Object>> getItemCodeAndItemDescFromGrn(Long orgId, String grnNo);
 
@@ -46,5 +46,7 @@ public interface PurchaseReturnService {
 	List<Map<String, Object>> getLocationFromStockLocation(Long orgId);
 
 	List<Map<String, Object>>  getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo);
+	
+	List<Map<String, Object>> getPoDetailsId(Long docId, String itemDesc, Long orgId);
 
 }
