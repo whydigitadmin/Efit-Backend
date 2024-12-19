@@ -37,12 +37,6 @@ public class PurchaseEnquiryVO {
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
 
-	@Column(name = "purchaseenquiryno", length = 20)
-	private String purchaseEnquiryNo;
-
-	@Column(name = "purchaseenquirydate", length = 20)
-	private String purchaseEnquiryDate;
-
 	@Column(name = "customername", length = 150)
 	private String customerName;
 

@@ -404,8 +404,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private PurchaseEnquiryVO getPurchaseEnquiryVOFromPurchaseEnquiryDTO(PurchaseEnquiryVO purchaseEnquiryVO,
 			@Valid PurchaseEnquiryDTO purchaseEnquiryDTO) {
 
-		purchaseEnquiryVO.setPurchaseEnquiryNo(purchaseEnquiryDTO.getPurchaseEnquiryNo());
-		purchaseEnquiryVO.setPurchaseEnquiryDate(purchaseEnquiryDTO.getPurchaseEnquiryDate());
 		purchaseEnquiryVO.setCustomerName(purchaseEnquiryDTO.getCustomerName());
 		purchaseEnquiryVO.setCustomerCode(purchaseEnquiryDTO.getCustomerCode());
 		purchaseEnquiryVO.setWorkOrderNo(purchaseEnquiryDTO.getWorkOrderNo());
@@ -735,9 +733,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		for (Object[] ch : purchaseEnquiryNo) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("purchaseEnquiryNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("purchaseDate", ch[2] != null ? ch[1].toString() : "");
-			map.put("SupplierNo", ch[3] != null ? ch[2].toString() : "");
-			map.put("SupplierId", ch[4] != null ? ch[3].toString() : "");
+			map.put("purchaseDate", ch[1] != null ? ch[1].toString() : "");
+			map.put("SupplierName", ch[2] != null ? ch[2].toString() : "");
+			map.put("SupplierCode", ch[3] != null ? ch[3].toString() : "");
 
 			List1.add(map);
 		}

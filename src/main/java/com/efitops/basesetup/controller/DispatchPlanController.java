@@ -140,6 +140,59 @@ public class DispatchPlanController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
- 
+	@GetMapping("/getRouteCardDetailsForDispatchPlan")
+	public ResponseEntity<ResponseDTO> getRouteCardDetailsForDispatchPlan(@RequestParam Long orgId) {
+		String methodName = "getRouteCardDetailsForDispatchPlan()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> routeCardDetails = new ArrayList<>();
+		try {
+			routeCardDetails = dispatchPlanService.getRouteCardDetailsForDispatchPlan(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RouteCardDetails for DispatchPlan information get successfully By OrgId");
+			responseObjectsMap.put("routeCardDetails", routeCardDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"RouteCardDetails for DispatchPlan information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getItemDetailsForDispatchPlan")
+	public ResponseEntity<ResponseDTO> getItemDetailsForDispatchPlan(@RequestParam Long orgId,@RequestParam String workOrderNo) {
+		String methodName = "getItemDetailsForDispatchPlan()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemDetails = new ArrayList<>();
+		try {
+			itemDetails = dispatchPlanService.getItemDetailsForDispatchPlan(orgId,workOrderNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemDetails for DispatchPlan information get successfully By OrgId");
+			responseObjectsMap.put("ItemDetails", itemDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ItemDetails for DispatchPlan information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
 	
 }

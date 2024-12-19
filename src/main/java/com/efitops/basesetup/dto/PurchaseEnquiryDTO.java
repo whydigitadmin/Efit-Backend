@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class PurchaseEnquiryDTO {
 	
 	private Long id;
-    private String purchaseEnquiryNo;
-    private String purchaseEnquiryDate;
     private String customerName;
 	private String customerCode;
     private String workOrderNo;
