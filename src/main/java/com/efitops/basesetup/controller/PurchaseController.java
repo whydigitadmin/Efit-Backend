@@ -99,16 +99,16 @@ public class PurchaseController extends BaseController{
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Optional<PurchaseIndentVO>  purchaseIndentVOs  =null;
+		Optional<PurchaseIndentVO>  purchaseIndentVO  =null;
 		try {
-			purchaseIndentVOs = purchaseService.getPurchaseIndentById(id);
+			purchaseIndentVO = purchaseService.getPurchaseIndentById(id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseService information get successfully By Id");
-			responseObjectsMap.put("purchaseIndentVO", purchaseIndentVOs);
+			responseObjectsMap.put("purchaseIndentVO", purchaseIndentVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
@@ -118,6 +118,8 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	
 	
 	@GetMapping("/getCustomerNameForPurchaseIndent")
 	public ResponseEntity<ResponseDTO> getCustomerNameForPurchaseIndent(@RequestParam Long orgId) {
@@ -363,6 +365,33 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getAllPurchaseEnquiryByOrgId")
+	public ResponseEntity<ResponseDTO> getAllPurchaseEnquiryByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllPurchaseEnquiryByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PurchaseEnquiryVO> purchaseEnquiryVO = new ArrayList<>();
+		try {
+			purchaseEnquiryVO = purchaseService.getAllPurchaseEnquiryByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "purchaseEnquiry information get successfully By OrgId");
+			responseObjectsMap.put("purchaseEnquiryVO", purchaseEnquiryVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"purchaseEnquiry information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
 	@GetMapping("/getAllPurchaseEnquiryById")
 	public ResponseEntity<ResponseDTO> getAllPurchaseEnquiryById(@RequestParam Long id) {
 		String methodName = "getAllPurchaseEnquiryById()";
@@ -389,6 +418,8 @@ public class PurchaseController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	
 	
 	@GetMapping("/getPurchaseEnquiryDocId")
 	public ResponseEntity<ResponseDTO> getPurchaseEnquiryDocId(@RequestParam Long orgId,@RequestParam String finYear,
