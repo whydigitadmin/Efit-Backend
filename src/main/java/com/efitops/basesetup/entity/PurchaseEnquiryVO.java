@@ -74,17 +74,17 @@ public class PurchaseEnquiryVO {
 	private String enquiryType;
 
 	@Column(name = "enquiryduedate", length = 10)
-	private String enquiryDueDate;
+	private LocalDate enquiryDueDate;
 
 	@Column(name = "expecteddeliverydate", length = 10)
-	private String expectedDeliveryDate;
+	private LocalDate expectedDeliveryDate;
 
 	// Additional fields with column mappings
-	@Column(name = "branch", length = 25)
-	private String branch;
-
-	@Column(name = "branchcode", length = 20)
-	private String branchCode;
+//	@Column(name = "branch", length = 25)
+//	private String branch;
+//
+//	@Column(name = "branchcode", length = 20)
+//	private String branchCode;
 
 	@Column(name = "createdby", length = 25)
 	private String createdBy;
@@ -101,8 +101,8 @@ public class PurchaseEnquiryVO {
 	@Column(name = "cancelremarks", length = 50)
 	private String cancelRemarks;
 
-	@Column(name = "finyear", length = 10)
-	private String finYear;
+//	@Column(name = "finyear", length = 10)
+//	private String finYear;
 
 	@Column(name = "screencode", length = 5)
 	private String screenCode = "PE";

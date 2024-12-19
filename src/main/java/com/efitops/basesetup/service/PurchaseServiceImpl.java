@@ -419,11 +419,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseEnquiryVO.setEnquiryDueDate(purchaseEnquiryDTO.getEnquiryDueDate());
 		purchaseEnquiryVO.setExpectedDeliveryDate(purchaseEnquiryDTO.getExpectedDeliveryDate());
 		purchaseEnquiryVO.setSummary(purchaseEnquiryDTO.getSummary());
-		purchaseEnquiryVO.setBranch(purchaseEnquiryDTO.getBranch());
-		purchaseEnquiryVO.setBranchCode(purchaseEnquiryDTO.getBranchCode());
 		purchaseEnquiryVO.setCreatedBy(purchaseEnquiryDTO.getCreatedBy());
 		purchaseEnquiryVO.setCancelRemarks(purchaseEnquiryDTO.getCancelRemarks());
-		purchaseEnquiryVO.setFinYear(purchaseEnquiryDTO.getFinYear());
 		purchaseEnquiryVO.setOrgId(purchaseEnquiryDTO.getOrgId());
 
 		if (purchaseEnquiryDTO.getId() != null) {
