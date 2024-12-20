@@ -29,7 +29,7 @@ public class JobOrderVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobordergen")
 	@SequenceGenerator(name = "jobordergen", sequenceName = "joborderseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "joborderid")
+	@Column(name = "joborderid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	
 //	Main Fields

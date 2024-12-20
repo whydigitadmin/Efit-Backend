@@ -29,7 +29,7 @@ public class ProductionPlanDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productionplandetailsgen")
 	@SequenceGenerator(name = "productionplandetailsgen", sequenceName = "productionplandetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "productionplandetailsid")
+	@Column(name = "productionplandetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "process")
 	private String process;
@@ -39,6 +39,10 @@ public class ProductionPlanDetailsVO {
 	private LocalDate fromDate;
 	@Column(name = "todate")
 	private LocalDate toDate;
+	@Column(name = "machinename")
+	private String machineName;
+	@Column(name = "machineno")
+	private String machineNo;
 	@Column(name = "timetakeninsec")
 	private String timeTakenInSec;
 	@Column(name = "totaltimetaken")
@@ -53,11 +57,10 @@ public class ProductionPlanDetailsVO {
 	private String expMaxProd;
 	@Column(name = "status")
 	private String status;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "productionplanid")
+	@JoinColumn(name = "productionplanid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	private ProductionPlanVO productionPlanVO;
-	
-	
+
 }

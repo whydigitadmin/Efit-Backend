@@ -87,7 +87,7 @@ public class RouteCardEntryVO {
 	@Column(name = "modifyby", length = 25)
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active=true;
+	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "cancelremarks", length = 150)
@@ -100,11 +100,11 @@ public class RouteCardEntryVO {
 	@OneToMany(mappedBy = "routeCardEntryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<RouteCardEntryDetailsVO> routeCardEntryDetailsVO;
-	
+
 	@OneToMany(mappedBy = "routeCardEntryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<RouteCardEngDeptVO> routeCardEngDeptVO;
-	
+
 	@OneToMany(mappedBy = "routeCardEntryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<RouteCardClosureVO> routeCardClosureVO;
