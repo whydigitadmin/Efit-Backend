@@ -144,8 +144,7 @@ public class PurchaseReturnController extends BaseController {
 	}
 
 	@GetMapping("/getPurchaseInvoiceNumberFromPurchaseInvoice")
-	public ResponseEntity<ResponseDTO> getPurchaseInvoiceNumberFromPurchaseInvoice(@RequestParam Long orgId,
-			@RequestParam String purchaseInvoiceNo, @RequestParam String supplierCode) {
+	public ResponseEntity<ResponseDTO> getPurchaseInvoiceNumberFromPurchaseInvoice(@RequestParam Long orgId, @RequestParam String supplierCode) {
 		String methodName = "getPurchaseInvoiceNumberFromPurchaseInvoice()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -154,8 +153,7 @@ public class PurchaseReturnController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = purchaseReturnService.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId, purchaseInvoiceNo,
-					supplierCode);
+			mapp = purchaseReturnService.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId,supplierCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

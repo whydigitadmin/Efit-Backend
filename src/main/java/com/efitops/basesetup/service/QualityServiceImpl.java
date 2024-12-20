@@ -352,6 +352,7 @@ public class QualityServiceImpl implements QualityService {
 					.setMethodOfInspection(inprocessAppearanceInspectionDTO.getMethodOfInspection());
 			inprocessAppearanceInspectionVO.setSpecification(inprocessAppearanceInspectionDTO.getSpecification());
 			inprocessAppearanceInspectionVO.setObservation(inprocessAppearanceInspectionDTO.getObservation());
+			inprocessAppearanceInspectionVO.setRemarks1(inprocessAppearanceInspectionDTO.getRemarks1());
 			inprocessAppearanceInspectionVO.setInprocessInspectionVO(inprocessInspectionVO);
 			inprocessAppearanceInspectionVOs.add(inprocessAppearanceInspectionVO);
 		}
@@ -375,5 +376,73 @@ public class QualityServiceImpl implements QualityService {
 		String ScreenCode = "IIN";
 		String result = inprocessInspectionRepo.getInprocessInspectionDocId(orgId, ScreenCode);
 		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDocIdFromRouteCardNumber(Long orgId, String fgPartName, String customerName) {
+		Set<Object[]> chType = inprocessInspectionRepo.getDocIdFromRouteCardNumber(orgId, fgPartName, customerName);
+		return getDocIdFromRoute(chType);
+	}
+
+	private List<Map<String, Object>> getDocIdFromRoute(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNumber", ch[0] != null ? ch[0].toString() : "");
+			map.put("workOrderNumber", ch[1] != null ? ch[1].toString() : "");
+			map.put("partNo", ch[2] != null ? ch[2].toString() : "");
+			map.put("partName", ch[3] != null ? ch[3].toString() : "");
+			map.put("customerName", ch[4] != null ? ch[4].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDrawingNumberFromDrawingMaster(Long orgId) {
+		Set<Object[]> chType = inprocessInspectionRepo.getDrawingNumberFromDrawingMaster(orgId);
+		return getDrawingNumber(chType);
+	}
+
+	private List<Map<String, Object>> getDrawingNumber(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("drawingNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getEmployeeFromEmployeeMaster(Long orgId) {
+		Set<Object[]> chType = inprocessInspectionRepo.getEmployeeFromEmployeeMaster(orgId);
+		return getEmployee(chType);
+	}
+
+	private List<Map<String, Object>> getEmployee(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("employee", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getEmployeeNameFromApproved(Long orgId) {
+		Set<Object[]> chType = inprocessInspectionRepo.getEmployeeNameFromApproved(orgId);
+		return getEmployeeName(chType);
+	}
+
+	private List<Map<String, Object>> getEmployeeName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("employeeName", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
 	}
 }

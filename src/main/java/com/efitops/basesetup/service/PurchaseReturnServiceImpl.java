@@ -214,10 +214,8 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String purchaseInvoiceNo,
-			String supplierCode) {
-		Set<Object[]> chType = purchaseReturnRepo.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId, purchaseInvoiceNo,
-				supplierCode);
+	public List<Map<String, Object>> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId,String supplierCode) {
+		Set<Object[]> chType = purchaseReturnRepo.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId,supplierCode);
 		return getPurchaseInvoiceNumber(chType);
 	}
 
