@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ import com.efitops.basesetup.service.ProductionPlanService;
 @RestController
 @RequestMapping("/api/productionPlan")
 public class ProductionPlanController extends BaseController {
+
+	public static final Logger LOGGER = LoggerFactory.getLogger(ProductionPlanController.class);
 
 	@Autowired
 	ProductionPlanService productionPlanService;
