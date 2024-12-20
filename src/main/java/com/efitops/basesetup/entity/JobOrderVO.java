@@ -93,4 +93,6 @@ public class JobOrderVO {
 	@OneToMany(mappedBy = "jobOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<JobOrderDetailsVO> jobOrderDetailsVO;
+	
+	
 }
