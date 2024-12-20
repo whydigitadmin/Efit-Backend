@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.efitops.basesetup.dto.CreatedUpdatedDate;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -69,10 +72,13 @@ public class GrnVO {
 	private BigDecimal grossAmount;
 	@Column(name="netamount",precision = 10,scale = 2)
 	private BigDecimal netAmount;
-	@Column(name="toatlamounttax",precision = 10,scale = 2)
+	@Column(name="totalamounttax",precision = 10,scale = 2)
 	private BigDecimal totalAmountTax;
+	@Column(name="totallandedamount",precision = 10,scale = 2)
+	private BigDecimal totalLandedAmount;
 	@Column(name="remarks")
 	private String remarks;
+	
 	
 	
 	
@@ -98,6 +104,20 @@ public class GrnVO {
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<GrnDetailsVO> grnDetailsVO;
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
+	}
+
+	@Embedded
+	@Builder.Default
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 	
 
 }

@@ -17,4 +17,5 @@ public class ItemIssueToProductionDetailsDTO {
 	private int reqQty;
 	private int issueQty;
 	private int pendingQty;
+	private int pickQty;
 }

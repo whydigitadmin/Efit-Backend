@@ -372,7 +372,7 @@ public class CustomerEnquiryController extends BaseController {
 	}
 	
 	@GetMapping("/getEnquiryNoAndDate")
-	public ResponseEntity<ResponseDTO> getEnquiryNoAndDate(@RequestParam Long orgId,@RequestParam String customer) {
+	public ResponseEntity<ResponseDTO> getEnquiryNoAndDate(@RequestParam Long orgId,@RequestParam String customerCode) {
 		String methodName = "getEnquiryNoAndDate()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -381,7 +381,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getEnquiryNoAndDate(orgId,customer);
+			mapp = customerEnquiryService.getEnquiryNoAndDate(orgId,customerCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -568,7 +568,7 @@ public class CustomerEnquiryController extends BaseController {
 	
 	
 	@GetMapping("/getQuotationNumber")
-	public ResponseEntity<ResponseDTO> getQuotationNumber(@RequestParam Long orgId,@RequestParam String customerName) {
+	public ResponseEntity<ResponseDTO> getQuotationNumber(@RequestParam Long orgId,@RequestParam String customerId) {
 		String methodName = "getQuotationNumber()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -577,7 +577,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getQuotationNumber(orgId,customerName);
+			mapp = customerEnquiryService.getQuotationNumber(orgId,customerId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -598,7 +598,7 @@ public class CustomerEnquiryController extends BaseController {
 	
 
 	@GetMapping("/getWorkOrderPartNo")
-	public ResponseEntity<ResponseDTO> getWorkOrderPartNo(@RequestParam Long orgId,@RequestParam String docId,@RequestParam String custmoerName) {
+	public ResponseEntity<ResponseDTO> getWorkOrderPartNo(@RequestParam Long orgId,@RequestParam String docId,@RequestParam String customerId) {
 		String methodName = "getWorkOrderPartNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -607,7 +607,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getWorkOrderPartNo(orgId,docId,custmoerName);
+			mapp = customerEnquiryService.getWorkOrderPartNo(orgId,docId,customerId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

@@ -158,7 +158,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			enquirySummaryVO.setExpectedTimeForDeliverySample(enquirySummaryDTO.getExpectedTimeForDeliverySample());
 			enquirySummaryVO.setRegularProduction(enquirySummaryDTO.getRegularProduction());
 			enquirySummaryVO.setInitialReviewComments(enquirySummaryDTO.getInitialReviewComments());
-			enquirySummaryVO.setDetailreview(enquirySummaryDTO.getDetailreview());
+			enquirySummaryVO.setDetailReview(enquirySummaryDTO.getDetailReview());
 			enquirySummaryVO.setConclusion(enquirySummaryDTO.getConclusion());
 			enquirySummaryVO.setRemarks(enquirySummaryDTO.getRemarks());
 			enquirySummaryVO.setEnquiryVO(enquiryVO);
@@ -310,7 +310,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		quotationVO.setCustomerId(quotationDTO.getCustomerId());
 		quotationVO.setEnquiryNo(quotationDTO.getEnquiryNo());
 		quotationVO.setEnquiryDate(quotationDTO.getEnquiryDate());
-		quotationVO.setVaidTill(quotationDTO.getVaidTill());
+		quotationVO.setValidTill(quotationDTO.getValidTill());
 		quotationVO.setKindAttention(quotationDTO.getKindAttention());
 		quotationVO.setTaxCode(quotationDTO.getTaxCode());
 		quotationVO.setProductionManager(quotationDTO.getProductionManager());
@@ -395,8 +395,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 	
 	@Override
-	public List<Map<String, Object>> getEnquiryNoAndDate(Long orgId, String customer) {
-		Set<Object[]> chType = quotationRepo.getEnquiryNoAndDate(orgId,customer);
+	public List<Map<String, Object>> getEnquiryNoAndDate(Long orgId, String customerCode) {
+		Set<Object[]> chType = quotationRepo.getEnquiryNoAndDate(orgId,customerCode);
 		return getEnquiryNo(chType);
 	}
 
@@ -445,6 +445,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			map.put("drawingNo", ch[2] != null ? ch[2].toString() : "");
 			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
 			map.put("unit", ch[4] != null ? ch[4].toString() : "");
+			map.put("qtyOffered", ch[5] != null ? ch[5].toString() : "");
 			List1.add(map);
 		}
 		return List1;
@@ -489,6 +490,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 
 	private void createUpdatedWorkOrderVOFromWorkOrderDTO(WorkOrderDTO workOrderDTO, WorkOrderVO workOrderVO) {
 		workOrderVO.setCustomerName(workOrderDTO.getCustomerName());
+		workOrderVO.setCustomerCode(workOrderDTO.getCustomerCode());
 		workOrderVO.setCustomerPoNo(workOrderDTO.getCustomerPoNo());
 		workOrderVO.setQuotationNo(workOrderDTO.getQuotationNo());
 		workOrderVO.setCurrency(workOrderDTO.getCurrency());
@@ -567,8 +569,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getQuotationNumber(Long orgId,String customerName) {
-		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId,customerName);
+	public List<Map<String, Object>> getQuotationNumber(Long orgId,String custmoerId) {
+		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId,custmoerId);
 		return getQuotation(chType);
 	}
 
@@ -577,14 +579,15 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("quotationNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("productionmanager", ch[1] != null ? ch[1].toString() : "");
 			List1.add(map);
 		}
 		return List1;
 	}
 
 	@Override
-	public List<Map<String, Object>> getWorkOrderPartNo(Long orgId,String docId,String custmoerName) {
-		Set<Object[]> chType = workOrderRepo.getWorkOrderPartNo(orgId,docId,custmoerName);
+	public List<Map<String, Object>> getWorkOrderPartNo(Long orgId,String docId,String custmoerId) {
+		Set<Object[]> chType = workOrderRepo.getWorkOrderPartNo(orgId,docId,custmoerId);
 		return getWorkOrder(chType);
 	}
 
@@ -598,6 +601,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
 			map.put("uom", ch[4] != null ? ch[4].toString() : "");
 			map.put("orderQty", ch[5] != null ? ch[5].toString() : "");
+			map.put("customerName", ch[6] != null ? ch[6].toString() : "");
+			map.put("customerCode", ch[7] != null ? ch[7].toString() : "");
 
 			List1.add(map);
 		}

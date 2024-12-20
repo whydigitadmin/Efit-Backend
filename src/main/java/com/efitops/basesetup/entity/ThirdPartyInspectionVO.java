@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -42,8 +43,8 @@ public class ThirdPartyInspectionVO {
 	private LocalDate docDate= LocalDate.now();
 	@Column(name = "grnno")
 	private String grnNo;
-	@Column(name = "workoutno")
-	private LocalDate workOutNo;
+	@Column(name = "workorderno")
+	private String workOrderNo;
 	@Column(name = "pono")
 	private String poNo;
 	@Column(name = "customername")
@@ -56,8 +57,7 @@ public class ThirdPartyInspectionVO {
 	private String thirdPartyAddress;
 	
 	
-	@Column(name = "narration")
-	private String narration;
+	
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -78,6 +78,10 @@ public class ThirdPartyInspectionVO {
 	@OneToMany(mappedBy = "thirdPartyInspectionVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<ThirdPartyInspectionDetailsVO> thirdPartyInspectionDetailsVO;
+	
+	@OneToMany(mappedBy = "thirdPartyInspectionVO",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	List<ThirdPartyAttachmentVO> thirdPartyAttachmentVO;
 	
 	@JsonGetter("active")
 	public String getActive() {

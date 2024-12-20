@@ -19,7 +19,5 @@ public class SubContractQuotationDetailsDTO {
 	private BigDecimal rate;
 	private BigDecimal discount;
 	private BigDecimal tax;
-	private BigDecimal afterDiscountAmount;
-	private BigDecimal afterQuotationAmount;
 	private LocalDate deliveryDate;
 }

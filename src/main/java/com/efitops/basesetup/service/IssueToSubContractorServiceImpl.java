@@ -21,6 +21,8 @@ import com.efitops.basesetup.dto.IssueItemDetailsDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
 import com.efitops.basesetup.dto.JobWorkOutDTO;
 import com.efitops.basesetup.dto.JobWorkOutDetailsDTO;
+import com.efitops.basesetup.dto.RecieveFromSubContractDetailsDTO;
+import com.efitops.basesetup.dto.RecieveFromSubcontractDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDetailsDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
@@ -35,6 +37,8 @@ import com.efitops.basesetup.entity.IssueItemDetailsVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.entity.JobWorkOutDetailsVO;
 import com.efitops.basesetup.entity.JobWorkOutVO;
+import com.efitops.basesetup.entity.RecieveFromSubContractDetailsVO;
+import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 import com.efitops.basesetup.entity.SubContractEnquiryDetailsVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
@@ -50,6 +54,8 @@ import com.efitops.basesetup.repo.IssueItemDetailsRepo;
 import com.efitops.basesetup.repo.IssueToSubContractorRepo;
 import com.efitops.basesetup.repo.JobWorkOutDetailsRepo;
 import com.efitops.basesetup.repo.JobWorkOutRepo;
+import com.efitops.basesetup.repo.RecieveFromSubcontractDetailsRepo;
+import com.efitops.basesetup.repo.RecieveFromSubcontractRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryDetailsRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryRepo;
 import com.efitops.basesetup.repo.SubContractInvoiceRepo;
@@ -104,11 +110,15 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 	@Autowired
 	JobWorkOutDetailsRepo jobWorkOutDetailsRepo;
-	
+
 	@Autowired
 	AmountInWordsConverterService amountInWordsConverterService;
 
+	@Autowired
+	RecieveFromSubcontractRepo recieveFromSubcontractRepo;
 
+	@Autowired
+	RecieveFromSubcontractDetailsRepo recieveFromSubcontractDetailsRepo;
 
 	// IssueToSubContract
 	@Override
@@ -689,13 +699,13 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 
 			afterDiscountAmount = amount.subtract(discountAmount);
 //			subContractQuotationDetailsVO.setAfterDiscountAmount(afterDiscountAmount);
-			subContractQuotationDetailsDTO.setAfterDiscountAmount(afterDiscountAmount);
+//			subContractQuotationDetailsDTO.setAfterDiscountAmount(afterDiscountAmount);
 
-			afterQuotationAmount = subContractQuotationDetailsDTO.getAfterDiscountAmount()
-					.multiply(subContractQuotationDetailsDTO.getTax()).divide(BigDecimal.valueOf(100));
+			afterQuotationAmount = afterDiscountAmount.multiply(subContractQuotationDetailsDTO.getTax())
+					.divide(BigDecimal.valueOf(100));
 
 //			subContractQuotationDetailsVO.setAfterQuotationAmount(afterQuotationAmount);
-			subContractQuotationDetailsDTO.setAfterQuotationAmount(afterQuotationAmount);
+//			subContractQuotationDetailsDTO.setAfterQuotationAmount(afterQuotationAmount);
 
 			BigDecimal quotationAmount = afterDiscountAmount.add(afterQuotationAmount);
 			subContractQuotationDetailsVO.setQuotationAmount(quotationAmount);
@@ -1089,7 +1099,103 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		return List1;
 	}
 
+	// RecieveFromSubcontract
 
+	@Override
+	public List<RecieveFromSubcontractVO> getRecieveFromSubcontractByOrgId(Long orgId) {
+		List<RecieveFromSubcontractVO> recieveFromSubcontractVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received RecieveFromSubcontract BY OrgId : {}", orgId);
+			recieveFromSubcontractVO = recieveFromSubcontractRepo.findRecieveFromSubcontractByOrgId(orgId);
+		}
+		return recieveFromSubcontractVO;
+	}
 
-	
+	@Override
+	public List<RecieveFromSubcontractVO> getRecieveFromSubcontractById(Long id) {
+		List<RecieveFromSubcontractVO> recieveFromSubcontractVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received RecieveFromSubcontract BY Id : {}", id);
+			recieveFromSubcontractVO = recieveFromSubcontractRepo.getRecieveFromSubcontractById(id);
+		}
+		return recieveFromSubcontractVO;
+	}
+
+	@Override
+	public Map<String, Object> updateCreateRecieveFromSubcontract(RecieveFromSubcontractDTO recieveFromSubcontractDTO)
+			throws ApplicationException {
+		RecieveFromSubcontractVO recieveFromSubcontractVO = new RecieveFromSubcontractVO();
+		String message;
+		String screenCode = "RSC";
+		if (ObjectUtils.isNotEmpty(recieveFromSubcontractDTO.getId())) {
+			recieveFromSubcontractVO = recieveFromSubcontractRepo.findById(recieveFromSubcontractDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Recieve From Subcontract Enquiry details"));
+			message = "Recieve From Subcontract Updated Successfully";
+			recieveFromSubcontractVO.setUpdatedBy(recieveFromSubcontractDTO.getCreatedBy());
+
+		} else {
+
+			String docId = recieveFromSubcontractRepo
+					.getRecieveFromSubContractDocId(recieveFromSubcontractDTO.getOrgId(), screenCode);
+			recieveFromSubcontractVO.setDocId(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(recieveFromSubcontractDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			recieveFromSubcontractVO.setCreatedBy(recieveFromSubcontractDTO.getCreatedBy());
+			recieveFromSubcontractVO.setUpdatedBy(recieveFromSubcontractDTO.getCreatedBy());
+
+			message = "SubContractInvoice Created Successfully";
+		}
+		createUpdatedRecieveFromSubContractVOFromRecieveFromSubContractDTO(recieveFromSubcontractDTO,
+				recieveFromSubcontractVO);
+		recieveFromSubcontractRepo.save(recieveFromSubcontractVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("recieveFromSubcontractVO", recieveFromSubcontractVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdatedRecieveFromSubContractVOFromRecieveFromSubContractDTO(
+			RecieveFromSubcontractDTO recieveFromSubcontractDTO, RecieveFromSubcontractVO recieveFromSubcontractVO) {
+		recieveFromSubcontractVO.setRouteCardNo(recieveFromSubcontractDTO.getRouteCardNo());
+		recieveFromSubcontractVO.setIssueNo(recieveFromSubcontractDTO.getIssueNo());
+		recieveFromSubcontractVO.setIssueDate(recieveFromSubcontractDTO.getIssueDate());
+		recieveFromSubcontractVO.setJobWorkOutOrder(recieveFromSubcontractDTO.getJobWorkOutOrder());
+		recieveFromSubcontractVO.setDcNo(recieveFromSubcontractDTO.getDcNo());
+		recieveFromSubcontractVO.setDepartment(recieveFromSubcontractDTO.getDepartment());
+		recieveFromSubcontractVO.setContractorName(recieveFromSubcontractDTO.getContractorName());
+		recieveFromSubcontractVO.setContractorId(recieveFromSubcontractDTO.getContractorId());
+		recieveFromSubcontractVO.setInvoiceNo(recieveFromSubcontractDTO.getInvoiceNo());
+		recieveFromSubcontractVO.setTestCertificate(recieveFromSubcontractDTO.getTestCertificate());
+		recieveFromSubcontractVO.setActive(recieveFromSubcontractDTO.isActive());
+		recieveFromSubcontractVO.setOrgId(recieveFromSubcontractDTO.getOrgId());
+
+		if (ObjectUtils.isNotEmpty(recieveFromSubcontractDTO.getId())) {
+			List<RecieveFromSubContractDetailsVO> recieveFromSubContractDetailsVO1 = recieveFromSubcontractDetailsRepo
+					.findByRecieveFromSubcontractVO(recieveFromSubcontractVO);
+			recieveFromSubcontractDetailsRepo.deleteAll(recieveFromSubContractDetailsVO1);
+
+		}
+
+		List<RecieveFromSubContractDetailsVO> recieveFromSubContractDetailsVOs = new ArrayList<>();
+		for (RecieveFromSubContractDetailsDTO recieveFromSubContractDetailsDTO : recieveFromSubcontractDTO
+				.getRecieveFromSubContractDetailsDTO()) {
+			RecieveFromSubContractDetailsVO recieveFromSubContractDetailsVO = new RecieveFromSubContractDetailsVO();
+			recieveFromSubContractDetailsVO.setPartName(recieveFromSubContractDetailsDTO.getPartName());
+			recieveFromSubContractDetailsVO.setPartDesc(recieveFromSubContractDetailsDTO.getPartDesc());
+			recieveFromSubContractDetailsVO.setIssueQty(recieveFromSubContractDetailsDTO.getIssueQty());
+			recieveFromSubContractDetailsVO.setRecieveQty(recieveFromSubContractDetailsDTO.getRecieveQty());
+			recieveFromSubContractDetailsVO.setPendingQty(recieveFromSubContractDetailsDTO.getPendingQty());
+			recieveFromSubContractDetailsVO.setRemarks(recieveFromSubContractDetailsDTO.getRemarks());
+
+			recieveFromSubContractDetailsVO.setRecieveFromSubcontractVO(recieveFromSubcontractVO);
+			recieveFromSubContractDetailsVOs.add(recieveFromSubContractDetailsVO);
+		}
+		recieveFromSubcontractVO.setRecieveFromSubContractDetailsVO(recieveFromSubContractDetailsVOs);
+	}
+
 }

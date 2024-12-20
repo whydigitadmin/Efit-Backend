@@ -358,6 +358,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 	private void createUpdateRouteCardEntryVOByRouteCardEntryDTO(@Valid RouteCardEntryDTO routeCardEntryDTO, RouteCardEntryVO routeCardEntryVO) {
 		routeCardEntryVO.setCustomerName(routeCardEntryDTO.getCustomerName());
+		routeCardEntryVO.setCustomerCode(routeCardEntryDTO.getCustomerCode());
 		routeCardEntryVO.setWoNo(routeCardEntryDTO.getWoNo());
 		routeCardEntryVO.setFgPartName(routeCardEntryDTO.getFgPartName());
 		routeCardEntryVO.setFgPartDesc(routeCardEntryDTO.getFgPartDesc());
@@ -667,6 +668,9 @@ public class InventoryServiceImpl implements InventoryService {
 			pickListDetailsVO.setIssuedQty(pickListDetailsDTO.getIssuedQty());	
 			pickListDetailsVO.setPickedQty(pickListDetailsDTO.getPickedQty());
 			pickListDetailsVO.setRemainingQty(pickListDetailsDTO.getRemainingQty());
+			pickListDetailsVO.setActualQty(pickListDetailsDTO.getActualQty());
+			pickListDetailsVO.setFlag(pickListDetailsDTO.isFlag());
+
 
 			pickListDetailsVO.setPickListVO(pickListVO); // Set the reference in child entity
 			pickListDetailsVOs.add(pickListDetailsVO);
@@ -771,6 +775,9 @@ public class InventoryServiceImpl implements InventoryService {
 //			itemIssueToProductionDetailsVO.setAvgQty(itemIssueToProductionDetailsDTO.getAvgQty());	
 			itemIssueToProductionDetailsVO.setIssueQty(itemIssueToProductionDetailsDTO.getIssueQty());
 			itemIssueToProductionDetailsVO.setPendingQty(itemIssueToProductionDetailsDTO.getReqQty() - itemIssueToProductionDetailsDTO.getIssueQty());
+			itemIssueToProductionDetailsVO.setPickQty(itemIssueToProductionDetailsDTO.getPickQty());
+			itemIssueToProductionDetailsVO.setAvgQty(itemIssueToProductionDetailsDTO.getAvgQty());
+
 
 			itemIssueToProductionDetailsVO.setItemIssueToProductionVO(itemIssueToProductionVO); // Set the reference in child entity
 			itemIssueToProductionDetailsVOs.add(itemIssueToProductionDetailsVO);

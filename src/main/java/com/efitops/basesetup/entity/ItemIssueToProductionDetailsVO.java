@@ -53,6 +53,10 @@ public class ItemIssueToProductionDetailsVO {
 	@Column(name = "pendingqty")
 	private int pendingQty;
 	
+	@Column(name = "pickqty")
+	private int pickQty;
+
+	
 	@ManyToOne
 	@JoinColumn(name = "itemisstoprodid")
 	@JsonBackReference
