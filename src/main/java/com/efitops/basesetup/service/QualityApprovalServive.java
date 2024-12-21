@@ -24,6 +24,18 @@ public interface QualityApprovalServive {
 
 	List<Map<String, Object>> getRouteCardDetailsForSetingApproval(Long orgId);
 
+	List<Map<String, Object>> getDrawingNoForSetingApproval(Long orgId, String partNo);
+
+	List<Map<String, Object>> getMachineNoForSetingApproval(Long orgId);
+
+	List<Map<String, Object>> getOperatorNameForSetingApproval(Long orgId);
+
+	List<Map<String, Object>> getSetterNameForSetingApproval(Long orgId);
+
+	List<Map<String, Object>> getQualityNameForSetingApproval(Long orgId);
+
+	List<Map<String, Object>> getShiftInChargeForSetingApproval(Long orgId);
+
 	
 
 }
