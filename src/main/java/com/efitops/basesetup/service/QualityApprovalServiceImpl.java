@@ -151,7 +151,7 @@ public class QualityApprovalServiceImpl  implements QualityApprovalServive{
 
 	}
 
-	@Override
+@Override
 	public List<Map<String, Object>> getRouteCardDetailsForSetingApproval(Long orgId) {
 		Set<Object[]> routeCardDetails = settingApprovalRepo.findRouteCardDetailsForSetingApproval(orgId);
 		return getRouteCardDetailsForSetingApproval(routeCardDetails);
@@ -172,5 +172,105 @@ public class QualityApprovalServiceImpl  implements QualityApprovalServive{
 
 	}
 	
+	@Override
+	public List<Map<String, Object>> getDrawingNoForSetingApproval(Long orgId,String partNo) {
+		Set<Object[]> drawingNo = settingApprovalRepo.findDrawingNoForSetingApproval(orgId,partNo);
+		return getDrawingNoForSetingApproval(drawingNo);
+	}
+
+	private List<Map<String, Object>> getDrawingNoForSetingApproval(Set<Object[]> drawingNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : drawingNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("drawingNo", ch[0] != null ? ch[0].toString() : ""); 
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getMachineNoForSetingApproval(Long orgId) {
+		Set<Object[]> machineNo = settingApprovalRepo.findMachineNoForSetingApproval(orgId);
+		return getMachineNoForSetingApproval(machineNo);
+	}
+
+	private List<Map<String, Object>> getMachineNoForSetingApproval(Set<Object[]> machineNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : machineNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("machineNo", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("machineName", ch[0] != null ? ch[0].toString() : ""); 
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getOperatorNameForSetingApproval(Long orgId) {
+		Set<Object[]> employeeName = settingApprovalRepo.findOperatorNameForSetingApproval(orgId);
+		return getOperatorNameForSetingApproval(employeeName);
+	}
+
+	private List<Map<String, Object>> getOperatorNameForSetingApproval(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("operatorName", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getSetterNameForSetingApproval(Long orgId) {
+		Set<Object[]> employeeName = settingApprovalRepo.findSetterNameForSetingApproval(orgId);
+		return getSetterNameForSetingApproval(employeeName);
+	}
+
+	private List<Map<String, Object>> getSetterNameForSetingApproval(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("setterName", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getQualityNameForSetingApproval(Long orgId) {
+		Set<Object[]> employeeName = settingApprovalRepo.findQualityNameForSetingApproval(orgId);
+		return getQualityNameForSetingApproval(employeeName);
+	}
+
+	private List<Map<String, Object>> getQualityNameForSetingApproval(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("qualityName", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getShiftInChargeForSetingApproval(Long orgId) {
+		Set<Object[]> employeeName = settingApprovalRepo.findShiftInChargeForSetingApproval(orgId);
+		return getShiftInChargeForSetingApproval(employeeName);
+	}
+
+	private List<Map<String, Object>> getShiftInChargeForSetingApproval(Set<Object[]> employeeName) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : employeeName) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("qualityName", ch[0] != null ? ch[0].toString() : "");			
+			List1.add(map);
+		}
+		return List1;
+	}
 
 }
