@@ -30,7 +30,7 @@ public class PurchaseOrderDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseorderdetailsgen")
 	@SequenceGenerator(name = "t_purchaseorderdetailsgen", sequenceName = "t_purchaseorderdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchaseorderdetailsid")
+	@Column(name = "purchaseorderdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "item", length = 150)
 	private String item;
@@ -58,17 +58,23 @@ public class PurchaseOrderDetailsVO {
 	private BigDecimal netAmount;
 	@Column(name="sgst",precision = 10,scale = 2)
 	private BigDecimal sgst;
+	@Column(name="sgstamount",precision = 10,scale = 2)
+	private BigDecimal sgstAmount;
 	@Column(name="cgst",precision = 10,scale = 2)
 	private BigDecimal cgst;
+	@Column(name="cgstamount",precision = 10,scale = 2)
+	private BigDecimal cgstAmount;
 	@Column(name="igst",precision = 10,scale = 2)
 	private BigDecimal igst;
+	@Column(name="igstamount",precision = 10,scale = 2)
+	private BigDecimal igstAmount;
 	@Column(name="taxvalue",precision = 10,scale = 2)
 	private BigDecimal taxValue;
 	@Column(name="landedvalue",precision = 10,scale = 2)
 	private BigDecimal landedValue;
 		
 	@ManyToOne
-	@JoinColumn(name = "purchaseorderid")
+	@JoinColumn(name = "purchaseorderid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	private PurchaseOrderVO purchaseOrderVO;
 
