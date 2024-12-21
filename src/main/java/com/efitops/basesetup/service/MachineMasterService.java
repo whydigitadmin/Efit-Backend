@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.efitops.basesetup.dto.DrawingMaster1DTO;
 import com.efitops.basesetup.dto.DrawingMasterDTO;
 import com.efitops.basesetup.dto.MachineMasterDTO;
 import com.efitops.basesetup.dto.StockLocationDTO;
@@ -55,13 +56,20 @@ public interface MachineMasterService {
 
 	Optional<DrawingMasterVO> getAllDrawingMasterById(Long id);
 
-	DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException;
+//	List<DrawingMaster1VO> uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 
 	DrawingMaster2VO uploadAttachementsInBloob1(MultipartFile file, Long id)throws IOException;
 
 	List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Long orgId);
 
 	String getDrawingMasterDocId(Long orgId);
+
+	List<DrawingMaster1VO> uploadAttachmentsInBloob(List<MultipartFile> files, List<Long> id) throws IOException;
+
+	List<DrawingMaster2VO> uploadAttachmentsInBloob1(List<MultipartFile> files, List<Long> id) throws IOException;
+
+
+
 
 
 

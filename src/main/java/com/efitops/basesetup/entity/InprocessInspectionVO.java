@@ -1,6 +1,5 @@
 package com.efitops.basesetup.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,49 +24,52 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_quotation")
+@Table(name = "t_inprocessinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuotationVO {
-
+public class InprocessInspectionVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_quotationgen")
-	@SequenceGenerator(name = "t_quotationgen", sequenceName = "t_quotationseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "quotationid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_inprocessinspectiongen")
+	@SequenceGenerator(name = "t_inprocessinspectiongen", sequenceName = "t_inprocessinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "customername")
-	private String customerName;
-	@Column(name = "customerid")
-	private String customerId;
-	@Column(name = "enquiryno")
-	private String enquiryNo;
-	@Column(name = "enquirydate")
-	private LocalDate enquiryDate;
-	@Column(name = "validtill")
-	private LocalDate validTill;
-	@Column(name = "kindattention")
-	private String kindAttention;
-	@Column(name = "contactno")
-	private Long contactNo;
-	@Column(name = "taxcode")
-	private String taxCode;
-	@Column(name = "productionmanager")
-	private String productionManager;
-	@Column(name = "currency")
-	private String currency;
+	@Column(name = "routecardno")
+	private String routeCardNo;
+	@Column(name = "workorderno")
+	private String workOrderNo;
+	@Column(name = "partno")
+	private String partNo;
+	@Column(name = "partname")
+	private String partName;
+	@Column(name = "materialdrawingno")
+	private String materialDrawingNo;
+	@Column(name = "customer")
+	private String customer;
+	@Column(name = "lotqty")
+	private int lotQty;
+	@Column(name = "drawingno")
+	private String drawingNo;
+	@Column(name = "receivedqty")
+	private int receivedQty;
+	@Column(name = "sampleqty")
+	private int sampleQty;
+	@Column(name = "documentformatno")
+	private String documentFormatNo;
 
-	@Column(name = "grossamount", precision = 10, scale = 2)
-	private BigDecimal grossAmount;
-	@Column(name = "netamount", precision = 10, scale = 2)
-	private BigDecimal netAmount;
-	@Column(name = "amountinwords", length = 150)
-	private String amountInWords;
+	// Summary
+
+	@Column(name = "checkedby")
+	private String checkedBy;
+	@Column(name = "approvedby")
+	private String approvedBy;
+	@Column(name = "naration")
+	private String naration;
 
 	@Column(name = "orgid")
 	private Long orgId;
@@ -82,13 +84,17 @@ public class QuotationVO {
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "screencode", length = 30)
-	private String screenCode = "QOT";
+	private String screenCode = "IIN";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "QUOTATION";
+	private String screenName = "INPROCESS INSPECTION";
 
-	@OneToMany(mappedBy = "quotationVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "inprocessInspectionVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<QuotationDetailsVO> quotationDetailsVO;
+	List<InprocessInspectionDetailsVO> inprocessInspectionDetailsVO;
+
+	@OneToMany(mappedBy = "inprocessInspectionVO", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	List<InprocessAppearanceInspectionVO> inprocessAppearanceInspectionVO;
 
 	@JsonGetter("active")
 	public String getActive() {

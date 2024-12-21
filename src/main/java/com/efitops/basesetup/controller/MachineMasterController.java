@@ -396,57 +396,125 @@ public class MachineMasterController extends BaseController {
 		
 	}
 	
-	@PostMapping("/uploadAttachementsInBloob")
-	public ResponseEntity<ResponseDTO> uploadAttachementsInBloob(@RequestParam("file") MultipartFile file,
-			@RequestParam Long id) {
-		String methodName = "uploadAttachementsInBloob()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		DrawingMaster1VO drawingMaster1VO = null;
-		try {
-			drawingMaster1VO = machineMasterService.uploadAttachementsInBloob(file, id);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error("Unable To Upload attachements", methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Attachments Successfully Upload");
-			responseObjectsMap.put("drawingMaster1VO", drawingMaster1VO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Attachments Upload Failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PostMapping("/uploadAttachementsInBloob")
+//	public ResponseEntity<ResponseDTO> uploadAttachementsInBloob(@RequestParam("file") MultipartFile file,
+//			@RequestParam Long id) {
+//		String methodName = "uploadAttachementsInBloob()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		DrawingMaster1VO drawingMaster1VO = null;
+//		try {
+//			drawingMaster1VO = machineMasterService.uploadAttachementsInBloob(file, id);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error("Unable To Upload attachements", methodName, errorMsg);
+//		}
+//		if (StringUtils.isBlank(errorMsg)) {
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Attachments Successfully Upload");
+//			responseObjectsMap.put("drawingMaster1VO", drawingMaster1VO);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} else {
+//			responseDTO = createServiceResponseError(responseObjectsMap, "Attachments Upload Failed", errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 	
-	@PostMapping("/uploadAttachementsInBloob1")
-	public ResponseEntity<ResponseDTO> uploadAttachementsInBloob1(@RequestParam("file") MultipartFile file,
-			@RequestParam Long id) {
-		String methodName = "uploadAttachementsInBloob1()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		DrawingMaster2VO drawingMaster2VO = null;
-		try {
-			drawingMaster2VO = machineMasterService.uploadAttachementsInBloob1(file, id);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error("Unable To Upload attachements", methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Attachments Successfully Upload");
-			responseObjectsMap.put("drawingMaster2VO", drawingMaster2VO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Attachments Upload Failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+	
+	  @PostMapping("/uploadAttachementsInBloob")
+	    public ResponseEntity<ResponseDTO> uploadAttachementsInBloob(
+	            @RequestParam("files") List<MultipartFile> files,
+	            @RequestParam("id") List<Long> id) {
+	        
+	        String methodName = "uploadAttachementsInBloob()";
+	        LOGGER.debug("Starting method: " + methodName);
+
+	        Map<String, Object> responseObjectsMap = new HashMap<>();
+	        ResponseDTO responseDTO = null;
+	        String errorMsg = null;
+
+	        try {
+	            if (files.size() != id.size()) {
+	                throw new IllegalArgumentException("Files and IDs must have the same size.");
+	            }
+	            
+	            // Call your service to handle files and ids
+	            List<DrawingMaster1VO> drawingMaster1VO = machineMasterService.uploadAttachmentsInBloob(files, id);
+	            
+	            responseObjectsMap.put("message", "DrawingMaster1 Attachments successfully uploaded.");
+	            responseObjectsMap.put("drawingMaster1VO", drawingMaster1VO);
+	            responseDTO = createServiceResponse(responseObjectsMap);
+	        } catch (Exception e) {
+	            errorMsg = e.getMessage();
+	            LOGGER.error("Unable to upload attachments", methodName, errorMsg);
+	            responseDTO = createServiceResponseError(responseObjectsMap, "DrawingMaster1 Attachments upload failed", errorMsg);
+	        }
+
+	        LOGGER.debug("Ending method: " + methodName);
+	        return ResponseEntity.ok().body(responseDTO);
+	    }
+
+	  @PostMapping("/uploadAttachementsInBloob1")
+	    public ResponseEntity<ResponseDTO> uploadAttachementsInBloob1(
+	            @RequestParam("files") List<MultipartFile> files,
+	            @RequestParam("id") List<Long> id) {
+	        
+	        String methodName = "uploadAttachementsInBloob1()";
+	        LOGGER.debug("Starting method: " + methodName);
+
+	        Map<String, Object> responseObjectsMap = new HashMap<>();
+	        ResponseDTO responseDTO = null;
+	        String errorMsg = null;
+
+	        try {
+	            if (files.size() != id.size()) {
+	                throw new IllegalArgumentException("Files and IDs must have the same size.");
+	            }
+	            
+	            // Call your service to handle files and ids
+	            List<DrawingMaster2VO> drawingMaster2VO = machineMasterService.uploadAttachmentsInBloob1(files, id);
+	            
+	            responseObjectsMap.put("message", "DrawingMaster2 Attachments successfully uploaded.");
+	            responseObjectsMap.put("drawingMaster2VO", drawingMaster2VO);
+	            responseDTO = createServiceResponse(responseObjectsMap);
+	        } catch (Exception e) {
+	            errorMsg = e.getMessage();
+	            LOGGER.error("Unable to upload attachments", methodName, errorMsg);
+	            responseDTO = createServiceResponseError(responseObjectsMap, " DrawingMaster2 Attachments upload failed", errorMsg);
+	        }
+
+	        LOGGER.debug("Ending method: " + methodName);
+	        return ResponseEntity.ok().body(responseDTO);
+	    }
+
+	
+//	@PostMapping("/uploadAttachementsInBloob1")
+//	public ResponseEntity<ResponseDTO> uploadAttachementsInBloob1(@RequestParam("file") MultipartFile file,
+//			@RequestParam Long id) {
+//		String methodName = "uploadAttachementsInBloob1()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		DrawingMaster2VO drawingMaster2VO = null;
+//		try {
+//			drawingMaster2VO = machineMasterService.uploadAttachementsInBloob1(file, id);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error("Unable To Upload attachements", methodName, errorMsg);
+//		}
+//		if (StringUtils.isBlank(errorMsg)) {
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Attachments Successfully Upload");
+//			responseObjectsMap.put("drawingMaster2VO", drawingMaster2VO);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} else {
+//			responseDTO = createServiceResponseError(responseObjectsMap, "Attachments Upload Failed", errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	@GetMapping("/getFGSFGPartDetailsForDrawingMaster")
 	public ResponseEntity<ResponseDTO> getFGSFGPartDetailsForDrawingMaster(@RequestParam(required = false) Long orgId) {
@@ -474,6 +542,8 @@ public class MachineMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
+	
+	
 	
 	@GetMapping("/getDrawingMasterDocId")
 	public ResponseEntity<ResponseDTO> getDrawingMasterDocId(@RequestParam Long orgId) {

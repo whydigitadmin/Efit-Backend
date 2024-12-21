@@ -36,61 +36,59 @@ public class PurchaseInvoiceVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseinvoicegen")
 	@SequenceGenerator(name = "t_purchaseinvoicegen", sequenceName = "t_purchaseinvoiceseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchaseinvoiceid")
+	@Column(name = "purchaseinvoiceid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name="suppliername")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "suppliername")
 	private String supplierName;
-	@Column(name="pono")
+	@Column(name = "pono")
 	private String poNo;
-	@Column(name="grnno")
+	@Column(name = "grnno")
 	private String grnNo;
-	@Column(name="grndate")
-	private LocalDate grnDate; 
-	@Column(name="location")
+	@Column(name = "grndate")
+	private LocalDate grnDate;
+	@Column(name = "location")
 	private String location;
-	@Column(name="inwardno")
+	@Column(name = "inwardno")
 	private String inWardNo;
-	@Column(name="suppliercode")
+	@Column(name = "suppliercode")
 	private String supplierCode;
-	@Column(name="gststate")
+	@Column(name = "gststate")
 	private int gstState;
-	@Column(name="gstNo")
+	@Column(name = "gstNo")
 	private String gstNo;
-	@Column(name="isreversechrg")
+	@Column(name = "isreversechrg")
 	private String isReverseChrg;
-	@Column(name="address")
+	@Column(name = "address")
 	private String address;
-	@Column(name="currency")
+	@Column(name = "currency")
 	private String currency;
-	@Column(name="exchangerate",precision = 10,scale = 2)
+	@Column(name = "exchangerate", precision = 10, scale = 2)
 	private BigDecimal exchangeRate;
-	@Column(name="grncleartime")
-	private LocalTime grnClearTime=LocalTime.now(); 
-	@Column(name="invdcno")
+	@Column(name = "grncleartime")
+	private LocalTime grnClearTime = LocalTime.now();
+	@Column(name = "invdcno")
 	private String invDcNo;
-	@Column(name="invdcdate")
+	@Column(name = "invdcdate")
 	private LocalDate invDcDate;
-	@Column(name="gsttype")
+	@Column(name = "gsttype")
 	private String gstType;
-	@Column(name="customername")
+	@Column(name = "customername")
 	private String customerName;
-	@Column(name="grossamount",precision = 10,scale = 2)
+	@Column(name = "grossamount", precision = 10, scale = 2)
 	private BigDecimal grossAmount;
-	@Column(name="totalamounttax",precision = 10,scale = 2)
+	@Column(name = "totalamounttax", precision = 10, scale = 2)
 	private BigDecimal totalAmountTax;
-	@Column(name="netamount",precision = 10,scale = 2)
+	@Column(name = "netamount", precision = 10, scale = 2)
 	private BigDecimal netAmount;
 	@Column(name = "cnt")
 	private String cnt;
-	@Column(name="remarks")
+	@Column(name = "remarks")
 	private String remarks;
-	
-	
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -103,22 +101,20 @@ public class PurchaseInvoiceVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="PCI";
-	@Column(name = "screenname",length = 30)
-	private String screenName="PURCHASEINVOICE";
-	
-	
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "PCI";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "PURCHASEINVOICE";
+
 	@OneToMany(mappedBy = "purchaseInvoiceVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<PurchaseInvoiceItemVO>purchaseInvoiceItemVO;
-	
+	List<PurchaseInvoiceItemVO> purchaseInvoiceItemVO;
 
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
@@ -128,5 +124,4 @@ public class PurchaseInvoiceVO {
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
-	
 }

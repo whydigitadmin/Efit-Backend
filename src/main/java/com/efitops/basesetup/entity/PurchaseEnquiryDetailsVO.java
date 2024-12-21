@@ -30,19 +30,19 @@ public class PurchaseEnquiryDetailsVO {
 	@Column(name = "purchaseenquirydetailid")
 	private Long id;
 	
-	@Column(name = "item", length = 20)
+	@Column(name = "item")
     private String item;
 
-    @Column(name = "itemdesc", length = 20)
+    @Column(name = "itemdesc")
     private String itemDesc;
 
-    @Column(name = "unit", length = 150)
+    @Column(name = "unit")
     private String Unit;
 
-    @Column(name = "qtyrequired", length = 30)
+    @Column(name = "qtyrequired")
     private BigDecimal qtyRequired;
 
-    @Column(name = "remarks", length = 30)
+    @Column(name = "remarks")
     private String remarks;
 
 	@ManyToOne

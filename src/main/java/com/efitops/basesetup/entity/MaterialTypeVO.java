@@ -32,11 +32,11 @@ public class MaterialTypeVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_materialgen")
 	@SequenceGenerator(name = "m_materialgen", sequenceName = "m_materialseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "materialid")
+	@Column(name = "materialid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="materialtype")
+	@Column(name = "materialtype")
 	private String materialType;
-	@Column(name="itemgroup")
+	@Column(name = "itemgroup")
 	private String itemGroup;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -47,19 +47,19 @@ public class MaterialTypeVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active =true;
+	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel;
-	
-	@OneToMany(mappedBy = "materialTypeVO",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "materialTypeVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<MaterialDetailVO> materialDetailVO;
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-	
+
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

@@ -1,6 +1,7 @@
 package com.efitops.basesetup.entity;
 
 import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,28 +20,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_incomingmaterialinspectiondetails")
+@Table(name = "t_inprocessinspectiondetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class IncomingMaterialInspectionDetailsVO {
+public class InprocessInspectionDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_incomingmaterialinspectiondetailsgen")
-	@SequenceGenerator(name = "t_incomingmaterialinspectiondetailsgen", sequenceName = "t_incomingmaterialinspectiondetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "incomingmaterialinspectiondetailsid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_inprocessinspectiondetailsgen")
+	@SequenceGenerator(name = "t_inprocessinspectiondetailsgen", sequenceName = "t_inprocessinspectiondetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "inprocessinspectiondetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name = "parameter")
-	private String parameter;
+	@Column(name = "characteristics")
+	private String characteristics;
+	@Column(name = "methodofinspection")
+	private String methodOfInspection;
 	@Column(name = "specification")
 	private String specification;
 	@Column(name = "lsl", precision = 10, scale = 2)
 	private BigDecimal lsl;
 	@Column(name = "usl", precision = 10, scale = 2)
 	private BigDecimal usl;
-	@Column(name = "observedvalue", precision = 10, scale = 2)
-	private BigDecimal observedvalue;
 	@Column(name = "sample1")
 	private String sample1;
 	@Column(name = "sample2")
@@ -61,8 +62,8 @@ public class IncomingMaterialInspectionDetailsVO {
 	private String remarks;
 
 	@ManyToOne
-	@JoinColumn(name = "incomingmaterialinspectionid", columnDefinition = "BIGINT DEFAULT 0")
+	@JoinColumn(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
-	IncomingMaterialInspectionVO incomingMaterialInspectionVO;
+	InprocessInspectionVO inprocessInspectionVO;
 
 }

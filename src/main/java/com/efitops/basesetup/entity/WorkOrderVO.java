@@ -1,4 +1,5 @@
 package com.efitops.basesetup.entity;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,31 +34,31 @@ public class WorkOrderVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_workordergen")
 	@SequenceGenerator(name = "t_workordergen", sequenceName = "t_workorderseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "workorderid")
+	@Column(name = "workorderid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name="customername")
-	private String  customerName; 
-	@Column(name="customercode")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "customername")
+	private String customerName;
+	@Column(name = "customercode")
 	private String customerCode;
-	@Column(name="customerpono")
+	@Column(name = "customerpono")
 	private String customerPoNo;
-	@Column(name="quotationno")
+	@Column(name = "quotationno")
 	private String quotationNo;
-	@Column(name="currency")
+	@Column(name = "currency")
 	private String currency;
-	@Column(name="customerduedate")
+	@Column(name = "customerduedate")
 	private LocalDate customerDueDate;
-	@Column(name="vapduedate")
+	@Column(name = "vapduedate")
 	private LocalDate vapDueDate;
-	@Column(name="productionmgr")
+	@Column(name = "productionmgr")
 	private String productionMgr;
-	@Column(name="customerspecialrequirement")
+	@Column(name = "customerspecialrequirement")
 	private String customerSpecialRequirement;
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -67,27 +68,24 @@ public class WorkOrderVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active=true;
+	private boolean active = true;
 	@Column(name = "cancel")
-	private boolean cancel=false;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="WOP";
-	@Column(name = "screenname",length = 30)
-	private String screenName="WORK ORDER";
-	
+	private boolean cancel = false;
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "WOP";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "WORK ORDER";
+
 	@OneToMany(mappedBy = "workOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<ItemParticularsVO> itemParticularsVO;
-	
+
 	@OneToMany(mappedBy = "workOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<TermsAndConditionsVO> termsAndConditionsVO;
-	
 
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
-	
 
 }

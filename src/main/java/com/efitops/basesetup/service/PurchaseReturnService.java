@@ -24,11 +24,11 @@ public interface PurchaseReturnService {
 
 	String getPurchaseReturnDocId(Long orgId);
 
-	List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierName);
+	List<Map<String, Object>> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String supplierCode);
 
-	List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo,String grnNo);
+	List<Map<String, Object>> getLocationFromStockLocation(Long orgId);
 
-	List<Map<String, Object>> getItemCodeAndItemDescFromGrn(Long orgId, String grnNo);
+	List<Map<String, Object>> getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo);
 
 	// PurchaseInvoice
 
@@ -40,11 +40,12 @@ public interface PurchaseReturnService {
 
 	String getPurchaseInvoiceDocId(Long orgId);
 
-	List<Map<String, Object>>  getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String purchaseInvoiceNo,
-			String supplierCode);
+	List<Map<String, Object>> getPurchaseOrderPoNumber(Long orgId, String supplierName);
 
-	List<Map<String, Object>> getLocationFromStockLocation(Long orgId);
+	List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo);
 
-	List<Map<String, Object>>  getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo);
+	List<Map<String, Object>> getItemCodeAndItemDescFromGrn(Long orgId, String grnNo);
+
+	List<Map<String, Object>> getPoDetailsId(Long docId, String itemDesc, Long orgId);
 
 }

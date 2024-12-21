@@ -31,7 +31,7 @@ public class SubContractQuotationDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontractquotationdetailsgen")
 	@SequenceGenerator(name = "t_subcontractquotationdetailsgen", sequenceName = "t_subcontractquotationdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "subcontractquotationdetailsid")
+	@Column(name = "subcontractquotationdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "part")
 	private String part;
@@ -39,30 +39,30 @@ public class SubContractQuotationDetailsVO {
 	private String partDescription;
 	@Column(name = "process")
 	private String process;
-	@Column(name="qty",precision = 10,scale = 2)
+	@Column(name = "qty", precision = 10, scale = 2)
 	private BigDecimal qty;
-	@Column(name="rate",precision = 10,scale = 2)
+	@Column(name = "rate", precision = 10, scale = 2)
 	private BigDecimal rate;
-	@Column(name="amount",precision = 10,scale = 2)
+	@Column(name = "amount", precision = 10, scale = 2)
 	private BigDecimal amount;
-	@Column(name="discount",precision = 10,scale = 2)
+	@Column(name = "discount", precision = 10, scale = 2)
 	private BigDecimal discount;
-	@Column(name="discountamount",precision = 10,scale = 2)
+	@Column(name = "discountamount", precision = 10, scale = 2)
 	private BigDecimal discountAmount;
-	@Column(name="tax",precision = 10,scale = 2)
+	@Column(name = "tax", precision = 10, scale = 2)
 	private BigDecimal tax;
-	@Column(name="quotationamount",precision = 10,scale = 2)
+	@Column(name = "quotationamount", precision = 10, scale = 2)
 	private BigDecimal quotationAmount;
 //	@Column(name="afterdiscountamount",precision = 10,scale = 2)
 //	private BigDecimal afterDiscountAmount;
 //	@Column(name="afterquotationamount",precision = 10,scale = 2)
 //	private BigDecimal afterQuotationAmount;
-	@Column(name="deliverydate")
+	@Column(name = "deliverydate")
 	private LocalDate deliveryDate;
-	
+
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="subcontractquotationid")
+	@JoinColumn(name = "subcontractquotationid", columnDefinition = "BIGINT DEFAULT 0")
 	private SubContractQuotationVO subContractQuotationVO;
 
 }

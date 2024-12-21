@@ -18,28 +18,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_incomingmaterialinspectionappearance")
+@Table(name = "t_inprocessappearanceinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class IncomingMaterialInspectionAppearanceVO {
+public class InprocessAppearanceInspectionVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_incomingmaterialinspectionappearancegen")
-	@SequenceGenerator(name = "t_incomingmaterialinspectionappearancegen", sequenceName = "t_incomingmaterialinspectionappearanceseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "incomingmaterialinspectionappearanceid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_inprocessappearanceinspectiongen")
+	@SequenceGenerator(name = "t_inprocessappearanceinspectiongen", sequenceName = "t_inprocessappearanceinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "inprocessappearanceinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "characteristics")
 	private String characteristics;
 	@Column(name = "methodofinspection")
 	private String methodOfInspection;
-	@Column(name = "specifications")
-	private String specifications;
+	@Column(name = "specification")
+	private String specification;
+	@Column(name = "observation")
+	private String observation;
+	@Column(name = "remarks1")
+	private String remarks1;
 
 	@ManyToOne
-	@JoinColumn(name = "incomingmaterialinspectionid", columnDefinition = "BIGINT DEFAULT 0")
+	@JoinColumn(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
-	IncomingMaterialInspectionVO incomingMaterialInspectionVO;
+	InprocessInspectionVO inprocessInspectionVO;
 
 }

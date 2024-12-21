@@ -1,7 +1,5 @@
 package com.efitops.basesetup.entity;
 
-
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -33,35 +31,35 @@ public class QuotationDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_quotationdetailsgen")
 	@SequenceGenerator(name = "t_quotationdetailsgen", sequenceName = "t_quotationdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "quotationdetailsid")
+	@Column(name = "quotationdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="partcode")
+	@Column(name = "partcode")
 	private String partCode;
-	@Column(name="partdescription")
+	@Column(name = "partdescription")
 	private String partDescription;
-	@Column(name="drawingno")
+	@Column(name = "drawingno")
 	private String drawingNo;
-	@Column(name="revisionno")
+	@Column(name = "revisionno")
 	private String revisionNo;
-	@Column(name="unit")
+	@Column(name = "unit")
 	private String unit;
-	@Column(name="unitprice",precision = 10,scale = 2)
+	@Column(name = "unitprice", precision = 10, scale = 2)
 	private BigDecimal unitPrice;
-	@Column(name="qtyoffered",precision = 10,scale = 2)
+	@Column(name = "qtyoffered", precision = 10, scale = 2)
 	private BigDecimal qtyOffered;
-	@Column(name="basicprice",precision = 10,scale = 3)
+	@Column(name = "basicprice", precision = 10, scale = 3)
 	private BigDecimal basicPrice;
-	@Column(name="discount",precision = 10,scale = 3)
+	@Column(name = "discount", precision = 10, scale = 3)
 	private BigDecimal discount;
-	@Column(name="discountamount",precision = 10,scale = 3)
+	@Column(name = "discountamount", precision = 10, scale = 3)
 	private BigDecimal discountAmount;
-	@Column(name="quoteamount",precision = 10,scale = 3)
+	@Column(name = "quoteamount", precision = 10, scale = 3)
 	private BigDecimal quoteAmount;
-	@Column(name="deliverydate")
+	@Column(name = "deliverydate")
 	private LocalDate deliveryDate;
-	
+
 	@ManyToOne
-	@JoinColumn(name="quotationid")
+	@JoinColumn(name = "quotationid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	QuotationVO quotationVO;
 }
