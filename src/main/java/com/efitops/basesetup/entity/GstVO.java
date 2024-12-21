@@ -30,17 +30,17 @@ public class GstVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_gstgen")
 	@SequenceGenerator(name = "m_gstgen", sequenceName = "m_gstseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "gstid")
+	@Column(name = "gstid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="gstslab")
+	@Column(name = "gstslab")
 	private String gstSlab;
-	@Column(name="gstpercentage",precision = 10,scale = 2)
+	@Column(name = "gstpercentage", precision = 10, scale = 2)
 	private BigDecimal gstPercentage;
-	@Column(name="igstpercentage",precision = 10,scale = 2)
+	@Column(name = "igstpercentage", precision = 10, scale = 2)
 	private BigDecimal igstPercentage;
-	@Column(name="cgstpercentage",precision = 10,scale = 2)
+	@Column(name = "cgstpercentage", precision = 10, scale = 2)
 	private BigDecimal cgstPercentage;
-	@Column(name="sgstpercentage",precision = 10,scale = 2)
+	@Column(name = "sgstpercentage", precision = 10, scale = 2)
 	private BigDecimal sgstPercentage;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -54,7 +54,7 @@ public class GstVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
@@ -64,9 +64,8 @@ public class GstVO {
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-	
+
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
-

@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "t_purchaseinvoiceitem")
 @Data
@@ -28,41 +29,43 @@ public class PurchaseInvoiceItemVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseinvoiceitemgen")
 	@SequenceGenerator(name = "t_purchaseinvoiceitemgen", sequenceName = "t_purchaseinvoiceitemseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchaseinvoiceitemid")
+	@Column(name = "purchaseinvoiceitemid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="itemcode")
+	@Column(name = "itemcode")
 	private String itemCode;
-	@Column(name="itemname")
+	@Column(name = "itemname")
 	private String itemName;
-	@Column(name="hsnsaccode")
+	@Column(name = "hsnsaccode")
 	private String hsnSacCode;
-	@Column(name="taxtype")
+	@Column(name = "taxtype")
 	private String taxtype;
-	@Column(name="primaryunit")
+	@Column(name = "primaryunit")
 	private String primaryUnit;
-	@Column(name="porate",precision = 10,scale = 2)
+	@Column(name = "porate", precision = 10, scale = 2)
 	private BigDecimal poRate;
-	@Column(name="rejectqty",precision = 10,scale = 2)
+	@Column(name = "rejectqty", precision = 10, scale = 2)
 	private BigDecimal rejectQty;
-	@Column(name="acceptqty",precision = 10,scale = 2)
+	@Column(name = "acceptqty", precision = 10, scale = 2)
 	private BigDecimal acceptQty;
-	@Column(name="unitprice",precision = 10,scale = 2)
+	@Column(name = "unitprice", precision = 10, scale = 2)
 	private BigDecimal unitPrice;
-	@Column(name="amount",precision = 10,scale = 2)
+	@Column(name = "amount", precision = 10, scale = 2)
 	private BigDecimal amount;
-	@Column(name="sgst",precision = 10,scale = 2)
+	@Column(name = "sgst", precision = 10, scale = 2)
 	private BigDecimal sgst;
-	@Column(name="cgst",precision = 10,scale = 2)
+	@Column(name = "cgst", precision = 10, scale = 2)
 	private BigDecimal cgst;
-	@Column(name="igst",precision = 10,scale = 2)
+	@Column(name = "igst", precision = 10, scale = 2)
 	private BigDecimal igst;
-	@Column(name="taxvalue",precision = 10,scale = 2)
+	@Column(name = "taxvalue", precision = 10, scale = 2)
 	private BigDecimal taxValue;
-	@Column(name="landedvalue",precision = 10,scale = 2)
+	@Column(name = "landedvalue", precision = 10, scale = 2)
 	private BigDecimal landedValue;
-	
+	@Column(name = "podetailsid")
+	private Long poDetailsId;
+
 	@ManyToOne
-	@JoinColumn(name="purchaseinvoiceid")
+	@JoinColumn(name = "purchaseinvoiceid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	PurchaseInvoiceVO purchaseInvoiceVO;
 

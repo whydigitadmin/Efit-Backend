@@ -1,6 +1,5 @@
 package com.efitops.basesetup.entity;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -32,30 +31,30 @@ public class EnquirySummaryVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_enquirysummarygen")
 	@SequenceGenerator(name = "t_enquirysummarygen", sequenceName = "t_enquirysummaryseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "enquirysummaryid")
+	@Column(name = "enquirysummaryid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="anyadditionalinverstment")
+	@Column(name = "anyadditionalinverstment")
 	private BigDecimal anyAdditionalInverstment;
-	@Column(name="additionalmanpower")
+	@Column(name = "additionalmanpower")
 	private String additionalManPower;
-	@Column(name="timeframe")
-	private String timeFrame; 
-	@Column(name="expectedtimefordeliverysample")
+	@Column(name = "timeframe")
+	private String timeFrame;
+	@Column(name = "expectedtimefordeliverysample")
 	private LocalDate expectedTimeForDeliverySample;
-	@Column(name="regularproduction")
+	@Column(name = "regularproduction")
 	private String regularProduction;
-	@Column(name="initialreviewcomments")
+	@Column(name = "initialreviewcomments")
 	private String initialReviewComments;
-	@Column(name="detailreview")
+	@Column(name = "detailreview")
 	private String detailReview;
-	@Column(name="conclusion")
-	private  String conclusion;
-	@Column(name="remarks")
+	@Column(name = "conclusion")
+	private String conclusion;
+	@Column(name = "remarks")
 	private String remarks;
-	
+
 	@ManyToOne
-	@JoinColumn(name="enquiryid")
+	@JoinColumn(name = "enquiryid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	EnquiryVO enquiryVO;
-	
+
 }

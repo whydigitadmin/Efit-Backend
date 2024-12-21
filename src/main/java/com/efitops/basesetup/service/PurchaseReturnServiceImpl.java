@@ -214,10 +214,8 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String purchaseInvoiceNo,
-			String supplierCode) {
-		Set<Object[]> chType = purchaseReturnRepo.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId, purchaseInvoiceNo,
-				supplierCode);
+	public List<Map<String, Object>> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId,String supplierCode) {
+		Set<Object[]> chType = purchaseReturnRepo.getPurchaseInvoiceNumberFromPurchaseInvoice(orgId,supplierCode);
 		return getPurchaseInvoiceNumber(chType);
 	}
 
@@ -366,6 +364,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			purchaseInvoiceItemVO.setRejectQty(purchaseInvoiceItemDTO.getRejectQty());
 			purchaseInvoiceItemVO.setAcceptQty(purchaseInvoiceItemDTO.getAcceptQty());
 			purchaseInvoiceItemVO.setUnitPrice(purchaseInvoiceItemDTO.getUnitPrice());
+			purchaseInvoiceItemVO.setPoDetailsId(purchaseInvoiceItemDTO.getPoDetailsId());
 
 			BigDecimal taxAmount = BigDecimal.ZERO;
 			BigDecimal landedValues = BigDecimal.ZERO;
@@ -455,8 +454,8 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo, String grnNo) {
-		Set<Object[]> chType = purchaseInvoiceRepo.getGrnNoAndGrnDateFromGrnDetails(orgId, poNo, grnNo);
+	public List<Map<String, Object>>  getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo) {
+		Set<Object[]> chType = purchaseInvoiceRepo.getGrnNoAndGrnDateFromGrnDetails(orgId, poNo);
 		return getGrnNoAndGrnDate(chType);
 	}
 
@@ -502,6 +501,22 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			map.put("poRate", ch[5] != null ? ch[5].toString() : "");
 			map.put("receivedQty", ch[6] != null ? ch[6].toString() : "");
 			map.put("acceptQty", ch[7] != null ? ch[7].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getPoDetailsId(Long docId, String itemDesc, Long orgId) {
+		Set<Object[]> chType = purchaseInvoiceRepo.getPoDetailsId(docId, itemDesc, orgId);
+		return getPoDetails(chType);
+	}
+
+	private List<Map<String, Object>> getPoDetails(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("poDetailsId", ch[0] != null ? ch[0].toString() : "");
 			List1.add(map);
 		}
 		return List1;

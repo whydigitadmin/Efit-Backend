@@ -29,33 +29,32 @@ public class SubContractTaxInvoiceDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontracttaxinvoicedetailsgen")
 	@SequenceGenerator(name = "t_subcontracttaxinvoicedetailsgen", sequenceName = "t_subcontracttaxinvoicedetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "subcontracttaxinvoicedetailsid")
+	@Column(name = "subcontracttaxinvoicedetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdes")
 	private String partDes;
 	@Column(name = "process")
 	private String process;
-	@Column(name="quantitynos",precision = 10,scale = 2)
+	@Column(name = "quantitynos", precision = 10, scale = 2)
 	private BigDecimal quantityNos;
-	@Column(name="rate",precision = 10,scale = 2)
+	@Column(name = "rate", precision = 10, scale = 2)
 	private BigDecimal rate;
-	@Column(name="amount",precision = 10,scale = 2)
+	@Column(name = "amount", precision = 10, scale = 2)
 	private BigDecimal amount;
-	@Column(name="cgst",precision = 10,scale = 2)
+	@Column(name = "cgst", precision = 10, scale = 2)
 	private BigDecimal cgst;
-	@Column(name="sgst",precision = 10,scale = 2)
+	@Column(name = "sgst", precision = 10, scale = 2)
 	private BigDecimal sgst;
-	@Column(name="landedamount",precision = 10,scale = 2)
+	@Column(name = "landedamount", precision = 10, scale = 2)
 	private BigDecimal landedAmount;
-	@Column(name="quotationamount",precision = 10,scale = 2)
+	@Column(name = "quotationamount", precision = 10, scale = 2)
 	private BigDecimal quotationAmount;
-	
+
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="subcontractinvoiceid")
+	@JoinColumn(name = "subcontractinvoiceid", columnDefinition = "BIGINT DEFAULT 0")
 	private SubContractInvoiceVO subContractInvoiceVO;
 
 }

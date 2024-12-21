@@ -556,7 +556,7 @@ public class GrnServiceImpl implements GrnService {
 		purchaseOrderVO.setPurchaseIndentNo(purchaseOrderDTO.getPurchaseIndentNo());
 		purchaseOrderVO.setSupplierName(purchaseOrderDTO.getSupplierName());
 		purchaseOrderVO.setSupplierCode(purchaseOrderDTO.getSupplierCode());
-		purchaseOrderVO.setContactperson(purchaseOrderDTO.getContactperson());
+		purchaseOrderVO.setContactPerson(purchaseOrderDTO.getContactPerson());
 		purchaseOrderVO.setMobileNo(purchaseOrderDTO.getMobileNo());
 		purchaseOrderVO.setEMail(purchaseOrderDTO.getEMail());
 		purchaseOrderVO.setState(purchaseOrderDTO.getState());
@@ -564,7 +564,10 @@ public class GrnServiceImpl implements GrnService {
 		purchaseOrderVO.setTaxCode(purchaseOrderDTO.getTaxCode());
 		purchaseOrderVO.setAddress(purchaseOrderDTO.getAddress());
 		purchaseOrderVO.setRemarks(purchaseOrderDTO.getRemarks());
-
+		purchaseOrderVO.setActive(purchaseOrderDTO.isActive());
+		purchaseOrderVO.setOrgId(purchaseOrderDTO.getOrgId());
+		purchaseOrderVO.setCreatedBy(purchaseOrderDTO.getCreatedBy());
+		
 		BigDecimal grossAmount = BigDecimal.ZERO;
 		BigDecimal netAmount = BigDecimal.ZERO;
 		BigDecimal totalTaxAmount = BigDecimal.ZERO;
@@ -615,7 +618,10 @@ public class GrnServiceImpl implements GrnService {
 					.multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
 			BigDecimal igstamount = purchaseOrderDetailsDTO.getIgst()
 					.multiply(amountSubtractDiscountAmount.divide(BigDecimal.valueOf(100)));
-
+			
+            purchaseOrderDetailsVO.setSgstAmount(sgstamount);
+            purchaseOrderDetailsVO.setIgstAmount(igstamount);
+            purchaseOrderDetailsVO.setCgstAmount(cgstamount);
 			taxAmount = taxAmount.add(cgstamount).add(sgstamount).add(igstamount);
 			purchaseOrderDetailsVO.setTaxValue(taxAmount);
 			totalTaxAmount = totalTaxAmount.add(purchaseOrderDetailsVO.getTaxValue());

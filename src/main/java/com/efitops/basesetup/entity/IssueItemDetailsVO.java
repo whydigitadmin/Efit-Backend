@@ -1,6 +1,5 @@
 package com.efitops.basesetup.entity;
 
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -29,7 +28,7 @@ public class IssueItemDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_issueitemdetailsgen")
 	@SequenceGenerator(name = "t_issueitemdetailsgen", sequenceName = "t_issueitemdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "issueitemdetailsid")
+	@Column(name = "issueitemdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "item")
 	private String item;
@@ -37,15 +36,14 @@ public class IssueItemDetailsVO {
 	private String itemDescription;
 	@Column(name = "process")
 	private String process;
-	@Column(name="quantity",precision = 10,scale = 2)
+	@Column(name = "quantity", precision = 10, scale = 2)
 	private BigDecimal quantity;
 	@Column(name = "remarks")
 	private String remarks;
 
-	
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="issuetosubcontractorid")
+	@JoinColumn(name = "issuetosubcontractorid", columnDefinition = "BIGINT DEFAULT 0")
 	private IssueToSubContractorVO issueToSubContractorVO;
-	
+
 }

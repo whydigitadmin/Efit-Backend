@@ -30,7 +30,7 @@ public class SubContractEnquiryDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontractenquirydetailsgen")
 	@SequenceGenerator(name = "t_subcontractenquirydetailsgen", sequenceName = "t_subcontractenquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "subcontractenquirydetailsid")
+	@Column(name = "subcontractenquirydetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "part")
 	private String part;
@@ -38,15 +38,15 @@ public class SubContractEnquiryDetailsVO {
 	private String partDescription;
 	@Column(name = "process")
 	private String process;
-	@Column(name="qty",precision = 10,scale = 2)
+	@Column(name = "qty", precision = 10, scale = 2)
 	private BigDecimal qty;
-	@Column(name="deliverydate")
+	@Column(name = "deliverydate")
 	private LocalDate deliveryDate;
 	@Column(name = "remarks")
 	private String remarks;
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="subcontractenquiryid")
+	@JoinColumn(name = "subcontractenquiryid", columnDefinition = "BIGINT DEFAULT 0")
 	private SubContractEnquiryVO subContractEnquiryVO;
 
 }

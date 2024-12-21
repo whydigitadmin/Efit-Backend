@@ -35,12 +35,12 @@ public class SubContractQuotationVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontractquotationgen")
 	@SequenceGenerator(name = "t_subcontractquotationgen", sequenceName = "t_subcontractquotationseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "subcontractquotationid")
+	@Column(name = "subcontractquotationid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "enquiryno")
 	private String enquiryNo;
 	@Column(name = "enquirydate")
@@ -57,16 +57,16 @@ public class SubContractQuotationVO {
 	private String routeCardNo;
 	@Column(name = "contactperson")
 	private String contactPerson;
-	@Column(name="contactno")
+	@Column(name = "contactno")
 	private Long contactNo;
-	@Column(name="scissueno")
+	@Column(name = "scissueno")
 	private String scIssueNo;
-	
-	@Column(name="grossamount",precision = 10,scale = 2)
+
+	@Column(name = "grossamount", precision = 10, scale = 2)
 	private BigDecimal grossAmount;
-	@Column(name="netamount",precision = 10,scale = 2)
+	@Column(name = "netamount", precision = 10, scale = 2)
 	private BigDecimal netAmount;
-	@Column(name = "amountinwords",length = 150)
+	@Column(name = "amountinwords", length = 150)
 	private String amountInWords;
 	@Column(name = "narration")
 	private String narration;
@@ -78,31 +78,31 @@ public class SubContractQuotationVO {
 	private String updatedBy;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="SCQ";
-	@Column(name = "screenname",length = 30)
-	private String screenName="SUBCONTRACTQUOTATION";
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "SCQ";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "SUBCONTRACTQUOTATION";
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	
-	@OneToMany(mappedBy = "subContractQuotationVO",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "subContractQuotationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<SubContractQuotationDetailsVO> subContractQuotationDetailsVO;
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-	
+
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
+
 }
