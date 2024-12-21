@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
+import com.efitops.basesetup.dto.FinalInspectionReportDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionDTO;
 import com.efitops.basesetup.dto.InprocessInspectionDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
+import com.efitops.basesetup.entity.FinalInspectionReportVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionVO;
 import com.efitops.basesetup.entity.InprocessInspectionVO;
 import com.efitops.basesetup.service.QualityService;
@@ -316,8 +318,7 @@ public class QualityServiceController extends BaseController {
 	}
 
 	@GetMapping("/getDocIdFromRouteCardNumber")
-	public ResponseEntity<ResponseDTO> getDocIdFromRouteCardNumber(@RequestParam Long orgId,
-			@RequestParam String fgPartName, @RequestParam String customerName) {
+	public ResponseEntity<ResponseDTO> getDocIdFromRouteCardNumber(@RequestParam Long orgId) {
 		String methodName = "getDocIdFromRouteCardNumber()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -326,7 +327,7 @@ public class QualityServiceController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = qualityService.getDocIdFromRouteCardNumber(orgId, fgPartName, customerName);
+			mapp = qualityService.getDocIdFromRouteCardNumber(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -346,7 +347,8 @@ public class QualityServiceController extends BaseController {
 	}
 
 	@GetMapping("/getDrawingNumberFromDrawingMaster")
-	public ResponseEntity<ResponseDTO> getDrawingNumberFromDrawingMaster(@RequestParam Long orgId) {
+	public ResponseEntity<ResponseDTO> getDrawingNumberFromDrawingMaster(@RequestParam Long orgId,
+			@RequestParam String fgPartno) {
 		String methodName = "getDrawingNumberFromDrawingMaster()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -355,7 +357,7 @@ public class QualityServiceController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = qualityService.getDrawingNumberFromDrawingMaster(orgId);
+			mapp = qualityService.getDrawingNumberFromDrawingMaster(orgId, fgPartno);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -374,9 +376,9 @@ public class QualityServiceController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getEmployeeFromEmployeeMaster")
+	@GetMapping("/getEmployeeNameFromEmployeeMaster")
 	public ResponseEntity<ResponseDTO> getEmployeeFromEmployeeMaster(@RequestParam Long orgId) {
-		String methodName = "getEmployeeFromEmployeeMaster()";
+		String methodName = "getEmployeeNameFromEmployeeMaster()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -384,36 +386,7 @@ public class QualityServiceController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = qualityService.getEmployeeFromEmployeeMaster(orgId);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Details retrieved successfully");
-			responseObjectsMap.put("employeeVO", mapp);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve Employee Details",
-					errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getEmployeeNameFromApproved")
-	public ResponseEntity<ResponseDTO> getEmployeeNameFromApproved(@RequestParam Long orgId) {
-		String methodName = "getEmployeeNameFromApproved()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mapp = new ArrayList<>();
-
-		try {
-			mapp = qualityService.getEmployeeNameFromApproved(orgId);
+			mapp = qualityService.getEmployeeNameFromEmployeeMaster(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -431,4 +404,116 @@ public class QualityServiceController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	// FinalInspectionReport
+
+	@GetMapping("/getAllFinalInspectionReportByOrgId")
+	public ResponseEntity<ResponseDTO> getAllFinalInspectionReportByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllFinalInspectionReportByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<FinalInspectionReportVO> finalInspectionReportVO = new ArrayList<>();
+		try {
+			finalInspectionReportVO = qualityService.getAllFinalInspectionReportByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"FinalInspectionReport information get successfully ByOrgId");
+			responseObjectsMap.put("finalInspectionReportVO", finalInspectionReportVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"FinalInspectionReport information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+
+	@GetMapping("/getFinalInspectionReportById")
+	public ResponseEntity<ResponseDTO> getFinalInspectionReportById(@RequestParam Long id) {
+		String methodName = "getFinalInspectionReportById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		FinalInspectionReportVO finalInspectionReportVO = new FinalInspectionReportVO();
+		try {
+			finalInspectionReportVO = qualityService.getFinalInspectionReportById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"FinalInspectionReport information get successfully By id");
+			responseObjectsMap.put("finalInspectionReportVO", finalInspectionReportVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"FinalInspectionReport information receive failedByOrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/createUpdateFinalInspectionReport")
+	public ResponseEntity<ResponseDTO> createUpdateFinalInspectionReport(
+			@RequestBody FinalInspectionReportDTO finalInspectionReportDTO) {
+		String methodName = "createUpdateFinalInspectionReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> finalInspectionReportVO = qualityService
+					.createUpdateFinalInspectionReport(finalInspectionReportDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, finalInspectionReportVO.get("message"));
+			responseObjectsMap.put("finalInspectionReportVO", finalInspectionReportVO.get("finalInspectionReportVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getFinalInspectionReportDocId")
+	public ResponseEntity<ResponseDTO> getFinalInspectionReportDocId(@RequestParam Long orgId) {
+
+		String methodName = "getFinalInspectionReportDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = qualityService.getFinalInspectionReportDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"FinalInspectionReportDocId information retrieved successfully");
+			responseObjectsMap.put("finalInspectionReportDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve FinalInspectionReportDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }
