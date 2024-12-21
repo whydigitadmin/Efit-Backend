@@ -22,6 +22,8 @@ public interface QualityApprovalServive {
 
 	Map<String, Object> createUpdateSettingApproval(SettingApprovalDTO settingApprovalDTO) throws ApplicationException;
 
+	List<Map<String, Object>> getRouteCardDetailsForSetingApproval(Long orgId);
+
 	
 
 }

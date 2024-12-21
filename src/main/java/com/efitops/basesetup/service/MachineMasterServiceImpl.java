@@ -453,12 +453,66 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		return drawingMasterRepo.getDrawingMasterById(id);
 	}
 
+//	@Override
+//	public DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException {
+//		DrawingMaster1VO drawingMaster1VO = drawingMaster1Repo.findById(id).get();
+//		drawingMaster1VO.setAttachements(file.getBytes());
+//		return drawingMaster1Repo.save(drawingMaster1VO);
+//	}
+	
+	
 	@Override
-	public DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException {
-		DrawingMaster1VO drawingMaster1VO = drawingMaster1Repo.findById(id).get();
-		drawingMaster1VO.setAttachements(file.getBytes());
-		return drawingMaster1Repo.save(drawingMaster1VO);
+	public List<DrawingMaster1VO> uploadAttachmentsInBloob(List<MultipartFile> files, List<Long> ids) throws IOException {
+	    List<DrawingMaster1VO> updatedDrawingMasterList = new ArrayList<>();
+
+	    for (int i = 0; i < ids.size(); i++) {
+	        Long id = ids.get(i);
+	        MultipartFile file = files.get(i);
+
+	        // Find the entity by its ID
+	        DrawingMaster1VO drawingMaster1VO = drawingMaster1Repo.findById(id)
+	                .orElseThrow(() -> new RuntimeException("DrawingMaster1VO not found with ID: " + id));
+
+	        // Process the file and set it as the attachment for this entity
+	        drawingMaster1VO.setAttachements(file.getBytes());
+
+	        // Save the updated entity to the database
+	        DrawingMaster1VO updatedDrawingMaster = drawingMaster1Repo.save(drawingMaster1VO);
+
+	        // Add the updated entity to the list
+	        updatedDrawingMasterList.add(updatedDrawingMaster);
+	    }
+
+	    // Return the list of updated entities
+	    return updatedDrawingMasterList;
 	}
+
+	@Override
+	public List<DrawingMaster2VO> uploadAttachmentsInBloob1(List<MultipartFile> files, List<Long> ids) throws IOException {
+	    List<DrawingMaster2VO> updatedDrawingMaster2List = new ArrayList<>();
+
+	    for (int i = 0; i < ids.size(); i++) {
+	        Long id = ids.get(i);
+	        MultipartFile file = files.get(i);
+
+	        // Find the entity by its ID
+	        DrawingMaster2VO drawingMaster2VO = drawingMaster2Repo.findById(id)
+	                .orElseThrow(() -> new RuntimeException("DrawingMaster2VO not found with ID: " + id));
+
+	        // Process the file and set it as the attachment for this entity
+	        drawingMaster2VO.setAttachements(file.getBytes());
+
+	        // Save the updated entity to the database
+	        DrawingMaster2VO updatedDrawingMaster2 = drawingMaster2Repo.save(drawingMaster2VO);
+
+	        // Add the updated entity to the list
+	        updatedDrawingMaster2List.add(updatedDrawingMaster2);
+	    }
+
+	    // Return the list of updated entities
+	    return updatedDrawingMaster2List;
+	}
+
 	
 	@Override
 	public DrawingMaster2VO uploadAttachementsInBloob1(MultipartFile file, Long id) throws IOException {

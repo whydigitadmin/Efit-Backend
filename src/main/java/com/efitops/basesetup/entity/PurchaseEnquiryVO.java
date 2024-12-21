@@ -37,46 +37,46 @@ public class PurchaseEnquiryVO {
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
 
-	@Column(name = "customername", length = 150)
+	@Column(name = "customername")
 	private String customerName;
 
-	@Column(name = "customercode", length = 150)
+	@Column(name = "customercode")
 	private String customerCode;
 	
-	@Column(name = "workorderno", length = 30)
+	@Column(name = "workorderno")
 	private String workOrderNo;
 
-	@Column(name = "purchaseindentno", length = 30)
+	@Column(name = "purchaseindentno")
 	private String purchaseIndentNo;
 
-	@Column(name = "customerpono", length = 30)
+	@Column(name = "customerpono")
 	private String customerPoNo;
 
-	@Column(name = "fgpartname", length = 60)
+	@Column(name = "fgpartname")
 	private String fgPartName;
 
-	@Column(name = "fgpartdesc", length = 65)
+	@Column(name = "fgpartdesc")
 	private String fgPartDesc;
 
-	@Column(name = "suppliername", length = 65)
+	@Column(name = "suppliername")
 	private String supplierName;
 
-	@Column(name = "suppliercode", length = 65)
+	@Column(name = "suppliercode")
 	private String supplierCode;
 	
-	@Column(name = "contactperson", length = 35)
+	@Column(name = "contactperson")
 	private String contactPerson;
 
-	@Column(name = "contactno", length = 10)
+	@Column(name = "contactno")
 	private String contactNo;
 
-	@Column(name = "enquirytype", length = 25)
+	@Column(name = "enquirytype")
 	private String enquiryType;
 
-	@Column(name = "enquiryduedate", length = 10)
+	@Column(name = "enquiryduedate")
 	private LocalDate enquiryDueDate;
 
-	@Column(name = "expecteddeliverydate", length = 10)
+	@Column(name = "expecteddeliverydate")
 	private LocalDate expectedDeliveryDate;
 
 	// Additional fields with column mappings

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -21,7 +22,7 @@ import com.efitops.basesetup.repo.SettingApprovalDetailsRepo;
 import com.efitops.basesetup.repo.SettingApprovalRepo;
 
 @Service
-public class QualityApprovalServiveImpl  implements QualityApprovalServive{
+public class QualityApprovalServiceImpl  implements QualityApprovalServive{
 
 	@Autowired
 	SettingApprovalRepo settingApprovalRepo;
@@ -150,6 +151,26 @@ public class QualityApprovalServiveImpl  implements QualityApprovalServive{
 
 	}
 
+	@Override
+	public List<Map<String, Object>> getRouteCardDetailsForSetingApproval(Long orgId) {
+		Set<Object[]> routeCardDetails = settingApprovalRepo.findRouteCardDetailsForSetingApproval(orgId);
+		return getRouteCardDetailsForSetingApproval(routeCardDetails);
+	}
+
+	private List<Map<String, Object>> getRouteCardDetailsForSetingApproval(Set<Object[]> routeCardDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : routeCardDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNo", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("partNo", ch[1] != null ? ch[1].toString() : "");
+			map.put("partName", ch[2] != null ? ch[2].toString() : "");
+
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
 	
 
 }
