@@ -61,10 +61,10 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 	
 	
 	@Query(nativeQuery = true, value =("SELECT sgstpercentage  FROM efit_ops.m_gst where 'INTER' = ?3 and gstslab=?2 AND orgid = ?1"))
-	Set<Object[]> findgetSGSTandCGSTForGRN(Long orgId, String taxType, String gstType);
+	Set<Object[]> findgetSGSTandCGSTForGRN(Long orgId, String gstType , String  taxType);
 
 	@Query(nativeQuery = true, value =("SELECT igstpercentage  FROM efit_ops.m_gst where 'INTRA' =  ?3 and gstslab=?2 AND orgid = ?1"))
-	Set<Object[]> findgetIGSTForGRN(Long orgId, String taxType, String gstType);
+	Set<Object[]> findgetIGSTForGRN(Long orgId,  String gstType , String  taxType);
 
 	
 
