@@ -27,13 +27,13 @@ public class MaterialDetailVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_materialdetailgen")
 	@SequenceGenerator(name = "m_materialdetailgen", sequenceName = "m_materialdetailseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "materialdetailid")
+	@Column(name = "materialdetailid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name="itemsubgroup")
+	@Column(name = "itemsubgroup")
 	private String itemSubGroup;
-	
+
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name="materialid")
+	@JoinColumn(name = "materialid", columnDefinition = "BIGINT DEFAULT 0")
 	MaterialTypeVO materialTypeVO;
 }

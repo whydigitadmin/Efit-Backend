@@ -22,6 +22,7 @@ public class PurchaseInvoiceItemDTO {
 	private BigDecimal sgst;
 	private BigDecimal cgst;
 	private BigDecimal igst;
+	private Long poDetailsId;
 	
 
 }

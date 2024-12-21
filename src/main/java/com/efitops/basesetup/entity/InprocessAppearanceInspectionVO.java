@@ -28,7 +28,7 @@ public class InprocessAppearanceInspectionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_inprocessappearanceinspectiongen")
 	@SequenceGenerator(name = "t_inprocessappearanceinspectiongen", sequenceName = "t_inprocessappearanceinspectionseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "inprocessappearanceinspectionid")
+	@Column(name = "inprocessappearanceinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "characteristics")
 	private String characteristics;
@@ -42,9 +42,8 @@ public class InprocessAppearanceInspectionVO {
 	private String remarks1;
 
 	@ManyToOne
-	@JoinColumn(name = "inprocessinspectionid")
+	@JoinColumn(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	InprocessInspectionVO inprocessInspectionVO;
-
 
 }

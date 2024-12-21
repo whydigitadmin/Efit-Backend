@@ -33,7 +33,7 @@ public class IncomingMaterialInspectionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_incomingmaterialinspectiongen")
 	@SequenceGenerator(name = "t_incomingmaterialinspectiongen", sequenceName = "t_incomingmaterialinspectionseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "incomingmaterialinspectionid")
+	@Column(name = "incomingmaterialinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;

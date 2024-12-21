@@ -33,7 +33,7 @@ public class InprocessInspectionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_inprocessinspectiongen")
 	@SequenceGenerator(name = "t_inprocessinspectiongen", sequenceName = "t_inprocessinspectionseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "inprocessinspectionid")
+	@Column(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;

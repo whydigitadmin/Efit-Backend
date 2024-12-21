@@ -28,7 +28,7 @@ public class SubContractTermsAndConditionsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontracttermsandconditionsgen")
 	@SequenceGenerator(name = "t_subcontracttermsandconditionsgen", sequenceName = "t_subcontracttermsandconditionsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "subcontracttermsandconditionsid")
+	@Column(name = "subcontracttermsandconditionsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "terms")
 	private String terms;
@@ -36,7 +36,7 @@ public class SubContractTermsAndConditionsVO {
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "subcontractinvoiceid")
+	@JoinColumn(name = "subcontractinvoiceid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	SubContractInvoiceVO subContractInvoiceVO;
 }

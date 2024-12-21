@@ -30,18 +30,18 @@ public class ProcessMasterVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_processmastergen")
 	@SequenceGenerator(name = "m_processmastergen", sequenceName = "m_processmasterseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "processmasterid")
+	@Column(name = "processmasterid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name="processname")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "processname")
 	private String processName;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
-	private String createdBy;	
+	private String createdBy;
 	@Column(name = "modifyby", length = 25)
 	private String updatedBy;
 	@Column(name = "active")
@@ -50,20 +50,21 @@ public class ProcessMasterVO {
 	private boolean cancel;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	@Column(name="screencode",length=5)
-	private String screenCode="PM";
-	@Column(name = "screenname",length = 30)
-	private String screenName="PROCESS MASTER";
+	@Column(name = "screencode", length = 5)
+	private String screenCode = "PM";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "PROCESS MASTER";
 
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
+
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

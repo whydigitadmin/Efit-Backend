@@ -28,7 +28,7 @@ public class TermsAndConditionsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_termsandconditionsgen")
 	@SequenceGenerator(name = "t_termsandconditionsgen", sequenceName = "t_termsandconditionsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "termsandconditionsid")
+	@Column(name = "termsandconditionsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "template")
 	private String template;
@@ -36,7 +36,7 @@ public class TermsAndConditionsVO {
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "workorderid")
+	@JoinColumn(name = "workorderid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	WorkOrderVO workOrderVO;
 
