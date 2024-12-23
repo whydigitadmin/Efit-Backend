@@ -15,35 +15,37 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_issueitemdetails")
+@Table(name = "deliverychallanforfgdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueItemDetailsVO {
-
+@Builder
+public class DeliveryChallanForFgDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_issueitemdetailsgen")
-	@SequenceGenerator(name = "t_issueitemdetailsgen", sequenceName = "t_issueitemdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "issueitemdetailsid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliverychallanforfgdetailsgen")
+	@SequenceGenerator(name = "deliverychallanforfgdetailsgen", sequenceName = "deliverychallanforfgdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "deliverychallanforfgdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name = "item")
-	private String item;
+	@Column(name = "itemno")
+	private String itemNo;
 	@Column(name = "itemdescription")
 	private String itemDescription;
-	@Column(name = "process")
-	private String process;
 	@Column(name = "quantity", precision = 10, scale = 2)
 	private BigDecimal quantity;
+	@Column(name = "unit")
+	private String unit;
+	@Column(name = "weight", precision = 10, scale = 2)
+	private BigDecimal weight;
 	@Column(name = "remarks")
 	private String remarks;
 
 	@ManyToOne
+	@JoinColumn(name = "deliverychalanforfgid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
-	@JoinColumn(name = "issuetosubcontractorid", columnDefinition = "BIGINT DEFAULT 0")
-	private IssueToSubContractorVO issueToSubContractorVO;
-
+	DeliveryChalanForFgVO deliveryChalanForFgVO;
 }

@@ -20,17 +20,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_itemparticulars")
+@Table(name = "workorderdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemParticularsVO {
+public class WorkOrderDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_itemparticularsgen")
-	@SequenceGenerator(name = "t_itemparticularsgen", sequenceName = "t_itemparticularsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "itemparticularsid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workorderdetailsgen")
+	@SequenceGenerator(name = "workorderdetailsgen", sequenceName = "workorderdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "workorderdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "partno")
 	private String partNo;

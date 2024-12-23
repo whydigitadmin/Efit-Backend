@@ -20,17 +20,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_dimensionalinspectionreport")
+@Table(name = "firappearanceiunspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DimensionalInspectionReportVO {
+public class FirAppearanceInspectionVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_dimensionalinspectionreportgen")
-	@SequenceGenerator(name = "t_dimensionalinspectionreportgen", sequenceName = "t_dimensionalinspectionreportseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "dimensionalinspectionreportid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "firappearanceiunspectiongen")
+	@SequenceGenerator(name = "firappearanceiunspectiongen", sequenceName = "firappearanceiunspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "firappearanceiunspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "characteristics")
 	private String characteristics;
@@ -42,27 +42,8 @@ public class DimensionalInspectionReportVO {
 	private BigDecimal lsl;
 	@Column(name = "usl", precision = 10, scale = 2)
 	private BigDecimal usl;
-	@Column(name = "sample1")
-	private String sample1;
-	@Column(name = "sample2")
-	private String sample2;
-	@Column(name = "sample3")
-	private String sample3;
-	@Column(name = "sample4")
-	private String sample4;
-	@Column(name = "sample5")
-	private String sample5;
-	@Column(name = "sample6")
-	private String sample6;
-	@Column(name = "sample7")
-	private String sample7;
-	@Column(name = "sample8")
-	private String sample8;
-	@Column(name = "sample9")
-	private String sample9;
-	@Column(name = "sample10")
-	private String sample10;
-
+	@Column(name = "observation")
+	private String observation;
 	@Column(name = "remarks")
 	private String remarks;
 
@@ -70,4 +51,5 @@ public class DimensionalInspectionReportVO {
 	@JoinColumn(name = "finalinspectionreportid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	FinalInspectionReportVO finalInspectionReportVO;
+
 }
