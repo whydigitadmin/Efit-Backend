@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -133,5 +134,72 @@ public class ProcessDoneServiceImpl implements ProcessDoneService {
 	@Override
 	public String getProcessDoneDocId(Long orgId, String finYear, String branchCode, String screenCode) {
 		return processDoneRepo.getProcessDoneDocId(orgId, finYear, branchCode, screenCode);
+	}
+
+	@Override
+	public List<Map<String, Object>> getRouteCardNo(Long orgId, String customerName) {
+		Set<Object[]> routeNo = processDoneRepo.getRouteCardNo(orgId, customerName);
+		return getRouteDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getRouteDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPartName", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
+			map.put("qty", ch[3] != null ? ch[3].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getJobCardNo(Long orgId, String routeCardNo) {
+		Set<Object[]> routeNo = processDoneRepo.getJobCardNo(orgId, routeCardNo);
+		return getJobDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getJobDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("jobCardNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getFrom(Long orgId) {
+		Set<Object[]> routeNo = processDoneRepo.getFrom(orgId);
+		return getFromDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getFromDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("from", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getTo(Long orgId) {
+		Set<Object[]> routeNo = processDoneRepo.getTo(orgId);
+		return getToDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getToDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("to", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
 	}
 }
