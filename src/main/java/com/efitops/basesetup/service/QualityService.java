@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.FinalInspectionReportDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionDTO;
 import com.efitops.basesetup.dto.InprocessInspectionDTO;
+import com.efitops.basesetup.entity.FinalInspectionReportVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionVO;
 import com.efitops.basesetup.entity.InprocessInspectionVO;
 import com.efitops.basesetup.exception.ApplicationException;
@@ -40,12 +42,21 @@ public interface QualityService {
 
 	String getInprocessInspectionDocId(Long orgId);
 
-	List<Map<String, Object>> getDocIdFromRouteCardNumber(Long orgId, String fgPartName, String customerName);
+	List<Map<String, Object>> getDocIdFromRouteCardNumber(Long orgId);
 
-	List<Map<String, Object>> getDrawingNumberFromDrawingMaster(Long orgId);
+	List<Map<String, Object>> getDrawingNumberFromDrawingMaster(Long orgId, String fgPartno);
 
-	List<Map<String, Object>> getEmployeeFromEmployeeMaster(Long orgId);
+	List<Map<String, Object>> getEmployeeNameFromEmployeeMaster(Long orgId);
 
-	List<Map<String, Object>> getEmployeeNameFromApproved(Long orgId);
+	// FinalInspectionReport
+
+	Map<String, Object> createUpdateFinalInspectionReport(FinalInspectionReportDTO finalInspectionReportDTO)
+			throws ApplicationException;
+
+	List<FinalInspectionReportVO> getAllFinalInspectionReportByOrgId(Long orgId);
+
+	FinalInspectionReportVO getFinalInspectionReportById(Long id);
+
+	String getFinalInspectionReportDocId(Long orgId);
 
 }
