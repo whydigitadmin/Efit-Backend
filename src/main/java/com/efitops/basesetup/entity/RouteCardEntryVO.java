@@ -46,6 +46,8 @@ public class RouteCardEntryVO {
 	private String customerName;
 	@Column(name = "wono")
 	private String woNo;
+	@Column(name = "wodate")
+	private LocalDate woDate;
 	@Column(name = "fgpartname")
 	private String fgPartName;
 	@Column(name = "fgpartdesc")
@@ -64,7 +66,8 @@ public class RouteCardEntryVO {
 	private int rmQty;
 	@Column(name = "narration")
 	private String narration;
-
+	@Column(name = "suppliername")
+	private String supplierName;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "invoice")
