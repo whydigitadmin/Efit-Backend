@@ -19,84 +19,84 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
-import com.efitops.basesetup.dto.JobOrderDTO;
+import com.efitops.basesetup.dto.ProcessDoneDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
-import com.efitops.basesetup.entity.JobOrderVO;
-import com.efitops.basesetup.service.JobOrderService;
+import com.efitops.basesetup.entity.ProcessDoneVO;
+import com.efitops.basesetup.service.ProcessDoneService;
 
 @RestController
-@RequestMapping("/api/jobOrder")
-public class JobOrderController extends BaseController {
+@RequestMapping(name = "/api/processDone")
+public class ProcessDoneController extends BaseController {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(JobOrderController.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(ProcessDoneController.class);
 
 	@Autowired
-	JobOrderService jobOrderService;
+	ProcessDoneService processDoneService;
 
-	@GetMapping("/getAllJobOrderByOrgId")
-	public ResponseEntity<ResponseDTO> getAllJobOrderByOrgId(@RequestParam Long orgId) {
-		String methodName = "getAllJobOrderByOrgId()";
+	@GetMapping("/getAllProcessDoneByOrgId")
+	public ResponseEntity<ResponseDTO> getAllProcessDoneByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllProcessDoneByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<JobOrderVO> jobOrderVO = new ArrayList<>();
+		List<ProcessDoneVO> processDoneVO = new ArrayList<>();
 		try {
-			jobOrderVO = jobOrderService.getAllJobOrderByOrgId(orgId);
+			processDoneVO = processDoneService.getAllProcessDoneByOrgId(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "JobOrder information get successfully By OrgId");
-			responseObjectsMap.put("jobOrderVO", jobOrderVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ProcessDone information get successfully By OrgId");
+			responseObjectsMap.put("processDoneVO", processDoneVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "JobOrder information receive failed By OrgId",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ProcessDone information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
 
-	@GetMapping("/getJobOrderById")
-	public ResponseEntity<ResponseDTO> getJobOrderById(@RequestParam(required = false) Long id) {
-		String methodName = "getJobOrderById()";
+	@GetMapping("/getProcessDoneById")
+	public ResponseEntity<ResponseDTO> getProcessDoneById(@RequestParam(required = false) Long id) {
+		String methodName = "getProcessDoneById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<JobOrderVO> jobOrderVO = new ArrayList<>();
+		List<ProcessDoneVO> processDoneVO = new ArrayList<>();
 		try {
-			jobOrderVO = jobOrderService.getJobOrderById(id);
+			processDoneVO = processDoneService.getProcessDoneById(id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "JobOrder information get successfully By id");
-			responseObjectsMap.put("jobOrderVO", jobOrderVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ProcessDone information get successfully By id");
+			responseObjectsMap.put("processDoneVO", processDoneVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "JobOrder information receive failed By OrgId",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ProcessDone information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/updateCreateJobOrder")
-	public ResponseEntity<ResponseDTO> updateCreateJobOrder(@RequestBody JobOrderDTO jobOrderDTO) {
-		String methodName = "updateCreateJobOrder()";
+	@PutMapping("/updateCreateProcessDone")
+	public ResponseEntity<ResponseDTO> updateCreateProcessDone(@RequestBody ProcessDoneDTO processDoneDTO) {
+		String methodName = "updateCreateProcessDone()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			Map<String, Object> jobOrderVO = jobOrderService.createUpdateJobOrder(jobOrderDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, jobOrderVO.get("message"));
-			responseObjectsMap.put("jobOrderVO", jobOrderVO.get("jobOrderVO"));
+			Map<String, Object> processDoneVO = processDoneService.createUpdateProcessDone(processDoneDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, processDoneVO.get("message"));
+			responseObjectsMap.put("processDoneVO", processDoneVO.get("processDoneVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -108,24 +108,24 @@ public class JobOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getJobOrderByDocId")
-	public ResponseEntity<ResponseDTO> getJobOrderByDocId(@RequestParam Long orgId, @RequestParam String finYear,
+	@GetMapping("/getProcessDoneByDocId")
+	public ResponseEntity<ResponseDTO> getProcessDoneByDocId(@RequestParam Long orgId, @RequestParam String finYear,
 			@RequestParam String branchCode, @RequestParam String screenCode) {
-		String methodName = "getJobOrderByDocId()";
+		String methodName = "getProcessDoneByDocId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		String jobOrderVO = null;
+		String processDoneVO = null;
 		try {
-			jobOrderVO = jobOrderService.getJobOrderDocId(orgId, finYear, branchCode, screenCode);
+			processDoneVO = processDoneService.getProcessDoneDocId(orgId, finYear, branchCode, screenCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "OriginBill information get successfully By docid");
-			responseObjectsMap.put("jobOrderVO", jobOrderVO);
+			responseObjectsMap.put("processDoneVO", processDoneVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
@@ -135,109 +135,107 @@ public class JobOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getShift")
-	public ResponseEntity<ResponseDTO> getShift(@RequestParam Long orgId) {
-		String methodName = "getShift()";
+	@GetMapping("/getRouteCardNo")
+	public ResponseEntity<ResponseDTO> getRouteCardNo(@RequestParam Long orgId, @RequestParam String customerName) {
+		String methodName = "getRouteCardNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> shift = new ArrayList<>();
+		List<Map<String, Object>> routeCard = new ArrayList<>();
 		try {
-			shift = jobOrderService.getShift(orgId);
+			routeCard = processDoneService.getRouteCardNo(orgId, customerName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"Shift Details information get successfully By OrgId");
-			responseObjectsMap.put("shift", shift);
+					"Route Card Details information get successfully By OrgId");
+			responseObjectsMap.put("routeCard", routeCard);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Shift Details information receive failed By OrgId", errorMsg);
+					"Route Card Details information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getOperationName")
-	public ResponseEntity<ResponseDTO> getOperationName(@RequestParam Long orgId) {
-		String methodName = "getOperationName()";
+	@GetMapping("/getJobCardNo")
+	public ResponseEntity<ResponseDTO> getJobCardNo(@RequestParam Long orgId, @RequestParam String customerName) {
+		String methodName = "getRouteCardNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> operation = new ArrayList<>();
+		List<Map<String, Object>> routeCard = new ArrayList<>();
 		try {
-			operation = jobOrderService.getOperationName(orgId);
+			routeCard = processDoneService.getRouteCardNo(orgId, customerName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"Operation Details information get successfully By OrgId");
-			responseObjectsMap.put("operation", operation);
+					"Route Card Details information get successfully By OrgId");
+			responseObjectsMap.put("routeCard", routeCard);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Operation Details information receive failed By OrgId", errorMsg);
+					"Route Card Details information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getOperatorName")
-	public ResponseEntity<ResponseDTO> getOperatorName(@RequestParam Long orgId) {
-		String methodName = "getOperatorName()";
+	@GetMapping("/getFrom")
+	public ResponseEntity<ResponseDTO> getFrom(@RequestParam Long orgId) {
+		String methodName = "getFrom()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> operation = new ArrayList<>();
+		List<Map<String, Object>> from = new ArrayList<>();
 		try {
-			operation = jobOrderService.getOperatorName(orgId);
+			from = processDoneService.getFrom(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"Operator Details information get successfully By OrgId");
-			responseObjectsMap.put("operation", operation);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "From Details information get successfully By OrgId");
+			responseObjectsMap.put("from", from);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Operator Details information receive failed By OrgId", errorMsg);
+					"From Details information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getTimings")
-	public ResponseEntity<ResponseDTO> getTimings(@RequestParam Long orgId, @RequestParam String shiftCode) {
-		String methodName = "getTimings()";
+	@GetMapping("/getTo")
+	public ResponseEntity<ResponseDTO> getTo(@RequestParam Long orgId) {
+		String methodName = "getTo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> timings = new ArrayList<>();
+		List<Map<String, Object>> to = new ArrayList<>();
 		try {
-			timings = jobOrderService.getTimings(orgId, shiftCode);
+			to = processDoneService.getTo(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"Timings Details information get successfully By OrgId");
-			responseObjectsMap.put("timings", timings);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "To Details information get successfully By OrgId");
+			responseObjectsMap.put("to", to);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Timings Details information receive failed By OrgId", errorMsg);
+					"To Details information receive failed By OrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

@@ -20,4 +20,12 @@ public interface JobOrderService {
 
 	String getJobOrderDocId(Long orgId, String finYear, String branchCode, String screenCode);
 
+	List<Map<String, Object>> getShift(Long orgid);
+
+	List<Map<String, Object>> getOperationName(Long orgid);
+
+	List<Map<String, Object>> getOperatorName(Long orgid);
+
+	List<Map<String, Object>> getTimings(Long orgid, String shiftCode);
+
 }
