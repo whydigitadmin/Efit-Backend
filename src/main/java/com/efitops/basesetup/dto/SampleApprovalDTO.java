@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 public class SampleApprovalDTO {
 
 	private Long id;
-	private String docId;
-	private LocalDate docDate;
 	private String routeCardNo;
 	private String partNo;
 	private String partName;

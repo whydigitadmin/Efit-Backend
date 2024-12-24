@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.ResponseDTO;
+import com.efitops.basesetup.dto.SampleApprovalDTO;
 import com.efitops.basesetup.dto.SettingApprovalDTO;
 import com.efitops.basesetup.entity.SampleApprovalVO;
 import com.efitops.basesetup.entity.SettingApprovalVO;
@@ -342,93 +343,115 @@ public class QualityApprovalController extends BaseController{
 	}
 	
 	
-//	@GetMapping("/getAllSampleApprovalByOrgId")
-//	public ResponseEntity<ResponseDTO> getAllSampleApprovalByOrgId(@RequestParam Long orgId) {
-//		String methodName = "getAllSampleApprovalByOrgId()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		List<SampleApprovalVO> sampleApprovalVO = new ArrayList<>();
-//		try {
-//			sampleApprovalVO = qualityApprovalServive.getAllSampleApprovalByOrgId(orgId);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//		}
-//		if (StringUtils.isBlank(errorMsg)) {
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-//					"SampleApproval information get successfully ByOrgId");
-//			responseObjectsMap.put("sampleApprovalVO", sampleApprovalVO);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} else {
-//			responseDTO = createServiceResponseError(responseObjectsMap,
-//					"SampleApproval information receive failed By OrgId", errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//
-//	}
-//
-//	
-//	@GetMapping("/getSampleApprovalById")
-//	public ResponseEntity<ResponseDTO> getSampleApprovalById(@RequestParam Long id) {
-//		String methodName = "getSampleApprovalById()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		SampleApprovalVO  sampleApprovalVO = new SampleApprovalVO();
-//		try {
-//			sampleApprovalVO = qualityApprovalServive.getSampleApprovalById(id);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//		}
-//		if (StringUtils.isBlank(errorMsg)) {
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-//					"SampleApproval information get successfully By Id");
-//			responseObjectsMap.put("sampleApprovalVO", sampleApprovalVO);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} else {
-//			responseDTO = createServiceResponseError(responseObjectsMap,
-//					"SampleApproval information receive failedBy Id", errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
-//	
-//	
-//	@GetMapping("/getSampleApprovalDocId")
-//	public ResponseEntity<ResponseDTO> getSampleApprovalDocId(@RequestParam Long orgId) {
-//
-//		String methodName = "getSampleApprovalDocId()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		String mapp = "";
-//
-//		try {
-//			mapp = qualityApprovalServive.getSampleApprovalDocId(orgId);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//		}
-//
-//		if (StringUtils.isBlank(errorMsg)) {
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-//					"SampleApprovalDocId information retrieved successfully");
-//			responseObjectsMap.put("sampleApprovalDocId", mapp);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} else {
-//			responseDTO = createServiceResponseError(responseObjectsMap,
-//					"Failed to retrieve SampleApprovalDocId information", errorMsg);
-//		}
-//
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
+	@GetMapping("/getAllSampleApprovalByOrgId")
+	public ResponseEntity<ResponseDTO> getAllSampleApprovalByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllSampleApprovalByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<SampleApprovalVO> sampleApprovalVO = new ArrayList<>();
+		try {
+			sampleApprovalVO = qualityApprovalServive.getAllSampleApprovalByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SampleApproval information get successfully ByOrgId");
+			responseObjectsMap.put("sampleApprovalVO", sampleApprovalVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"SampleApproval information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 
+	}
+
+	
+	@GetMapping("/getSampleApprovalById")
+	public ResponseEntity<ResponseDTO> getSampleApprovalById(@RequestParam Long id) {
+		String methodName = "getSampleApprovalById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		SampleApprovalVO  sampleApprovalVO = new SampleApprovalVO();
+		try {
+			sampleApprovalVO = qualityApprovalServive.getSampleApprovalById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SampleApproval information get successfully By Id");
+			responseObjectsMap.put("sampleApprovalVO", sampleApprovalVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"SampleApproval information receive failedBy Id", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@GetMapping("/getSampleApprovalDocId")
+	public ResponseEntity<ResponseDTO> getSampleApprovalDocId(@RequestParam Long orgId) {
+
+		String methodName = "getSampleApprovalDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = qualityApprovalServive.getSampleApprovalDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SampleApprovalDocId information retrieved successfully");
+			responseObjectsMap.put("sampleApprovalDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve SampleApprovalDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/createUpdateSampleApproval")
+	public ResponseEntity<ResponseDTO> createUpdateSampleApproval(
+			@RequestBody SampleApprovalDTO sampleApprovalDTO) {
+		String methodName = "createUpdateSampleApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> sampleApprovalVO = qualityApprovalServive.createUpdateSampleApproval(sampleApprovalDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, sampleApprovalVO.get("message"));
+			responseObjectsMap.put("sampleApprovalVO",sampleApprovalVO.get("sampleApprovalVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 
 }
