@@ -22,15 +22,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_machinemaster")	
+@Table(name = "machinemaster")	
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MachineMasterVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "m_machinemastergen")
-	@SequenceGenerator(name = "m_machinemastergen", sequenceName = "m_machinemasterseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "machinemastergen")
+	@SequenceGenerator(name = "machinemastergen", sequenceName = "machinemasterseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "machinemasterid")
 	private Long id;
 	
@@ -138,11 +138,11 @@ public class MachineMasterVO {
     
     @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<MachineMasterVO1> machineMasterVO1;
+    private List<MachineTechnicalInfoVO> machineTechnicalInfoVO;
     
     @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<MachineMasterVO2> machineMasterVO2;
+    private List<MachineCapacityVO> machineCapacityVO;
     
 //    @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
 //    @JsonManagedReference

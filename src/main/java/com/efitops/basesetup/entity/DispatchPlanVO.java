@@ -24,7 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_dispatchplan")
+@Table(name = "dispatchplan")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 public class DispatchPlanVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_dispatchplangen")
-	@SequenceGenerator(name = "t_dispatchplangen", sequenceName = "t_dispatchplanseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "dispatchplangen")
+	@SequenceGenerator(name = "dispatchplangen", sequenceName = "dispatchplanseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "dispatchplanid")
 	private Long id;
 	@Column(name="docid")

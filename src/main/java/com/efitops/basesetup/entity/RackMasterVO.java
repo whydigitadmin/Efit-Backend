@@ -17,14 +17,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_rackmaster")
+@Table(name = "rackmaster")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RackMasterVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_rackmastergen")
-	@SequenceGenerator(name = "m_rackmastergen", sequenceName = "m_rackmasterseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rackmastergen")
+	@SequenceGenerator(name = "rackmastergen", sequenceName = "rackmasterseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "rackmasterid")
 	private Long id;
 	

@@ -23,15 +23,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_itemwiseprocess")
+@Table(name = "itemwiseprocess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemWiseProcessMasterVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itemwiseprocessgen")
-	@SequenceGenerator(name = "m_itemwiseprocessgen", sequenceName = "m_itemwiseprocessseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemwiseprocessgen")
+	@SequenceGenerator(name = "itemwiseprocessgen", sequenceName = "itemwiseprocessseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "itemwiseprocessid")
 	private Long id;
 	

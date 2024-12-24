@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_itemtaxslab")
+@Table(name = "itemtaxslab")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 public class ItemTaxSlabVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itemtaxslabgen")
-	@SequenceGenerator(name = "m_itemtaxslabgen", sequenceName = "m_itemtaxslabseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemtaxslabgen")
+	@SequenceGenerator(name = "itemtaxslabgen", sequenceName = "itemtaxslabseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "itemtaxslabid")
 	private Long id;
 	

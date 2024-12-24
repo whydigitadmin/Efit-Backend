@@ -23,7 +23,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Entity
-@Table(name = "t_purchaseindent")
+@Table(name = "purchaseindent")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -80,11 +80,11 @@ public class PurchaseIndentVO {
     
     @OneToMany(mappedBy ="purchaseIndentVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<PurchaseIndentVO1> purchaseIndentVO1;
+    private List<PurchaseIndentDetailsVO> purchaseIndentDetailsVO;
     
     @OneToMany(mappedBy ="purchaseIndentVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<PurchaseIndentVO2> purchaseIndentVO2;
+    private List<PurchaseIndentSummaryVO> purchaseIndentSummaryVO;
     
     
 	

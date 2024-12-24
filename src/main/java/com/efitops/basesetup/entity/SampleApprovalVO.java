@@ -25,17 +25,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "settingapproval")
+@Table(name = "sampleapproval")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SettingApprovalVO {
+public class SampleApprovalVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "settingapprovalgen")
-	@SequenceGenerator(name = "settingapprovalgen", sequenceName = "settingapprovalseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "settingapprovalid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sampleapprovalgen")
+	@SequenceGenerator(name = "sampleapprovalgen", sequenceName = "sampleapprovalseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "sampleapprovalid")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
@@ -57,21 +57,24 @@ public class SettingApprovalVO {
 	private String machineNo;
 	@Column(name = "machinename")
 	private String machineName;
+	@Column(name = "joborderno")
+	private String jobOrderNo;
+	@Column(name = "sfift")
+	private String shift;
+	@Column(name = "shiftdate")
+	private LocalDate shiftDate;
+	@Column(name = "shifttime")
+	private LocalTime shiftTime;
 	@Column(name = "sampleqty")
 	private int sampleQty;
-	@Column(name = "grncleartime")
-	private LocalTime grnClearTime;
 	@Column(name = "docformatno")
 	private String docFormatNo;
-
-	//summary
 	
+	//SUMMARY
 	@Column(name = "generalremarks")
 	private String generalRemarks;
 	@Column(name = "operatorname")
 	private String operatorName;
-	@Column(name = "settername")
-	private String setterName;
 	@Column(name = "shiftincharge")
 	private String shiftInCharge;
 	@Column(name = "qualityname")
@@ -93,11 +96,12 @@ public class SettingApprovalVO {
 	@Column(name = "screencode")
 	private String screenCode = "SA";
 	@Column(name = "screenname")
-	private String screenName = "SETTING APPROVAL";
-
-	@OneToMany(mappedBy = "settingApprovalVO", cascade = CascadeType.ALL)
+	private String screenName = "SAMPLE APPROVAL";
+	
+	
+	@OneToMany(mappedBy = "sampleApprovalVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<SettingApprovalDetailsVO> settingApprovalDetailsVO;
+	private List<SampleApprovalDetailsVO> sampleApprovalDetailsVO;
 
 	@JsonGetter("active")
 	public String getActive() {

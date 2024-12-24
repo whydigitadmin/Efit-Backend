@@ -12,10 +12,10 @@ import com.efitops.basesetup.entity.PickListVO;
 @Repository
 public interface PickListRepo extends JpaRepository<PickListVO, Long>{
 
-	@Query(nativeQuery = true, value = "select * from t_picklist where picklistid=?1")
+	@Query(nativeQuery = true, value = "select * from picklist where picklistid=?1")
 	List<PickListVO> findPickListById(Long id);
 
-	@Query(nativeQuery = true, value = "select * from t_picklist where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from picklist where orgid=?1")
 	List<PickListVO> findPickListByOrgId(Long orgId);
 
 	@Query(nativeQuery = true,value="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")

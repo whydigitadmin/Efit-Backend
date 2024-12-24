@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.SettingApprovalDTO;
+import com.efitops.basesetup.entity.SampleApprovalVO;
 import com.efitops.basesetup.entity.SettingApprovalVO;
 import com.efitops.basesetup.exception.ApplicationException;
 
@@ -35,6 +36,14 @@ public interface QualityApprovalServive {
 	List<Map<String, Object>> getQualityNameForSetingApproval(Long orgId);
 
 	List<Map<String, Object>> getShiftInChargeForSetingApproval(Long orgId);
+
+	//sampleApproval
+//	
+//	List<SampleApprovalVO> getAllSampleApprovalByOrgId(Long orgId);
+//
+//	SampleApprovalVO getSampleApprovalById(Long id);
+//
+//	String getSampleApprovalDocId(Long orgId);
 
 	
 

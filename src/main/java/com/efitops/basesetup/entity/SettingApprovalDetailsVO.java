@@ -24,7 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_settingapprovaldetails")
+@Table(name = "settingapprovaldetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 public class SettingApprovalDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_settingapprovaldetailsgen")
-	@SequenceGenerator(name = "t_settingapprovaldetails", sequenceName = "t_settingapprovaldetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "settingapprovaldetailsgen")
+	@SequenceGenerator(name = "settingapprovaldetailsgen", sequenceName = "settingapprovaldetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "settingapprovaldetailsid")
 	private Long id;
 	
