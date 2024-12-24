@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.DcForSubContractDTO;
 import com.efitops.basesetup.dto.DcForSubContractDetailsDTO;
-import com.efitops.basesetup.dto.IssueItemDetailsDTO;
 import com.efitops.basesetup.dto.IssueToSubContractorDTO;
+import com.efitops.basesetup.dto.IssueToSubContractorDetailsDTO;
 import com.efitops.basesetup.dto.JobWorkOutDTO;
 import com.efitops.basesetup.dto.JobWorkOutDetailsDTO;
 import com.efitops.basesetup.dto.RecieveFromSubContractDetailsDTO;
@@ -26,14 +26,14 @@ import com.efitops.basesetup.dto.RecieveFromSubcontractDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDTO;
 import com.efitops.basesetup.dto.SubContractEnquiryDetailsDTO;
 import com.efitops.basesetup.dto.SubContractInvoiceDTO;
+import com.efitops.basesetup.dto.SubContractInvoiceDetailsDTO;
+import com.efitops.basesetup.dto.SubContractInvoiceTermsDTO;
 import com.efitops.basesetup.dto.SubContractQuotationDTO;
 import com.efitops.basesetup.dto.SubContractQuotationDetailsDTO;
-import com.efitops.basesetup.dto.SubContractTaxInvoiceDetailsDTO;
-import com.efitops.basesetup.dto.SubContractTermsAndConditionsDTO;
 import com.efitops.basesetup.entity.DcForSubContractDetailsVO;
 import com.efitops.basesetup.entity.DcForSubContractVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
-import com.efitops.basesetup.entity.IssueItemDetailsVO;
+import com.efitops.basesetup.entity.IssueToSubContractorDetailsVO;
 import com.efitops.basesetup.entity.IssueToSubContractorVO;
 import com.efitops.basesetup.entity.JobWorkOutDetailsVO;
 import com.efitops.basesetup.entity.JobWorkOutVO;
@@ -41,16 +41,16 @@ import com.efitops.basesetup.entity.RecieveFromSubContractDetailsVO;
 import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 import com.efitops.basesetup.entity.SubContractEnquiryDetailsVO;
 import com.efitops.basesetup.entity.SubContractEnquiryVO;
+import com.efitops.basesetup.entity.SubContractInvoiceDetailsVO;
+import com.efitops.basesetup.entity.SubContractInvoiceTermsVO;
 import com.efitops.basesetup.entity.SubContractInvoiceVO;
 import com.efitops.basesetup.entity.SubContractQuotationDetailsVO;
 import com.efitops.basesetup.entity.SubContractQuotationVO;
-import com.efitops.basesetup.entity.SubContractTaxInvoiceDetailsVO;
-import com.efitops.basesetup.entity.SubContractTermsAndConditionsVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DcForSubContractDetailsRepo;
 import com.efitops.basesetup.repo.DcForSubContractRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
-import com.efitops.basesetup.repo.IssueItemDetailsRepo;
+import com.efitops.basesetup.repo.IssueToSubContractorDetailsRepo;
 import com.efitops.basesetup.repo.IssueToSubContractorRepo;
 import com.efitops.basesetup.repo.JobWorkOutDetailsRepo;
 import com.efitops.basesetup.repo.JobWorkOutRepo;
@@ -58,11 +58,11 @@ import com.efitops.basesetup.repo.RecieveFromSubcontractDetailsRepo;
 import com.efitops.basesetup.repo.RecieveFromSubcontractRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryDetailsRepo;
 import com.efitops.basesetup.repo.SubContractEnquiryRepo;
+import com.efitops.basesetup.repo.SubContractInvoiceDetailsRepo;
 import com.efitops.basesetup.repo.SubContractInvoiceRepo;
+import com.efitops.basesetup.repo.SubContractInvoiceTermsRepo;
 import com.efitops.basesetup.repo.SubContractQuotationDetailsRepo;
 import com.efitops.basesetup.repo.SubContractQuotationRepo;
-import com.efitops.basesetup.repo.SubContractTaxInvoiceDetailsRepo;
-import com.efitops.basesetup.repo.SubContractTermsAndConditionsRepo;
 
 @Service
 public class IssueToSubContractorServiceImpl implements IssueToSubContractorService {
@@ -73,7 +73,7 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 	IssueToSubContractorRepo issueToSubContractorRepo;
 
 	@Autowired
-	IssueItemDetailsRepo issueItemDetailsRepo;
+	IssueToSubContractorDetailsRepo issueToSubContractorDetailsRepo;
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
@@ -100,10 +100,10 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 	SubContractInvoiceRepo subContractInvoiceRepo;
 
 	@Autowired
-	SubContractTaxInvoiceDetailsRepo subContractTaxInvoiceDetailsRepo;
+	SubContractInvoiceDetailsRepo subContractInvoiceDetailsRepo;
 
 	@Autowired
-	SubContractTermsAndConditionsRepo subContractTermsAndConditionsRepo;
+	SubContractInvoiceTermsRepo subContractInvoiceTermsRepo;
 
 	@Autowired
 	JobWorkOutRepo jobWorkOutRepo;
@@ -169,25 +169,26 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		issueToSubContractorVO.setCreatedBy(issueToSubContractorDTO.getCreatedBy());
 
 		if (ObjectUtils.isNotEmpty(issueToSubContractorDTO.getId())) {
-			List<IssueItemDetailsVO> issueItemDetailsVO1 = issueItemDetailsRepo
+			List<IssueToSubContractorDetailsVO> issueToSubContractorDetailsVO1 = issueToSubContractorDetailsRepo
 					.findByIssueToSubContractorVO(issueToSubContractorVO);
-			issueItemDetailsRepo.deleteAll(issueItemDetailsVO1);
+			issueToSubContractorDetailsRepo.deleteAll(issueToSubContractorDetailsVO1);
 
 		}
 
-		List<IssueItemDetailsVO> issueItemDetailsVOs = new ArrayList<>();
-		for (IssueItemDetailsDTO issueItemDetailsDTO : issueToSubContractorDTO.getIssueItemDetailsDTO()) {
-			IssueItemDetailsVO issueItemDetailsVO = new IssueItemDetailsVO();
-			issueItemDetailsVO.setItem(issueItemDetailsDTO.getItem());
-			issueItemDetailsVO.setItemDescription(issueItemDetailsDTO.getItemDescription());
-			issueItemDetailsVO.setProcess(issueItemDetailsDTO.getProcess());
-			issueItemDetailsVO.setQuantity(issueItemDetailsDTO.getQuantity());
-			issueItemDetailsVO.setRemarks(issueItemDetailsDTO.getRemarks());
+		List<IssueToSubContractorDetailsVO> issueToSubContractorDetailsVOs = new ArrayList<>();
+		for (IssueToSubContractorDetailsDTO issueToSubContractorDetailsDTO : issueToSubContractorDTO
+				.getIssueToSubContractorDetailsDTO()) {
+			IssueToSubContractorDetailsVO issueToSubContractorDetailsVO = new IssueToSubContractorDetailsVO();
+			issueToSubContractorDetailsVO.setItem(issueToSubContractorDetailsDTO.getItem());
+			issueToSubContractorDetailsVO.setItemDescription(issueToSubContractorDetailsDTO.getItemDescription());
+			issueToSubContractorDetailsVO.setProcess(issueToSubContractorDetailsDTO.getProcess());
+			issueToSubContractorDetailsVO.setQuantity(issueToSubContractorDetailsDTO.getQuantity());
+			issueToSubContractorDetailsVO.setRemarks(issueToSubContractorDetailsDTO.getRemarks());
 
-			issueItemDetailsVO.setIssueToSubContractorVO(issueToSubContractorVO);
-			issueItemDetailsVOs.add(issueItemDetailsVO);
+			issueToSubContractorDetailsVO.setIssueToSubContractorVO(issueToSubContractorVO);
+			issueToSubContractorDetailsVOs.add(issueToSubContractorDetailsVO);
 		}
-		issueToSubContractorVO.setIssueItemDetailsVO(issueItemDetailsVOs);
+		issueToSubContractorVO.setIssueToSubContractorDetailsVO(issueToSubContractorDetailsVOs);
 
 	}
 
@@ -825,19 +826,19 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 		subContractInvoiceVO.setNarration(subContractInvoiceDTO.getNarration());
 
 		if (ObjectUtils.isNotEmpty(subContractInvoiceDTO.getId())) {
-			List<SubContractTaxInvoiceDetailsVO> subContractTaxInvoiceDetailsVO1 = subContractTaxInvoiceDetailsRepo
+			List<SubContractInvoiceDetailsVO> subContractTaxInvoiceDetailsVO1 = subContractInvoiceDetailsRepo
 					.findBySubContractInvoiceVO(subContractInvoiceVO);
-			subContractTaxInvoiceDetailsRepo.deleteAll(subContractTaxInvoiceDetailsVO1);
+			subContractInvoiceDetailsRepo.deleteAll(subContractTaxInvoiceDetailsVO1);
 
-			List<SubContractTermsAndConditionsVO> subContractTermsAndConditionsVO1 = subContractTermsAndConditionsRepo
+			List<SubContractInvoiceTermsVO> subContractTermsAndConditionsVO1 = subContractInvoiceTermsRepo
 					.findBySubContractInvoiceVO(subContractInvoiceVO);
-			subContractTermsAndConditionsRepo.deleteAll(subContractTermsAndConditionsVO1);
+			subContractInvoiceTermsRepo.deleteAll(subContractTermsAndConditionsVO1);
 		}
 
-		List<SubContractTaxInvoiceDetailsVO> subContractTaxInvoiceDetailsVOs = new ArrayList<>();
-		for (SubContractTaxInvoiceDetailsDTO subContractTaxInvoiceDetailsDTO : subContractInvoiceDTO
-				.getSubContractTaxInvoiceDetailsDTO()) {
-			SubContractTaxInvoiceDetailsVO subContractTaxInvoiceDetailsVO = new SubContractTaxInvoiceDetailsVO();
+		List<SubContractInvoiceDetailsVO> subContractTaxInvoiceDetailsVOs = new ArrayList<>();
+		for (SubContractInvoiceDetailsDTO subContractTaxInvoiceDetailsDTO : subContractInvoiceDTO
+				.getSubContractInvoiceDetailsDTO()) {
+			SubContractInvoiceDetailsVO subContractTaxInvoiceDetailsVO = new SubContractInvoiceDetailsVO();
 			subContractTaxInvoiceDetailsVO.setPartNo(subContractTaxInvoiceDetailsDTO.getPartNo());
 			subContractTaxInvoiceDetailsVO.setPartDes(subContractTaxInvoiceDetailsDTO.getPartDes());
 			subContractTaxInvoiceDetailsVO.setProcess(subContractTaxInvoiceDetailsDTO.getProcess());
@@ -851,18 +852,18 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			subContractTaxInvoiceDetailsVO.setSubContractInvoiceVO(subContractInvoiceVO);
 			subContractTaxInvoiceDetailsVOs.add(subContractTaxInvoiceDetailsVO);
 		}
-		subContractInvoiceVO.setSubContractTaxInvoiceDetailsVO(subContractTaxInvoiceDetailsVOs);
+		subContractInvoiceVO.setSubContractInvoiceDetailsVO(subContractTaxInvoiceDetailsVOs);
 
-		List<SubContractTermsAndConditionsVO> subContractTermsAndConditionsVOs = new ArrayList<>();
-		for (SubContractTermsAndConditionsDTO subContractTermsAndConditionsDTO : subContractInvoiceDTO
-				.getSubContractTermsAndConditionsDTO()) {
-			SubContractTermsAndConditionsVO subContractTermsAndConditionsVO = new SubContractTermsAndConditionsVO();
+		List<SubContractInvoiceTermsVO> subContractTermsAndConditionsVOs = new ArrayList<>();
+		for (SubContractInvoiceTermsDTO subContractTermsAndConditionsDTO : subContractInvoiceDTO
+				.getSubContractInvoiceTermsDTO()) {
+			SubContractInvoiceTermsVO subContractTermsAndConditionsVO = new SubContractInvoiceTermsVO();
 			subContractTermsAndConditionsVO.setTerms(subContractTermsAndConditionsDTO.getTerms());
 			subContractTermsAndConditionsVO.setDescription(subContractTermsAndConditionsDTO.getDescription());
 			subContractTermsAndConditionsVO.setSubContractInvoiceVO(subContractInvoiceVO);
 			subContractTermsAndConditionsVOs.add(subContractTermsAndConditionsVO);
 		}
-		subContractInvoiceVO.setSubContractTermsAndConditionsVO(subContractTermsAndConditionsVOs);
+		subContractInvoiceVO.setSubContractInvoiceTermsVO(subContractTermsAndConditionsVOs);
 	}
 
 	@Override

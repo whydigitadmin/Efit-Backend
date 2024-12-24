@@ -20,17 +20,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "inprocessinspectiondetails")
+@Table(name = "firdimensionalinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InprocessInspectionDetailsVO {
+public class FirDimensionalInspectionVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inprocessinspectiondetailsgen")
-	@SequenceGenerator(name = "inprocessinspectiondetailsgen", sequenceName = "inprocessinspectiondetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "inprocessinspectiondetailsid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "firdimensionalinspectiongen")
+	@SequenceGenerator(name = "firdimensionalinspectiongen", sequenceName = "firdimensionalinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "firdimensionalinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "characteristics")
 	private String characteristics;
@@ -58,12 +58,16 @@ public class InprocessInspectionDetailsVO {
 	private String sample7;
 	@Column(name = "sample8")
 	private String sample8;
+	@Column(name = "sample9")
+	private String sample9;
+	@Column(name = "sample10")
+	private String sample10;
+
 	@Column(name = "remarks")
 	private String remarks;
 
 	@ManyToOne
-	@JoinColumn(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
+	@JoinColumn(name = "finalinspectionreportid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
-	InprocessInspectionVO inprocessInspectionVO;
-
+	FinalInspectionReportVO finalInspectionReportVO;
 }

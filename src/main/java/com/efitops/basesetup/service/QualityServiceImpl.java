@@ -12,34 +12,34 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.efitops.basesetup.dto.AppearanceInspectionReportDTO;
-import com.efitops.basesetup.dto.DimensionalInspectionReportDTO;
 import com.efitops.basesetup.dto.FinalInspectionReportDTO;
+import com.efitops.basesetup.dto.FirAppearanceInspectionDTO;
+import com.efitops.basesetup.dto.FirDimensionalInspectionDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionAppearanceDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionDetailsDTO;
-import com.efitops.basesetup.dto.InprocessAppearanceInspectionDTO;
+import com.efitops.basesetup.dto.InprocessInspectionAppearanceDTO;
 import com.efitops.basesetup.dto.InprocessInspectionDTO;
 import com.efitops.basesetup.dto.InprocessInspectionDetailsDTO;
-import com.efitops.basesetup.entity.AppearanceInspectionReportVO;
-import com.efitops.basesetup.entity.DimensionalInspectionReportVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.FinalInspectionReportVO;
+import com.efitops.basesetup.entity.FirAppearanceInspectionVO;
+import com.efitops.basesetup.entity.FirDimensionalInspectionVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionAppearanceVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionDetailsVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionVO;
-import com.efitops.basesetup.entity.InprocessAppearanceInspectionVO;
+import com.efitops.basesetup.entity.InprocessInspectionAppearanceVO;
 import com.efitops.basesetup.entity.InprocessInspectionDetailsVO;
 import com.efitops.basesetup.entity.InprocessInspectionVO;
 import com.efitops.basesetup.exception.ApplicationException;
-import com.efitops.basesetup.repo.AppearanceInspectionReportRepo;
-import com.efitops.basesetup.repo.DimensionalInspectionReportRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.FinalInspectionReportRepo;
+import com.efitops.basesetup.repo.FirAppearanceInspectionRepo;
+import com.efitops.basesetup.repo.FirDimensionalInspectionRepo;
 import com.efitops.basesetup.repo.IncomingMaterialInspectionAppearanceRepo;
 import com.efitops.basesetup.repo.IncomingMaterialInspectionDetailsRepo;
 import com.efitops.basesetup.repo.IncomingMaterialInspectionRepo;
-import com.efitops.basesetup.repo.InprocessAppearanceInspectionRepo;
+import com.efitops.basesetup.repo.InprocessInspectionAppearanceRepo;
 import com.efitops.basesetup.repo.InprocessInspectionDetailsRepo;
 import com.efitops.basesetup.repo.InprocessInspectionRepo;
 
@@ -70,16 +70,16 @@ public class QualityServiceImpl implements QualityService {
 	InprocessInspectionDetailsRepo inprocessInspectionDetailsRepo;
 
 	@Autowired
-	InprocessAppearanceInspectionRepo inprocessAppearanceInspectionRepo;
+	InprocessInspectionAppearanceRepo inprocessInspectionAppearanceRepo;
 
 	@Autowired
 	FinalInspectionReportRepo finalInspectionReportRepo;
 
 	@Autowired
-	DimensionalInspectionReportRepo dimensionalInspectionReportRepo;
+	FirDimensionalInspectionRepo firDimensionalInspectionRepo;
 
 	@Autowired
-	AppearanceInspectionReportRepo appearanceInspectionReportRepo;
+	FirAppearanceInspectionRepo firAppearanceInspectionRepo;
 
 	// IncomingMaterialInspection
 
@@ -333,9 +333,9 @@ public class QualityServiceImpl implements QualityService {
 					.findByInprocessInspectionVO(inprocessInspectionVO);
 			inprocessInspectionDetailsRepo.deleteAll(inprocessInspectionDetailsVO1);
 
-			List<InprocessAppearanceInspectionVO> inprocessAppearanceInspectionVO1 = inprocessAppearanceInspectionRepo
+			List<InprocessInspectionAppearanceVO> inprocessInspectionAppearanceVO1 = inprocessInspectionAppearanceRepo
 					.findByInprocessInspectionVO(inprocessInspectionVO);
-			inprocessAppearanceInspectionRepo.deleteAll(inprocessAppearanceInspectionVO1);
+			inprocessInspectionAppearanceRepo.deleteAll(inprocessInspectionAppearanceVO1);
 		}
 
 		List<InprocessInspectionDetailsVO> inprocessInspectionDetailsVOs = new ArrayList<>();
@@ -361,10 +361,10 @@ public class QualityServiceImpl implements QualityService {
 		}
 		inprocessInspectionVO.setInprocessInspectionDetailsVO(inprocessInspectionDetailsVOs);
 
-		List<InprocessAppearanceInspectionVO> inprocessAppearanceInspectionVOs = new ArrayList<>();
-		for (InprocessAppearanceInspectionDTO inprocessAppearanceInspectionDTO : inprocessInspectionDTO
-				.getInprocessAppearanceInspectionDTO()) {
-			InprocessAppearanceInspectionVO inprocessAppearanceInspectionVO = new InprocessAppearanceInspectionVO();
+		List<InprocessInspectionAppearanceVO> inprocessInspectionAppearanceVOs = new ArrayList<>();
+		for (InprocessInspectionAppearanceDTO inprocessAppearanceInspectionDTO : inprocessInspectionDTO
+				.getInprocessInspectionAppearanceDTO()) {
+			InprocessInspectionAppearanceVO inprocessAppearanceInspectionVO = new InprocessInspectionAppearanceVO();
 			inprocessAppearanceInspectionVO.setCharacteristics(inprocessAppearanceInspectionDTO.getCharacteristics());
 			inprocessAppearanceInspectionVO
 					.setMethodOfInspection(inprocessAppearanceInspectionDTO.getMethodOfInspection());
@@ -372,9 +372,9 @@ public class QualityServiceImpl implements QualityService {
 			inprocessAppearanceInspectionVO.setObservation(inprocessAppearanceInspectionDTO.getObservation());
 			inprocessAppearanceInspectionVO.setRemarks1(inprocessAppearanceInspectionDTO.getRemarks1());
 			inprocessAppearanceInspectionVO.setInprocessInspectionVO(inprocessInspectionVO);
-			inprocessAppearanceInspectionVOs.add(inprocessAppearanceInspectionVO);
+			inprocessInspectionAppearanceVOs.add(inprocessAppearanceInspectionVO);
 		}
-		inprocessInspectionVO.setInprocessAppearanceInspectionVO(inprocessAppearanceInspectionVOs);
+		inprocessInspectionVO.setInprocessInspectionAppearanceVO(inprocessInspectionAppearanceVOs);
 	}
 
 	@Override
@@ -511,19 +511,19 @@ public class QualityServiceImpl implements QualityService {
 		finalInspectionReportVO.setNaration(finalInspectionReportDTO.getNaration());
 
 		if (ObjectUtils.isNotEmpty(finalInspectionReportDTO.getId())) {
-			List<DimensionalInspectionReportVO> dimensionalInspectionReportVO1 = dimensionalInspectionReportRepo
+			List<FirDimensionalInspectionVO> firDimensionalInspectionVO1 = firDimensionalInspectionRepo
 					.findByFinalInspectionReportVO(finalInspectionReportVO);
-			dimensionalInspectionReportRepo.deleteAll(dimensionalInspectionReportVO1);
+			firDimensionalInspectionRepo.deleteAll(firDimensionalInspectionVO1);
 
-			List<AppearanceInspectionReportVO> appearanceInspectionReportVO1 = appearanceInspectionReportRepo
+			List<FirAppearanceInspectionVO> firAppearanceInspectionVO1 = firAppearanceInspectionRepo
 					.findByFinalInspectionReportVO(finalInspectionReportVO);
-			appearanceInspectionReportRepo.deleteAll(appearanceInspectionReportVO1);
+			firAppearanceInspectionRepo.deleteAll(firAppearanceInspectionVO1);
 		}
 
-		List<DimensionalInspectionReportVO> dimensionalInspectionReportVOs = new ArrayList<>();
-		for (DimensionalInspectionReportDTO dimensionalInspectionReportDTO : finalInspectionReportDTO
-				.getDimensionalInspectionReportDTO()) {
-			DimensionalInspectionReportVO dimensionalInspectionReportVO = new DimensionalInspectionReportVO();
+		List<FirDimensionalInspectionVO> dimensionalInspectionReportVOs = new ArrayList<>();
+		for (FirDimensionalInspectionDTO dimensionalInspectionReportDTO : finalInspectionReportDTO
+				.getFirDimensionalInspectionDTO()) {
+			FirDimensionalInspectionVO dimensionalInspectionReportVO = new FirDimensionalInspectionVO();
 			dimensionalInspectionReportVO.setCharacteristics(dimensionalInspectionReportDTO.getCharacteristics());
 			dimensionalInspectionReportVO.setMethodOfInspection(dimensionalInspectionReportDTO.getMethodOfInspection());
 			dimensionalInspectionReportVO.setSpecification(dimensionalInspectionReportDTO.getSpecification());
@@ -543,23 +543,23 @@ public class QualityServiceImpl implements QualityService {
 			dimensionalInspectionReportVO.setFinalInspectionReportVO(finalInspectionReportVO);
 			dimensionalInspectionReportVOs.add(dimensionalInspectionReportVO);
 		}
-		finalInspectionReportVO.setDimensionalInspectionReportVO(dimensionalInspectionReportVOs);
+		finalInspectionReportVO.setFirDimensionalInspectionVO(dimensionalInspectionReportVOs);
 
-		List<AppearanceInspectionReportVO> appearanceInspectionReportVOs = new ArrayList<>();
-		for (AppearanceInspectionReportDTO appearanceInspectionReportDTO : finalInspectionReportDTO
-				.getAppearanceInspectionReportDTO()) {
-			AppearanceInspectionReportVO appearanceInspectionReportVO = new AppearanceInspectionReportVO();
-			appearanceInspectionReportVO.setCharacteristics(appearanceInspectionReportDTO.getCharacteristics());
-			appearanceInspectionReportVO.setMethodOfInspection(appearanceInspectionReportDTO.getMethodOfInspection());
-			appearanceInspectionReportVO.setSpecification(appearanceInspectionReportDTO.getSpecification());
-			appearanceInspectionReportVO.setLsl(appearanceInspectionReportDTO.getLsl());
-			appearanceInspectionReportVO.setUsl(appearanceInspectionReportDTO.getUsl());
-			appearanceInspectionReportVO.setObservation(appearanceInspectionReportDTO.getObservation());
-			appearanceInspectionReportVO.setRemarks(appearanceInspectionReportDTO.getRemarks());
+		List<FirAppearanceInspectionVO> firAppearanceInspectionVOs = new ArrayList<>();
+		for (FirAppearanceInspectionDTO firAppearanceInspectionDTO : finalInspectionReportDTO
+				.getFirAppearanceInspectionDTO()) {
+			FirAppearanceInspectionVO appearanceInspectionReportVO = new FirAppearanceInspectionVO();
+			appearanceInspectionReportVO.setCharacteristics(firAppearanceInspectionDTO.getCharacteristics());
+			appearanceInspectionReportVO.setMethodOfInspection(firAppearanceInspectionDTO.getMethodOfInspection());
+			appearanceInspectionReportVO.setSpecification(firAppearanceInspectionDTO.getSpecification());
+			appearanceInspectionReportVO.setLsl(firAppearanceInspectionDTO.getLsl());
+			appearanceInspectionReportVO.setUsl(firAppearanceInspectionDTO.getUsl());
+			appearanceInspectionReportVO.setObservation(firAppearanceInspectionDTO.getObservation());
+			appearanceInspectionReportVO.setRemarks(firAppearanceInspectionDTO.getRemarks());
 			appearanceInspectionReportVO.setFinalInspectionReportVO(finalInspectionReportVO);
-			appearanceInspectionReportVOs.add(appearanceInspectionReportVO);
+			firAppearanceInspectionVOs.add(appearanceInspectionReportVO);
 		}
-		finalInspectionReportVO.setAppearanceInspectionReportVO(appearanceInspectionReportVOs);
+		finalInspectionReportVO.setFirAppearanceInspectionVO(firAppearanceInspectionVOs);
 	}
 
 	@Override
@@ -579,5 +579,28 @@ public class QualityServiceImpl implements QualityService {
 		String ScreenCode = "FINR";
 		String result = finalInspectionReportRepo.getFinalInspectionReportDocId(orgId, ScreenCode);
 		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRouteCardNumberFromRouteCard(Long orgId, String fgPartName) {
+		Set<Object[]> chType = finalInspectionReportRepo.getRouteCardNumberFromRouteCard(orgId, fgPartName);
+		return getRouteCardNumber(chType);
+	}
+
+	private List<Map<String, Object>> getRouteCardNumber(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCard", ch[0] != null ? ch[0].toString() : "");
+			map.put("partName", ch[1] != null ? ch[1].toString() : "");
+			map.put("partNo", ch[2] != null ? ch[2].toString() : "");
+			map.put("units", ch[3] != null ? ch[3].toString() : "");
+			map.put("customer", ch[4] != null ? ch[4].toString() : "");
+			map.put("poNo", ch[5] != null ? ch[4].toString() : "");
+			map.put("invoiceNo", ch[5] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
 	}
 }

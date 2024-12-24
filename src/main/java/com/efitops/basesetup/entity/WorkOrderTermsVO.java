@@ -18,17 +18,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_termsandconditions")
+@Table(name = "workorderterms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TermsAndConditionsVO {
+public class WorkOrderTermsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_termsandconditionsgen")
-	@SequenceGenerator(name = "t_termsandconditionsgen", sequenceName = "t_termsandconditionsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "termsandconditionsid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workordertermsgen")
+	@SequenceGenerator(name = "workordertermsgen", sequenceName = "workordertermsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "workordertermsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "template")
 	private String template;

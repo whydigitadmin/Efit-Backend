@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.efitops.basesetup.dto.CreatedUpdatedDate;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -23,17 +24,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "workorder")
+@Table(name = "deliverychalanforfg")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WorkOrderVO {
-
+public class DeliveryChalanForFgVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workordergen")
-	@SequenceGenerator(name = "workordergen", sequenceName = "workorderseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "workorderid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliverychalanforfggen")
+	@SequenceGenerator(name = "deliverychalanforfggen", sequenceName = "deliverychalanforfgseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "deliverychalanforfgid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
@@ -41,22 +41,25 @@ public class WorkOrderVO {
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "customername")
 	private String customerName;
-	@Column(name = "customercode")
-	private String customerCode;
-	@Column(name = "customerpono")
-	private String customerPoNo;
-	@Column(name = "quotationno")
-	private String quotationNo;
-	@Column(name = "currency")
-	private String currency;
-	@Column(name = "customerduedate")
-	private LocalDate customerDueDate;
-	@Column(name = "vapduedate")
-	private LocalDate vapDueDate;
-	@Column(name = "productionmgr")
-	private String productionMgr;
-	@Column(name = "customerspecialrequirement")
-	private String customerSpecialRequirement;
+	@Column(name = "customeraddress")
+	private String customerAddress;
+	@Column(name = "sono")
+	private String soNo;
+	@Column(name = "sodate")
+	private LocalDate soDate;
+	@Column(name = "dudate")
+	private LocalDate duDate;
+	@Column(name = "vehicletype")
+	private String vehicleType;
+	@Column(name = "vehicleno")
+	private String vehicleNo;
+	@Column(name = "status")
+	private String status;
+
+	// Summary
+
+	@Column(name = "naration")
+	private String naration;
 
 	@Column(name = "orgid")
 	private Long orgId;
@@ -67,24 +70,29 @@ public class WorkOrderVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active = true;
+	private boolean active;
 	@Column(name = "cancel")
-	private boolean cancel = false;
+	private boolean cancel;
 	@Column(name = "screencode", length = 30)
-	private String screenCode = "WOP";
+	private String screenCode = "DCF";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "WORK ORDER";
+	private String screenName = "DELIVERY CHALAN FOR FG";
 
-	@OneToMany(mappedBy = "workOrderVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "deliveryChalanForFgVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<WorkOrderDetailsVO> workOrderDetailsVO;
+	List<DeliveryChallanForFgDetailsVO> deliveryChallanForFgDetailsVO;
 
-	@OneToMany(mappedBy = "workOrderVO", cascade = CascadeType.ALL)
-	@JsonManagedReference
-	List<WorkOrderTermsVO> workOrderTermsVO;
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
+	}
 
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-
 }

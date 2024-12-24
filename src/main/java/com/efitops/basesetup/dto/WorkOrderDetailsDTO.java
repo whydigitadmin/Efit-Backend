@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemParticularsDTO {
+public class WorkOrderDetailsDTO {
 	private String partNo;
 	private String partName;
 	private String drawingNo;

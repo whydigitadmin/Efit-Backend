@@ -2,6 +2,8 @@ package com.efitops.basesetup.dto;
 
 import java.util.List;
 
+import com.efitops.basesetup.entity.InprocessInspectionAppearanceVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +35,5 @@ public class InprocessInspectionDTO {
 	private boolean active;
 
 	private List<InprocessInspectionDetailsDTO> inprocessInspectionDetailsDTO;
-	private List<InprocessAppearanceInspectionDTO> inprocessAppearanceInspectionDTO;
+	private List<InprocessInspectionAppearanceDTO> inprocessInspectionAppearanceDTO;
 }

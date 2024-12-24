@@ -30,6 +30,6 @@ public class SubContractInvoiceDTO {
 	private Long orgId;
 	private String createdBy;
 	private boolean active;
-     List<SubContractTaxInvoiceDetailsDTO>subContractTaxInvoiceDetailsDTO;
-      List<SubContractTermsAndConditionsDTO>subContractTermsAndConditionsDTO;
+	List<SubContractInvoiceDetailsDTO> subContractInvoiceDetailsDTO;
+	List<SubContractInvoiceTermsDTO> subContractInvoiceTermsDTO;
 }

@@ -18,22 +18,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_materialdetail")
+@Table(name = "subcontractinvoiceterms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MaterialDetailVO {
+public class SubContractInvoiceTermsVO {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_materialdetailgen")
-	@SequenceGenerator(name = "m_materialdetailgen", sequenceName = "m_materialdetailseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "materialdetailid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subcontractinvoicetermsgen")
+	@SequenceGenerator(name = "subcontractinvoicetermsgen", sequenceName = "subcontractinvoicetermsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "subcontractinvoicetermsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	@Column(name = "itemsubgroup")
-	private String itemSubGroup;
+	@Column(name = "terms")
+	private String terms;
+	@Column(name = "description")
+	private String description;
 
 	@ManyToOne
+	@JoinColumn(name = "subcontractinvoiceid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
-	@JoinColumn(name = "materialid", columnDefinition = "BIGINT DEFAULT 0")
-	MaterialTypeVO materialTypeVO;
+	SubContractInvoiceVO subContractInvoiceVO;
 }

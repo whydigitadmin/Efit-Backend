@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SubContractTaxInvoiceDetailsVO {
+public class SubContractInvoiceDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontracttaxinvoicedetailsgen")

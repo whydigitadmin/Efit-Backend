@@ -1,7 +1,5 @@
 package com.efitops.basesetup.entity;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,17 +18,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_appearanceinspectionreport")
+@Table(name = "inprocessinspectionappearance")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AppearanceInspectionReportVO {
+public class InprocessInspectionAppearanceVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_appearanceinspectionreportgen")
-	@SequenceGenerator(name = "t_appearanceinspectionreportgen", sequenceName = "t_appearanceinspectionreportseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "appearanceinspectionreportid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inprocessinspectionappearancegen")
+	@SequenceGenerator(name = "inprocessinspectionappearancegen", sequenceName = "inprocessinspectionappearanceseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "inprocessinspectionappearanceid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "characteristics")
 	private String characteristics;
@@ -38,18 +36,14 @@ public class AppearanceInspectionReportVO {
 	private String methodOfInspection;
 	@Column(name = "specification")
 	private String specification;
-	@Column(name = "lsl", precision = 10, scale = 2)
-	private BigDecimal lsl;
-	@Column(name = "usl", precision = 10, scale = 2)
-	private BigDecimal usl;
 	@Column(name = "observation")
 	private String observation;
-	@Column(name = "remarks")
-	private String remarks;
+	@Column(name = "remarks1")
+	private String remarks1;
 
 	@ManyToOne
-	@JoinColumn(name = "finalinspectionreportid", columnDefinition = "BIGINT DEFAULT 0")
+	@JoinColumn(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
-	FinalInspectionReportVO finalInspectionReportVO;
+	InprocessInspectionVO inprocessInspectionVO;
 
 }

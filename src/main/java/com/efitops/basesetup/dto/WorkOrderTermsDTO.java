@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TermsAndConditionsDTO {
+public class WorkOrderTermsDTO {
 	private String template;
 	private String description;
 

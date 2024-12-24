@@ -59,4 +59,5 @@ public interface QualityService {
 
 	String getFinalInspectionReportDocId(Long orgId);
 
+	List<Map<String, Object>> getRouteCardNumberFromRouteCard(Long orgId, String fgPartName);
 }

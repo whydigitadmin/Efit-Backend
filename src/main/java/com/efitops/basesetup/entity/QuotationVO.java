@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_quotation")
+@Table(name = "quotation")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class QuotationVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_quotationgen")
-	@SequenceGenerator(name = "t_quotationgen", sequenceName = "t_quotationseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quotationgen")
+	@SequenceGenerator(name = "quotationgen", sequenceName = "t_quotationseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "quotationid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
