@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseIndentDTO1 {
 
+private Long id;
 	
 	private String item;
 	private String itemDescription;
 	private String uom;
 	private Long reqQty;
 	private Long avlStock;
-//	private Long indentQty;
+	private Long indentQty;
 	
 }

@@ -1,13 +1,11 @@
 package com.efitops.basesetup.entity;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.efitops.basesetup.dto.CreatedUpdatedDate;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -58,8 +54,8 @@ public class GrnVO {
 	private String adress;
 	@Column(name="currency")
 	private String currency;
-	@Column(name="exchanderate",precision = 10,scale = 2)
-	private BigDecimal exchangeRate;
+	@Column(name="exchanderate")
+	private Long exchangeRate;
 	@Column(name="grncleartime")
 	private String grnClearTime;
 	@Column(name="invdcno")
@@ -68,19 +64,6 @@ public class GrnVO {
 	private Date invDcDate;
 	@Column(name="customer")
 	private String customer; 
-	@Column(name="grossamount",precision = 10,scale = 2)
-	private BigDecimal grossAmount;
-	@Column(name="netamount",precision = 10,scale = 2)
-	private BigDecimal netAmount;
-	@Column(name="totalamounttax",precision = 10,scale = 2)
-	private BigDecimal totalAmountTax;
-	@Column(name="totallandedamount",precision = 10,scale = 2)
-	private BigDecimal totalLandedAmount;
-	@Column(name="remarks")
-	private String remarks;
-	
-	
-	
 	
 	
 	@Column(name = "orgid")
@@ -104,20 +87,6 @@ public class GrnVO {
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<GrnDetailsVO> grnDetailsVO;
-	
-	@JsonGetter("active")
-	public String getActive() {
-		return active ? "Active" : "In-Active";
-	}
-	
-	@JsonGetter("cancel")
-	public String getCancel() {
-		return cancel ? "T" : "F";
-	}
-
-	@Embedded
-	@Builder.Default
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 	
 
 }

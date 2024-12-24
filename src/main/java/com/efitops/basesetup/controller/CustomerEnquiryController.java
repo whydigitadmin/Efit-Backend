@@ -178,7 +178,7 @@ public class CustomerEnquiryController extends BaseController {
 	}
 
 	@GetMapping("/getContactNameAndNo")
-	public ResponseEntity<ResponseDTO> getContactNameAndNo(@RequestParam Long orgId, @RequestParam String partyCode) {
+	public ResponseEntity<ResponseDTO> getContactNameAndNo(@RequestParam Long orgId, @RequestParam String partyName) {
 		String methodName = "getContactNameAndNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -187,7 +187,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getContactNameAndNo(orgId, partyCode);
+			mapp = customerEnquiryService.getContactNameAndNo(orgId, partyName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -233,10 +233,10 @@ public class CustomerEnquiryController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	@GetMapping("/getDrawingNoAndRevisionNo")
-	public ResponseEntity<ResponseDTO> getDrawingNoAndRevisionNo(@RequestParam String partNo,@RequestParam Long orgId) {
-		String methodName = "getDrawingNoAndRevisionNo()";
+
+	@GetMapping("/getDrawingNoAndRevNo")
+	public ResponseEntity<ResponseDTO> getDrawingNoAndRevNo(@RequestParam Long orgId, @RequestParam String partNo) {
+		String methodName = "getDrawingNoAndRevNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -244,7 +244,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getDrawingNoAndRevisionNo(partNo, orgId);
+			mapp = customerEnquiryService.getDrawingNoAndRevNo(orgId, partNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -252,18 +252,17 @@ public class CustomerEnquiryController extends BaseController {
 
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DrawingNo Details retrieved successfully");
-			responseObjectsMap.put("drawingMasterVO", mapp);
+			responseObjectsMap.put("drawingVO", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve DrawingNo Details", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve DrawingNo Details",
+					errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
-	
+
 	// Quotation
 
 	@GetMapping("/getAllQuotationByOrgId")
@@ -372,7 +371,7 @@ public class CustomerEnquiryController extends BaseController {
 	}
 	
 	@GetMapping("/getEnquiryNoAndDate")
-	public ResponseEntity<ResponseDTO> getEnquiryNoAndDate(@RequestParam Long orgId,@RequestParam String customerCode) {
+	public ResponseEntity<ResponseDTO> getEnquiryNoAndDate(@RequestParam Long orgId,@RequestParam String customer) {
 		String methodName = "getEnquiryNoAndDate()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -381,7 +380,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getEnquiryNoAndDate(orgId,customerCode);
+			mapp = customerEnquiryService.getEnquiryNoAndDate(orgId,customer);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -428,35 +427,6 @@ public class CustomerEnquiryController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	@GetMapping("/getPartNoAndPartDesBasedOnEnquiryNo")
-	public ResponseEntity<ResponseDTO> getPartNoAndPartDesBasedOnEnquiryNo(@RequestParam Long orgId,@RequestParam String docId,@RequestParam String customerCode) {
-		String methodName = "getPartNoAndPartDesBasedOnEnquiryNo()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mapp = new ArrayList<>();
-
-		try {
-			mapp = customerEnquiryService.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customerCode);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo Details retrieved successfully");
-			responseObjectsMap.put("enquiryVO", mapp);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PartNo Details",
-					errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// WorkOrder
 
@@ -475,11 +445,11 @@ public class CustomerEnquiryController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOrder information get successfully ByOrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "WorkOder information get successfully ByOrgId");
 			responseObjectsMap.put("workOrderVO", workOrderVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "WorkOrder information receive failed By OrgId",
+			responseDTO = createServiceResponseError(responseObjectsMap, "WorkOder information receive failed By OrgId",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -568,7 +538,7 @@ public class CustomerEnquiryController extends BaseController {
 	
 	
 	@GetMapping("/getQuotationNumber")
-	public ResponseEntity<ResponseDTO> getQuotationNumber(@RequestParam Long orgId,@RequestParam String customerId) {
+	public ResponseEntity<ResponseDTO> getQuotationNumber(@RequestParam Long orgId) {
 		String methodName = "getQuotationNumber()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -577,7 +547,7 @@ public class CustomerEnquiryController extends BaseController {
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = customerEnquiryService.getQuotationNumber(orgId,customerId);
+			mapp = customerEnquiryService.getQuotationNumber(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -595,35 +565,4 @@ public class CustomerEnquiryController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-
-	@GetMapping("/getWorkOrderPartNo")
-	public ResponseEntity<ResponseDTO> getWorkOrderPartNo(@RequestParam Long orgId,@RequestParam String docId,@RequestParam String customerId) {
-		String methodName = "getWorkOrderPartNo()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mapp = new ArrayList<>();
-
-		try {
-			mapp = customerEnquiryService.getWorkOrderPartNo(orgId,docId,customerId);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo Details retrieved successfully");
-			responseObjectsMap.put("quotationVO", mapp);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PartNo Details",
-					errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
 }
-}
-

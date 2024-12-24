@@ -31,9 +31,6 @@ private Long id;
 	
 	private Long orgId;
 	
-	private boolean active;
-
-	
 	private List<DrawingMaster1DTO> drawingMaster1DTO;
 	
 	private List<DrawingMaster2DTO> drawingMaster2DTO;

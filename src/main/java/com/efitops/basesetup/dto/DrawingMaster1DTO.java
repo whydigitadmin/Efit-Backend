@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DrawingMaster1DTO {
 
-//	private Long id;
+	private Long id;
 	private String fileName;
 	//private byte[] attachements;
 	

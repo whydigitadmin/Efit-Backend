@@ -31,9 +31,7 @@ public class DrawingMasterVO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "m_drawingmastergen")
 	@SequenceGenerator(name = "m_drawingmastergen", sequenceName = "m_drawingmasterseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "drawingmasterid")
-	private Long id;	
-	@Column(name ="docid")
-	private String docId;
+	private Long id;
 	@Column(name ="docdate")
 	private LocalDate docDate=LocalDate.now();
 	@Column(name ="partno")
@@ -54,9 +52,7 @@ public class DrawingMasterVO {
 	private String updatedBy;
 	@Column(name ="cancelremarks")
 	private String cancelRemarks;
-	@Column(name ="cancel")
-	private boolean cancel=false;
-	@Column(name ="active")
+	private boolean cancel;
 	private boolean active;
 	@Column(name ="orgid")
 	private Long orgId;

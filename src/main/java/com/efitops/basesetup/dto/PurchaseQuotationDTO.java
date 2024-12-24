@@ -1,8 +1,8 @@
 package com.efitops.basesetup.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+
+import com.efitops.basesetup.entity.PurchaseQuotationVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,18 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseQuotationDTO {
 
-	private Long id;
-
 	private String customerName;
 	
-	private String customerCode;
-
 	private String workOrderNo;
 	
 	private String enquiryNo;
 	
-	private LocalDate enquiryDate;
-
 	private String supplierName;
 	
 	private Long supplierId;
@@ -42,19 +36,12 @@ public class PurchaseQuotationDTO {
 	private String qStatus;
 	
 	private String createdBy;
-		
+	
+	private String finYear;
+	
 	private Long orgId;
 	
 	private boolean active;
 	
-//	private BigDecimal grossAmount;
-//	private BigDecimal netAmount;
-//	private BigDecimal totalDiscount;
-	private String narration;
-//	private String amountInWords;
-	
-	List<PurchaseQuotation1DTO> purchaseQuotation1DTO;
-	
-	List<PurchaseQuotationAttachmentDTO> purchaseQuotationAttachmentDTO;
 	
 }

@@ -41,8 +41,6 @@ public class WorkOrderVO {
 	private LocalDate docDate= LocalDate.now();
 	@Column(name="customername")
 	private String  customerName; 
-	@Column(name="customercode")
-	private String customerCode;
 	@Column(name="customerpono")
 	private String customerPoNo;
 	@Column(name="quotationno")
@@ -67,9 +65,9 @@ public class WorkOrderVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active=true;
+	private boolean active;
 	@Column(name = "cancel")
-	private boolean cancel=false;
+	private boolean cancel;
 	@Column(name = "screencode",length = 30)
 	private String screenCode ="WOP";
 	@Column(name = "screenname",length = 30)
@@ -83,6 +81,16 @@ public class WorkOrderVO {
 	@JsonManagedReference
 	List<TermsAndConditionsVO> termsAndConditionsVO;
 	
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
+	}
 
 	@Embedded
 	@Builder.Default

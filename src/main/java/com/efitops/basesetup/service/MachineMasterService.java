@@ -31,11 +31,13 @@ public interface MachineMasterService {
 
 	Optional<MachineMasterVO> getAllMachineMasterById(Long id);
 	
-	MachineMasterVO uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException;
+	MachineMasterVO3 uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 	
 	String getMachineMasterDocId(Long orgId);
 
 	MachineMasterVO getMachineMasterByDocId(Long orgId, String docId);
+	
+	MachineMasterVO uploadImagesInMachineMaster(MultipartFile file, Long id) throws IOException;
 	
 	//STOCKLOCATION
 
@@ -59,9 +61,7 @@ public interface MachineMasterService {
 
 	DrawingMaster2VO uploadAttachementsInBloob1(MultipartFile file, Long id)throws IOException;
 
-	List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Long orgId);
-
-	String getDrawingMasterDocId(Long orgId);
+	
 
 
 

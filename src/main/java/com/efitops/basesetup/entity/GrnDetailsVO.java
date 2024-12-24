@@ -1,6 +1,5 @@
 package com.efitops.basesetup.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -43,38 +42,38 @@ public class GrnDetailsVO {
 	private String taxType;
 	@Column(name="primaryunit")
 	private String primaryUnit;
-	@Column(name="stock",precision = 10,scale = 2)
-	private BigDecimal stock;
+	@Column(name="stock")
+	private Long stock;
 	@Column(name="inspectionable")
 	private String inspectionable;
-	@Column(name="porate",precision = 10,scale = 2)
-	private BigDecimal poRate; 
-	@Column(name="orderqty",precision = 10,scale = 2)
-	private BigDecimal orderQty;
-	@Column(name="challanqty",precision = 10,scale = 2)
-	private BigDecimal challanQty;
-	@Column(name="pendingqty",precision = 10,scale = 2)
-	private BigDecimal pendingQty;
-	@Column(name="recievedqty",precision = 10,scale = 2)
-	private BigDecimal recievedQty;
-	@Column(name="acceptqty",precision = 10,scale = 2)
-	private BigDecimal acceptQty;
-	@Column(name="rejectqty",precision = 10,scale = 2)
-	private BigDecimal rejectQty;
-	@Column(name="excessqty",precision = 10,scale = 2)
-	private BigDecimal excessQty;
-	@Column(name="amount",precision = 10,scale = 2)
-	private BigDecimal amount;
-	@Column(name="sgst",precision = 10,scale = 2)
-	private BigDecimal sgst;
-	@Column(name="cgst",precision = 10,scale = 2)
-	private BigDecimal cgst;
-	@Column(name="igst",precision = 10,scale = 2)
-	private BigDecimal igst;
-	@Column(name="taxvalue",precision = 10,scale = 2)
-	private BigDecimal taxValue;
-	@Column(name="landedvalue",precision = 10,scale = 2)
-	private BigDecimal landedValue;
+	@Column(name="porate")
+	private Long poRate; 
+	@Column(name="orderqty")
+	private Long orderQty;
+	@Column(name="challanqty")
+	private Long challanQty;
+	@Column(name="pendingqty")
+	private Long pendingQty;
+	@Column(name="recievedqty")
+	private Long recievedQty;
+	@Column(name="acceptqty")
+	private Long acceptQty;
+	@Column(name="rejectqty")
+	private Long rejectQty;
+	@Column(name="excessqty")
+	private Long excessQty;
+	@Column(name="amount")
+	private Long amount;
+	@Column(name="sgst")
+	private Long sgst;
+	@Column(name="cgst")
+	private Long cgst;
+	@Column(name="igst")
+	private Long igst;
+	@Column(name="taxvalue")
+	private Long taxValue;
+	@Column(name="landedvalue")
+	private Long landedValue;
 		
 	@ManyToOne
 	@JoinColumn(name = "grnid")

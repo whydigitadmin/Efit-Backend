@@ -44,8 +44,6 @@ public class PurchaseIndentVO {
 	private String indentType;
 	@Column(name="customername")
 	private String customerName;
-	@Column(name="customercode")
-	private String customerCode;
 	@Column(name="workorderno")
 	private String workOrderNo;
 	@Column(name="department")
@@ -66,8 +64,8 @@ public class PurchaseIndentVO {
 	private String createdBy;
 	@Column(name="modifiedby")
 	private String updatedBy;
-	private boolean active=true;
-	private boolean cancel=false;
+	private boolean active;
+	private boolean cancel;
 	@Column(name="cancelremarks")
 	private String cancelRemarks;
     private String	status;
@@ -75,8 +73,8 @@ public class PurchaseIndentVO {
     private String screenCode="PI";
     @Column(name="screenname")
     private String screenName="PURCHASEINDENT";
-//    @Column(name="finyear")
-//    private String finYear;
+    @Column(name="finyear")
+    private String finYear;
     
     @OneToMany(mappedBy ="purchaseIndentVO",cascade =CascadeType.ALL)
     @JsonManagedReference

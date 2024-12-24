@@ -39,7 +39,7 @@ public class EnquirySummaryVO {
 	@Column(name="additionalmanpower")
 	private String additionalManPower;
 	@Column(name="timeframe")
-	private String timeFrame; 
+	private String timeFrame;
 	@Column(name="expectedtimefordeliverysample")
 	private LocalDate expectedTimeForDeliverySample;
 	@Column(name="regularproduction")
@@ -47,7 +47,7 @@ public class EnquirySummaryVO {
 	@Column(name="initialreviewcomments")
 	private String initialReviewComments;
 	@Column(name="detailreview")
-	private String detailReview;
+	private String detailreview;
 	@Column(name="conclusion")
 	private  String conclusion;
 	@Column(name="remarks")

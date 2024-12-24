@@ -20,7 +20,6 @@ public class RouteCardEntryDTO {
 
 	private Long id;
     private String customerName;
-	private String customerCode;
     private String woNo;
     private String fgPartName;
     private String fgPartDesc;
@@ -33,14 +32,14 @@ public class RouteCardEntryDTO {
     private String narration;
     private Long orgId;
     private String createdBy;
-	private String status;
-
+    
 	@Column(name = "invoice")
 	private String invoice;
 	@Column(name = "invoicedate")
 	private LocalDate invoiceDate;
 	@Column(name = "qty")
 	private int qty;
+	@Column(name = "stockqty")
 	private int stockQty;
 	
 //    private MultipartFile file;

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class EnquiryDetailsDTO {
 	private String partCode;
 	private String partDescription;
-	private String drawingNo;
-	private String revisionNo;
+	private Long drawingNo;
+	private Long revisionNo;
 	private String unit;
 	private Long requireQty;
 	private LocalDate deliveryDate;

@@ -48,8 +48,8 @@ public class QuotationVO {
 	private String enquiryNo;
 	@Column(name="enquirydate")
 	private LocalDate enquiryDate;
-	@Column(name="validtill")
-	private LocalDate validTill;
+	@Column(name="vaidtill")
+	private LocalDate vaidTill;
 	@Column(name="kindattention")
 	private String kindAttention;
 	@Column(name="contactno")

@@ -40,9 +40,9 @@ public class QuotationDetailsVO {
 	@Column(name="partdescription")
 	private String partDescription;
 	@Column(name="drawingno")
-	private String drawingNo;
+	private Long drawingNo;
 	@Column(name="revisionno")
-	private String revisionNo;
+	private Long revisionNo;
 	@Column(name="unit")
 	private String unit;
 	@Column(name="unitprice",precision = 10,scale = 2)

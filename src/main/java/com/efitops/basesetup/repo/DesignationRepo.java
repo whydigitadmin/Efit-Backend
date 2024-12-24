@@ -18,7 +18,4 @@ public interface DesignationRepo  extends JpaRepository<DesignationVO, Long>
 
 	@Query(nativeQuery = true, value = "select * from m_designation where designationid=?1")
 	List<DesignationVO> getDesignationById(Long id);
-
-	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
-	String getDesignationDocId(Long orgId, String screenCode);
 }

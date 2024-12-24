@@ -1,11 +1,9 @@
 package com.efitops.basesetup.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -93,7 +91,7 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 		} else {
 			
 			// GETDOCID API
-						String docId = gateInwardEntryRepo.getGateInwardEntryDocId(gateInwardEntryDTO.getOrgId(),
+						String docId = gateInwardEntryRepo.getGateInwardEntryByDocId(gateInwardEntryDTO.getOrgId(),
 								screenCode);
 
 						gateInwardEntryVO.setDocId(docId);
@@ -144,19 +142,8 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 			gateInwardEntryDetailsVO.setPoQty(gateInwardEntryDetailsDTO.getPoQty());
 			gateInwardEntryDetailsVO.setInvoiceQty(gateInwardEntryDetailsDTO.getInvoiceQty());
 			gateInwardEntryDetailsVO.setInwardQty(gateInwardEntryDetailsDTO.getInwardQty());
-			
-			BigDecimal balanceQty = gateInwardEntryDetailsDTO.getPoQty().subtract(gateInwardEntryDetailsDTO.getInwardQty());
-
-			// Check if balanceQty is non-negative or negative
-			if (balanceQty.compareTo(BigDecimal.ZERO) >= 0) {
-			    // No excess, balance is positive or zero
-			    gateInwardEntryDetailsVO.setBalanceQty(balanceQty.intValue()); 
-			    gateInwardEntryDetailsVO.setExcessQty(0); 
-			} else {
-			    // Excess exists (negative balanceQty indicates inward exceeds PO)
-			    gateInwardEntryDetailsVO.setExcessQty(balanceQty.intValue()); 
-			    gateInwardEntryDetailsVO.setBalanceQty(0); 
-			}
+			gateInwardEntryDetailsVO.setBalanceQty(gateInwardEntryDetailsDTO.getBalanceQty());
+			gateInwardEntryDetailsVO.setExcessQty(gateInwardEntryDetailsDTO.getExcessQty());
 
 			gateInwardEntryDetailsVO.setGateInwardEntryVO(gateInwardEntryVO); // Set the reference in child entity
 			gateInwardEntryDetailsVOs.add(gateInwardEntryDetailsVO);
@@ -172,44 +159,6 @@ public class InwardOutwardServiceImpl implements InwardOutwardService{
 		String result = gateInwardEntryRepo.getGateInwardEntryDocId(orgId, ScreenCode);
 		return result;
 	}
-	
-	@Override
-	public List<Map<String, Object>> getPurchaseOrderNoForGateInward(Long orgId, String purchaseIndentNo) {
-		Set<Object[]> purchaseOrderNo = gateInwardEntryRepo.findPurchaseOrderNoForGateInward(orgId, purchaseIndentNo);
-		return getPurchaseOrderNoForGateInward(purchaseOrderNo);
-	}
-
-	private List<Map<String, Object>> getPurchaseOrderNoForGateInward(Set<Object[]> purchaseOrderNo) {
-		List<Map<String, Object>> List1 = new ArrayList<>();
-		for (Object[] ch : purchaseOrderNo) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("purchaseOrderNo", ch[0] != null ? ch[0].toString() : "");
-			List1.add(map);
-		}
-		return List1;
-
-	}
-	
-	@Override
-	public List<Map<String, Object>> getItemDetailsForGateInwardEntry(Long orgId, String purchaseOrderNo) {
-		Set<Object[]> itemDetails = gateInwardEntryRepo.findItemDetailsForGateInwardEntry(orgId, purchaseOrderNo);
-		return getItemDetailsForGateInwardEntry(itemDetails);
-	}
-
-	private List<Map<String, Object>> getItemDetailsForGateInwardEntry(Set<Object[]> itemDetails) {
-		List<Map<String, Object>> List1 = new ArrayList<>();
-		for (Object[] ch : itemDetails) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("item", ch[0] != null ? ch[0].toString() : "");
-			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
-			map.put("uom", ch[2] != null ? ch[2].toString() : "");
-			map.put("qty", ch[3] != null ? Integer.parseInt(ch[3].toString()) : 0);
-			List1.add(map);
-		}
-		return List1;
-
-	}
-	
 	
 	//GateOutWard
 	

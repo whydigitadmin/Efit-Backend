@@ -1,8 +1,10 @@
 package com.efitops.basesetup.dto;
 
-import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import javax.persistence.Column;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +24,7 @@ public class GrnDTO {
 	private String gstType; 
 	private String adress;
 	private String currency;
-	private BigDecimal exchangeRate;
+	private Long exchangeRate;
 	private String grnClearTime;
 	private String invDcNo;
 	private Date invDcDate;

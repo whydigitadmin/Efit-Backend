@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class QuotationDetailsDTO {
 	private String partCode;
 	private String partDescription;
-	private String drawingNo;
-	private String revisionNo;
+	private Long drawingNo;
+	private Long revisionNo;
 	private String unit;
 	private BigDecimal unitPrice;
 	private BigDecimal qtyOffered;

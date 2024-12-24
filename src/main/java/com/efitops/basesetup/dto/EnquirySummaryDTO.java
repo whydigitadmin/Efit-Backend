@@ -20,7 +20,7 @@ public class EnquirySummaryDTO {
 	private LocalDate expectedTimeForDeliverySample;
 	private String regularProduction;
 	private String initialReviewComments;
-	private String detailReview;
+	private String detailreview;
 	private  String conclusion;
 	private String remarks;
 }

@@ -24,7 +24,7 @@ public class GateInwardEntryDetailsDTO {
 
 	private BigDecimal inwardQty;
 
-//	private int balanceQty;
-//
-//	private int excessQty;
+	private int balanceQty;
+
+	private int excessQty;
 }

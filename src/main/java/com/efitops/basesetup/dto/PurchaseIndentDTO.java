@@ -17,8 +17,6 @@ public class PurchaseIndentDTO {
 	
 	private String customerName;
 	
-	private String customerCode;
-
 	private String workOrderNo;
 	
 	private String department;
@@ -37,7 +35,7 @@ public class PurchaseIndentDTO {
 	
 	private String createdBy;
 	
-//	 private String finYear;
+	 private String finYear;
 	
 	private List<PurchaseIndentDTO1> purchaseIndentDTO1;
 	

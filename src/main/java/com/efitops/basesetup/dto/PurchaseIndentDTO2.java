@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PurchaseIndentDTO2 {
 
+	private Long id;
 	private String verifiedBy;
 	private String cancelRemarks;
 	

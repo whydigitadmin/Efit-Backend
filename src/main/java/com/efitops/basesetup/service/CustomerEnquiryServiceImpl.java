@@ -1,7 +1,6 @@
 package com.efitops.basesetup.service;
 
 import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.xmlbeans.impl.xb.xmlconfig.NamespaceList.Member2.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 					.orElseThrow(() -> new ApplicationException("Invalid Enquiry details"));
 			message = "Enquiry Updated Successfully";
 			enquiryVO.setUpdatedBy(enquiryDTO.getCreatedBy());
-			
+
 		} else {
 
 			String docId = enquiryRepo.getEnquiryDocId(enquiryDTO.getOrgId(), screenCode);
@@ -158,7 +158,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			enquirySummaryVO.setExpectedTimeForDeliverySample(enquirySummaryDTO.getExpectedTimeForDeliverySample());
 			enquirySummaryVO.setRegularProduction(enquirySummaryDTO.getRegularProduction());
 			enquirySummaryVO.setInitialReviewComments(enquirySummaryDTO.getInitialReviewComments());
-			enquirySummaryVO.setDetailReview(enquirySummaryDTO.getDetailReview());
+			enquirySummaryVO.setDetailreview(enquirySummaryDTO.getDetailreview());
 			enquirySummaryVO.setConclusion(enquirySummaryDTO.getConclusion());
 			enquirySummaryVO.setRemarks(enquirySummaryDTO.getRemarks());
 			enquirySummaryVO.setEnquiryVO(enquiryVO);
@@ -214,8 +214,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyCode) {
-		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId, partyCode);
+	public List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName) {
+		Set<Object[]> chType = enquiryRepo.getContactNameAndNo(orgId, partyName);
 		return getContactName(chType);
 	}
 
@@ -247,15 +247,14 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-	
-	
+
 	@Override
-	public List<Map<String, Object>> getDrawingNoAndRevisionNo(String partNo, Long orgId) {
-		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevisionNo(partNo, orgId);
-		return getDrawingNo(chType);
+	public List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo) {
+		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevNo(orgId, partNo);
+		return getDrawingNoAndRev(chType);
 	}
 
-	private List<Map<String, Object>> getDrawingNo(Set<Object[]> chType) {
+	private List<Map<String, Object>> getDrawingNoAndRev(Set<Object[]> chType) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
@@ -265,8 +264,6 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-
-	
 
 	// Quotation
 
@@ -310,7 +307,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		quotationVO.setCustomerId(quotationDTO.getCustomerId());
 		quotationVO.setEnquiryNo(quotationDTO.getEnquiryNo());
 		quotationVO.setEnquiryDate(quotationDTO.getEnquiryDate());
-		quotationVO.setValidTill(quotationDTO.getValidTill());
+		quotationVO.setVaidTill(quotationDTO.getVaidTill());
 		quotationVO.setKindAttention(quotationDTO.getKindAttention());
 		quotationVO.setTaxCode(quotationDTO.getTaxCode());
 		quotationVO.setProductionManager(quotationDTO.getProductionManager());
@@ -395,8 +392,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 	
 	@Override
-	public List<Map<String, Object>> getEnquiryNoAndDate(Long orgId, String customerCode) {
-		Set<Object[]> chType = quotationRepo.getEnquiryNoAndDate(orgId,customerCode);
+	public List<Map<String, Object>> getEnquiryNoAndDate(Long orgId, String customer) {
+		Set<Object[]> chType = quotationRepo.getEnquiryNoAndDate(orgId,customer);
 		return getEnquiryNo(chType);
 	}
 
@@ -428,28 +425,6 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-	
-	
-	@Override
-	public List<Map<String, Object>> getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId, String customerCode) {
-		Set<Object[]> chType = quotationRepo.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customerCode);
-		return getPartNoAndPartDes(chType);
-	}
-
-	private List<Map<String, Object>> getPartNoAndPartDes(Set<Object[]> chType) {
-		List<Map<String, Object>> List1 = new ArrayList<>();
-		for (Object[] ch : chType) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("partNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
-			map.put("drawingNo", ch[2] != null ? ch[2].toString() : "");
-			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
-			map.put("unit", ch[4] != null ? ch[4].toString() : "");
-			map.put("qtyOffered", ch[5] != null ? ch[5].toString() : "");
-			List1.add(map);
-		}
-		return List1;
-	}
 
 	// WorkOrder
 
@@ -460,8 +435,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		String screenCode = "WOP";
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
 			workOrderVO = workOrderRepo.findById(workOrderDTO.getId())
-					.orElseThrow(() -> new ApplicationException("WorkOrder Enquiry details"));
-			message = "WorkOrder Updated Successfully";
+					.orElseThrow(() -> new ApplicationException("Quotation Enquiry details"));
+			message = "Quotation Updated Successfully";
 			workOrderVO.setUpdatedBy(workOrderDTO.getCreatedBy());
 
 		} else {
@@ -478,7 +453,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 			workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
 			workOrderVO.setUpdatedBy(workOrderDTO.getCreatedBy());
 
-			message = "WorkOrder Created Successfully";
+			message = "Quotation Created Successfully";
 		}
 		createUpdatedWorkOrderVOFromWorkOrderDTO(workOrderDTO, workOrderVO);
 		workOrderRepo.save(workOrderVO);
@@ -490,7 +465,6 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 
 	private void createUpdatedWorkOrderVOFromWorkOrderDTO(WorkOrderDTO workOrderDTO, WorkOrderVO workOrderVO) {
 		workOrderVO.setCustomerName(workOrderDTO.getCustomerName());
-		workOrderVO.setCustomerCode(workOrderDTO.getCustomerCode());
 		workOrderVO.setCustomerPoNo(workOrderDTO.getCustomerPoNo());
 		workOrderVO.setQuotationNo(workOrderDTO.getQuotationNo());
 		workOrderVO.setCurrency(workOrderDTO.getCurrency());
@@ -499,8 +473,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		workOrderVO.setProductionMgr(workOrderDTO.getProductionMgr());
 		workOrderVO.setCustomerSpecialRequirement(workOrderDTO.getCustomerSpecialRequirement());
 		workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
-		workOrderVO.setOrgId(workOrderDTO.getOrgId());
 		workOrderVO.setActive(workOrderDTO.isActive());
+		workOrderVO.setOrgId(workOrderDTO.getOrgId());
  
 		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
 			List<ItemParticularsVO> itemParticularsVO1 = itemParticularsRepo.findByWorkOrderVO(workOrderVO);
@@ -569,47 +543,20 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getQuotationNumber(Long orgId,String custmoerId) {
-		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId,custmoerId);
-		return getQuotation(chType);
+	public List<Map<String, Object>> getQuotationNumber(Long orgId) {
+		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId);
+		return getPQuotation(chType);
 	}
 
-	private List<Map<String, Object>> getQuotation(Set<Object[]> chType) {
+	private List<Map<String, Object>> getPQuotation(Set<Object[]> chType) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("quotationNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("productionmanager", ch[1] != null ? ch[1].toString() : "");
 			List1.add(map);
 		}
 		return List1;
 	}
-
-	@Override
-	public List<Map<String, Object>> getWorkOrderPartNo(Long orgId,String docId,String custmoerId) {
-		Set<Object[]> chType = workOrderRepo.getWorkOrderPartNo(orgId,docId,custmoerId);
-		return getWorkOrder(chType);
-	}
-
-	private List<Map<String, Object>> getWorkOrder(Set<Object[]> chType) {
-		List<Map<String, Object>> List1 = new ArrayList<>();
-		for (Object[] ch : chType) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("partCode", ch[0] != null ? ch[0].toString() : "");
-			map.put("partDescription", ch[1] != null ? ch[1].toString() : "");
-			map.put("drawingNo", ch[2] != null ? ch[2].toString() : "");
-			map.put("revisionNo", ch[3] != null ? ch[3].toString() : "");
-			map.put("uom", ch[4] != null ? ch[4].toString() : "");
-			map.put("orderQty", ch[5] != null ? ch[5].toString() : "");
-			map.put("customerName", ch[6] != null ? ch[6].toString() : "");
-			map.put("customerCode", ch[7] != null ? ch[7].toString() : "");
-
-			List1.add(map);
-		}
-		return List1;
-	}
-
-	
 
 
 

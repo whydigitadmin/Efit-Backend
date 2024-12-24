@@ -390,7 +390,7 @@ public class MasterServiceImpl implements MasterService {
 		// Prepare the response
 		Map<String, Object> response = new HashMap<>();
 		response.put("message", message);
-		response.put("createdEmployeeVO", employeeVO);
+		response.put("employeeVO", employeeVO);
 
 		return response;
 	}
@@ -1701,7 +1701,7 @@ public class MasterServiceImpl implements MasterService {
 			partyMasterVO.setUpdatedBy(partyMasterDTO.getCreatedBy());
 		}
 		partyMasterVO = partyMasterRepo.save(partyMasterVO);
-        
+
 		if (ObjectUtils.isNotEmpty(partyMasterDTO.getId())) {
 			List<PartyStateVO> partyStateVOList = partyStateRepo.findByPartyMasterVO(partyMasterVO);
 			partyStateRepo.deleteAll(partyStateVOList);
@@ -1736,9 +1736,7 @@ public class MasterServiceImpl implements MasterService {
 				partyAddressVO.setAddressLine2(partyAddressDTO.getAddressLine2());
 				partyAddressVO.setAddressLine3(partyAddressDTO.getAddressLine3());
 				partyAddressVO.setPincode(partyAddressDTO.getPincode());
-				partyAddressVO.setContact(partyAddressDTO.getContact()); 
-				partyAddressVO.setContactPerson(partyAddressDTO.getContactPerson()); 
-				partyAddressVO.setTaxType(partyAddressDTO.getTaxType()); 
+				partyAddressVO.setContact(partyAddressDTO.getContact()); // Changed from contactPerson to contact
 
 				partyAddressVO.setPartyMasterVO(partyMasterVO);
 				partyAddressVOs.add(partyAddressVO);

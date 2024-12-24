@@ -144,63 +144,6 @@ public class InwardOutwardController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	
-
-	@GetMapping("/getPurchaseOrderNoForGateInward")
-	public ResponseEntity<ResponseDTO> getPurchaseOrderNoForGateInward(@RequestParam Long orgId,@RequestParam String supplierCode) {
-		String methodName = "getPurchaseOrderNoForGateInward()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> purchaseOrderNo = new ArrayList<>();
-		try {
-			purchaseOrderNo = inwardOutwardService.getPurchaseOrderNoForGateInward(orgId,supplierCode);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PurchaseOrderNo for GateInward information get successfully By OrgId");
-			responseObjectsMap.put("purchaseOrderNo", purchaseOrderNo);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"PurchaseOrderNo for GateInward information receive failed By OrgId", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-
-	}
-
-	
-	@GetMapping("/getItemDetailsForGateInwardEntry")
-	public ResponseEntity<ResponseDTO> getItemDetailsForGateInwardEntry(@RequestParam Long orgId,@RequestParam String purchaseOrderNo) {
-		String methodName = "getItemDetailsForGateInwardEntry()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> itemDetails = new ArrayList<>();
-		try {
-			itemDetails = inwardOutwardService.getItemDetailsForGateInwardEntry(orgId,purchaseOrderNo);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ItemDetails for GateInwardEntry information get successfully By OrgId");
-			responseObjectsMap.put("itemDetails", itemDetails);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"ItemDetails for GateInwardEntry information receive failed By OrgId", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-
-	}
-	
 	//GateOutWard
 	
 	@GetMapping("/getGateOutwardEntryByOrgId")
@@ -277,5 +220,6 @@ public class InwardOutwardController extends BaseController{
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 
 }

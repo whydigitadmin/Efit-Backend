@@ -209,8 +209,6 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 			machineMasterVO2.setCycleTime(machineMasterDTO2.getCycleTime());
 			machineMasterVO2.setProdQtyHr(machineMasterDTO2.getProdQtyHr());
 			machineMasterVO2.setOperationName(machineMasterDTO2.getOperationName());
-			machineMasterVO2.setItemId(machineMasterDTO2.getItemId());
-
 			machineMasterVO2.setRemarks(machineMasterDTO2.getRemarks());
 
 			machineMasterVO2.setMachineMasterVO(machineMasterVO);
@@ -237,8 +235,8 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	
 	@Override
 	public String getMachineMasterDocId(Long orgId) {
-		String ScreenCode = "MM";
-		String result = machineMasterRepo.getMachineMasterByDocId(orgId, ScreenCode);
+		String screenCode = "MM";
+		String result = machineMasterRepo.getMachineMasterByDocId(orgId,screenCode);
 		return result;
 	}
 
@@ -262,10 +260,10 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	}
 
 	@Override
-	public MachineMasterVO uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException {
-		MachineMasterVO machineMasterVO = machineMasterRepo.findById(id).get();
-		machineMasterVO.setAttachements(file.getBytes());
-		return machineMasterRepo.save(machineMasterVO);
+	public MachineMasterVO3 uploadMachineAttachementsInBloob(MultipartFile file, Long id) throws IOException {
+		MachineMasterVO3 machineMasterVO3 = machineMasterRepo3.findById(id).get();
+		machineMasterVO3.setAttachements(file.getBytes());
+		return machineMasterRepo3.save(machineMasterVO3);
 	}
 
 	
@@ -340,25 +338,13 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	@Override
 	public Map<String, Object> updateDrawingMaster(@Valid DrawingMasterDTO drawingMasterDTO) throws ApplicationException {
 		
-		DrawingMasterVO drawingMasterVO = new DrawingMasterVO();
-		String screenCode ="DM";
+		DrawingMasterVO drawingMasterVO;
+
 		String message = null;
 
 		if (ObjectUtils.isEmpty(drawingMasterDTO.getId())) {
 
 			drawingMasterVO = new DrawingMasterVO();
-			
-
-			// GETDOCID API
-						String docId = drawingMasterRepo.getDrawingMasterDocId(drawingMasterDTO.getOrgId(), screenCode);
-
-						drawingMasterVO.setDocId(docId);
-
-//						        							// GETDOCID LASTNO +1
-						DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
-								.findByOrgIdAndScreenCode(drawingMasterDTO.getOrgId(), screenCode);
-						documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
-						documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 			drawingMasterVO.setCreatedBy(drawingMasterDTO.getCreatedBy());
 
@@ -370,12 +356,11 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 
 		else {
 
-
 			drawingMasterVO = drawingMasterRepo.findById(drawingMasterDTO.getId()).orElseThrow(
 					() -> new ApplicationException("Drawing Master Not Found with id: " + drawingMasterDTO.getId()));
 			drawingMasterVO.setUpdatedBy(drawingMasterDTO.getCreatedBy());
 
-			message = "Drawing Master Updation Successfully";
+			message = "Stock Location Updation Successfully";
 
 		}
 
@@ -400,7 +385,7 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	    drawingMasterVO.setCreatedBy(drawingMasterDTO.getCreatedBy());
 	    drawingMasterVO.setCancelRemarks(drawingMasterDTO.getCancelRemarks());
 	    drawingMasterVO.setOrgId(drawingMasterDTO.getOrgId());
-	    drawingMasterVO.setActive(drawingMasterDTO.isActive());
+	    
 	    
 	    if(drawingMasterDTO.getId() !=null) {
 	    	
@@ -479,27 +464,7 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("companyCode", ch[0] != null ? ch[0].toString() : "");
-			map.put("companyName", ch[0] != null ? ch[0].toString() : "");
-			List1.add(map);
-		}
-		return List1;
-
-	}
-	
-	@Override
-	public List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Long orgId) {
-		Set<Object[]> drawingMasterVO = drawingMasterRepo.findFGSFGPartDetailsForDrawingMaster(orgId);
-		return getFGSFGPartDetailsForDrawingMaster(drawingMasterVO);
-	}
-
-	private List<Map<String, Object>> getFGSFGPartDetailsForDrawingMaster(Set<Object[]> drawingMasterVO) {
-		List<Map<String, Object>> List1 = new ArrayList<>();
-		for (Object[] ch : drawingMasterVO) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("itemName", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
-			map.put("itemDesc", ch[1] != null ? ch[1].toString() : "");
-			map.put("primaryUnit", ch[2] != null ? ch[2].toString() : "");
-
+			map.put("companyName", ch[1] != null ? ch[1].toString() : "");
 			List1.add(map);
 		}
 		return List1;
@@ -507,11 +472,12 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	}
 
 	@Override
-	public String getDrawingMasterDocId(Long orgId) {
-		String screenCode = "DM";
-		String result = drawingMasterRepo.getDrawingMasterDocId(orgId, screenCode);
-		return result;
+	public MachineMasterVO uploadImagesInMachineMaster(MultipartFile file, Long id) throws IOException {
+		MachineMasterVO machineMasterVO = machineMasterRepo.findById(id).get();
+		machineMasterVO.setAttachements(file.getBytes());
+		return machineMasterRepo.save(machineMasterVO);
 	}
+
 	
 	
 

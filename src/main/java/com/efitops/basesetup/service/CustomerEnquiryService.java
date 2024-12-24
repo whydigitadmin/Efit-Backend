@@ -28,11 +28,12 @@ public interface CustomerEnquiryService {
 
 	List<Map<String, Object>> getCustomerNameAndCode(Long orgId);
 
-	List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyCode);
+	List<Map<String, Object>> getContactNameAndNo(Long orgId, String partyName);
 
 	List<Map<String, Object>> getPartNoAndDescription(Long orgId);
 
-	List<Map<String, Object>>  getDrawingNoAndRevisionNo(String partNo,Long orgId);	
+	List<Map<String, Object>> getDrawingNoAndRevNo(Long orgId, String partNo);
+
 	// Quotation
 
 	Map<String, Object> createUpdateQuotation(QuotationDTO quotationDTO) throws ApplicationException;
@@ -43,11 +44,9 @@ public interface CustomerEnquiryService {
 
 	String getQuotationDocId(Long orgId);
 	
-	List<Map<String,Object>>  getEnquiryNoAndDate(Long orgId,String customerCode);	
+	List<Map<String,Object>>  getEnquiryNoAndDate(Long orgId,String customer);	
 	
 	List<Map<String,Object>>  getProductionManager(Long orgId);	
-	
-	List<Map<String,Object>>  getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId,String customerCode);	
 
 	// WorkOrder
 
@@ -59,9 +58,6 @@ public interface CustomerEnquiryService {
 
 	String getWorkOrderDocId(Long orgId);
 	
-	List<Map<String,Object>>  getQuotationNumber(Long orgId,String custmoerId);	
-	
-	
-	List<Map<String,Object>>  getWorkOrderPartNo(Long orgId,String docId,String custmoerId);	
+	List<Map<String,Object>>  getQuotationNumber(Long orgId);	
 
 }

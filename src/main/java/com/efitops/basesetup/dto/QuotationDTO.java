@@ -16,7 +16,7 @@ public class QuotationDTO {
 		private String customerId;
 		private String enquiryNo;
 		private LocalDate enquiryDate;
-		private LocalDate validTill;
+		private LocalDate vaidTill;
 		private String kindAttention;
 		private Long contactNo;
 		private String taxCode;

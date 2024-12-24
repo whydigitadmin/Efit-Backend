@@ -15,15 +15,14 @@ public class WorkOrderDTO {
 	private String  customerName; 
 	private String customerPoNo;
 	private String quotationNo;
-	private String customerCode;
 	private String currency;
 	private LocalDate customerDueDate;
 	private LocalDate vapDueDate;
 	private String productionMgr;
 	private String customerSpecialRequirement;
 	private Long orgId;
-	private String createdBy;
 	private boolean active;
+	private String createdBy;
 	List<ItemParticularsDTO> itemParticularsDTO;
 	List<TermsAndConditionsDTO> termsAndConditionsDTO;
 

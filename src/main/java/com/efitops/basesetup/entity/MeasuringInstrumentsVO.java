@@ -54,7 +54,7 @@ public class MeasuringInstrumentsVO {
 	private String colourCode;
 
 	@Column(name = "calibrationfrequence")
-	private BigDecimal calibrationFrequence;
+	private String calibrationFrequence;
 
 	@Column(name = "remarks")
 	private String remarks;

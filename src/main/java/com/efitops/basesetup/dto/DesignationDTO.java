@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class DesignationDTO {
 	
 	private Long id;
+    private String docid;
     private String designation;
     private Long orgId;
     private String createdBy;
-    private boolean active;
 }

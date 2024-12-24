@@ -19,7 +19,7 @@ public class MeasuringInstrumentsDTO {
 	private BigDecimal ranges;
 	private BigDecimal leastCount;
 	private String colourCode;
-	private BigDecimal calibrationFrequence;
+	private String calibrationFrequence;
 	private String remarks;	
 	private String createdBy;
 	private Long orgId;

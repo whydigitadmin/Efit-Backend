@@ -36,7 +36,4 @@ public interface PutawayRepo extends JpaRepository<PutawayVO, Long>{
 			+ "and a.grnid = b.grnid")
 	Set<Object[]> findFillGridForPutaway(Long orgId, String grnNo);
 
-	@Query(nativeQuery = true, value = "select  rackno from m_rackmaster where  orgid=?1 ")
-	Set<Object[]> findRackNoForPutaway(Long orgId);
-
 }

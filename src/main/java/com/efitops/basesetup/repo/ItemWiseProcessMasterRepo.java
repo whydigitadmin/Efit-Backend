@@ -18,14 +18,11 @@ public interface ItemWiseProcessMasterRepo extends JpaRepository<ItemWiseProcess
 	@Query(nativeQuery = true, value = "select * from m_itemwiseprocess where itemwiseprocessid=?1")
 	List<ItemWiseProcessMasterVO> findItemWiseProcessMasterById(Long id);
 
-	@Query(nativeQuery = true, value = "select itemname, itemdesc , ROW_NUMBER() OVER (ORDER BY itemname) AS id from m_item where orgid=?1 and itemtype NOT IN ('RAW MATERIAL') group by itemname ,itemdesc order by itemname")
+	@Query(nativeQuery = true, value = "select itemname, itemdesc from m_item where orgid=?1 and itemtype NOT IN ('RAW MATERIAL')")
 	Set<Object[]> findItemAndItemDescforItemWiseProcess(Long orgId);
 
 	@Query(nativeQuery = true, value = "select processname from m_processmaster where orgid=?1 ")
 	Set<Object[]> findProcessNameFromItemWiseProcess(Long orgId);
-
-	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
-	String getItemWiseProcessMasterDocId(Long orgId, String screenCode);
 
 
 
