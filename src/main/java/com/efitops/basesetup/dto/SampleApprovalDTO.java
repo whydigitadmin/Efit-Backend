@@ -1,7 +1,7 @@
 package com.efitops.basesetup.dto;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class SampleApprovalDTO {
 	private String jobOrderNo;
 	private String shift;
 	private LocalDate shiftDate;
-	private LocalTime shiftTime;
+	private LocalDateTime shiftTime;
 	private int sampleQty;
 	private String docFormatNo;
 
