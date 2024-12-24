@@ -144,10 +144,7 @@ public class MachineMasterVO {
     @JsonManagedReference
     private List<MachineCapacityVO> machineCapacityVO;
     
-//    @OneToMany(mappedBy ="machineMasterVO",cascade =CascadeType.ALL)
-//    @JsonManagedReference
-//    private List<MachineMasterVO3> machineMasterVO3;
-//    
+  
 	
     @JsonGetter("active")
 	public String getActive() {

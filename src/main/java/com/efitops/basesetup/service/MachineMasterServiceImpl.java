@@ -41,7 +41,6 @@ import com.efitops.basesetup.repo.DrawingMaster2Repo;
 import com.efitops.basesetup.repo.DrawingMasterRepo;
 import com.efitops.basesetup.repo.MachineCapacityRepo;
 import com.efitops.basesetup.repo.MachineMasterRepo;
-import com.efitops.basesetup.repo.MachineMasterRepo3;
 import com.efitops.basesetup.repo.MachineTechnicalInfoRepo;
 
 @Service
@@ -55,9 +54,6 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 
 	@Autowired
 	MachineCapacityRepo machineCapacityRepo;
-
-	@Autowired
-	MachineMasterRepo3 machineMasterRepo3;
 
 	@Autowired
 	StockLocationRepo stockLocationRepo;
@@ -216,19 +212,6 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 			MachineCapacityVOs.add(machineCapacityVO);
 		}
 		machineMasterVO.setMachineCapacityVO(MachineCapacityVOs);
-
-//		List<MachineMasterVO3> MachineMasterVO3s = new ArrayList<>();
-//		for (MachineMasterDTO3 machineMasterDTO3 : machineMasterDTO.getMachineMasterDTO3()) {
-//			MachineMasterVO3 machineMasterVO3 = new MachineMasterVO3();
-//
-//			machineMasterVO3.setInstrumentName(machineMasterDTO3.getInstrumentName());
-//		//	machineMasterVO3.setAttachments(machineMasterDTO3.getAttachments());
-//			machineMasterVO3.setFilePath(machineMasterDTO3.getFilePath());
-//
-//			machineMasterVO3.setMachineMasterVO(machineMasterVO);
-//			MachineMasterVO3s.add(machineMasterVO3);
-//		}
-//		machineMasterVO.setMachineMasterVO3(MachineMasterVO3s);
 
 		return machineMasterVO;
 
