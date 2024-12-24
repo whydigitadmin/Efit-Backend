@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -86,7 +87,6 @@ public class SalesServiceImpl implements SalesService {
 		deliveryChalanForFgVO.setDuDate(deliveryChalanForFgDTO.getDuDate());
 		deliveryChalanForFgVO.setVehicleType(deliveryChalanForFgDTO.getVehicleType());
 		deliveryChalanForFgVO.setVehicleNo(deliveryChalanForFgDTO.getVehicleNo());
-		deliveryChalanForFgVO.setStatus(deliveryChalanForFgDTO.getStatus());
 
 		// Summary
 		deliveryChalanForFgVO.setNaration(deliveryChalanForFgDTO.getNaration());
@@ -135,6 +135,60 @@ public class SalesServiceImpl implements SalesService {
 		String ScreenCode = "DCF";
 		String result = deliveryChalanForFgRepo.getDeliveryChalanForFgDocId(orgId, ScreenCode);
 		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getCustomerNameFromPartyMaster(Long orgId) {
+		Set<Object[]> chType = deliveryChalanForFgRepo.getCustomerNameFromPartyMaster(orgId);
+		return getgetCustomerName(chType);
+	}
+
+	private List<Map<String, Object>> getgetCustomerName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("customerName", ch[0] != null ? ch[0].toString() : "");
+			map.put("customerAddress", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getSoNoFromSaleOrder(Long orgId, String customerName) {
+		Set<Object[]> chType = deliveryChalanForFgRepo.getSoNoFromSaleOrder(orgId, customerName);
+		return getSoNo(chType);
+	}
+
+	private List<Map<String, Object>> getSoNo(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("soNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("soDate", ch[1] != null ? ch[1].toString() : "");
+			map.put("dueDate", ch[2] != null ? ch[2].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getItemNameFromSaleOrder(String customerName) {
+		Set<Object[]> chType = deliveryChalanForFgRepo.getItemNameFromSaleOrder(customerName);
+		return getItemName(chType);
+	}
+
+	private List<Map<String, Object>> getItemName(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemName", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemDescription", ch[1] != null ? ch[1].toString() : "");
+			map.put("quantity", ch[2] != null ? ch[2].toString() : "");
+			map.put("unit", ch[3] != null ? ch[3].toString() : "");
+			List1.add(map);
+		}
+		return List1;
 	}
 
 }

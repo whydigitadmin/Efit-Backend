@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class ProcessDoneDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobordeprocessdonedetailsgen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processdonedetailsgen")
 	@SequenceGenerator(name = "processdonedetailsgen", sequenceName = "processdonedetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "processdonedetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;

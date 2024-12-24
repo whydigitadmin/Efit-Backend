@@ -19,7 +19,6 @@ public class DeliveryChalanForFgDTO {
 	private LocalDate duDate;
 	private String vehicleType;
 	private String vehicleNo;
-	private String status;
 
 	// Summary
 

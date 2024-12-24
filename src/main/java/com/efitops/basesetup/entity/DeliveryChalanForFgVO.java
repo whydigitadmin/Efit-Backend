@@ -54,7 +54,7 @@ public class DeliveryChalanForFgVO {
 	@Column(name = "vehicleno")
 	private String vehicleNo;
 	@Column(name = "status")
-	private String status;
+	private String status = "PENDING";
 
 	// Summary
 

@@ -835,35 +835,35 @@ public class IssueToSubContractorServiceImpl implements IssueToSubContractorServ
 			subContractInvoiceTermsRepo.deleteAll(subContractTermsAndConditionsVO1);
 		}
 
-		List<SubContractInvoiceDetailsVO> subContractTaxInvoiceDetailsVOs = new ArrayList<>();
-		for (SubContractInvoiceDetailsDTO subContractTaxInvoiceDetailsDTO : subContractInvoiceDTO
+		List<SubContractInvoiceDetailsVO> subContractInvoiceDetailsVOs = new ArrayList<>();
+		for (SubContractInvoiceDetailsDTO subContractInvoiceDetailsDTO : subContractInvoiceDTO
 				.getSubContractInvoiceDetailsDTO()) {
-			SubContractInvoiceDetailsVO subContractTaxInvoiceDetailsVO = new SubContractInvoiceDetailsVO();
-			subContractTaxInvoiceDetailsVO.setPartNo(subContractTaxInvoiceDetailsDTO.getPartNo());
-			subContractTaxInvoiceDetailsVO.setPartDes(subContractTaxInvoiceDetailsDTO.getPartDes());
-			subContractTaxInvoiceDetailsVO.setProcess(subContractTaxInvoiceDetailsDTO.getProcess());
-			subContractTaxInvoiceDetailsVO.setQuantityNos(subContractTaxInvoiceDetailsDTO.getQuantityNos());
-			subContractTaxInvoiceDetailsVO.setRate(subContractTaxInvoiceDetailsDTO.getRate());
-			subContractTaxInvoiceDetailsVO.setAmount(subContractTaxInvoiceDetailsDTO.getAmount());
-			subContractTaxInvoiceDetailsVO.setCgst(subContractTaxInvoiceDetailsDTO.getCgst());
-			subContractTaxInvoiceDetailsVO.setSgst(subContractTaxInvoiceDetailsDTO.getSgst());
-			subContractTaxInvoiceDetailsVO.setLandedAmount(subContractTaxInvoiceDetailsDTO.getLandedAmount());
-			subContractTaxInvoiceDetailsVO.setQuotationAmount(subContractTaxInvoiceDetailsDTO.getQuotationAmount());
-			subContractTaxInvoiceDetailsVO.setSubContractInvoiceVO(subContractInvoiceVO);
-			subContractTaxInvoiceDetailsVOs.add(subContractTaxInvoiceDetailsVO);
+			SubContractInvoiceDetailsVO subContractInvoiceDetailsVO = new SubContractInvoiceDetailsVO();
+			subContractInvoiceDetailsVO.setPartNo(subContractInvoiceDetailsDTO.getPartNo());
+			subContractInvoiceDetailsVO.setPartDes(subContractInvoiceDetailsDTO.getPartDes());
+			subContractInvoiceDetailsVO.setProcess(subContractInvoiceDetailsDTO.getProcess());
+			subContractInvoiceDetailsVO.setQuantityNos(subContractInvoiceDetailsDTO.getQuantityNos());
+			subContractInvoiceDetailsVO.setRate(subContractInvoiceDetailsDTO.getRate());
+			subContractInvoiceDetailsVO.setAmount(subContractInvoiceDetailsDTO.getAmount());
+			subContractInvoiceDetailsVO.setCgst(subContractInvoiceDetailsDTO.getCgst());
+			subContractInvoiceDetailsVO.setSgst(subContractInvoiceDetailsDTO.getSgst());
+			subContractInvoiceDetailsVO.setLandedAmount(subContractInvoiceDetailsDTO.getLandedAmount());
+			subContractInvoiceDetailsVO.setQuotationAmount(subContractInvoiceDetailsDTO.getQuotationAmount());
+			subContractInvoiceDetailsVO.setSubContractInvoiceVO(subContractInvoiceVO);
+			subContractInvoiceDetailsVOs.add(subContractInvoiceDetailsVO);
 		}
-		subContractInvoiceVO.setSubContractInvoiceDetailsVO(subContractTaxInvoiceDetailsVOs);
+		subContractInvoiceVO.setSubContractInvoiceDetailsVO(subContractInvoiceDetailsVOs);
 
-		List<SubContractInvoiceTermsVO> subContractTermsAndConditionsVOs = new ArrayList<>();
-		for (SubContractInvoiceTermsDTO subContractTermsAndConditionsDTO : subContractInvoiceDTO
+		List<SubContractInvoiceTermsVO> subContractInvoiceTermsVOs = new ArrayList<>();
+		for (SubContractInvoiceTermsDTO subContractInvoiceTermsDTO : subContractInvoiceDTO
 				.getSubContractInvoiceTermsDTO()) {
-			SubContractInvoiceTermsVO subContractTermsAndConditionsVO = new SubContractInvoiceTermsVO();
-			subContractTermsAndConditionsVO.setTerms(subContractTermsAndConditionsDTO.getTerms());
-			subContractTermsAndConditionsVO.setDescription(subContractTermsAndConditionsDTO.getDescription());
-			subContractTermsAndConditionsVO.setSubContractInvoiceVO(subContractInvoiceVO);
-			subContractTermsAndConditionsVOs.add(subContractTermsAndConditionsVO);
+			SubContractInvoiceTermsVO subContractInvoiceTermsVO = new SubContractInvoiceTermsVO();
+			subContractInvoiceTermsVO.setTerms(subContractInvoiceTermsDTO.getTerms());
+			subContractInvoiceTermsVO.setDescription(subContractInvoiceTermsDTO.getDescription());
+			subContractInvoiceTermsVO.setSubContractInvoiceVO(subContractInvoiceVO);
+			subContractInvoiceTermsVOs.add(subContractInvoiceTermsVO);
 		}
-		subContractInvoiceVO.setSubContractInvoiceTermsVO(subContractTermsAndConditionsVOs);
+		subContractInvoiceVO.setSubContractInvoiceTermsVO(subContractInvoiceTermsVOs);
 	}
 
 	@Override
