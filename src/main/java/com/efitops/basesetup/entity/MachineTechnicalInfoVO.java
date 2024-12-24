@@ -19,16 +19,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_machinemaster1")
+@Table(name = "machinetechnicalinfo")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MachineMasterVO1 {
+public class MachineTechnicalInfoVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "m_machinemaster1gen")
-	@SequenceGenerator(name = "m_machinemaster1gen", sequenceName = "m_machinemaster1seq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "machinemaster1id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "machinetechnicalinfogen")
+	@SequenceGenerator(name = "machinetechnicalinfogen", sequenceName = "machinetechnicalinfoseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "machinetechnicalinfoid")
 	private Long id;
 
 	@Column(name = "installationdate")

@@ -35,7 +35,7 @@ public class PurchaseOrderVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseordergen")
 	@SequenceGenerator(name = "t_purchaseordergen", sequenceName = "t_purchaseorderseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchaseorderid")
+	@Column(name = "purchaseorderid",columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid", length = 150)
 	private String docId;
@@ -58,9 +58,9 @@ public class PurchaseOrderVO {
 	@Column(name="suppliercode")
 	private String supplierCode;
 	@Column(name="contactperson")
-	private long contactperson;
+	private String contactPerson;
 	@Column(name="mobileno")
-	private String mobileNo;
+	private long mobileNo;
 	@Column(name="eMail")
 	private String eMail;
 	@Column(name="city")

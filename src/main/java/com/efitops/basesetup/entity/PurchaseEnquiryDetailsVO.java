@@ -19,30 +19,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchaseenquirydetails")
+@Table(name = "purchaseenquirydetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PurchaseEnquiryDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseenquirydetailsgen")
-	@SequenceGenerator(name = "t_purchaseenquirydetailsgen", sequenceName = "t_purchaseenquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchaseenquirydetailsgen")
+	@SequenceGenerator(name = "purchaseenquirydetailsgen", sequenceName = "purchaseenquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchaseenquirydetailid")
 	private Long id;
 	
-	@Column(name = "item", length = 20)
+	@Column(name = "item")
     private String item;
 
-    @Column(name = "itemdesc", length = 20)
+    @Column(name = "itemdesc")
     private String itemDesc;
 
-    @Column(name = "unit", length = 150)
+    @Column(name = "unit")
     private String Unit;
 
-    @Column(name = "qtyrequired", length = 30)
+    @Column(name = "qtyrequired")
     private BigDecimal qtyRequired;
 
-    @Column(name = "remarks", length = 30)
+    @Column(name = "remarks")
     private String remarks;
 
 	@ManyToOne

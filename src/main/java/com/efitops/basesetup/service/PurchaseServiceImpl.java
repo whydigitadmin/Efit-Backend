@@ -21,18 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.efitops.basesetup.dto.PurchaseEnquiryDTO;
 import com.efitops.basesetup.dto.PurchaseEnquiryDetailsDTO;
 import com.efitops.basesetup.dto.PurchaseIndentDTO;
-import com.efitops.basesetup.dto.PurchaseIndentDTO1;
-import com.efitops.basesetup.dto.PurchaseIndentDTO2;
-import com.efitops.basesetup.dto.PurchaseQuotation1DTO;
+import com.efitops.basesetup.dto.PurchaseIndentDetailsDTO;
+import com.efitops.basesetup.dto.PurchaseIndentSummaryDTO;
+import com.efitops.basesetup.dto.PurchaseQuotationDetailsDTO;
 import com.efitops.basesetup.dto.PurchaseQuotationAttachmentDTO;
 import com.efitops.basesetup.dto.PurchaseQuotationDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.PurchaseEnquiryDetailsVO;
 import com.efitops.basesetup.entity.PurchaseEnquiryVO;
+import com.efitops.basesetup.entity.PurchaseIndentDetailsVO;
+import com.efitops.basesetup.entity.PurchaseIndentSummaryVO;
 import com.efitops.basesetup.entity.PurchaseIndentVO;
-import com.efitops.basesetup.entity.PurchaseIndentVO1;
-import com.efitops.basesetup.entity.PurchaseIndentVO2;
-import com.efitops.basesetup.entity.PurchaseQuotation1VO;
+import com.efitops.basesetup.entity.PurchaseQuotationDetailsVO;
 import com.efitops.basesetup.entity.PurchaseQuotationAttachmentVO;
 import com.efitops.basesetup.entity.PurchaseQuotationVO;
 import com.efitops.basesetup.exception.ApplicationException;
@@ -43,10 +43,10 @@ import com.efitops.basesetup.repo.ItemRepo;
 import com.efitops.basesetup.repo.PartyMasterRepo;
 import com.efitops.basesetup.repo.PurchaseEnquiryDetailsRepo;
 import com.efitops.basesetup.repo.PurchaseEnquiryRepo;
+import com.efitops.basesetup.repo.PurchaseIndentDetailsRepo;
 import com.efitops.basesetup.repo.PurchaseIndentRepo;
-import com.efitops.basesetup.repo.PurchaseIndentRepo1;
-import com.efitops.basesetup.repo.PurchaseIndentRepo2;
-import com.efitops.basesetup.repo.PurchaseQuotation1Repo;
+import com.efitops.basesetup.repo.PurchaseIndentSummaryRepo;
+import com.efitops.basesetup.repo.PurchaseQuotationDetailsRepo;
 import com.efitops.basesetup.repo.PurchaseQuotationAttachmentRepo;
 import com.efitops.basesetup.repo.PurchaseQuotationRepo;
 
@@ -59,10 +59,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	PurchaseIndentRepo purchaseIndentRepo;
 
 	@Autowired
-	PurchaseIndentRepo1 purchaseIndentRepo1;
+	PurchaseIndentSummaryRepo purchaseIndentSummaryRepo;
 
 	@Autowired
-	PurchaseIndentRepo2 purchaseIndentRepo2;
+	PurchaseIndentDetailsRepo purchaseIndentDetailsRepo;
 
 	@Autowired
 	PartyMasterRepo partyMasterRepo;
@@ -89,7 +89,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	PurchaseQuotationRepo purchaseQuotationRepo;
 	
 	@Autowired
-	PurchaseQuotation1Repo purchaseQuotation1Repo;
+	PurchaseQuotationDetailsRepo purchaseQuotationDetailsRepo;
 	
 	@Autowired
 	PurchaseQuotationAttachmentRepo purchaseQuotationAttachmentRepo;
@@ -162,44 +162,44 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 		if (purchaseIndentDTO.getId() != null) {
 
-			List<PurchaseIndentVO1> purchaseIndentVO1s = purchaseIndentRepo1.findByPurchaseIndentVO(purchaseIndentVO);
-			purchaseIndentRepo1.deleteAll(purchaseIndentVO1s);
+			List<PurchaseIndentDetailsVO> purchaseIndentDetailsVOs = purchaseIndentDetailsRepo.findByPurchaseIndentVO(purchaseIndentVO);
+			purchaseIndentDetailsRepo.deleteAll(purchaseIndentDetailsVOs);
 
-			List<PurchaseIndentVO2> purchaseIndentVO2s = purchaseIndentRepo2.findByPurchaseIndentVO(purchaseIndentVO);
-			purchaseIndentRepo2.deleteAll(purchaseIndentVO2s);
+			List<PurchaseIndentSummaryVO> purchaseIndentSummaryVOs = purchaseIndentSummaryRepo.findByPurchaseIndentVO(purchaseIndentVO);
+			purchaseIndentSummaryRepo.deleteAll(purchaseIndentSummaryVOs);
 
 		}
 
-		List<PurchaseIndentVO1> purchaseIndentVO1s = new ArrayList<PurchaseIndentVO1>();
-		for (PurchaseIndentDTO1 purchaseIndentDTO1 : purchaseIndentDTO.getPurchaseIndentDTO1()) {
+		List<PurchaseIndentDetailsVO> purchaseIndentDetailsVOs = new ArrayList<PurchaseIndentDetailsVO>();
+		for (PurchaseIndentDetailsDTO purchaseIndentDetailsDTO : purchaseIndentDTO.getPurchaseIndentDetailsDTO()) {
 
-			PurchaseIndentVO1 purchaseIndentVO1 = new PurchaseIndentVO1();
-			purchaseIndentVO1.setItem(purchaseIndentDTO1.getItem());
-			purchaseIndentVO1.setItemDescription(purchaseIndentDTO1.getItemDescription());
-			purchaseIndentVO1.setUom(purchaseIndentDTO1.getUom());
-			purchaseIndentVO1.setReqQty(purchaseIndentDTO1.getReqQty());
-			purchaseIndentVO1.setAvlStock(purchaseIndentDTO1.getAvlStock());
-			purchaseIndentVO1.setIndentQty(purchaseIndentDTO.getFgQty() * purchaseIndentDTO1.getReqQty());
+			PurchaseIndentDetailsVO purchaseIndentDetailsVO = new PurchaseIndentDetailsVO();
+			purchaseIndentDetailsVO.setItem(purchaseIndentDetailsDTO.getItem());
+			purchaseIndentDetailsVO.setItemDescription(purchaseIndentDetailsDTO.getItemDescription());
+			purchaseIndentDetailsVO.setUom(purchaseIndentDetailsDTO.getUom());
+			purchaseIndentDetailsVO.setReqQty(purchaseIndentDetailsDTO.getReqQty());
+			purchaseIndentDetailsVO.setAvlStock(purchaseIndentDetailsDTO.getAvlStock());
+			purchaseIndentDetailsVO.setIndentQty(purchaseIndentDTO.getFgQty() * purchaseIndentDetailsDTO.getReqQty());
 
-			purchaseIndentVO1.setPurchaseIndentVO(purchaseIndentVO);
-			purchaseIndentVO1s.add(purchaseIndentVO1);
+			purchaseIndentDetailsVO.setPurchaseIndentVO(purchaseIndentVO);
+			purchaseIndentDetailsVOs.add(purchaseIndentDetailsVO);
 		}
 
-		purchaseIndentVO.setPurchaseIndentVO1(purchaseIndentVO1s);
+		purchaseIndentVO.setPurchaseIndentDetailsVO(purchaseIndentDetailsVOs);
 
-		List<PurchaseIndentVO2> purchaseIndentVO2s = new ArrayList<PurchaseIndentVO2>();
-		for (PurchaseIndentDTO2 purchaseIndentDTO2 : purchaseIndentDTO.getPurchaseIndentDTO2()) {
+		List<PurchaseIndentSummaryVO> purchaseIndentSummaryVOs = new ArrayList<PurchaseIndentSummaryVO>();
+		for (PurchaseIndentSummaryDTO purchaseIndentSummaryDTO : purchaseIndentDTO.getPurchaseIndentSummaryDTO()) {
 
-			PurchaseIndentVO2 purchaseIndentVO2 = new PurchaseIndentVO2();
+			PurchaseIndentSummaryVO purchaseIndentSummaryVO = new PurchaseIndentSummaryVO();
 
-			purchaseIndentVO2.setVerifiedBy(purchaseIndentDTO2.getVerifiedBy());
-			purchaseIndentVO2.setCancelRemarks(purchaseIndentDTO2.getCancelRemarks());
+			purchaseIndentSummaryVO.setVerifiedBy(purchaseIndentSummaryDTO.getVerifiedBy());
+			purchaseIndentSummaryVO.setCancelRemarks(purchaseIndentSummaryDTO.getCancelRemarks());
 
-			purchaseIndentVO2.setPurchaseIndentVO(purchaseIndentVO);
-			purchaseIndentVO2s.add(purchaseIndentVO2);
+			purchaseIndentSummaryVO.setPurchaseIndentVO(purchaseIndentVO);
+			purchaseIndentSummaryVOs.add(purchaseIndentSummaryVO);
 		}
 
-		purchaseIndentVO.setPurchaseIndentVO2(purchaseIndentVO2s);
+		purchaseIndentVO.setPurchaseIndentSummaryVO(purchaseIndentSummaryVOs);
 		return purchaseIndentVO;
 	}
 	
@@ -334,16 +334,32 @@ public class PurchaseServiceImpl implements PurchaseService {
 		Set<Object[]> workOrderNo = purchaseIndentRepo.findWorkOrderNoForPurchaseIndent(orgId, customerCode);
 		return getWorkOrderNoForPurchaseIndent(workOrderNo);
 	}
-
+	
 	private List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Set<Object[]> workOrderNo) {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : workOrderNo) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("fgPart", ch[1] != null ? ch[1].toString() : "");
-			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
-			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
-			map.put("customerPoNo", ch[4] != null ? ch[4].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getWorkOrderDetailsForPurchaseIndent(Long orgId, String workOrderNo) {
+		Set<Object[]> workOrderDtls = purchaseIndentRepo.findWorkOrderDetailsForPurchaseIndent(orgId, workOrderNo);
+		return getWorkOrderDetailsForPurchaseIndent(workOrderDtls);
+	}
+
+	private List<Map<String, Object>> getWorkOrderDetailsForPurchaseIndent(Set<Object[]> workOrderNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("fgPart", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPartDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgQty", ch[2] != null ? ch[2].toString() : "");
+			map.put("customerPoNo", ch[3] != null ? ch[3].toString() : "");
 
 			List1.add(map);
 		}
@@ -404,8 +420,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private PurchaseEnquiryVO getPurchaseEnquiryVOFromPurchaseEnquiryDTO(PurchaseEnquiryVO purchaseEnquiryVO,
 			@Valid PurchaseEnquiryDTO purchaseEnquiryDTO) {
 
-		purchaseEnquiryVO.setPurchaseEnquiryNo(purchaseEnquiryDTO.getPurchaseEnquiryNo());
-		purchaseEnquiryVO.setPurchaseEnquiryDate(purchaseEnquiryDTO.getPurchaseEnquiryDate());
 		purchaseEnquiryVO.setCustomerName(purchaseEnquiryDTO.getCustomerName());
 		purchaseEnquiryVO.setCustomerCode(purchaseEnquiryDTO.getCustomerCode());
 		purchaseEnquiryVO.setWorkOrderNo(purchaseEnquiryDTO.getWorkOrderNo());
@@ -421,11 +435,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseEnquiryVO.setEnquiryDueDate(purchaseEnquiryDTO.getEnquiryDueDate());
 		purchaseEnquiryVO.setExpectedDeliveryDate(purchaseEnquiryDTO.getExpectedDeliveryDate());
 		purchaseEnquiryVO.setSummary(purchaseEnquiryDTO.getSummary());
-		purchaseEnquiryVO.setBranch(purchaseEnquiryDTO.getBranch());
-		purchaseEnquiryVO.setBranchCode(purchaseEnquiryDTO.getBranchCode());
 		purchaseEnquiryVO.setCreatedBy(purchaseEnquiryDTO.getCreatedBy());
 		purchaseEnquiryVO.setCancelRemarks(purchaseEnquiryDTO.getCancelRemarks());
-		purchaseEnquiryVO.setFinYear(purchaseEnquiryDTO.getFinYear());
 		purchaseEnquiryVO.setOrgId(purchaseEnquiryDTO.getOrgId());
 
 		if (purchaseEnquiryDTO.getId() != null) {
@@ -562,10 +573,27 @@ public class PurchaseServiceImpl implements PurchaseService {
 		for (Object[] ch : workOrderNo) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("fgPart", ch[1] != null ? ch[1].toString() : "");
-			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
-			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
-			map.put("customerPoNo", ch[4] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getWorkOrderDetailsForPurchaseEnquiry(Long orgId, String workOrderNo) {
+		Set<Object[]> workOrderDtls = purchaseEnquiryRepo.findWorkOrderDetailsForPurchaseEnquiry(orgId, workOrderNo);
+		return getWorkOrderDetailsForPurchaseEnquiry(workOrderDtls);
+	}
+
+	private List<Map<String, Object>> getWorkOrderDetailsForPurchaseEnquiry(Set<Object[]> workOrderDtls) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderDtls) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("fgPart", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPartDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgQty", ch[2] != null ? ch[2].toString() : "");
+			map.put("customerPoNo", ch[3] != null ? ch[3].toString() : "");
 
 			List1.add(map);
 		}
@@ -641,39 +669,39 @@ public class PurchaseServiceImpl implements PurchaseService {
 			@Valid PurchaseQuotationDTO purchaseQuotationDTO) {
 		
 		if (purchaseQuotationDTO.getId() != null) {
-		List<PurchaseQuotation1VO> purchaseQuotation1VOs = purchaseQuotation1Repo.findByPurchaseQuotationVO(purchaseQuotationVO);
-		purchaseQuotation1Repo.deleteAll(purchaseQuotation1VOs);
+		List<PurchaseQuotationDetailsVO> purchaseQuotationDetailsVOs = purchaseQuotationDetailsRepo.findByPurchaseQuotationVO(purchaseQuotationVO);
+		purchaseQuotationDetailsRepo.deleteAll(purchaseQuotationDetailsVOs);
 
 		List<PurchaseQuotationAttachmentVO> purchaseQuotationAttachmentVOs = purchaseQuotationAttachmentRepo.findByPurchaseQuotationVO(purchaseQuotationVO);
 		purchaseQuotationAttachmentRepo.deleteAll(purchaseQuotationAttachmentVOs);
 		}
 		
-		List<PurchaseQuotation1VO> purchaseQuotation1VOs = new ArrayList<>();
-		for (PurchaseQuotation1DTO purchaseQuotation1DTO : purchaseQuotationDTO.getPurchaseQuotation1DTO()) {
+		List<PurchaseQuotationDetailsVO> purchaseQuotationDetailsVOs = new ArrayList<>();
+		for (PurchaseQuotationDetailsDTO purchaseQuotationDetailsDTO : purchaseQuotationDTO.getPurchaseQuotationDetailsDTO()) {
 
-			PurchaseQuotation1VO purchaseQuotation1VO = new PurchaseQuotation1VO();
-			purchaseQuotation1VO.setItem(purchaseQuotation1DTO.getItem());
-			purchaseQuotation1VO.setItemDesc(purchaseQuotation1DTO.getItemDesc());
-			purchaseQuotation1VO.setUnit(purchaseQuotation1DTO.getUnit());
-			purchaseQuotation1VO.setQty(purchaseQuotation1DTO.getQty());
-			purchaseQuotation1VO.setUnitPrice(purchaseQuotation1DTO.getUnitPrice());
+			PurchaseQuotationDetailsVO purchaseQuotationDetailsVO = new PurchaseQuotationDetailsVO();
+			purchaseQuotationDetailsVO.setItem(purchaseQuotationDetailsDTO.getItem());
+			purchaseQuotationDetailsVO.setItemDesc(purchaseQuotationDetailsDTO.getItemDesc());
+			purchaseQuotationDetailsVO.setUnit(purchaseQuotationDetailsDTO.getUnit());
+			purchaseQuotationDetailsVO.setQty(purchaseQuotationDetailsDTO.getQty());
+			purchaseQuotationDetailsVO.setUnitPrice(purchaseQuotationDetailsDTO.getUnitPrice());
 		    
-			 basicPrice = purchaseQuotation1DTO.getQty().multiply(purchaseQuotation1DTO.getUnitPrice());
-			purchaseQuotation1VO.setBasicPrice(basicPrice);
+			 basicPrice = purchaseQuotationDetailsDTO.getQty().multiply(purchaseQuotationDetailsDTO.getUnitPrice());
+			purchaseQuotationDetailsVO.setBasicPrice(basicPrice);
 			
-			purchaseQuotation1VO.setDiscount(purchaseQuotation1DTO.getDiscount());
+			purchaseQuotationDetailsVO.setDiscount(purchaseQuotationDetailsDTO.getDiscount());
 			
-		    discountAmount =	basicPrice.divide(BigDecimal.valueOf(100)).multiply(purchaseQuotation1DTO.getDiscount());
-			purchaseQuotation1VO.setDiscountAmount(discountAmount);
+		    discountAmount =	basicPrice.divide(BigDecimal.valueOf(100)).multiply(purchaseQuotationDetailsDTO.getDiscount());
+			purchaseQuotationDetailsVO.setDiscountAmount(discountAmount);
 			
 			quoteAmount = basicPrice.subtract(discountAmount);
-			purchaseQuotation1VO.setQuoteAmount(quoteAmount);
+			purchaseQuotationDetailsVO.setQuoteAmount(quoteAmount);
 
-			purchaseQuotation1VO.setPurchaseQuotationVO(purchaseQuotationVO);
-			purchaseQuotation1VOs.add(purchaseQuotation1VO);
+			purchaseQuotationDetailsVO.setPurchaseQuotationVO(purchaseQuotationVO);
+			purchaseQuotationDetailsVOs.add(purchaseQuotationDetailsVO);
 		}
 
-		purchaseQuotationVO.setPurchaseQuotation1VO(purchaseQuotation1VOs);
+		purchaseQuotationVO.setPurchaseQuotationDetailsVO(purchaseQuotationDetailsVOs);
 
         //Header
 		purchaseQuotationVO.setCustomerName(purchaseQuotationDTO.getCustomerName());
@@ -735,9 +763,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		for (Object[] ch : purchaseEnquiryNo) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("purchaseEnquiryNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("purchaseDate", ch[2] != null ? ch[1].toString() : "");
-			map.put("SupplierNo", ch[3] != null ? ch[2].toString() : "");
-			map.put("SupplierId", ch[4] != null ? ch[3].toString() : "");
+			map.put("purchaseDate", ch[1] != null ? ch[1].toString() : "");
+			map.put("SupplierName", ch[2] != null ? ch[2].toString() : "");
+			map.put("SupplierCode", ch[3] != null ? ch[3].toString() : "");
 
 			List1.add(map);
 		}
@@ -783,10 +811,27 @@ public class PurchaseServiceImpl implements PurchaseService {
 		for (Object[] ch : workOrderNo) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("workOrderNo", ch[0] != null ? ch[0].toString() : "");
-			map.put("fgPart", ch[1] != null ? ch[1].toString() : "");
-			map.put("fgPartDesc", ch[2] != null ? ch[2].toString() : "");
-			map.put("fgQty", ch[3] != null ? ch[3].toString() : "");
-			map.put("customerPoNo", ch[4] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getWorkOrderDetailsForPurchaseQuotation(Long orgId, String customerCode) {
+		Set<Object[]> workOrderDtls = purchaseQuotationRepo.findWorkOrderDetailsForPurchaseQuotation(orgId, customerCode);
+		return getWorkOrderDetailsForPurchaseQuotation(workOrderDtls);
+	}
+
+	private List<Map<String, Object>> getWorkOrderDetailsForPurchaseQuotation(Set<Object[]> workOrderDtls) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : workOrderDtls) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("fgPart", ch[0] != null ? ch[0].toString() : "");
+			map.put("fgPartDesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("fgQty", ch[2] != null ? ch[2].toString() : "");
+			map.put("customerPoNo", ch[3] != null ? ch[3].toString() : "");
 
 			List1.add(map);
 		}

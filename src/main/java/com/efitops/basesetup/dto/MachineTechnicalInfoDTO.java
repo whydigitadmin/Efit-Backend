@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MachineMasterDTO1 {
+public class MachineTechnicalInfoDTO {
 
 	private Long id;
 

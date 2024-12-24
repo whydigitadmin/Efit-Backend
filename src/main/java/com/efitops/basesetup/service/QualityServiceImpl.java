@@ -12,18 +12,36 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.AppearanceInspectionReportDTO;
+import com.efitops.basesetup.dto.DimensionalInspectionReportDTO;
+import com.efitops.basesetup.dto.FinalInspectionReportDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionAppearanceDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionDTO;
 import com.efitops.basesetup.dto.IncomingMaterialInspectionDetailsDTO;
+import com.efitops.basesetup.dto.InprocessAppearanceInspectionDTO;
+import com.efitops.basesetup.dto.InprocessInspectionDTO;
+import com.efitops.basesetup.dto.InprocessInspectionDetailsDTO;
+import com.efitops.basesetup.entity.AppearanceInspectionReportVO;
+import com.efitops.basesetup.entity.DimensionalInspectionReportVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.FinalInspectionReportVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionAppearanceVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionDetailsVO;
 import com.efitops.basesetup.entity.IncomingMaterialInspectionVO;
+import com.efitops.basesetup.entity.InprocessAppearanceInspectionVO;
+import com.efitops.basesetup.entity.InprocessInspectionDetailsVO;
+import com.efitops.basesetup.entity.InprocessInspectionVO;
 import com.efitops.basesetup.exception.ApplicationException;
+import com.efitops.basesetup.repo.AppearanceInspectionReportRepo;
+import com.efitops.basesetup.repo.DimensionalInspectionReportRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
+import com.efitops.basesetup.repo.FinalInspectionReportRepo;
 import com.efitops.basesetup.repo.IncomingMaterialInspectionAppearanceRepo;
 import com.efitops.basesetup.repo.IncomingMaterialInspectionDetailsRepo;
 import com.efitops.basesetup.repo.IncomingMaterialInspectionRepo;
+import com.efitops.basesetup.repo.InprocessAppearanceInspectionRepo;
+import com.efitops.basesetup.repo.InprocessInspectionDetailsRepo;
+import com.efitops.basesetup.repo.InprocessInspectionRepo;
 
 @Service
 public class QualityServiceImpl implements QualityService {
@@ -45,11 +63,29 @@ public class QualityServiceImpl implements QualityService {
 	@Autowired
 	IncomingMaterialInspectionAppearanceRepo incomingMaterialInspectionAppearanceRepo;
 
+	@Autowired
+	InprocessInspectionRepo inprocessInspectionRepo;
+
+	@Autowired
+	InprocessInspectionDetailsRepo inprocessInspectionDetailsRepo;
+
+	@Autowired
+	InprocessAppearanceInspectionRepo inprocessAppearanceInspectionRepo;
+
+	@Autowired
+	FinalInspectionReportRepo finalInspectionReportRepo;
+
+	@Autowired
+	DimensionalInspectionReportRepo dimensionalInspectionReportRepo;
+
+	@Autowired
+	AppearanceInspectionReportRepo appearanceInspectionReportRepo;
+
 	// IncomingMaterialInspection
 
 	@Override
-	public Map<String, Object> createUpdateIncomingMaterialInspection(IncomingMaterialInspectionDTO incomingMaterialInspectionDTO)
-			throws ApplicationException {
+	public Map<String, Object> createUpdateIncomingMaterialInspection(
+			IncomingMaterialInspectionDTO incomingMaterialInspectionDTO) throws ApplicationException {
 		IncomingMaterialInspectionVO incomingMaterialInspectionVO = new IncomingMaterialInspectionVO();
 		String message;
 		String screenCode = "INMI";
@@ -188,7 +224,6 @@ public class QualityServiceImpl implements QualityService {
 
 	@Override
 	public String getIncomingMaterialInspectionDocId(Long orgId) {
-
 		String ScreenCode = "INMI";
 		String result = incomingMaterialInspectionRepo.getIncomingMaterialInspectionDocId(orgId, ScreenCode);
 		return result;
@@ -213,7 +248,7 @@ public class QualityServiceImpl implements QualityService {
 		}
 		return List1;
 
-}
+	}
 
 	@Override
 	public List<Map<String, Object>> getItemNoFromGrn(Long orgId, String grnNo) {
@@ -230,5 +265,319 @@ public class QualityServiceImpl implements QualityService {
 			List1.add(map);
 		}
 		return List1;
-}
+	}
+
+	// InprocesInspection
+
+	@Override
+	public Map<String, Object> createUpdateInprocessInspection(InprocessInspectionDTO inprocessInspectionDTO)
+			throws ApplicationException {
+		InprocessInspectionVO inprocessInspectionVO = new InprocessInspectionVO();
+		String message;
+		String screenCode = "IIN";
+		if (ObjectUtils.isNotEmpty(inprocessInspectionDTO.getId())) {
+			inprocessInspectionVO = inprocessInspectionRepo.findById(inprocessInspectionDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid InprocessInspection details"));
+			message = "InprocessInspection Updated Successfully";
+			inprocessInspectionVO.setUpdatedBy(inprocessInspectionDTO.getCreatedBy());
+
+		} else {
+
+			String docId = inprocessInspectionRepo.getInprocessInspectionDocId(inprocessInspectionDTO.getOrgId(),
+					screenCode);
+			inprocessInspectionVO.setDocId(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(inprocessInspectionDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			inprocessInspectionVO.setCreatedBy(inprocessInspectionDTO.getCreatedBy());
+			inprocessInspectionVO.setUpdatedBy(inprocessInspectionDTO.getCreatedBy());
+
+			message = "InprocessInspection Created Successfully";
+		}
+		createUpdatedInprocessInspectionVOFromInprocessInspectionDTO(inprocessInspectionDTO, inprocessInspectionVO);
+		inprocessInspectionRepo.save(inprocessInspectionVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("inprocessInspectionVO", inprocessInspectionVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdatedInprocessInspectionVOFromInprocessInspectionDTO(
+			InprocessInspectionDTO inprocessInspectionDTO, InprocessInspectionVO inprocessInspectionVO) {
+		inprocessInspectionVO.setRouteCardNo(inprocessInspectionDTO.getRouteCardNo());
+		inprocessInspectionVO.setWorkOrderNo(inprocessInspectionDTO.getWorkOrderNo());
+		inprocessInspectionVO.setPartNo(inprocessInspectionDTO.getPartNo());
+		inprocessInspectionVO.setPartName(inprocessInspectionDTO.getPartName());
+		inprocessInspectionVO.setMaterialDrawingNo(inprocessInspectionDTO.getMaterialDrawingNo());
+		inprocessInspectionVO.setCustomer(inprocessInspectionDTO.getCustomer());
+		inprocessInspectionVO.setLotQty(inprocessInspectionDTO.getLotQty());
+		inprocessInspectionVO.setDrawingNo(inprocessInspectionDTO.getDrawingNo());
+		inprocessInspectionVO.setReceivedQty(inprocessInspectionDTO.getReceivedQty());
+		inprocessInspectionVO.setSampleQty(inprocessInspectionDTO.getSampleQty());
+
+		inprocessInspectionVO.setOrgId(inprocessInspectionDTO.getOrgId());
+		inprocessInspectionVO.setActive(inprocessInspectionDTO.isActive());
+		inprocessInspectionVO.setCreatedBy(inprocessInspectionDTO.getCreatedBy());
+
+		// Summary
+		inprocessInspectionVO.setCheckedBy(inprocessInspectionDTO.getCheckedBy());
+		inprocessInspectionVO.setApprovedBy(inprocessInspectionDTO.getApprovedBy());
+		inprocessInspectionVO.setNaration(inprocessInspectionDTO.getNaration());
+
+		if (ObjectUtils.isNotEmpty(inprocessInspectionDTO.getId())) {
+			List<InprocessInspectionDetailsVO> inprocessInspectionDetailsVO1 = inprocessInspectionDetailsRepo
+					.findByInprocessInspectionVO(inprocessInspectionVO);
+			inprocessInspectionDetailsRepo.deleteAll(inprocessInspectionDetailsVO1);
+
+			List<InprocessAppearanceInspectionVO> inprocessAppearanceInspectionVO1 = inprocessAppearanceInspectionRepo
+					.findByInprocessInspectionVO(inprocessInspectionVO);
+			inprocessAppearanceInspectionRepo.deleteAll(inprocessAppearanceInspectionVO1);
+		}
+
+		List<InprocessInspectionDetailsVO> inprocessInspectionDetailsVOs = new ArrayList<>();
+		for (InprocessInspectionDetailsDTO inprocessInspectionDetailsDTO : inprocessInspectionDTO
+				.getInprocessInspectionDetailsDTO()) {
+			InprocessInspectionDetailsVO inprocessInspectionDetailsVO = new InprocessInspectionDetailsVO();
+			inprocessInspectionDetailsVO.setCharacteristics(inprocessInspectionDetailsDTO.getCharacteristics());
+			inprocessInspectionDetailsVO.setMethodOfInspection(inprocessInspectionDetailsDTO.getMethodOfInspection());
+			inprocessInspectionDetailsVO.setSpecification(inprocessInspectionDetailsDTO.getSpecification());
+			inprocessInspectionDetailsVO.setLsl(inprocessInspectionDetailsDTO.getLsl());
+			inprocessInspectionDetailsVO.setUsl(inprocessInspectionDetailsDTO.getUsl());
+			inprocessInspectionDetailsVO.setSample1(inprocessInspectionDetailsDTO.getSample1());
+			inprocessInspectionDetailsVO.setSample2(inprocessInspectionDetailsDTO.getSample2());
+			inprocessInspectionDetailsVO.setSample3(inprocessInspectionDetailsDTO.getSample3());
+			inprocessInspectionDetailsVO.setSample4(inprocessInspectionDetailsDTO.getSample4());
+			inprocessInspectionDetailsVO.setSample5(inprocessInspectionDetailsDTO.getSample5());
+			inprocessInspectionDetailsVO.setSample6(inprocessInspectionDetailsDTO.getSample6());
+			inprocessInspectionDetailsVO.setSample7(inprocessInspectionDetailsDTO.getSample7());
+			inprocessInspectionDetailsVO.setSample8(inprocessInspectionDetailsDTO.getSample8());
+			inprocessInspectionDetailsVO.setRemarks(inprocessInspectionDetailsDTO.getRemarks());
+			inprocessInspectionDetailsVO.setInprocessInspectionVO(inprocessInspectionVO);
+			inprocessInspectionDetailsVOs.add(inprocessInspectionDetailsVO);
+		}
+		inprocessInspectionVO.setInprocessInspectionDetailsVO(inprocessInspectionDetailsVOs);
+
+		List<InprocessAppearanceInspectionVO> inprocessAppearanceInspectionVOs = new ArrayList<>();
+		for (InprocessAppearanceInspectionDTO inprocessAppearanceInspectionDTO : inprocessInspectionDTO
+				.getInprocessAppearanceInspectionDTO()) {
+			InprocessAppearanceInspectionVO inprocessAppearanceInspectionVO = new InprocessAppearanceInspectionVO();
+			inprocessAppearanceInspectionVO.setCharacteristics(inprocessAppearanceInspectionDTO.getCharacteristics());
+			inprocessAppearanceInspectionVO
+					.setMethodOfInspection(inprocessAppearanceInspectionDTO.getMethodOfInspection());
+			inprocessAppearanceInspectionVO.setSpecification(inprocessAppearanceInspectionDTO.getSpecification());
+			inprocessAppearanceInspectionVO.setObservation(inprocessAppearanceInspectionDTO.getObservation());
+			inprocessAppearanceInspectionVO.setRemarks1(inprocessAppearanceInspectionDTO.getRemarks1());
+			inprocessAppearanceInspectionVO.setInprocessInspectionVO(inprocessInspectionVO);
+			inprocessAppearanceInspectionVOs.add(inprocessAppearanceInspectionVO);
+		}
+		inprocessInspectionVO.setInprocessAppearanceInspectionVO(inprocessAppearanceInspectionVOs);
+	}
+
+	@Override
+	public List<InprocessInspectionVO> getAllInprocessInspectionByOrgId(Long orgId) {
+
+		return inprocessInspectionRepo.getAllInprocessInspectionByOrgId(orgId);
+	}
+
+	@Override
+	public InprocessInspectionVO getInprocessInspectionById(Long id) {
+
+		return inprocessInspectionRepo.getInprocessInspectionById(id);
+	}
+
+	@Override
+	public String getInprocessInspectionDocId(Long orgId) {
+		String ScreenCode = "IIN";
+		String result = inprocessInspectionRepo.getInprocessInspectionDocId(orgId, ScreenCode);
+		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDocIdFromRouteCardNumber(Long orgId) {
+		Set<Object[]> chType = inprocessInspectionRepo.getDocIdFromRouteCardNumber(orgId);
+		return getDocIdFromRoute(chType);
+	}
+
+	private List<Map<String, Object>> getDocIdFromRoute(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNumber", ch[0] != null ? ch[0].toString() : "");
+			map.put("workOrderNumber", ch[1] != null ? ch[1].toString() : "");
+			map.put("partNo", ch[2] != null ? ch[2].toString() : "");
+			map.put("partName", ch[3] != null ? ch[3].toString() : "");
+			map.put("customerName", ch[4] != null ? ch[4].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDrawingNumberFromDrawingMaster(Long orgId, String fgPartno) {
+		Set<Object[]> chType = inprocessInspectionRepo.getDrawingNumberFromDrawingMaster(orgId, fgPartno);
+		return getDrawingNumber(chType);
+	}
+
+	private List<Map<String, Object>> getDrawingNumber(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("drawingNo", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getEmployeeNameFromEmployeeMaster(Long orgId) {
+		Set<Object[]> chType = inprocessInspectionRepo.getEmployeeNameFromEmployeeMaster(orgId);
+		return getEmployee(chType);
+	}
+
+	private List<Map<String, Object>> getEmployee(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("employee", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	// FinalInspectionReport
+
+	@Override
+	public Map<String, Object> createUpdateFinalInspectionReport(FinalInspectionReportDTO finalInspectionReportDTO)
+			throws ApplicationException {
+		FinalInspectionReportVO finalInspectionReportVO = new FinalInspectionReportVO();
+		String message;
+		String screenCode = "FINR";
+		if (ObjectUtils.isNotEmpty(finalInspectionReportDTO.getId())) {
+			finalInspectionReportVO = finalInspectionReportRepo.findById(finalInspectionReportDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid FinalInspectionReport details"));
+			message = "FinalInspectionReport Updated Successfully";
+			finalInspectionReportVO.setUpdatedBy(finalInspectionReportDTO.getCreatedBy());
+
+		} else {
+
+			String docId = finalInspectionReportRepo.getFinalInspectionReportDocId(finalInspectionReportDTO.getOrgId(),
+					screenCode);
+			finalInspectionReportVO.setDocId(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(finalInspectionReportDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			finalInspectionReportVO.setCreatedBy(finalInspectionReportDTO.getCreatedBy());
+			finalInspectionReportVO.setUpdatedBy(finalInspectionReportDTO.getCreatedBy());
+
+			message = "FinalInspectionReport Created Successfully";
+		}
+		createUpdatedFinalInspectionReportVOFromFinalInspectionReportDTO(finalInspectionReportDTO,
+				finalInspectionReportVO);
+		finalInspectionReportRepo.save(finalInspectionReportVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("finalInspectionReportVO", finalInspectionReportVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdatedFinalInspectionReportVOFromFinalInspectionReportDTO(
+			FinalInspectionReportDTO finalInspectionReportDTO, FinalInspectionReportVO finalInspectionReportVO) {
+		finalInspectionReportVO.setRouteCard(finalInspectionReportDTO.getRouteCard());
+		finalInspectionReportVO.setPartName(finalInspectionReportDTO.getPartName());
+		finalInspectionReportVO.setPartNo(finalInspectionReportDTO.getPartNo());
+		finalInspectionReportVO.setUntis(finalInspectionReportDTO.getUntis());
+		finalInspectionReportVO.setCustomer(finalInspectionReportDTO.getCustomer());
+		finalInspectionReportVO.setPoNo(finalInspectionReportDTO.getPoNo());
+		finalInspectionReportVO.setInspectionDate(finalInspectionReportDTO.getInspectionDate());
+		finalInspectionReportVO.setInvoiceNo(finalInspectionReportDTO.getInvoiceNo());
+		finalInspectionReportVO.setLotQty(finalInspectionReportDTO.getLotQty());
+		finalInspectionReportVO.setSampleQty(finalInspectionReportDTO.getSampleQty());
+
+		finalInspectionReportVO.setOrgId(finalInspectionReportDTO.getOrgId());
+		finalInspectionReportVO.setActive(finalInspectionReportDTO.isActive());
+		finalInspectionReportVO.setCreatedBy(finalInspectionReportDTO.getCreatedBy());
+
+		// Summary
+		finalInspectionReportVO.setCheckedBy(finalInspectionReportDTO.getCheckedBy());
+		finalInspectionReportVO.setApprovedBy(finalInspectionReportDTO.getApprovedBy());
+		finalInspectionReportVO.setNaration(finalInspectionReportDTO.getNaration());
+
+		if (ObjectUtils.isNotEmpty(finalInspectionReportDTO.getId())) {
+			List<DimensionalInspectionReportVO> dimensionalInspectionReportVO1 = dimensionalInspectionReportRepo
+					.findByFinalInspectionReportVO(finalInspectionReportVO);
+			dimensionalInspectionReportRepo.deleteAll(dimensionalInspectionReportVO1);
+
+			List<AppearanceInspectionReportVO> appearanceInspectionReportVO1 = appearanceInspectionReportRepo
+					.findByFinalInspectionReportVO(finalInspectionReportVO);
+			appearanceInspectionReportRepo.deleteAll(appearanceInspectionReportVO1);
+		}
+
+		List<DimensionalInspectionReportVO> dimensionalInspectionReportVOs = new ArrayList<>();
+		for (DimensionalInspectionReportDTO dimensionalInspectionReportDTO : finalInspectionReportDTO
+				.getDimensionalInspectionReportDTO()) {
+			DimensionalInspectionReportVO dimensionalInspectionReportVO = new DimensionalInspectionReportVO();
+			dimensionalInspectionReportVO.setCharacteristics(dimensionalInspectionReportDTO.getCharacteristics());
+			dimensionalInspectionReportVO.setMethodOfInspection(dimensionalInspectionReportDTO.getMethodOfInspection());
+			dimensionalInspectionReportVO.setSpecification(dimensionalInspectionReportDTO.getSpecification());
+			dimensionalInspectionReportVO.setLsl(dimensionalInspectionReportDTO.getLsl());
+			dimensionalInspectionReportVO.setUsl(dimensionalInspectionReportDTO.getUsl());
+			dimensionalInspectionReportVO.setSample1(dimensionalInspectionReportDTO.getSample1());
+			dimensionalInspectionReportVO.setSample2(dimensionalInspectionReportDTO.getSample2());
+			dimensionalInspectionReportVO.setSample3(dimensionalInspectionReportDTO.getSample3());
+			dimensionalInspectionReportVO.setSample4(dimensionalInspectionReportDTO.getSample4());
+			dimensionalInspectionReportVO.setSample5(dimensionalInspectionReportDTO.getSample5());
+			dimensionalInspectionReportVO.setSample6(dimensionalInspectionReportDTO.getSample6());
+			dimensionalInspectionReportVO.setSample7(dimensionalInspectionReportDTO.getSample7());
+			dimensionalInspectionReportVO.setSample8(dimensionalInspectionReportDTO.getSample8());
+			dimensionalInspectionReportVO.setSample9(dimensionalInspectionReportDTO.getSample9());
+			dimensionalInspectionReportVO.setSample10(dimensionalInspectionReportDTO.getSample10());
+			dimensionalInspectionReportVO.setRemarks(dimensionalInspectionReportDTO.getRemarks());
+			dimensionalInspectionReportVO.setFinalInspectionReportVO(finalInspectionReportVO);
+			dimensionalInspectionReportVOs.add(dimensionalInspectionReportVO);
+		}
+		finalInspectionReportVO.setDimensionalInspectionReportVO(dimensionalInspectionReportVOs);
+
+		List<AppearanceInspectionReportVO> appearanceInspectionReportVOs = new ArrayList<>();
+		for (AppearanceInspectionReportDTO appearanceInspectionReportDTO : finalInspectionReportDTO
+				.getAppearanceInspectionReportDTO()) {
+			AppearanceInspectionReportVO appearanceInspectionReportVO = new AppearanceInspectionReportVO();
+			appearanceInspectionReportVO.setCharacteristics(appearanceInspectionReportDTO.getCharacteristics());
+			appearanceInspectionReportVO.setMethodOfInspection(appearanceInspectionReportDTO.getMethodOfInspection());
+			appearanceInspectionReportVO.setSpecification(appearanceInspectionReportDTO.getSpecification());
+			appearanceInspectionReportVO.setLsl(appearanceInspectionReportDTO.getLsl());
+			appearanceInspectionReportVO.setUsl(appearanceInspectionReportDTO.getUsl());
+			appearanceInspectionReportVO.setObservation(appearanceInspectionReportDTO.getObservation());
+			appearanceInspectionReportVO.setRemarks(appearanceInspectionReportDTO.getRemarks());
+			appearanceInspectionReportVO.setFinalInspectionReportVO(finalInspectionReportVO);
+			appearanceInspectionReportVOs.add(appearanceInspectionReportVO);
+		}
+		finalInspectionReportVO.setAppearanceInspectionReportVO(appearanceInspectionReportVOs);
+	}
+
+	@Override
+	public List<FinalInspectionReportVO> getAllFinalInspectionReportByOrgId(Long orgId) {
+
+		return finalInspectionReportRepo.getAllFinalInspectionReportByOrgId(orgId);
+	}
+
+	@Override
+	public FinalInspectionReportVO getFinalInspectionReportById(Long id) {
+
+		return finalInspectionReportRepo.getFinalInspectionReportById(id);
+	}
+
+	@Override
+	public String getFinalInspectionReportDocId(Long orgId) {
+		String ScreenCode = "FINR";
+		String result = finalInspectionReportRepo.getFinalInspectionReportDocId(orgId, ScreenCode);
+		return result;
+	}
 }

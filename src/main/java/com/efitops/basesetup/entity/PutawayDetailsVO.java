@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_putawaydetails")
+@Table(name = "putawaydetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 public class PutawayDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_putawaydetailsgen")
-	@SequenceGenerator(name = "t_putawaydetailsgen", sequenceName = "t_putawaydetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "putawaydetailsgen")
+	@SequenceGenerator(name = "putawaydetailsgen", sequenceName = "putawaydetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "putawaydetailsid")
 	private Long id;
 

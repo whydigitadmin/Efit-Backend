@@ -348,7 +348,8 @@ public class GrnController extends BaseController {
 	}
 
 	@GetMapping("/getThirdPartyDetailsForThirdPartyInsp")
-	public ResponseEntity<ResponseDTO> getThirdPartyDetailsForThirdPartyInsp(@RequestParam(required = false) Long orgId) {
+	public ResponseEntity<ResponseDTO> getThirdPartyDetailsForThirdPartyInsp(
+			@RequestParam(required = false) Long orgId) {
 		String methodName = "getThirdPartyDetailsForThirdPartyInsp()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -374,7 +375,7 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@GetMapping("/getThirdPartyInspectionById")
 	public ResponseEntity<ResponseDTO> getThirdPartyInspectionById(@RequestParam Long id) {
 		String methodName = "getThirdPartyInspectionById()";
@@ -472,19 +473,20 @@ public class GrnController extends BaseController {
 			LOGGER.error("Unable To Upload File", methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FileUpload for Third Party attachment Successfully Upload");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"FileUpload for Third Party attachment Successfully Upload");
 			responseObjectsMap.put("thirdPartyAttachmentVO", thirdPartyAttachmentVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "FileUpload for Third Party attachment Upload Failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"FileUpload for Third Party attachment Upload Failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// Purchase Order
-	
+
 	@GetMapping("/getPurchaseOrderByOrgId")
 	public ResponseEntity<ResponseDTO> getPurchaseOrderByOrgId(@RequestParam Long orgId) {
 		String methodName = "getPurchaseOrderByOrgId()";
@@ -510,70 +512,67 @@ public class GrnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-		
-		@GetMapping("/getPurchaseOrderById")
-		public ResponseEntity<ResponseDTO> getPurchaseOrderById(@RequestParam Long id) {
-			String methodName = "getPurchaseOrderById()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
-			try {
-				purchaseOrderVO = grnService.getPurchaseOrderById(id);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						"Purchase Order information get successfully By Id");
-				responseObjectsMap.put("thirdPartyInspectionVO", purchaseOrderVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Purchase Order information receive failed By Id", errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		
-	}
-		
 
-		@GetMapping("/getPurchaseOrderDocId")
-		public ResponseEntity<ResponseDTO> getPurchaseOrderDocId(@RequestParam Long orgId) {
-
-			String methodName = "getPurchaseOrderDocId()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			String mapp = "";
-
-			try {
-				mapp = grnService.getPurchaseOrderDocId(orgId);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						"Purchase Order DocId information retrieved successfully");
-				responseObjectsMap.put("poNo", mapp);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Failed to retrieve Purchase Order DocId information", errorMsg);
-			}
-
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+	@GetMapping("/getPurchaseOrderById")
+	public ResponseEntity<ResponseDTO> getPurchaseOrderById(@RequestParam Long id) {
+		String methodName = "getPurchaseOrderById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PurchaseOrderVO> purchaseOrderVO = new ArrayList<>();
+		try {
+			purchaseOrderVO = grnService.getPurchaseOrderById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Purchase Order information get successfully By Id");
+			responseObjectsMap.put("thirdPartyInspectionVO", purchaseOrderVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Purchase Order information receive failed By Id", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+
+	@GetMapping("/getPurchaseOrderDocId")
+	public ResponseEntity<ResponseDTO> getPurchaseOrderDocId(@RequestParam Long orgId) {
+
+		String methodName = "getPurchaseOrderDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = grnService.getPurchaseOrderDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Purchase Order DocId information retrieved successfully");
+			responseObjectsMap.put("poNo", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve Purchase Order DocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 	@PutMapping("/updateCreatePurchaseOrder")
-	public ResponseEntity<ResponseDTO> updateCreatePurchaseOrder(
-			@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
+	public ResponseEntity<ResponseDTO> updateCreatePurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
 		String methodName = "updateCreatePurchaseOrder()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -592,9 +591,10 @@ public class GrnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getSupplierAddressForPurchaseOrder")
-	public ResponseEntity<ResponseDTO> getSupplierAddressForPurchaseOrder(@RequestParam(required = false) Long orgId,String supplierName) {
+	public ResponseEntity<ResponseDTO> getSupplierAddressForPurchaseOrder(@RequestParam(required = false) Long orgId,
+			String supplierName) {
 		String methodName = "getSupplierAddressForPurchaseOrder()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -602,7 +602,7 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> chCode = new ArrayList<>();
 		try {
-			chCode = grnService.getSupplierAddressForPurchaseOrder(orgId,supplierName);
+			chCode = grnService.getSupplierAddressForPurchaseOrder(orgId, supplierName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -620,10 +620,10 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@GetMapping("/getPurchaseIndentForPurchaseOrder")
-	public ResponseEntity<ResponseDTO> getPurchaseIndentForPurchaseOrder(@RequestParam(required = false) Long orgId, String customerCode,
-			String workorderno, String basedOn) {
+	public ResponseEntity<ResponseDTO> getPurchaseIndentForPurchaseOrder(@RequestParam(required = false) Long orgId,
+			String customerCode, String workorderno, String basedOn) {
 		String methodName = "getPurchaseIndentForPurchaseOrder()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -631,7 +631,7 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> chCode = new ArrayList<>();
 		try {
-			chCode = grnService.getPurchaseIndentForPurchaseOrder(orgId,customerCode,workorderno,basedOn);
+			chCode = grnService.getPurchaseIndentForPurchaseOrder(orgId, customerCode, workorderno, basedOn);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -649,10 +649,10 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@GetMapping("/getQuotationForPurchaseOrder")
-	public ResponseEntity<ResponseDTO> getQuotationForPurchaseOrder(@RequestParam(required = false) Long orgId, String customerCode,
-			String workorderno, String basedOn) {
+	public ResponseEntity<ResponseDTO> getQuotationForPurchaseOrder(@RequestParam(required = false) Long orgId,
+			String customerCode, String workorderno, String basedOn) {
 		String methodName = "getQuotationForPurchaseOrder()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -660,14 +660,13 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> chCode = new ArrayList<>();
 		try {
-			chCode = grnService.getQuotationForPurchaseOrder(orgId,customerCode,workorderno,basedOn);
+			chCode = grnService.getQuotationForPurchaseOrder(orgId, customerCode, workorderno, basedOn);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					" Quotation information get successfully By OrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, " Quotation information get successfully By OrgId");
 			responseObjectsMap.put("chCode", chCode);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
@@ -680,7 +679,9 @@ public class GrnController extends BaseController {
 	}
 
 	@GetMapping("/getItemForPurchaseOrder")
-	public ResponseEntity<ResponseDTO> getItemForPurchaseOrder(@RequestParam(required = false)Long orgId, String purchaseIndentNo,String quotationNo) {
+	public ResponseEntity<ResponseDTO> getItemForPurchaseOrder(@RequestParam Long orgId,
+			@RequestParam(required = false) String purchaseIndentNo,
+			@RequestParam(required = false) String quotationNo) {
 		String methodName = "getItemForPurchaseOrder()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -688,25 +689,22 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> chCode = new ArrayList<>();
 		try {
-			chCode = grnService.getItemForPurchaseOrder(orgId,purchaseIndentNo,quotationNo);
+			chCode = grnService.getItemForPurchaseOrder(orgId, purchaseIndentNo, quotationNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					" PO Item information get successfully By OrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, " PO Item information get successfully By OrgId");
 			responseObjectsMap.put("chCode", chCode);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"PO Item information receive failed By OrgId", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "PO Item information receive failed By OrgId",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
-	
-	
+
 }

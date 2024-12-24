@@ -18,30 +18,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchaseindent1")
+@Table(name = "purchaseindentsummary")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PurchaseIndentVO1 {
+public class PurchaseIndentSummaryVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "purchaseindent1gen")
-	@SequenceGenerator(name = "purchaseindent1gen", sequenceName = "purchaseindent1seq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "purchaseindent1id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "purchaseindentsummarygen")
+	@SequenceGenerator(name = "purchaseindentsummarygen", sequenceName = "purchaseindentsummaryseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "purchaseindentsummaryid")
 	
 	private Long id;
-	
-	private String item;
-	@Column(name ="itemdesc")
-	private String itemDescription;
-	private String uom;
-	@Column(name ="reqqty")
-	private Long reqQty;
-	@Column(name ="avlstock")
-	private Long avlStock;
-	@Column(name ="indentqty")
-	private Long indentQty;
+	@Column(name ="verifiedby")
+	private String verifiedBy;
+	@Column(name ="cancelremarks")
+	private String cancelRemarks;
 	
 	@ManyToOne
 	@JsonBackReference

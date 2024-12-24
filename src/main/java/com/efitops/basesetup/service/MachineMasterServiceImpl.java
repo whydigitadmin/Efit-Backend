@@ -20,18 +20,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.efitops.basesetup.dto.DrawingMaster1DTO;
 import com.efitops.basesetup.dto.DrawingMaster2DTO;
 import com.efitops.basesetup.dto.DrawingMasterDTO;
+import com.efitops.basesetup.dto.MachineCapacityDTO;
 import com.efitops.basesetup.dto.MachineMasterDTO;
-import com.efitops.basesetup.dto.MachineMasterDTO1;
-import com.efitops.basesetup.dto.MachineMasterDTO2;
+import com.efitops.basesetup.dto.MachineTechnicalInfoDTO;
 import com.efitops.basesetup.dto.StockLocationDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.entity.DrawingMaster2VO;
 import com.efitops.basesetup.entity.DrawingMasterVO;
+import com.efitops.basesetup.entity.MachineCapacityVO;
 import com.efitops.basesetup.entity.MachineMasterVO;
-import com.efitops.basesetup.entity.MachineMasterVO1;
-import com.efitops.basesetup.entity.MachineMasterVO2;
-import com.efitops.basesetup.entity.MachineMasterVO3;
+import com.efitops.basesetup.entity.MachineTechnicalInfoVO;
 import com.efitops.basesetup.entity.StockLocationRepo;
 import com.efitops.basesetup.entity.StockLocationVO;
 import com.efitops.basesetup.exception.ApplicationException;
@@ -40,10 +39,9 @@ import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.DrawingMaster1Repo;
 import com.efitops.basesetup.repo.DrawingMaster2Repo;
 import com.efitops.basesetup.repo.DrawingMasterRepo;
+import com.efitops.basesetup.repo.MachineCapacityRepo;
 import com.efitops.basesetup.repo.MachineMasterRepo;
-import com.efitops.basesetup.repo.MachineMasterRepo1;
-import com.efitops.basesetup.repo.MachineMasterRepo2;
-import com.efitops.basesetup.repo.MachineMasterRepo3;
+import com.efitops.basesetup.repo.MachineTechnicalInfoRepo;
 
 @Service
 public class MachineMasterServiceImpl implements MachineMasterService {
@@ -52,13 +50,10 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 	MachineMasterRepo machineMasterRepo;
 
 	@Autowired
-	MachineMasterRepo1 machineMasterRepo1;
+	MachineTechnicalInfoRepo machineTechnicalInfoRepo;
 
 	@Autowired
-	MachineMasterRepo2 machineMasterRepo2;
-
-	@Autowired
-	MachineMasterRepo3 machineMasterRepo3;
+	MachineCapacityRepo machineCapacityRepo;
 
 	@Autowired
 	StockLocationRepo stockLocationRepo;
@@ -157,79 +152,66 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 
 		if (machineMasterDTO.getId() != null) {
 
-			List<MachineMasterVO1> machineMasterVO1s = machineMasterRepo1.findByMachineMasterVO(machineMasterVO);
-			machineMasterRepo1.deleteAll(machineMasterVO1s);
+			List<MachineTechnicalInfoVO> machineTechnicalInfoVOs = machineTechnicalInfoRepo.findByMachineMasterVO(machineMasterVO);
+			machineTechnicalInfoRepo.deleteAll(machineTechnicalInfoVOs);
 
-			List<MachineMasterVO2> machineMasterVO2s = machineMasterRepo2.findByMachineMasterVO(machineMasterVO);
-			machineMasterRepo2.deleteAll(machineMasterVO2s);
+			List<MachineCapacityVO> machineCapacityVOs = machineCapacityRepo.findByMachineMasterVO(machineMasterVO);
+			machineCapacityRepo.deleteAll(machineCapacityVOs);
 
 //			List<MachineMasterVO3> machineMasterVO3s = machineMasterRepo3.findByMachineMasterVO(machineMasterVO);
 //			machineMasterRepo3.deleteAll(machineMasterVO3s);
 
 		}
 
-		List<MachineMasterVO1> MachineMasterVO1s = new ArrayList<>();
-		for (MachineMasterDTO1 machineMasterDTO1 : machineMasterDTO.getMachineMasterDTO1()) {
-			MachineMasterVO1 machineMasterVO1 = new MachineMasterVO1();
+		List<MachineTechnicalInfoVO> MachineTechnicalInfoVOs = new ArrayList<>();
+		for (MachineTechnicalInfoDTO machineTechnicalInfoDTO : machineMasterDTO.getMachineTechnicalInfoDTO()) {
+			MachineTechnicalInfoVO machineTechnicalInfoVO = new MachineTechnicalInfoVO();
 
-			machineMasterVO1.setInstallationDate(machineMasterDTO1.getInstallationDate());
-			machineMasterVO1.setPowerConsumption(machineMasterDTO1.getPowerConsumption());
-			machineMasterVO1.setConsumption(machineMasterDTO1.getConsumption());
-			machineMasterVO1.setPowerProduced(machineMasterDTO1.getPowerProduced());
-			machineMasterVO1.setCapacity(machineMasterDTO1.getCapacity());
-			machineMasterVO1.setUnit(machineMasterDTO1.getUnit());
-			machineMasterVO1.setBedSize(machineMasterDTO1.getBedSize());
-			machineMasterVO1.setCurrentInAmps(machineMasterDTO1.getCurrentInAmps());
-			machineMasterVO1.setVoltage(machineMasterDTO1.getVoltage());
-			machineMasterVO1.setCushionTonnage(machineMasterDTO1.getCushionTonnage());
-			machineMasterVO1.setMachineType(machineMasterDTO1.getMachineType());
-			machineMasterVO1.setHourlyRate(machineMasterDTO1.getHourlyRate());
-			machineMasterVO1.setInstrumentWt(machineMasterDTO1.getInstrumentWt());
-			machineMasterVO1.setUom(machineMasterDTO1.getUom());
-			machineMasterVO1.setWarrantyStDate(machineMasterDTO1.getWarrantyStDate());
-			machineMasterVO1.setWarrantyEndDate(machineMasterDTO1.getWarrantyEndDate());
-			machineMasterVO1.setLastCalibratedDate(machineMasterDTO1.getLastCalibratedDate());
-			machineMasterVO1.setNextDueDate(machineMasterDTO1.getNextDueDate());
-			machineMasterVO1.setLifeCycle(machineMasterDTO1.getLifeCycle());
-			machineMasterVO1.setRangeInfo(machineMasterDTO1.getRangeInfo());
-			machineMasterVO1.setErrorAllowed(machineMasterDTO1.getErrorAllowed());
-			machineMasterVO1.setFrequenceOfCalibration(machineMasterDTO1.getFrequenceOfCalibration());
-			machineMasterVO1.setMaintenanceDate(machineMasterDTO1.getMaintenanceDate());
+			machineTechnicalInfoVO.setInstallationDate(machineTechnicalInfoDTO.getInstallationDate());
+			machineTechnicalInfoVO.setPowerConsumption(machineTechnicalInfoDTO.getPowerConsumption());
+			machineTechnicalInfoVO.setConsumption(machineTechnicalInfoDTO.getConsumption());
+			machineTechnicalInfoVO.setPowerProduced(machineTechnicalInfoDTO.getPowerProduced());
+			machineTechnicalInfoVO.setCapacity(machineTechnicalInfoDTO.getCapacity());
+			machineTechnicalInfoVO.setUnit(machineTechnicalInfoDTO.getUnit());
+			machineTechnicalInfoVO.setBedSize(machineTechnicalInfoDTO.getBedSize());
+			machineTechnicalInfoVO.setCurrentInAmps(machineTechnicalInfoDTO.getCurrentInAmps());
+			machineTechnicalInfoVO.setVoltage(machineTechnicalInfoDTO.getVoltage());
+			machineTechnicalInfoVO.setCushionTonnage(machineTechnicalInfoDTO.getCushionTonnage());
+			machineTechnicalInfoVO.setMachineType(machineTechnicalInfoDTO.getMachineType());
+			machineTechnicalInfoVO.setHourlyRate(machineTechnicalInfoDTO.getHourlyRate());
+			machineTechnicalInfoVO.setInstrumentWt(machineTechnicalInfoDTO.getInstrumentWt());
+			machineTechnicalInfoVO.setUom(machineTechnicalInfoDTO.getUom());
+			machineTechnicalInfoVO.setWarrantyStDate(machineTechnicalInfoDTO.getWarrantyStDate());
+			machineTechnicalInfoVO.setWarrantyEndDate(machineTechnicalInfoDTO.getWarrantyEndDate());
+			machineTechnicalInfoVO.setLastCalibratedDate(machineTechnicalInfoDTO.getLastCalibratedDate());
+			machineTechnicalInfoVO.setNextDueDate(machineTechnicalInfoDTO.getNextDueDate());
+			machineTechnicalInfoVO.setLifeCycle(machineTechnicalInfoDTO.getLifeCycle());
+			machineTechnicalInfoVO.setRangeInfo(machineTechnicalInfoDTO.getRangeInfo());
+			machineTechnicalInfoVO.setErrorAllowed(machineTechnicalInfoDTO.getErrorAllowed());
+			machineTechnicalInfoVO.setFrequenceOfCalibration(machineTechnicalInfoDTO.getFrequenceOfCalibration());
+			machineTechnicalInfoVO.setMaintenanceDate(machineTechnicalInfoDTO.getMaintenanceDate());
 
-			machineMasterVO1.setMachineMasterVO(machineMasterVO);
-			MachineMasterVO1s.add(machineMasterVO1);
+			machineTechnicalInfoVO.setMachineMasterVO(machineMasterVO);
+			MachineTechnicalInfoVOs.add(machineTechnicalInfoVO);
 		}
-		machineMasterVO.setMachineMasterVO1(MachineMasterVO1s);
+		machineMasterVO.setMachineTechnicalInfoVO(MachineTechnicalInfoVOs);
 
-		List<MachineMasterVO2> MachineMasterVO2s = new ArrayList<>();
-		for (MachineMasterDTO2 machineMasterDTO2 : machineMasterDTO.getMachineMasterDTO2()) {
-			MachineMasterVO2 machineMasterVO2 = new MachineMasterVO2();
+		List<MachineCapacityVO> MachineCapacityVOs = new ArrayList<>();
+		for (MachineCapacityDTO machineCapacityDTO : machineMasterDTO.getMachineCapacityDTO()) {
+			MachineCapacityVO machineCapacityVO = new MachineCapacityVO();
 
-			machineMasterVO2.setItemDescription(machineMasterDTO2.getItemDescription());
-			machineMasterVO2.setCycleTime(machineMasterDTO2.getCycleTime());
-			machineMasterVO2.setProdQtyHr(machineMasterDTO2.getProdQtyHr());
-			machineMasterVO2.setOperationName(machineMasterDTO2.getOperationName());
-			machineMasterVO2.setItemId(machineMasterDTO2.getItemId());
+			machineCapacityVO.setItemDescription(machineCapacityDTO.getItemDescription());
+			machineCapacityVO.setCycleTime(machineCapacityDTO.getCycleTime());
+			machineCapacityVO.setProdQtyHr(machineCapacityDTO.getProdQtyHr());
+			machineCapacityVO.setOperationName(machineCapacityDTO.getOperationName());
+			machineCapacityVO.setItemId(machineCapacityDTO.getItemId());
 
-			machineMasterVO2.setRemarks(machineMasterDTO2.getRemarks());
+			machineCapacityVO.setRemarks(machineCapacityDTO.getRemarks());
 
-			machineMasterVO2.setMachineMasterVO(machineMasterVO);
-			MachineMasterVO2s.add(machineMasterVO2);
+			machineCapacityVO.setMachineMasterVO(machineMasterVO);
+			MachineCapacityVOs.add(machineCapacityVO);
 		}
-		machineMasterVO.setMachineMasterVO2(MachineMasterVO2s);
-
-//		List<MachineMasterVO3> MachineMasterVO3s = new ArrayList<>();
-//		for (MachineMasterDTO3 machineMasterDTO3 : machineMasterDTO.getMachineMasterDTO3()) {
-//			MachineMasterVO3 machineMasterVO3 = new MachineMasterVO3();
-//
-//			machineMasterVO3.setInstrumentName(machineMasterDTO3.getInstrumentName());
-//		//	machineMasterVO3.setAttachments(machineMasterDTO3.getAttachments());
-//			machineMasterVO3.setFilePath(machineMasterDTO3.getFilePath());
-//
-//			machineMasterVO3.setMachineMasterVO(machineMasterVO);
-//			MachineMasterVO3s.add(machineMasterVO3);
-//		}
-//		machineMasterVO.setMachineMasterVO3(MachineMasterVO3s);
+		machineMasterVO.setMachineCapacityVO(MachineCapacityVOs);
 
 		return machineMasterVO;
 
@@ -453,12 +435,66 @@ public class MachineMasterServiceImpl implements MachineMasterService {
 		return drawingMasterRepo.getDrawingMasterById(id);
 	}
 
+//	@Override
+//	public DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException {
+//		DrawingMaster1VO drawingMaster1VO = drawingMaster1Repo.findById(id).get();
+//		drawingMaster1VO.setAttachements(file.getBytes());
+//		return drawingMaster1Repo.save(drawingMaster1VO);
+//	}
+	
+	
 	@Override
-	public DrawingMaster1VO uploadAttachementsInBloob(MultipartFile file, Long id) throws IOException {
-		DrawingMaster1VO drawingMaster1VO = drawingMaster1Repo.findById(id).get();
-		drawingMaster1VO.setAttachements(file.getBytes());
-		return drawingMaster1Repo.save(drawingMaster1VO);
+	public List<DrawingMaster1VO> uploadAttachmentsInBloob(List<MultipartFile> files, List<Long> ids) throws IOException {
+	    List<DrawingMaster1VO> updatedDrawingMasterList = new ArrayList<>();
+
+	    for (int i = 0; i < ids.size(); i++) {
+	        Long id = ids.get(i);
+	        MultipartFile file = files.get(i);
+
+	        // Find the entity by its ID
+	        DrawingMaster1VO drawingMaster1VO = drawingMaster1Repo.findById(id)
+	                .orElseThrow(() -> new RuntimeException("DrawingMaster1VO not found with ID: " + id));
+
+	        // Process the file and set it as the attachment for this entity
+	        drawingMaster1VO.setAttachements(file.getBytes());
+
+	        // Save the updated entity to the database
+	        DrawingMaster1VO updatedDrawingMaster = drawingMaster1Repo.save(drawingMaster1VO);
+
+	        // Add the updated entity to the list
+	        updatedDrawingMasterList.add(updatedDrawingMaster);
+	    }
+
+	    // Return the list of updated entities
+	    return updatedDrawingMasterList;
 	}
+
+	@Override
+	public List<DrawingMaster2VO> uploadAttachmentsInBloob1(List<MultipartFile> files, List<Long> ids) throws IOException {
+	    List<DrawingMaster2VO> updatedDrawingMaster2List = new ArrayList<>();
+
+	    for (int i = 0; i < ids.size(); i++) {
+	        Long id = ids.get(i);
+	        MultipartFile file = files.get(i);
+
+	        // Find the entity by its ID
+	        DrawingMaster2VO drawingMaster2VO = drawingMaster2Repo.findById(id)
+	                .orElseThrow(() -> new RuntimeException("DrawingMaster2VO not found with ID: " + id));
+
+	        // Process the file and set it as the attachment for this entity
+	        drawingMaster2VO.setAttachements(file.getBytes());
+
+	        // Save the updated entity to the database
+	        DrawingMaster2VO updatedDrawingMaster2 = drawingMaster2Repo.save(drawingMaster2VO);
+
+	        // Add the updated entity to the list
+	        updatedDrawingMaster2List.add(updatedDrawingMaster2);
+	    }
+
+	    // Return the list of updated entities
+	    return updatedDrawingMaster2List;
+	}
+
 	
 	@Override
 	public DrawingMaster2VO uploadAttachementsInBloob1(MultipartFile file, Long id) throws IOException {

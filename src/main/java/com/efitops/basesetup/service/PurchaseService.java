@@ -42,6 +42,8 @@ public interface PurchaseService {
 	
 	List<Map<String, Object>> getWorkOrderNoForPurchaseIndent(Long orgId, String customerCode);
 
+	List<Map<String, Object>> getWorkOrderDetailsForPurchaseIndent(Long orgId, String workOrderNo);
+
 	List<Map<String, Object>> getVerifiedByForPurchase(Long orgId);
 
 	
@@ -63,7 +65,10 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> getItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
 
-	List<Map<String, Object>> getWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode);	
+	List<Map<String, Object>> getWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode);
+	
+	List<Map<String, Object>> getWorkOrderDetailsForPurchaseEnquiry(Long orgId, String workOrderNo);
+
 
 	//PurchaseQuotation
 	
@@ -82,6 +87,12 @@ public interface PurchaseService {
 	PurchaseQuotationAttachmentVO uploadPurchaseQuatationAttachementsInBloob(MultipartFile file, Long id) throws IOException;
 
 	List<Map<String, Object>> getWorkOrderNoForPurchaseQuotation(Long orgId, String customerCode);
+
+	List<Map<String, Object>> getWorkOrderDetailsForPurchaseQuotation(Long orgId, String workOrderNo);
+
+
+
+
 
 	
 }

@@ -38,6 +38,6 @@ public interface SubContractEnquiryRepo extends JpaRepository<SubContractEnquiry
 	@Query(nativeQuery = true,value = "select docid from t_routecardentry where orgid=?1 and active=true group by docid")
 	Set<Object[]> getSubRouteCardNo(Long orgId);	
 	
-	@Query(nativeQuery = true,value = "select a.docid from t_issuetosubcontractor a where a.orgid=?1 and a.routecardno=?2 and  a.active=true group by docid")
+	@Query(nativeQuery = true,value = "select a.docid,a.docdate,department from t_issuetosubcontractor a where a.orgid=?1 and a.routecardno=?2 and  a.active=true group by docid")
 	Set<Object[]> getScIssueNoFormSubContract(Long orgId,String routeCardNo);	
 }

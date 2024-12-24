@@ -1,5 +1,6 @@
 package com.efitops.basesetup.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -12,8 +13,6 @@ import lombok.NoArgsConstructor;
 public class PurchaseEnquiryDTO {
 	
 	private Long id;
-    private String purchaseEnquiryNo;
-    private String purchaseEnquiryDate;
     private String customerName;
 	private String customerCode;
     private String workOrderNo;
@@ -26,15 +25,13 @@ public class PurchaseEnquiryDTO {
     private String contactPerson;
     private String contactNo;
     private String enquiryType;
-    private String enquiryDueDate;
-    private String expectedDeliveryDate;
+    private LocalDate enquiryDueDate;
+    private LocalDate expectedDeliveryDate;
     private String summary;
 
- 	private String branch;
- 	private String branchCode;
- 	private String createdBy;
+
+ 	private	 String createdBy;
  	private String cancelRemarks;
- 	private String finYear;
  	private Long orgId;
     
  	private List<PurchaseEnquiryDetailsDTO> purchaseEnquiryDetailsDTO;

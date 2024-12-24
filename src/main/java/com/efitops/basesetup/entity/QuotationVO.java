@@ -1,4 +1,5 @@
 package com.efitops.basesetup.entity;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,40 +35,40 @@ public class QuotationVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_quotationgen")
 	@SequenceGenerator(name = "t_quotationgen", sequenceName = "t_quotationseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "quotationid")
+	@Column(name = "quotationid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name="customername")
-    private String customerName;
-	@Column(name="customerid")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "customername")
+	private String customerName;
+	@Column(name = "customerid")
 	private String customerId;
-	@Column(name="enquiryno")
+	@Column(name = "enquiryno")
 	private String enquiryNo;
-	@Column(name="enquirydate")
+	@Column(name = "enquirydate")
 	private LocalDate enquiryDate;
-	@Column(name="validtill")
+	@Column(name = "validtill")
 	private LocalDate validTill;
-	@Column(name="kindattention")
+	@Column(name = "kindattention")
 	private String kindAttention;
-	@Column(name="contactno")
+	@Column(name = "contactno")
 	private Long contactNo;
-	@Column(name="taxcode")
+	@Column(name = "taxcode")
 	private String taxCode;
-	@Column(name="productionmanager")
+	@Column(name = "productionmanager")
 	private String productionManager;
-	@Column(name="currency")
+	@Column(name = "currency")
 	private String currency;
-	
-	@Column(name="grossamount",precision = 10,scale = 2)
+
+	@Column(name = "grossamount", precision = 10, scale = 2)
 	private BigDecimal grossAmount;
-	@Column(name="netamount",precision = 10,scale = 2)
+	@Column(name = "netamount", precision = 10, scale = 2)
 	private BigDecimal netAmount;
-	@Column(name = "amountinwords",length = 150)
+	@Column(name = "amountinwords", length = 150)
 	private String amountInWords;
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -80,21 +81,20 @@ public class QuotationVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30) 
-	private String screenCode ="QOT";
-	@Column(name = "screenname",length = 30)
-	private String screenName="QUOTATION";
-	
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "QOT";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "QUOTATION";
+
 	@OneToMany(mappedBy = "quotationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<QuotationDetailsVO> quotationDetailsVO;
-	
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";

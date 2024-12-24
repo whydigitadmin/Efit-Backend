@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseIndentDTO2 {
+public class PurchaseIndentSummaryDTO {
 
 	private String verifiedBy;
 	private String cancelRemarks;

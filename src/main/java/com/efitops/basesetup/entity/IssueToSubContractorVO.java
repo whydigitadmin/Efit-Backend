@@ -34,12 +34,12 @@ public class IssueToSubContractorVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_issuetosubcontractorgen")
 	@SequenceGenerator(name = "t_issuetosubcontractorgen", sequenceName = "t_issuetosubcontractorseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "issuetosubcontractorid")
+	@Column(name = "issuetosubcontractorid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "routecardno")
 	private String routeCardNo;
 	@Column(name = "customername")
@@ -58,32 +58,31 @@ public class IssueToSubContractorVO {
 	private String updatedBy;
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="ITSC";
-	@Column(name = "screenname",length = 30)
-	private String screenName="ISSUETOSUBCONTRACTOR";
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "ITSC";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "ISSUETOSUBCONTRACTOR";
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	
-	@OneToMany(mappedBy = "issueToSubContractorVO",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "issueToSubContractorVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<IssueItemDetailsVO> issueItemDetailsVO;
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}
-	
+
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
-}
 
+}

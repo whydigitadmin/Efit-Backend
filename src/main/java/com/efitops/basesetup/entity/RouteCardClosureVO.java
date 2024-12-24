@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_routecardclosure")
+@Table(name = "routecardclosure")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class RouteCardClosureVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_routecardclosuregen")
-	@SequenceGenerator(name = "t_routecardclosuregen", sequenceName = "t_routecardclosureseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "routecardclosuregen")
+	@SequenceGenerator(name = "routecardclosuregen", sequenceName = "routecardclosureseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "routecardclosureid")
 	private Long id;
 	

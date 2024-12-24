@@ -358,6 +358,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 	private void createUpdateRouteCardEntryVOByRouteCardEntryDTO(@Valid RouteCardEntryDTO routeCardEntryDTO, RouteCardEntryVO routeCardEntryVO) {
 		routeCardEntryVO.setCustomerName(routeCardEntryDTO.getCustomerName());
+		routeCardEntryVO.setCustomerCode(routeCardEntryDTO.getCustomerCode());
 		routeCardEntryVO.setWoNo(routeCardEntryDTO.getWoNo());
 		routeCardEntryVO.setFgPartName(routeCardEntryDTO.getFgPartName());
 		routeCardEntryVO.setFgPartDesc(routeCardEntryDTO.getFgPartDesc());
@@ -373,6 +374,8 @@ public class InventoryServiceImpl implements InventoryService {
 		routeCardEntryVO.setInvoiceDate(routeCardEntryDTO.getInvoiceDate());
 		routeCardEntryVO.setQty(routeCardEntryDTO.getQty());
 		routeCardEntryVO.setStockQty(routeCardEntryDTO.getStockQty());
+		routeCardEntryVO.setStatus(routeCardEntryDTO.getStatus());
+
 
 		//RouteCardEntryDetails
 		List<RouteCardEntryDetailsVO> routeCardEntryDetailsVOs = new ArrayList<>();

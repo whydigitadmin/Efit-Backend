@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MachineMasterDTO2 {
+public class MachineCapacityDTO {
 	
 	private Long id;
 
