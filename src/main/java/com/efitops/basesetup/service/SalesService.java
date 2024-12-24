@@ -23,4 +23,10 @@ public interface SalesService {
 
 	String getDeliveryChalanForFgDocId(Long orgId);
 
+	List<Map<String, Object>> getCustomerNameFromPartyMaster(Long orgId);
+
+	List<Map<String, Object>> getSoNoFromSaleOrder(Long orgId, String customerName);
+
+	List<Map<String, Object>> getItemNameFromSaleOrder(String customerName);
+
 }

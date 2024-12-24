@@ -362,17 +362,17 @@ public class QualityServiceImpl implements QualityService {
 		inprocessInspectionVO.setInprocessInspectionDetailsVO(inprocessInspectionDetailsVOs);
 
 		List<InprocessInspectionAppearanceVO> inprocessInspectionAppearanceVOs = new ArrayList<>();
-		for (InprocessInspectionAppearanceDTO inprocessAppearanceInspectionDTO : inprocessInspectionDTO
+		for (InprocessInspectionAppearanceDTO inprocessInspectionAppearanceDTO : inprocessInspectionDTO
 				.getInprocessInspectionAppearanceDTO()) {
-			InprocessInspectionAppearanceVO inprocessAppearanceInspectionVO = new InprocessInspectionAppearanceVO();
-			inprocessAppearanceInspectionVO.setCharacteristics(inprocessAppearanceInspectionDTO.getCharacteristics());
-			inprocessAppearanceInspectionVO
-					.setMethodOfInspection(inprocessAppearanceInspectionDTO.getMethodOfInspection());
-			inprocessAppearanceInspectionVO.setSpecification(inprocessAppearanceInspectionDTO.getSpecification());
-			inprocessAppearanceInspectionVO.setObservation(inprocessAppearanceInspectionDTO.getObservation());
-			inprocessAppearanceInspectionVO.setRemarks1(inprocessAppearanceInspectionDTO.getRemarks1());
-			inprocessAppearanceInspectionVO.setInprocessInspectionVO(inprocessInspectionVO);
-			inprocessInspectionAppearanceVOs.add(inprocessAppearanceInspectionVO);
+			InprocessInspectionAppearanceVO inprocessInspectionAppearanceVO = new InprocessInspectionAppearanceVO();
+			inprocessInspectionAppearanceVO.setCharacteristics(inprocessInspectionAppearanceDTO.getCharacteristics());
+			inprocessInspectionAppearanceVO
+					.setMethodOfInspection(inprocessInspectionAppearanceDTO.getMethodOfInspection());
+			inprocessInspectionAppearanceVO.setSpecification(inprocessInspectionAppearanceDTO.getSpecification());
+			inprocessInspectionAppearanceVO.setObservation(inprocessInspectionAppearanceDTO.getObservation());
+			inprocessInspectionAppearanceVO.setRemarks1(inprocessInspectionAppearanceDTO.getRemarks1());
+			inprocessInspectionAppearanceVO.setInprocessInspectionVO(inprocessInspectionVO);
+			inprocessInspectionAppearanceVOs.add(inprocessInspectionAppearanceVO);
 		}
 		inprocessInspectionVO.setInprocessInspectionAppearanceVO(inprocessInspectionAppearanceVOs);
 	}
@@ -520,44 +520,44 @@ public class QualityServiceImpl implements QualityService {
 			firAppearanceInspectionRepo.deleteAll(firAppearanceInspectionVO1);
 		}
 
-		List<FirDimensionalInspectionVO> dimensionalInspectionReportVOs = new ArrayList<>();
-		for (FirDimensionalInspectionDTO dimensionalInspectionReportDTO : finalInspectionReportDTO
+		List<FirDimensionalInspectionVO> firDimensionalInspectionVOs = new ArrayList<>();
+		for (FirDimensionalInspectionDTO firDimensionalInspectionDTO : finalInspectionReportDTO
 				.getFirDimensionalInspectionDTO()) {
-			FirDimensionalInspectionVO dimensionalInspectionReportVO = new FirDimensionalInspectionVO();
-			dimensionalInspectionReportVO.setCharacteristics(dimensionalInspectionReportDTO.getCharacteristics());
-			dimensionalInspectionReportVO.setMethodOfInspection(dimensionalInspectionReportDTO.getMethodOfInspection());
-			dimensionalInspectionReportVO.setSpecification(dimensionalInspectionReportDTO.getSpecification());
-			dimensionalInspectionReportVO.setLsl(dimensionalInspectionReportDTO.getLsl());
-			dimensionalInspectionReportVO.setUsl(dimensionalInspectionReportDTO.getUsl());
-			dimensionalInspectionReportVO.setSample1(dimensionalInspectionReportDTO.getSample1());
-			dimensionalInspectionReportVO.setSample2(dimensionalInspectionReportDTO.getSample2());
-			dimensionalInspectionReportVO.setSample3(dimensionalInspectionReportDTO.getSample3());
-			dimensionalInspectionReportVO.setSample4(dimensionalInspectionReportDTO.getSample4());
-			dimensionalInspectionReportVO.setSample5(dimensionalInspectionReportDTO.getSample5());
-			dimensionalInspectionReportVO.setSample6(dimensionalInspectionReportDTO.getSample6());
-			dimensionalInspectionReportVO.setSample7(dimensionalInspectionReportDTO.getSample7());
-			dimensionalInspectionReportVO.setSample8(dimensionalInspectionReportDTO.getSample8());
-			dimensionalInspectionReportVO.setSample9(dimensionalInspectionReportDTO.getSample9());
-			dimensionalInspectionReportVO.setSample10(dimensionalInspectionReportDTO.getSample10());
-			dimensionalInspectionReportVO.setRemarks(dimensionalInspectionReportDTO.getRemarks());
-			dimensionalInspectionReportVO.setFinalInspectionReportVO(finalInspectionReportVO);
-			dimensionalInspectionReportVOs.add(dimensionalInspectionReportVO);
+			FirDimensionalInspectionVO firDimensionalInspectionVO = new FirDimensionalInspectionVO();
+			firDimensionalInspectionVO.setCharacteristics(firDimensionalInspectionDTO.getCharacteristics());
+			firDimensionalInspectionVO.setMethodOfInspection(firDimensionalInspectionDTO.getMethodOfInspection());
+			firDimensionalInspectionVO.setSpecification(firDimensionalInspectionDTO.getSpecification());
+			firDimensionalInspectionVO.setLsl(firDimensionalInspectionDTO.getLsl());
+			firDimensionalInspectionVO.setUsl(firDimensionalInspectionDTO.getUsl());
+			firDimensionalInspectionVO.setSample1(firDimensionalInspectionDTO.getSample1());
+			firDimensionalInspectionVO.setSample2(firDimensionalInspectionDTO.getSample2());
+			firDimensionalInspectionVO.setSample3(firDimensionalInspectionDTO.getSample3());
+			firDimensionalInspectionVO.setSample4(firDimensionalInspectionDTO.getSample4());
+			firDimensionalInspectionVO.setSample5(firDimensionalInspectionDTO.getSample5());
+			firDimensionalInspectionVO.setSample6(firDimensionalInspectionDTO.getSample6());
+			firDimensionalInspectionVO.setSample7(firDimensionalInspectionDTO.getSample7());
+			firDimensionalInspectionVO.setSample8(firDimensionalInspectionDTO.getSample8());
+			firDimensionalInspectionVO.setSample9(firDimensionalInspectionDTO.getSample9());
+			firDimensionalInspectionVO.setSample10(firDimensionalInspectionDTO.getSample10());
+			firDimensionalInspectionVO.setRemarks(firDimensionalInspectionDTO.getRemarks());
+			firDimensionalInspectionVO.setFinalInspectionReportVO(finalInspectionReportVO);
+			firDimensionalInspectionVOs.add(firDimensionalInspectionVO);
 		}
-		finalInspectionReportVO.setFirDimensionalInspectionVO(dimensionalInspectionReportVOs);
+		finalInspectionReportVO.setFirDimensionalInspectionVO(firDimensionalInspectionVOs);
 
 		List<FirAppearanceInspectionVO> firAppearanceInspectionVOs = new ArrayList<>();
 		for (FirAppearanceInspectionDTO firAppearanceInspectionDTO : finalInspectionReportDTO
 				.getFirAppearanceInspectionDTO()) {
-			FirAppearanceInspectionVO appearanceInspectionReportVO = new FirAppearanceInspectionVO();
-			appearanceInspectionReportVO.setCharacteristics(firAppearanceInspectionDTO.getCharacteristics());
-			appearanceInspectionReportVO.setMethodOfInspection(firAppearanceInspectionDTO.getMethodOfInspection());
-			appearanceInspectionReportVO.setSpecification(firAppearanceInspectionDTO.getSpecification());
-			appearanceInspectionReportVO.setLsl(firAppearanceInspectionDTO.getLsl());
-			appearanceInspectionReportVO.setUsl(firAppearanceInspectionDTO.getUsl());
-			appearanceInspectionReportVO.setObservation(firAppearanceInspectionDTO.getObservation());
-			appearanceInspectionReportVO.setRemarks(firAppearanceInspectionDTO.getRemarks());
-			appearanceInspectionReportVO.setFinalInspectionReportVO(finalInspectionReportVO);
-			firAppearanceInspectionVOs.add(appearanceInspectionReportVO);
+			FirAppearanceInspectionVO firAppearanceInspectionVO = new FirAppearanceInspectionVO();
+			firAppearanceInspectionVO.setCharacteristics(firAppearanceInspectionDTO.getCharacteristics());
+			firAppearanceInspectionVO.setMethodOfInspection(firAppearanceInspectionDTO.getMethodOfInspection());
+			firAppearanceInspectionVO.setSpecification(firAppearanceInspectionDTO.getSpecification());
+			firAppearanceInspectionVO.setLsl(firAppearanceInspectionDTO.getLsl());
+			firAppearanceInspectionVO.setUsl(firAppearanceInspectionDTO.getUsl());
+			firAppearanceInspectionVO.setObservation(firAppearanceInspectionDTO.getObservation());
+			firAppearanceInspectionVO.setRemarks(firAppearanceInspectionDTO.getRemarks());
+			firAppearanceInspectionVO.setFinalInspectionReportVO(finalInspectionReportVO);
+			firAppearanceInspectionVOs.add(firAppearanceInspectionVO);
 		}
 		finalInspectionReportVO.setFirAppearanceInspectionVO(firAppearanceInspectionVOs);
 	}
@@ -596,8 +596,8 @@ public class QualityServiceImpl implements QualityService {
 			map.put("partNo", ch[2] != null ? ch[2].toString() : "");
 			map.put("units", ch[3] != null ? ch[3].toString() : "");
 			map.put("customer", ch[4] != null ? ch[4].toString() : "");
-			map.put("poNo", ch[5] != null ? ch[4].toString() : "");
-			map.put("invoiceNo", ch[5] != null ? ch[4].toString() : "");
+			map.put("poNo", ch[5] != null ? ch[5].toString() : "");
+			map.put("invoiceNo", ch[6] != null ? ch[6].toString() : "");
 
 			List1.add(map);
 		}
