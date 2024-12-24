@@ -29,7 +29,7 @@ public class ProductionPlanVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productionplangen")
 	@SequenceGenerator(name = "productionplangen", sequenceName = "productionplanseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "productionplanid")
+	@Column(name = "productionplanid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
@@ -59,33 +59,32 @@ public class ProductionPlanVO {
 	private String rawMaterialDesc;
 	@Column(name = "narration")
 	private String narration;
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "branch",length = 30)
+	@Column(name = "branch", length = 30)
 	private String branch;
-	@Column(name = "branchcode",length = 10)
+	@Column(name = "branchcode", length = 10)
 	private String branchCode;
-	@Column(name = "finyear",length =10)
+	@Column(name = "finyear", length = 10)
 	private String finYear;
-	@Column(name = "createdby",length = 30)
+	@Column(name = "createdby", length = 30)
 	private String createdBy;
-	@Column(name = "modifiedby",length = 30)
+	@Column(name = "modifiedby", length = 30)
 	private String modifiedBy;
 	@Column(name = "active")
-	private boolean active=true;
+	private boolean active = true;
 	@Column(name = "cancel")
-	private boolean cancel=false;
-	@Column(name = "cancelremarks",length = 150)
+	private boolean cancel = false;
+	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	@Column(name = "screencode",length = 30)
-	private String screenCode="PP";
-	@Column(name = "screenname",length = 30)
-	private String screenName="PRODUCTION PLAN";
-	
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "PP";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "PRODUCTION PLAN";
+
 	@OneToMany(mappedBy = "productionPlanVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<ProductionPlanDetailsVO> productionPlanDetailsVO;
-	
 
 }

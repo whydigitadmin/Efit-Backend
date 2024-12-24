@@ -11,10 +11,10 @@ import com.efitops.basesetup.entity.RackMasterVO;
 @Repository
 public interface RackMasterRepo extends JpaRepository<RackMasterVO, Long>{
 
-	@Query(nativeQuery = true,value = "Select * from m_rackmaster where rackmasterid=?1")
+	@Query(nativeQuery = true,value = "Select * from rackmaster where rackmasterid=?1")
 	List<RackMasterVO> getRackMasterById(Long id);
 
-	@Query(nativeQuery = true,value = "Select * from m_rackmaster where orgid=?1")
+	@Query(nativeQuery = true,value = "Select * from rackmaster where orgid=?1")
 	List<RackMasterVO> getRackMasterByOrgId(Long orgId);
 
 }

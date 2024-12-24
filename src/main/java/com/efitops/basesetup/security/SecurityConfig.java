@@ -29,7 +29,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf()
 				.disable().formLogin().disable().httpBasic().disable().exceptionHandling()
-				.authenticationEntryPoint(restAuthenticationEntryPoint()).and().authorizeRequests()
+				.authenticationEntryPoint(restAuthenticationEntryPoint()).and().authorizeHttpRequests()
 				.antMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg",
 						"/**/*.html", "/**/*.css", "/**/*.js")
 				.permitAll()
@@ -41,7 +41,7 @@ public class SecurityConfig {
 						"/api/documentType/**", "/api/taxInvoice/**", "/api/arapAdjustments/**",
 						"/api/costdebitnote/**", "/api/costInvoice/**","/api/irnCreditNote/**","/api/efitmaster/**","/api/machinemaster/**","/api/inwardoutward/**","/api/customerenquiry/**",
 						"/api/inventory/**","/api/grn/**","/api/issuetosubcontractor/**","/api/purchaseReturn/**","/api/quality/**","/api/purchase/**","/api/dispatchcontroller/**","/api/qualityapproval/**",
-						"/api/sales/**")
+						"/api/sales/**","/api/productionPlan/**")
 
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -39,9 +39,9 @@ public class PurchaseIndentDTO {
 	
 //	 private String finYear;
 	
-	private List<PurchaseIndentDTO1> purchaseIndentDTO1;
+	private List<PurchaseIndentDetailsDTO> purchaseIndentDetailsDTO;
 	
-	private List<PurchaseIndentDTO2> purchaseIndentDTO2;
+	private List<PurchaseIndentSummaryDTO> purchaseIndentSummaryDTO;
 	
 	
 }

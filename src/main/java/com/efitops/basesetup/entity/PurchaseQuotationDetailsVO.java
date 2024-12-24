@@ -21,16 +21,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchasequotationdetails")
+@Table(name = "purchasequotationdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PurchaseQuotation1VO {
+public class PurchaseQuotationDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_purchasequotationdetailsgen")
-	@SequenceGenerator(name = "t_purchasequotationdetailsgen", sequenceName = "t_purchasequotationdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "purchasequotationdetailsgen")
+	@SequenceGenerator(name = "purchasequotationdetailsgen", sequenceName = "purchasequotationdetailsgenseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchasequotationdetailsid")
 	private Long id;
 	

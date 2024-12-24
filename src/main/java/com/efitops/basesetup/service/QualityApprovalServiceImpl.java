@@ -11,13 +11,19 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.SampleApprovalDTO;
+import com.efitops.basesetup.dto.SampleApprovalDetailsDTO;
 import com.efitops.basesetup.dto.SettingApprovalDTO;
 import com.efitops.basesetup.dto.SettingApprovalDetailsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.SampleApprovalDetailsVO;
+import com.efitops.basesetup.entity.SampleApprovalVO;
 import com.efitops.basesetup.entity.SettingApprovalDetailsVO;
 import com.efitops.basesetup.entity.SettingApprovalVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
+import com.efitops.basesetup.repo.SampleApprovalDetailsRepo;
+import com.efitops.basesetup.repo.SampleApprovalRepo;
 import com.efitops.basesetup.repo.SettingApprovalDetailsRepo;
 import com.efitops.basesetup.repo.SettingApprovalRepo;
 
@@ -29,6 +35,12 @@ public class QualityApprovalServiceImpl  implements QualityApprovalServive{
 	
 	@Autowired
 	SettingApprovalDetailsRepo settingApprovalDetailsRepo;
+	
+	@Autowired
+	SampleApprovalRepo sampleApprovalRepo;
+	
+	@Autowired
+	SampleApprovalDetailsRepo sampleApprovalDetailsRepo;
 	
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
@@ -271,6 +283,125 @@ public class QualityApprovalServiceImpl  implements QualityApprovalServive{
 			List1.add(map);
 		}
 		return List1;
+	}
+	
+	@Override
+	public List<SampleApprovalVO> getAllSampleApprovalByOrgId(Long orgId) {
+
+		return sampleApprovalRepo.getAllSampleApprovalByOrgId(orgId);
+	}
+
+	@Override
+	public SampleApprovalVO getSampleApprovalById(Long id) {
+
+		return sampleApprovalRepo.getSampleApprovalById(id);
+	}
+	
+	@Override
+	public String getSampleApprovalDocId(Long orgId) {
+		String ScreenCode = "SAP";
+		String result = sampleApprovalRepo.getSampleApprovalDocId(orgId, ScreenCode);
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> createUpdateSampleApproval(@Valid SampleApprovalDTO sampleApprovalDTO) throws ApplicationException {
+		String message;
+        String screenCode="SAP";
+        SampleApprovalVO sampleApprovalVO = new SampleApprovalVO();
+
+		if (sampleApprovalDTO.getId() != null) {
+			// Fetch existing ItemVO for update
+			sampleApprovalVO = sampleApprovalRepo.findById(sampleApprovalDTO.getId())
+					.orElseThrow(() -> new ApplicationException("SampleApproval not found"));
+			sampleApprovalVO.setUpdatedBy(sampleApprovalDTO.getCreatedBy());
+			createUpdateSampleApprovalVOBySampleApprovalDTO(sampleApprovalDTO, sampleApprovalVO);
+			message = "SampleApproval Updated Successfully";
+
+			List<SampleApprovalDetailsVO> sampleApprovalDetailsVOs = sampleApprovalDetailsRepo
+					.findBySampleApprovalVO(sampleApprovalVO);
+			sampleApprovalDetailsRepo.deleteAll(sampleApprovalDetailsVOs);
+	
+		} else {
+			
+			// GETDOCID API
+			String docId = sampleApprovalRepo.getSampleApprovalDocId(sampleApprovalDTO.getOrgId(),
+					screenCode);
+			sampleApprovalVO.setDocId(docId);
+
+//        							// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(sampleApprovalDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			
+			// Create new ItemVO
+			sampleApprovalVO.setCreatedBy(sampleApprovalDTO.getCreatedBy());
+			sampleApprovalVO.setUpdatedBy(sampleApprovalDTO.getCreatedBy());
+			createUpdateSampleApprovalVOBySampleApprovalDTO(sampleApprovalDTO, sampleApprovalVO);
+			message = "SampleApproval Created Successfully";
+		}
+
+		// Save the ItemVO
+		sampleApprovalRepo.save(sampleApprovalVO);
+
+		// Prepare response
+		Map<String, Object> response = new HashMap<>();
+		response.put("sampleApprovalVO", sampleApprovalVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdateSampleApprovalVOBySampleApprovalDTO(@Valid SampleApprovalDTO sampleApprovalDTO, SampleApprovalVO sampleApprovalVO) {
+		sampleApprovalVO.setRouteCardNo(sampleApprovalDTO.getRouteCardNo());
+		sampleApprovalVO.setPartName(sampleApprovalDTO.getPartName());
+		sampleApprovalVO.setPartNo(sampleApprovalDTO.getPartNo());
+		sampleApprovalVO.setDrgNo(sampleApprovalDTO.getDrgNo());
+		sampleApprovalVO.setOperation(sampleApprovalDTO.getOperation());
+		sampleApprovalVO.setCycleTime(sampleApprovalDTO.getCycleTime());
+		sampleApprovalVO.setMachineNo(sampleApprovalDTO.getMachineNo());
+		sampleApprovalVO.setMachineName(sampleApprovalDTO.getMachineName());
+		sampleApprovalVO.setSampleQty(sampleApprovalDTO.getSampleQty());
+		sampleApprovalVO.setJobOrderNo(sampleApprovalDTO.getJobOrderNo());
+		sampleApprovalVO.setDocFormatNo(sampleApprovalDTO.getDocFormatNo());
+		sampleApprovalVO.setGeneralRemarks(sampleApprovalDTO.getGeneralRemarks());
+		sampleApprovalVO.setOperatorName(sampleApprovalDTO.getOperatorName());
+		sampleApprovalVO.setShift(sampleApprovalDTO.getShift());
+		sampleApprovalVO.setShiftDate(sampleApprovalDTO.getShiftDate());
+		sampleApprovalVO.setShiftTime(sampleApprovalDTO.getShiftTime());
+		sampleApprovalVO.setShiftInCharge(sampleApprovalDTO.getShiftInCharge());
+		sampleApprovalVO.setQualityName(sampleApprovalDTO.getQualityName());
+		sampleApprovalVO.setNarration(sampleApprovalDTO.getNarration());
+		sampleApprovalVO.setOrgId(sampleApprovalDTO.getOrgId());
+		
+		
+		List<SampleApprovalDetailsVO> sampleApprovalDetailsVOs = new ArrayList<>();
+		for (SampleApprovalDetailsDTO sampleApprovalDetailsDTO : sampleApprovalDTO.getSampleApprovalDetailsDTO()) {
+			SampleApprovalDetailsVO sampleApprovalDetailsVO = new SampleApprovalDetailsVO();
+			sampleApprovalDetailsVO.setCharacteristics(sampleApprovalDetailsDTO.getCharacteristics());
+			sampleApprovalDetailsVO.setSpecification(sampleApprovalDetailsDTO.getSpecification());
+			sampleApprovalDetailsVO.setMethodOfInspection(sampleApprovalDetailsDTO.getMethodOfInspection());
+			sampleApprovalDetailsVO.setLsl(sampleApprovalDetailsDTO.getLsl());
+			sampleApprovalDetailsVO.setUsl(sampleApprovalDetailsDTO.getUsl());
+			sampleApprovalDetailsVO.setSimple1(sampleApprovalDetailsDTO.getSimple1());
+			sampleApprovalDetailsVO.setSimple2(sampleApprovalDetailsDTO.getSimple2());
+			sampleApprovalDetailsVO.setSimple3(sampleApprovalDetailsDTO.getSimple3());
+			sampleApprovalDetailsVO.setSimple4(sampleApprovalDetailsDTO.getSimple4());
+			sampleApprovalDetailsVO.setSimple5(sampleApprovalDetailsDTO.getSimple5());
+			sampleApprovalDetailsVO.setOperator1(sampleApprovalDetailsDTO.getOperator1());
+			sampleApprovalDetailsVO.setOperator2(sampleApprovalDetailsDTO.getOperator2());
+			sampleApprovalDetailsVO.setOperator3(sampleApprovalDetailsDTO.getOperator3());
+			sampleApprovalDetailsVO.setOperator4(sampleApprovalDetailsDTO.getOperator4());
+			sampleApprovalDetailsVO.setOperator5(sampleApprovalDetailsDTO.getOperator5());
+			sampleApprovalDetailsVO.setStatus(sampleApprovalDetailsDTO.getStatus());
+
+
+			sampleApprovalDetailsVO.setSampleApprovalVO(sampleApprovalVO); // Set the reference in child entity
+			sampleApprovalDetailsVOs.add(sampleApprovalDetailsVO);
+		}
+		sampleApprovalVO.setSampleApprovalDetailsVO(sampleApprovalDetailsVOs);
+
 	}
 
 }

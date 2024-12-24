@@ -22,15 +22,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_item")
+@Table(name = "item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itemgen")
-	@SequenceGenerator(name = "m_itemgen", sequenceName = "m_itemseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemgen")
+	@SequenceGenerator(name = "itemgen", sequenceName = "itemseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "itemid")
 	private Long id;
 

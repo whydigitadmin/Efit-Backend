@@ -11,10 +11,10 @@ import com.efitops.basesetup.entity.GateOutwardEntryVO;
 @Repository
 public interface GateOutwardEntryRepo extends JpaRepository<GateOutwardEntryVO, Long>{
 
-	@Query(nativeQuery = true, value = "select * from t_gateoutwardentry where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from gateoutwardentry where orgid=?1")
 	List<GateOutwardEntryVO> findGateOutwardEntryByOrgId(Long orgId);
 
-	@Query(nativeQuery = true, value = "select * from t_gateoutwardentry where gateoutwardentryid=?1")
+	@Query(nativeQuery = true, value = "select * from gateoutwardentry where gateoutwardentryid=?1")
 	List<GateOutwardEntryVO> findGateOutwardEntryById(Long id);
 
 }

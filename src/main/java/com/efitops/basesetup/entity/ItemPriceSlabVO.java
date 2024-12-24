@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 public class ItemPriceSlabVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_itempriceslabgen")
-	@SequenceGenerator(name = "m_itempriceslabgen", sequenceName = "m_itempriceslabseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itempriceslabgen")
+	@SequenceGenerator(name = "itempriceslabgen", sequenceName = "itempriceslabseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "itempriceslabid")
 	private Long id;
 	

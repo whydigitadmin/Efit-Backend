@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseQuotation1DTO {
+public class PurchaseQuotationDetailsDTO {
 
 	private String item;
 	private String itemDesc;

@@ -19,4 +19,13 @@ public interface ProductionPlanService {
 	Map<String, Object> createUpdateProductionPlan(ProductionPlanDTO productionPlanDTO) throws ApplicationException;
 
 	String getProductionPlanDocId(Long orgId, String finYear, String branchCode, String screenCode);
+
+	List<Map<String, Object>> getRouteCardNoAndDetails(Long orgId);
+
+	List<Map<String, Object>> getRawMaterialDetails(Long orgId);
+
+	List<Map<String, Object>> getProcessName(Long orgId, String item);
+
+	List<Map<String, Object>> getMachineName(Long orgId, String fromDate, Long id, String docid);
+
 }

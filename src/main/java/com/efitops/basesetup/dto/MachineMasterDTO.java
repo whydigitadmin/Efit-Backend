@@ -40,8 +40,8 @@ public class MachineMasterDTO {
     private String instrumentName;
 	
     
-    private List<MachineMasterDTO1> machineMasterDTO1;
-    private List<MachineMasterDTO2> machineMasterDTO2;
+    private List<MachineTechnicalInfoDTO> machineTechnicalInfoDTO;
+    private List<MachineCapacityDTO> machineCapacityDTO;
 //    private List<MachineMasterDTO3> machineMasterDTO3;
     
     

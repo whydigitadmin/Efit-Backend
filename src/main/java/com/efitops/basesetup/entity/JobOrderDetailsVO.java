@@ -26,7 +26,7 @@ public class JobOrderDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "joborderdetailsgen")
 	@SequenceGenerator(name = "joborderdetailsgen", sequenceName = "joborderdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "joborderdetailsid")
+	@Column(name = "joborderdetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "timeinhours")
 	private String timeInHours;
@@ -46,7 +46,7 @@ public class JobOrderDetailsVO {
 	private String remarks;
 
 	@ManyToOne
-	@JoinColumn(name = "joborderid")
+	@JoinColumn(name = "joborderid", columnDefinition = "BIGINT DEFAULT 0")
 	@JsonBackReference
 	private JobOrderVO jobOrderVO;
 }
