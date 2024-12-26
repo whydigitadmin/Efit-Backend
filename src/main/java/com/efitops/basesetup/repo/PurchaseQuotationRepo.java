@@ -27,7 +27,7 @@ public interface PurchaseQuotationRepo extends JpaRepository<PurchaseQuotationVO
 
 	@Query(nativeQuery=true,value ="select distinct b.item,b.itemdesc,b.unit from purchaseenquiry a join purchaseenquirydetails b \r\n"
 			+ "ON a.purchaseenquiryid=b.purchaseenquiryid where  a.orgid=?1 and a.docid=?2  and active=1 order by 1" )
-	Set<Object[]> findItemDetailsForPurchaseQuotation(Long orgId, String purchaseIndentNo);
+	Set<Object[]> findItemDetailsForPurchaseQuotation(Long orgId, String purchaseEnquiryNo);
 
 	@Query(nativeQuery=true,value ="SELECT DISTINCT a.docid FROM workorder a  WHERE a.orgid = ?1 AND a.customercode = ?2 AND a.active = 1 ORDER BY a.docid" )
 	Set<Object[]> findWorkOrderNoForPurchaseQuotation(Long orgId, String customerCode);
