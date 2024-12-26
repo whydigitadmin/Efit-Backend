@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_dcforsubcontract")
+@Table(name = "dcforsubcontract")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 public class DcForSubContractVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_dcforsubcontractgen")
-	@SequenceGenerator(name = "t_dcforsubcontractgen", sequenceName = "t_dcforsubcontractseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dcforsubcontractgen")
+	@SequenceGenerator(name = "dcforsubcontractgen", sequenceName = "dcforsubcontractseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "dcforsubcontractid")
 	private Long id;
 	@Column(name = "dcno", length = 150)

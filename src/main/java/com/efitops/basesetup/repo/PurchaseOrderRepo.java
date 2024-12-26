@@ -12,11 +12,11 @@ import com.efitops.basesetup.entity.PurchaseOrderVO;
 @Repository
 public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderVO, Long> {
 	
-	@Query(nativeQuery = true,value="select * from t_purchaseorder where orgid=?1")
+	@Query(nativeQuery = true,value="select * from purchaseorder where orgid=?1")
 	List<PurchaseOrderVO> findPurchaseOrderByOrgId(Long orgId);
 
 	
-	@Query(nativeQuery = true,value="select*from t_purchaseorder where purchaseorderid=?1")
+	@Query(nativeQuery = true,value="select*from purchaseorder where purchaseorderid=?1")
 	List<PurchaseOrderVO> getPurchaseOrderById(Long id);
 
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
@@ -43,28 +43,28 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderVO, Long> 
 	Set<Object[]> findgetSupplierAddressForPurchaseOrder(Long orgId, String supplierName);
 
 
-	@Query (nativeQuery = true, value ="select docid  from t_purchaseindent where 'Purchase Indent'=?4 and customercode =?2  and workorderno=?3 and orgid=?1 and active=1 and cancel=0")
+	@Query (nativeQuery = true, value ="select docid  from purchaseindent where 'Purchase Indent'=?4 and customercode =?2  and workorderno=?3 and orgid=?1 and active=1 and cancel=0")
 	Set<Object[]> findgetPurchaseIndentForPurchaseOrder(Long orgId, String customerCode, String workorderno,String basedOn);
 
 
-	@Query (nativeQuery = true, value ="select docid from t_purchasequotation where  'Quotation'=?4 and customercode = ?2 and workorderno=?3 and orgid=?1 and active=1 and cancel=0")
+	@Query (nativeQuery = true, value ="select docid from purchasequotation where  'Quotation'=?4 and customercode = ?2 and workorderno=?3 and orgid=?1 and active=1 and cancel=0")
 	Set<Object[]> findgetQuotationForPurchaseOrder(Long orgId, String customerCode, String workorderno, String basedOn);
 
-	@Query (nativeQuery = true, value ="select a1.item,a1.itemdesc,a1.indentqty,a1.uom,e.taxslab,d.price from efit_ops.t_purchaseindent1 a1 \r\n"
-			+ "join efit_ops.m_item c on a1.item =c.itemname\r\n"
-			+ "join efit_ops.t_purchaseindent b on a1.purchaseindentid = b.purchaseindentid\r\n"
-			+ "join efit_ops.m_itempriceslab d on c.itemid = d.itemid\r\n"
-			+ "join efit_ops.m_itemtaxslab e on e.itemid = c.itemid\r\n"
+	@Query (nativeQuery = true, value ="select a1.item,a1.itemdesc,a1.indentqty,a1.uom,e.taxslab,d.price from efit_ops.purchaseindent1 a1 \r\n"
+			+ "join efit_ops.item c on a1.item =c.itemname\r\n"
+			+ "join efit_ops.purchaseindent b on a1.purchaseindentid = b.purchaseindentid\r\n"
+			+ "join efit_ops.itempriceslab d on c.itemid = d.itemid\r\n"
+			+ "join efit_ops.itemtaxslab e on e.itemid = c.itemid\r\n"
 			+ "where b.docid=?2 and b.orgid =?1 \r\n"
-			+ "and taxeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.m_itemtaxslab  WHERE itemid = e.itemid) \r\n"
-			+ "and priceeffectivefrom =  (SELECT MAX(priceeffectivefrom) FROM efit_ops.m_itempriceslab WHERE itemid = d.itemid)\r\n"
+			+ "and taxeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.itemtaxslab  WHERE itemid = e.itemid) \r\n"
+			+ "and priceeffectivefrom =  (SELECT MAX(priceeffectivefrom) FROM efit_ops.itempriceslab WHERE itemid = d.itemid)\r\n"
 			+ "union all \r\n"
-			+ "select a1.item,a1.itemdesc,a1.qty,a1.unit,e.taxslab,a1.unitprice from efit_ops.t_purchasequotationdetails a1 \r\n"
-			+ "join t_purchasequotation b on a1.purchasequotationid = b.purchasequotationid\r\n"
-			+ "join efit_ops.m_item c on a1.item =c.itemname \r\n"
-			+ "join efit_ops.m_itemtaxslab e on e.itemid = c.itemid\r\n"
+			+ "select a1.item,a1.itemdesc,a1.qty,a1.unit,e.taxslab,a1.unitprice from efit_ops.purchasequotationdetails a1 \r\n"
+			+ "join purchasequotation b on a1.purchasequotationid = b.purchasequotationid\r\n"
+			+ "join efit_ops.item c on a1.item =c.itemname \r\n"
+			+ "join efit_ops.itemtaxslab e on e.itemid = c.itemid\r\n"
 			+ "where b.docid=?3 and b.orgid =?1 \r\n"
-			+ "and taxeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.m_itemtaxslab WHERE itemid = c.itemid)\r\n"
+			+ "and taxeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.itemtaxslab WHERE itemid = c.itemid)\r\n"
 			+ "")
 	Set<Object[]> findgetItemForPurchaseOrder(Long orgId, String purchaseIndentNo,String quotationNo);
 	

@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_toolissueentry")
+@Table(name = "toolissueentry")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,8 +29,8 @@ import lombok.NoArgsConstructor;
 public class ToolIssueEntryVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_toolissueentrygen")
-	@SequenceGenerator(name = "t_toolissueentrygen", sequenceName = "t_toolissueentryseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "toolissueentrygen")
+	@SequenceGenerator(name = "toolissueentrygen", sequenceName = "toolissueentryseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "toolissueentryid",columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid", length = 150)
@@ -43,8 +43,8 @@ public class ToolIssueEntryVO {
 	private String seqCode;
 	@Column(name = "instrumentcode")
 	private String instrumentCode;
-	@Column(name = "range")
-	private String range;
+	@Column(name = "instrumentrange")
+	private String instrumentRange;
 	@Column(name = "location")
 	private String location;
 	@Column(name = "leastcount")
@@ -63,6 +63,8 @@ public class ToolIssueEntryVO {
 	private String apporvedBy;
 	@Column(name = "remarks")
 	private String remarks;
+	@Column(name = "lastcount")
+	private String lastCount;
 	
 	
 	

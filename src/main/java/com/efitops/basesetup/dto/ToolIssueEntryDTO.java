@@ -17,7 +17,7 @@ public class ToolIssueEntryDTO {
 	private String instrumentName;
 	private String seqCode;
 	private String instrumentCode;
-	private String range;
+	private String instrumentRange;
 	private String location;
 	private long leastCount;
 	private String frequencyOfCalib;
