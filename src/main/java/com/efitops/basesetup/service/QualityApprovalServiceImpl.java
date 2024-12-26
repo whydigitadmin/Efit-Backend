@@ -404,4 +404,83 @@ public class QualityApprovalServiceImpl  implements QualityApprovalServive{
 
 	}
 
+	
+	@Override
+	public List<Map<String, Object>> getRouteCardDetailsForSampleApproval(Long orgId) {
+		Set<Object[]> routeCardDetails = sampleApprovalRepo.findRouteCardDetailsForSampleApproval(orgId);
+		return getRouteCardDetailsForSampleApproval(routeCardDetails);
+	}
+
+	private List<Map<String, Object>> getRouteCardDetailsForSampleApproval(Set<Object[]> routeCardDetails) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : routeCardDetails) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNo", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("partNo", ch[1] != null ? ch[1].toString() : "");
+			map.put("partName", ch[2] != null ? ch[2].toString() : "");
+
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getDrawingMasterNoForSampleApproval(Long orgId,String partNo) {
+		Set<Object[]> drawingMasterNo = sampleApprovalRepo.findDrawingMasterNoForSampleApproval(orgId,partNo);
+		return DrawingMasterNoForSampleApproval(drawingMasterNo);
+	}
+
+	private List<Map<String, Object>> DrawingMasterNoForSampleApproval(Set<Object[]> drawingMasterNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : drawingMasterNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("drawingMasterNo", ch[0] != null ? ch[0].toString() : ""); 
+			
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getMachineNoForSampleApproval(Long orgId) {
+		Set<Object[]> machineNo = sampleApprovalRepo.findMachineNoForSampleApproval(orgId);
+		return getMachineNoForSampleApproval(machineNo);
+	}
+
+	private List<Map<String, Object>> getMachineNoForSampleApproval(Set<Object[]> machineNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : machineNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("machineNo", ch[0] != null ? ch[0].toString() : ""); 
+			map.put("machineName", ch[0] != null ? ch[0].toString() : ""); 
+
+			List1.add(map);
+		}
+		return List1;
+
+	}
+	
+	@Override
+	public List<Map<String, Object>> getJobOrderNoForSampleApproval(Long orgId,String routeCardNo) {
+		Set<Object[]> jobOrderNo = sampleApprovalRepo.findJobOrderNoForSampleApproval(orgId,routeCardNo);
+		return getJobOrderNoForSampleApproval(jobOrderNo);
+	}
+
+	private List<Map<String, Object>> getJobOrderNoForSampleApproval(Set<Object[]> jobOrderNo) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : jobOrderNo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("jobOrderNo", ch[0] != null ? ch[0].toString() : ""); 
+			List1.add(map);
+		}
+		return List1;
+
+	}
+
+	
+	
 }

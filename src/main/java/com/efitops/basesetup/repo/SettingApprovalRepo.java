@@ -46,4 +46,6 @@ public interface SettingApprovalRepo extends JpaRepository<SettingApprovalVO, Lo
 			+ " a.employee order by  a.employee")
 	Set<Object[]> findShiftInChargeForSetingApproval(Long orgId);
 
+	
+
 }
