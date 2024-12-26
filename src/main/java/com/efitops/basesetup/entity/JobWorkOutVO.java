@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_jobworkout")
+@Table(name = "jobworkout")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class JobWorkOutVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_jobworkoutgen")
-	@SequenceGenerator(name = "t_jobworkoutgen", sequenceName = "t_jobworkoutseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobworkoutgen")
+	@SequenceGenerator(name = "jobworkoutgen", sequenceName = "jobworkoutseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "jobworkoutid")
 	private Long id;
 	@Column(name = "jobworkorderno", length = 150)
