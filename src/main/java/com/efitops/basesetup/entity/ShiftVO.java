@@ -24,15 +24,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_shiftmast")
+@Table(name = "shiftmast")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShiftVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_shiftmastgen")
-	@SequenceGenerator(name = "m_shiftmastgen", sequenceName = "m_shiftmastseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shiftmastgen")
+	@SequenceGenerator(name = "shiftmastgen", sequenceName = "shiftmastseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "shiftmastid")
 	private Long id;
 

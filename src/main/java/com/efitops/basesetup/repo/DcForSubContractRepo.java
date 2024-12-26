@@ -13,17 +13,17 @@ import com.efitops.basesetup.entity.DcForSubContractVO;
 public interface DcForSubContractRepo extends JpaRepository<DcForSubContractVO, Long> 
 {
 
-	@Query(nativeQuery = true,value="select*from t_dcforsubcontract where orgid=?1")
+	@Query(nativeQuery = true,value="select*from dcforsubcontract where orgid=?1")
 	List<DcForSubContractVO> findDcforSCByOrgId(Long orgId);
 
-	@Query(nativeQuery = true,value="select*from t_dcforsubcontract where grnid=?1")
+	@Query(nativeQuery = true,value="select*from dcforsubcontract where grnid=?1")
 	List<DcForSubContractVO> getDcforSCById(Long id);
 	
 
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getdcForSubcontractDocId(Long orgId, String screenCode);
 
-	@Query(nativeQuery = true, value ="SELECT a.docid,a.docdate,a.routecardno,a.customername,b.gstin,b.currency FROM efit_ops.t_issuetosubcontractor a,efit_ops.partymaster b "
+	@Query(nativeQuery = true, value ="SELECT a.docid,a.docdate,a.routecardno,a.customername,b.gstin,b.currency FROM efit_ops.issuetosubcontractor a,efit_ops.partymaster b "
 			+ "where a.customername =b.partyname and a.orgid=?1  and active=1 and cancel = 0")
 	Set<Object[]> findIssueSCNoDetails(Long orgId);
 

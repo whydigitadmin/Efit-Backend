@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_grndetails")
+@Table(name = "grndetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,8 +29,8 @@ import lombok.NoArgsConstructor;
 public class GrnDetailsVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_grndetailsgen")
-	@SequenceGenerator(name = "t_grndetailsgen", sequenceName = "t_grndetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grndetailsgen")
+	@SequenceGenerator(name = "grndetailsgen", sequenceName = "grndetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "grndetailsid")
 	private Long id;
 	@Column(name = "itemcode", length = 150)

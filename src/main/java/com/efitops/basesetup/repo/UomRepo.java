@@ -11,10 +11,10 @@ import com.efitops.basesetup.entity.UomVO;
 @Repository
 public interface UomRepo extends JpaRepository<UomVO, Long>{
 
-	@Query(nativeQuery = true, value = "select * from m_uommast where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from uommast where orgid=?1")
 	List<UomVO> getUomByOrgId(Long orgId);
 
-	@Query(nativeQuery = true, value = "select * from m_uommast where uommastid=?1")
+	@Query(nativeQuery = true, value = "select * from uommast where uommastid=?1")
 	List<UomVO> getUomById(Long id);
 
 	//boolean existsByUomCodeAndOrgId(String uomCode, Long orgId);

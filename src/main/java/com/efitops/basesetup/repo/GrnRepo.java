@@ -11,16 +11,16 @@ import com.efitops.basesetup.entity.GrnVO;
 @Repository
 public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 
-	@Query(nativeQuery = true,value="select*from t_grn where orgid=?1")
+	@Query(nativeQuery = true,value="select*from grn where orgid=?1")
 	List<GrnVO> findGrnByOrgId(Long orgId);
 
-	@Query(nativeQuery = true,value="select*from t_grn where grnid=?1")
+	@Query(nativeQuery = true,value="select*from grn where grnid=?1")
 	List<GrnVO> getGrnById(Long id);
 	
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getGrnDocId(Long orgId, String screenCode);
 
-	@Query(nativeQuery = true, value = "SELECT docid,ponumber,suppliername,vehicleno,invoiceno,invoicedate,b.currency,b.gstin FROM efit_ops.t_gateinwardentry a1 \r\n"
+	@Query(nativeQuery = true, value = "SELECT docid,ponumber,suppliername,vehicleno,invoiceno,invoicedate,b.currency,b.gstin FROM efit_ops.gateinwardentry a1 \r\n"
 			+ "join efit_ops.partymaster b on a1.suppliername = b.partyname\r\n"
 			+ "where upper(partytype) ='SUPPLIER' and a1.orgid =?1")
 	Set<Object[]> findInwardNoForGRNDetails(Long orgId);
@@ -31,12 +31,12 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 @Query(nativeQuery = true, value="select a1.itemname,a1.itemdesc,a1.inwardqty,a1.invoiceqty,a1.poqty,uom,hsncode,inspection,needqcapproval,price,taxslab  \r\n"
 		+ " from efit_ops.t_gateinwardentrydetails a1   \r\n"
 		+ "				join efit_ops.t_gateinwardentry b on a1.gateinwardentryid = b.gateinwardentryid  \r\n"
-		+ "					join efit_ops.m_item c on a1.itemname = c.itemname\r\n"
+		+ "					join efit_ops.item c on a1.itemname = c.itemname\r\n"
 		+ "				join efit_ops.m_itempriceslab d on c.itemid = d.itemid\r\n"
 		+ "			          join efit_ops.m_itemtaxslab e on e.itemid = c.itemid\r\n"
 		+ "			          where b.docid=?2 and b.orgid =?1\r\n"
 		+ "			         and taxeffectivefrom= (SELECT MAX(priceeffectivefrom) FROM efit_ops.itempriceslab WHERE itemid = d.itemid) \r\n"
-		+ "			         and priceeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.m_itemtaxslab  WHERE itemid = e.itemid)")
+		+ "			         and priceeffectivefrom= (SELECT MAX(taxeffectivefrom) FROM efit_ops.itemtaxslab  WHERE itemid = e.itemid)")
 	Set<Object[]> findItemForGRNDetails(Long orgId, String inwardNo);
 
 	
@@ -60,10 +60,10 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 
 	
 	
-	@Query(nativeQuery = true, value =("SELECT sgstpercentage  FROM efit_ops.m_gst where 'INTRA' = ?3 and gstslab=?2 AND orgid = ?1"))
+	@Query(nativeQuery = true, value =("SELECT sgstpercentage  FROM efit_ops.gst where 'INTRA' = ?3 and gstslab=?2 AND orgid = ?1"))
 	Set<Object[]> findgetSGSTandCGSTForGRN(Long orgId, String gstType , String  taxType);
 
-	@Query(nativeQuery = true, value =("SELECT igstpercentage  FROM efit_ops.m_gst where 'INTER' =  ?3 and gstslab=?2 AND orgid = ?1"))
+	@Query(nativeQuery = true, value =("SELECT igstpercentage  FROM efit_ops.gst where 'INTER' =  ?3 and gstslab=?2 AND orgid = ?1"))
 	Set<Object[]> findgetIGSTForGRN(Long orgId,  String gstType , String  taxType);
 
 	

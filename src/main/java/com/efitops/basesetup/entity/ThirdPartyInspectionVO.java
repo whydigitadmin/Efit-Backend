@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_thirdpartyinspection")
+@Table(name = "thirdpartyinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class ThirdPartyInspectionVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_thirdpartyinspectiongen")
-	@SequenceGenerator(name = "t_thirdpartyinspectiongen", sequenceName = "t_thirdpartyinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thirdpartyinspectiongen")
+	@SequenceGenerator(name = "thirdpartyinspectiongen", sequenceName = "thirdpartyinspectionseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "thirdpartyinspectionid")
 	private Long id;
 	@Column(name = "docid")
