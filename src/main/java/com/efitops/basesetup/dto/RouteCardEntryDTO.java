@@ -20,6 +20,7 @@ public class RouteCardEntryDTO {
 
 	private Long id;
 	private String customerName;
+	private String customerCode;
 	private String woNo;
 	private LocalDate woDate;
 	private String fgPartName;
