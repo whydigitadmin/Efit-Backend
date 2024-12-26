@@ -453,5 +453,116 @@ public class QualityApprovalController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	
+	@GetMapping("/getRouteCardDetailsForSampleApproval")
+	public ResponseEntity<ResponseDTO> getRouteCardDetailsForSampleApproval(@RequestParam Long orgId) {
+		String methodName = "getRouteCardDetailsForSampleApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> routeCardDetails = new ArrayList<>();
+		try {
+			routeCardDetails = qualityApprovalServive.getRouteCardDetailsForSampleApproval(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "RouteCardDetails for SampleApproval information get successfully By OrgId");
+			responseObjectsMap.put("routeCardDetails", routeCardDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"RouteCardDetails for SampleApproval information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getDrawingMasterNoForSampleApproval")
+	public ResponseEntity<ResponseDTO> getDrawingMasterNoForSampleApproval(@RequestParam Long orgId,@RequestParam String partNo) {
+		String methodName = "getDrawingMasterNoForSampleApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> drawingMasterNo = new ArrayList<>();
+		try {
+			drawingMasterNo = qualityApprovalServive.getDrawingMasterNoForSampleApproval(orgId,partNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DrawingMasterNo for SampleApproval information get successfully By OrgId");
+			responseObjectsMap.put("drawingMasterNo", drawingMasterNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"DrawingMasterNo for SampleApproval information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	@GetMapping("/getMachineNoForSampleApproval")
+	public ResponseEntity<ResponseDTO> getMachineNoForSampleApproval(@RequestParam Long orgId) {
+		String methodName = "getMachineNoForSampleApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> machineNo = new ArrayList<>();
+		try {
+			machineNo = qualityApprovalServive.getMachineNoForSampleApproval(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "MachineNo for SampleApproval information get successfully By OrgId");
+			responseObjectsMap.put("machineNo", machineNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"MachineNo for SampleApproval information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
+	
+	@GetMapping("/getJobOrderNoForSampleApproval")
+	public ResponseEntity<ResponseDTO> getJobOrderNoForSampleApproval(@RequestParam Long orgId,@RequestParam String routeCardNo) {
+		String methodName = "getJobOrderNoForSampleApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> jobOrderNo = new ArrayList<>();
+		try {
+			jobOrderNo = qualityApprovalServive.getJobOrderNoForSampleApproval(orgId,routeCardNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "JobOrderNo for SampleApproval information get successfully By OrgId");
+			responseObjectsMap.put("jobOrderNo", jobOrderNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"JobOrderNo for SampleApproval information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
 
 }

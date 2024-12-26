@@ -24,15 +24,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_incomingmaterialinspection")
+@Table(name = "incomingmaterialinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class IncomingMaterialInspectionVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_incomingmaterialinspectiongen")
-	@SequenceGenerator(name = "t_incomingmaterialinspectiongen", sequenceName = "t_incomingmaterialinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "incomingmaterialinspectiongen")
+	@SequenceGenerator(name = "incomingmaterialinspectiongen", sequenceName = "incomingmaterialinspectionseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "incomingmaterialinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
@@ -106,7 +106,7 @@ public class IncomingMaterialInspectionVO {
 	@Column(name = "screencode", length = 30)
 	private String screenCode = "INMI";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "INCOMINGMATERIALINSPECTION";
+	private String screenName = "INCOMING MATERIAL INSPECTION";
 
 	@OneToMany(mappedBy = "incomingMaterialInspectionVO", cascade = CascadeType.ALL)
 	@JsonManagedReference

@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_itempriceslab")
+@Table(name = "itempriceslab")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,7 +44,6 @@ public class ItemPriceSlabVO {
 	
 	@ManyToOne
 	@JoinColumn(name = "itemid")
-	@JsonBackReference
 	private ItemVO itemVO;
 	
 }

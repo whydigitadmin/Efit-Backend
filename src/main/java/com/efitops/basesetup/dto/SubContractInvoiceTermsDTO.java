@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class MaterialDetailDTO {
-    private String itemSubGroup;
+@AllArgsConstructor
+public class SubContractInvoiceTermsDTO {
+	private String terms;
+	private String description;
+
 }

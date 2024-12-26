@@ -23,16 +23,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_material")
+@Table(name = "materialtype")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MaterialTypeVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_materialgen")
-	@SequenceGenerator(name = "m_materialgen", sequenceName = "m_materialseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "materialid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materialtypegen")
+	@SequenceGenerator(name = "materialtypegen", sequenceName = "materialtypeseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "materialtypeid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "materialtype")
 	private String materialType;
@@ -53,7 +53,7 @@ public class MaterialTypeVO {
 
 	@OneToMany(mappedBy = "materialTypeVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<MaterialDetailVO> materialDetailVO;
+	List<MaterialTypeDetailsVO> materialTypeDetailsVO;
 
 	@JsonGetter("cancel")
 	public String getCancel() {

@@ -27,8 +27,8 @@ import com.efitops.basesetup.dto.ItemPriceSlabDTO;
 import com.efitops.basesetup.dto.ItemTaxSlabDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessDetailsDTO;
 import com.efitops.basesetup.dto.ItemWiseProcessMasterDTO;
-import com.efitops.basesetup.dto.MaterialDetailDTO;
 import com.efitops.basesetup.dto.MaterialTypeDTO;
+import com.efitops.basesetup.dto.MaterialTypeDetailsDTO;
 import com.efitops.basesetup.dto.MeasuringInstrumentsDTO;
 import com.efitops.basesetup.dto.ProcessMasterDTO;
 import com.efitops.basesetup.dto.RackMasterDTO;
@@ -47,7 +47,7 @@ import com.efitops.basesetup.entity.ItemTaxSlabVO;
 import com.efitops.basesetup.entity.ItemVO;
 import com.efitops.basesetup.entity.ItemWiseProcessDetailsVO;
 import com.efitops.basesetup.entity.ItemWiseProcessMasterVO;
-import com.efitops.basesetup.entity.MaterialDetailVO;
+import com.efitops.basesetup.entity.MaterialTypeDetailsVO;
 import com.efitops.basesetup.entity.MaterialTypeVO;
 import com.efitops.basesetup.entity.MeasuringInstrumentsVO;
 import com.efitops.basesetup.entity.ProcessMasterVO;
@@ -68,7 +68,7 @@ import com.efitops.basesetup.repo.ItemRepo;
 import com.efitops.basesetup.repo.ItemTaxSlabRepo;
 import com.efitops.basesetup.repo.ItemWiseProcessDetailsRepo;
 import com.efitops.basesetup.repo.ItemWiseProcessMasterRepo;
-import com.efitops.basesetup.repo.MaterialDetailRepo;
+import com.efitops.basesetup.repo.MaterialTypeDetailRepo;
 import com.efitops.basesetup.repo.MaterialTypeRepo;
 import com.efitops.basesetup.repo.MeasuringInstrumentsRepo;
 import com.efitops.basesetup.repo.ProcessMasterRepo;
@@ -116,7 +116,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	MaterialTypeRepo materialTypeRepo;
 
 	@Autowired
-	MaterialDetailRepo materialDetailRepo;
+	MaterialTypeDetailRepo materialTypeDetailRepo;
 
 	@Autowired
 	DesignationRepo designationrepo;
@@ -957,18 +957,18 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 //		materialTypeVO.setActive(materialTypeDTO.isActive());
 
 		if (ObjectUtils.isNotEmpty(materialTypeVO.getId())) {
-			List<MaterialDetailVO> materialDetailVO1 = materialDetailRepo.findByMaterialTypeVO(materialTypeVO);
-			materialDetailRepo.deleteAll(materialDetailVO1);
+			List<MaterialTypeDetailsVO> materialDetailVO1 = materialTypeDetailRepo.findByMaterialTypeVO(materialTypeVO);
+			materialTypeDetailRepo.deleteAll(materialDetailVO1);
 		}
 
-		List<MaterialDetailVO> materialDetailVOs = new ArrayList<>();
-		for (MaterialDetailDTO materialDetailDTO : materialTypeDTO.getMaterialDetailDTO()) {
-			MaterialDetailVO materialDetailVO = new MaterialDetailVO();
-			materialDetailVO.setItemSubGroup(materialDetailDTO.getItemSubGroup());
-			materialDetailVO.setMaterialTypeVO(materialTypeVO);
-			materialDetailVOs.add(materialDetailVO);
+		List<MaterialTypeDetailsVO> materialTypeDetailsVOs = new ArrayList<>();
+		for (MaterialTypeDetailsDTO materialTypeDetailsDTO : materialTypeDTO.getMaterialTypeDetailDTO()) {
+			MaterialTypeDetailsVO materialTypeDetailsVO = new MaterialTypeDetailsVO();
+			materialTypeDetailsVO.setItemSubGroup(materialTypeDetailsDTO.getItemSubGroup());
+			materialTypeDetailsVO.setMaterialTypeVO(materialTypeVO);
+			materialTypeDetailsVOs.add(materialTypeDetailsVO);
 		}
-		materialTypeVO.setMaterialDetailVO(materialDetailVOs);
+		materialTypeVO.setMaterialTypeDetailsVO(materialTypeDetailsVOs);
 	}
 
 	@Override
@@ -1295,15 +1295,15 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 	@Override
 	public Map<String, Object> createUpdateBom(BomDTO bomDTO) throws ApplicationException {
 		BomVO bomVO = new BomVO();
-		String message= null;
+		String message = null;
 		String screenCode = "BOM";
 		if (ObjectUtils.isNotEmpty(bomDTO.getId())) {
 			bomVO = bomRepo.findById(bomDTO.getId())
 					.orElseThrow(() -> new ApplicationException("BOM  detailsNot Found with id: " + bomDTO.getId()));
-			
+
 			List<BomDetailsVO> bomDetailsVO1 = bomDetailsRepo.findByBomVO(bomVO);
 			bomDetailsRepo.deleteAll(bomDetailsVO1);
-			
+
 			message = "jobWorkOut Updated Successfully";
 			bomVO.setUpdatedBy(bomDTO.getCreatedBy());
 
@@ -1341,7 +1341,6 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 		bomVO.setRevision(bomDTO.isRevision());
 		bomVO.setCurrent(bomDTO.isCurrent());
 		bomVO.setOrgId(bomDTO.getOrgId());
-
 
 		List<BomDetailsVO> bomDetailsVOs = new ArrayList<>();
 		for (BomDetailsDTO bomDetailsDTO : bomDTO.getBomDetailsDTO()) {

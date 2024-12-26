@@ -24,7 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_issuetosubcontractor")
+@Table(name = "issuetosubcontractor")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 public class IssueToSubContractorVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_issuetosubcontractorgen")
-	@SequenceGenerator(name = "t_issuetosubcontractorgen", sequenceName = "t_issuetosubcontractorseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issuetosubcontractorgen")
+	@SequenceGenerator(name = "issuetosubcontractorgen", sequenceName = "issuetosubcontractorseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "issuetosubcontractorid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
@@ -61,7 +61,7 @@ public class IssueToSubContractorVO {
 	@Column(name = "screencode", length = 30)
 	private String screenCode = "ITSC";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "ISSUETOSUBCONTRACTOR";
+	private String screenName = "ISSUE TO SUBCONTRACTOR";
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
@@ -69,7 +69,7 @@ public class IssueToSubContractorVO {
 
 	@OneToMany(mappedBy = "issueToSubContractorVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<IssueItemDetailsVO> issueItemDetailsVO;
+	List<IssueToSubContractorDetailsVO> issueToSubContractorDetailsVO;
 
 	@JsonGetter("active")
 	public String getActive() {

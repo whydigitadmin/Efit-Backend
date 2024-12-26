@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchasereturnitem")
+@Table(name = "purchasereturnitem")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class PurchaseReturnItemVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchasereturnitemgen")
-	@SequenceGenerator(name = "t_purchasereturnitemgen", sequenceName = "t_purchasereturnitemseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchasereturnitemgen")
+	@SequenceGenerator(name = "purchasereturnitemgen", sequenceName = "purchasereturnitemseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchasereturnitemid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "itemcode")

@@ -1,7 +1,7 @@
 package com.efitops.basesetup.entity;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -64,7 +64,7 @@ public class SampleApprovalVO {
 	@Column(name = "shiftdate")
 	private LocalDate shiftDate;
 	@Column(name = "shifttime")
-	private LocalTime shiftTime;
+	private LocalDateTime shiftTime;
 	@Column(name = "sampleqty")
 	private int sampleQty;
 	@Column(name = "docformatno")
