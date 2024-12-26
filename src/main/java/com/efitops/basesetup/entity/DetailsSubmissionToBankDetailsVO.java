@@ -32,7 +32,7 @@ public class DetailsSubmissionToBankDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "detailssubmissiontobankdetailsgen")
 	@SequenceGenerator(name = "detailssubmissiontobankdetailsgen", sequenceName = "detailssubmissiontobankdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "detailssubmissiontobankid")
+	@Column(name = "detailssubmissiontobankdetailsid")
 	private Long id;
 	@Column(name = "documentname")
 	private String documentName;
