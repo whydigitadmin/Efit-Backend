@@ -582,8 +582,8 @@ public class QualityServiceImpl implements QualityService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getRouteCardNumberFromRouteCard(Long orgId, String fgPartName) {
-		Set<Object[]> chType = finalInspectionReportRepo.getRouteCardNumberFromRouteCard(orgId, fgPartName);
+	public List<Map<String, Object>> getPartNameFromRouteCard(Long orgId, String routeCardNumber) {
+		Set<Object[]> chType = finalInspectionReportRepo.getPartNameFromRouteCard(orgId, routeCardNumber);
 		return getRouteCardNumber(chType);
 	}
 
@@ -591,16 +591,31 @@ public class QualityServiceImpl implements QualityService {
 		List<Map<String, Object>> List1 = new ArrayList<>();
 		for (Object[] ch : chType) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("routeCard", ch[0] != null ? ch[0].toString() : "");
-			map.put("partName", ch[1] != null ? ch[1].toString() : "");
-			map.put("partNo", ch[2] != null ? ch[2].toString() : "");
-			map.put("units", ch[3] != null ? ch[3].toString() : "");
-			map.put("customer", ch[4] != null ? ch[4].toString() : "");
-			map.put("poNo", ch[5] != null ? ch[5].toString() : "");
-			map.put("invoiceNo", ch[6] != null ? ch[6].toString() : "");
+			map.put("partName", ch[0] != null ? ch[0].toString() : "");
+			map.put("partNo", ch[1] != null ? ch[1].toString() : "");
+			map.put("units", ch[2] != null ? ch[2].toString() : "");
+			map.put("customer", ch[3] != null ? ch[3].toString() : "");
+			map.put("poNo", ch[4] != null ? ch[4].toString() : "");
+			map.put("invoiceNo", ch[5] != null ? ch[5].toString() : "");
 
 			List1.add(map);
 		}
 		return List1;
 	}
+
+	@Override
+	public List<Map<String, Object>> getRouteCardNumberFromRouteCard(Long orgId) {
+		Set<Object[]> chType = finalInspectionReportRepo.getRouteCardNumberFromRouteCard(orgId);
+		return getRouteCardNumberFromRoute(chType);
+	}
+
+	private List<Map<String, Object>> getRouteCardNumberFromRoute(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNumber", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+}
 }
