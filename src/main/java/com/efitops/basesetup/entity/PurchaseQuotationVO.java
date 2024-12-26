@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchasequotation")
+@Table(name = "purchasequotation")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class PurchaseQuotationVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_purchasequotationgen")
-	@SequenceGenerator(name = "t_purchasequotationgen", sequenceName = "t_purchasequotationseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "purchasequotationgen")
+	@SequenceGenerator(name = "purchasequotationgen", sequenceName = "purchasequotationseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchasequotationid")
 	private Long id;
 	@Column(name="docid")
@@ -97,7 +97,7 @@ public class PurchaseQuotationVO {
     
     @OneToMany(mappedBy ="purchaseQuotationVO",cascade =CascadeType.ALL)
     @JsonManagedReference
-    private List<PurchaseQuotation1VO> purchaseQuotation1VO;
+    private List<PurchaseQuotationDetailsVO> purchaseQuotationDetailsVO;
     
     @OneToMany(mappedBy ="purchaseQuotationVO",cascade =CascadeType.ALL)
     @JsonManagedReference

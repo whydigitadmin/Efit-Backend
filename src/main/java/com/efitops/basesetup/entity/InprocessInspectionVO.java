@@ -94,7 +94,7 @@ public class InprocessInspectionVO {
 
 	@OneToMany(mappedBy = "inprocessInspectionVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<InprocessAppearanceInspectionVO> inprocessAppearanceInspectionVO;
+	List<InprocessInspectionAppearanceVO> inprocessInspectionAppearanceVO;
 
 	@JsonGetter("active")
 	public String getActive() {

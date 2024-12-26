@@ -24,15 +24,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_finalinspectionreport")
+@Table(name = "finalinspectionreport")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class FinalInspectionReportVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_finalinspectionreportgen")
-	@SequenceGenerator(name = "t_finalinspectionreportgen", sequenceName = "t_finalinspectionreportseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "finalinspectionreportgen")
+	@SequenceGenerator(name = "finalinspectionreportgen", sequenceName = "finalinspectionreportseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "finalinspectionreportid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
@@ -93,11 +93,11 @@ public class FinalInspectionReportVO {
 
 	@OneToMany(mappedBy = "finalInspectionReportVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<DimensionalInspectionReportVO> dimensionalInspectionReportVO;
+	List<FirDimensionalInspectionVO> firDimensionalInspectionVO; 
 
 	@OneToMany(mappedBy = "finalInspectionReportVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<AppearanceInspectionReportVO> appearanceInspectionReportVO;
+	List<FirAppearanceInspectionVO> firAppearanceInspectionVO;
 
 	@JsonGetter("active")
 	public String getActive() {

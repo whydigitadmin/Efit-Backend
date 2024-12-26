@@ -20,15 +20,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchaseinvoiceitem")
+@Table(name = "purchaseinvoiceitem")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PurchaseInvoiceItemVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseinvoiceitemgen")
-	@SequenceGenerator(name = "t_purchaseinvoiceitemgen", sequenceName = "t_purchaseinvoiceitemseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchaseinvoiceitemgen")
+	@SequenceGenerator(name = "purchaseinvoiceitemgen", sequenceName = "urchaseinvoiceitemseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchaseinvoiceitemid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "itemcode")

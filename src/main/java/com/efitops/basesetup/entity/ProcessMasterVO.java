@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_processmaster")
+@Table(name = "processmaster")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class ProcessMasterVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_processmastergen")
-	@SequenceGenerator(name = "m_processmastergen", sequenceName = "m_processmasterseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processmastergen")
+	@SequenceGenerator(name = "processmastergen", sequenceName = "processmasterseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "processmasterid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")

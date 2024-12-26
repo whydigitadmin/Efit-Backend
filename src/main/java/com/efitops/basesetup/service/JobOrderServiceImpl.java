@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -139,5 +140,69 @@ public class JobOrderServiceImpl implements JobOrderService {
 	@Override
 	public String getJobOrderDocId(Long orgId, String finYear, String branchCode, String screenCode) {
 		return jobOrderRepo.getJobOrderDocId(orgId, finYear, branchCode, screenCode);
+	}
+
+	@Override
+	public List<Map<String, Object>> getShift(Long orgId) {
+		Set<Object[]> routeNo = jobOrderRepo.getShift(orgId);
+		return getShiftDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getShiftDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("shift", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getOperationName(Long orgId) {
+		Set<Object[]> routeNo = jobOrderRepo.getOperationName(orgId);
+		return getOperationDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getOperationDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("operationName", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getOperatorName(Long orgId) {
+		Set<Object[]> routeNo = jobOrderRepo.getOperatorName(orgId);
+		return getOperatorDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getOperatorDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("operatorName", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getTimings(Long orgId, String shiftCode) {
+		Set<Object[]> routeNo = jobOrderRepo.getTimings(orgId, shiftCode);
+		return getTimingDetails(routeNo);
+	}
+
+	private List<Map<String, Object>> getTimingDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("timings", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
 	}
 }

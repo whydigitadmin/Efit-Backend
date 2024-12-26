@@ -15,6 +15,8 @@ public class ProductionPlanDetailsDTO {
 	private int qty;
 	private LocalDate fromDate;
 	private LocalDate toDate;
+	private String machineName;
+	private String machineNo;
 	private String timeTakenInSec;
 	private String totalTimeTaken;
 	private String timeTakenInHours;

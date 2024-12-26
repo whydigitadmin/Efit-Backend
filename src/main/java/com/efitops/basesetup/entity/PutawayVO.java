@@ -24,7 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_putaway")
+@Table(name = "putaway")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 public class PutawayVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_putawaygen")
-	@SequenceGenerator(name = "t_putawaygen", sequenceName = "t_putawayseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "putawaygen")
+	@SequenceGenerator(name = "putawaygen", sequenceName = "putawayseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "putawayid")
 	private Long id;
 	
@@ -72,7 +72,7 @@ public class PutawayVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
     @Column(name = "screencode", length = 5)
-	private String screenCode="PA";
+	private String screenCode="PUT";
 	@Column(name = "screenname",length = 30)
 	private String screenName=" putaway";
 	
@@ -83,9 +83,10 @@ public class PutawayVO {
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
-	}
+	}	
 	
 	@JsonGetter("cancel")
+	
 	public String getCancel() {
 		return cancel ? "T" : "F";
 	}

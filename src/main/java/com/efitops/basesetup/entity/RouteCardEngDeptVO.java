@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_routecardengdept")
+@Table(name = "routecardengdept")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class RouteCardEngDeptVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_routecardengdeptgen")
-	@SequenceGenerator(name = "t_routecardengdeptgen", sequenceName = "t_routecardengdeptseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "routecardengdeptgen")
+	@SequenceGenerator(name = "routecardengdeptgen", sequenceName = "routecardengdeptseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "routecardengdeptid")
 	private Long id;
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -129,6 +130,8 @@ public class ProductionPlanServiceImpl implements ProductionPlanService {
 			productionPlanDetailsVO.setQty(productionPlanDetailsDTO.getQty());
 			productionPlanDetailsVO.setFromDate(productionPlanDetailsDTO.getFromDate());
 			productionPlanDetailsVO.setToDate(productionPlanDetailsDTO.getToDate());
+			productionPlanDetailsVO.setMachineName(productionPlanDetailsDTO.getMachineName());
+			productionPlanDetailsVO.setMachineNo(productionPlanDetailsDTO.getMachineNo());
 			productionPlanDetailsVO.setTimeTakenInSec(productionPlanDetailsDTO.getTimeTakenInSec());
 			productionPlanDetailsVO.setTotalTimeTaken(productionPlanDetailsDTO.getTotalTimeTaken());
 			productionPlanDetailsVO.setTimeTakenInHours(productionPlanDetailsDTO.getTimeTakenInHours());
@@ -144,5 +147,77 @@ public class ProductionPlanServiceImpl implements ProductionPlanService {
 	@Override
 	public String getProductionPlanDocId(Long orgId, String finYear, String branchCode, String screenCode) {
 		return productionPlanRepo.getProductionPlanDocId(orgId, finYear, branchCode, screenCode);
+	}
+
+	@Override
+	public List<Map<String, Object>> getRouteCardNoAndDetails(Long orgId) {
+		Set<Object[]> routeCard = productionPlanRepo.getRouteCardNo(orgId);
+		return getRouteCardNo(routeCard);
+	}
+
+	private List<Map<String, Object>> getRouteCardNo(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("routeCardNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("woSoNo", ch[1] != null ? ch[1].toString() : "");
+			map.put("woSoDate", ch[2] != null ? ch[2].toString() : "");
+			map.put("customerName", ch[3] != null ? ch[3].toString() : "");
+			map.put("partNo", ch[4] != null ? ch[4].toString() : "");
+			map.put("partDesc", ch[5] != null ? ch[5].toString() : "");
+			map.put("productionQty", ch[6] != null ? ch[6].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getRawMaterialDetails(Long orgId) {
+		Set<Object[]> rawMaterial = productionPlanRepo.getRawMaterialDetails(orgId);
+		return getRawMaterialDetails(rawMaterial);
+	}
+
+	private List<Map<String, Object>> getRawMaterialDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("rawMaterail", ch[0] != null ? ch[0].toString() : "");
+			map.put("rawMaterailDesc", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getProcessName(Long orgId, String item) {
+		Set<Object[]> process = productionPlanRepo.getProcessName(orgId, item);
+		return getProcessDetails(process);
+	}
+
+	private List<Map<String, Object>> getProcessDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("processName", ch[0] != null ? ch[0].toString() : "");
+			List1.add(map);
+		}
+		return List1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getMachineName(Long orgId, String fromDate, Long id, String docId) {
+		Set<Object[]> machine = productionPlanRepo.getMachineName(orgId, fromDate, id, docId);
+		return getMachineDetails(machine);
+	}
+
+	private List<Map<String, Object>> getMachineDetails(Set<Object[]> route) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : route) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("machineNo", ch[0] != null ? ch[0].toString() : "");
+			map.put("machineName", ch[1] != null ? ch[1].toString() : "");
+			List1.add(map);
+		}
+		return List1;
 	}
 }

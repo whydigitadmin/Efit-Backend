@@ -15,7 +15,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.efitops.basesetup.dto.CreatedUpdatedDate;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_workorder")
+@Table(name = "workorder")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +31,8 @@ import lombok.NoArgsConstructor;
 public class WorkOrderVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_workordergen")
-	@SequenceGenerator(name = "t_workordergen", sequenceName = "t_workorderseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workordergen")
+	@SequenceGenerator(name = "workordergen", sequenceName = "workorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "workorderid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
@@ -78,11 +77,11 @@ public class WorkOrderVO {
 
 	@OneToMany(mappedBy = "workOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<ItemParticularsVO> itemParticularsVO;
+	List<WorkOrderDetailsVO> workOrderDetailsVO;
 
 	@OneToMany(mappedBy = "workOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<TermsAndConditionsVO> termsAndConditionsVO;
+	List<WorkOrderTermsVO> workOrderTermsVO;
 
 	@Embedded
 	@Builder.Default

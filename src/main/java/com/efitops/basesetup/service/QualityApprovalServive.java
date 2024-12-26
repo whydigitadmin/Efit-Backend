@@ -7,7 +7,9 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
+import com.efitops.basesetup.dto.SampleApprovalDTO;
 import com.efitops.basesetup.dto.SettingApprovalDTO;
+import com.efitops.basesetup.entity.SampleApprovalVO;
 import com.efitops.basesetup.entity.SettingApprovalVO;
 import com.efitops.basesetup.exception.ApplicationException;
 
@@ -35,6 +37,25 @@ public interface QualityApprovalServive {
 	List<Map<String, Object>> getQualityNameForSetingApproval(Long orgId);
 
 	List<Map<String, Object>> getShiftInChargeForSetingApproval(Long orgId);
+
+
+	//sampleApproval
+	
+	List<SampleApprovalVO> getAllSampleApprovalByOrgId(Long orgId);
+
+	SampleApprovalVO getSampleApprovalById(Long id);
+
+	String getSampleApprovalDocId(Long orgId);
+
+	Map<String, Object> createUpdateSampleApproval(SampleApprovalDTO sampleApprovalDTO) throws ApplicationException;
+
+	List<Map<String, Object>> getRouteCardDetailsForSampleApproval(Long orgId);
+
+	List<Map<String, Object>> getDrawingMasterNoForSampleApproval(Long orgId, String partNo);
+
+	List<Map<String, Object>> getMachineNoForSampleApproval(Long orgId);
+
+	List<Map<String, Object>> getJobOrderNoForSampleApproval(Long orgId, String routeCardNo);
 
 	
 

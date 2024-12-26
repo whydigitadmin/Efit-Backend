@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_routecardentry")
+@Table(name = "routecardentry")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class RouteCardEntryVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_routecardentrygen")
-	@SequenceGenerator(name = "t_routecardentrygen", sequenceName = "t_routecardentryseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "routecardentrygen")
+	@SequenceGenerator(name = "routecardentrygen", sequenceName = "routecardentryseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "routecardentryid")
 	private Long id;
 
@@ -48,6 +48,8 @@ public class RouteCardEntryVO {
 	private String customerCode;
 	@Column(name = "wono")
 	private String woNo;
+	@Column(name = "wodate")
+	private LocalDate woDate;
 	@Column(name = "fgpartname")
 	private String fgPartName;
 	@Column(name = "fgpartdesc")
@@ -66,7 +68,8 @@ public class RouteCardEntryVO {
 	private int rmQty;
 	@Column(name = "narration")
 	private String narration;
-
+	@Column(name = "suppliername")
+	private String supplierName;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "invoice")
@@ -89,7 +92,7 @@ public class RouteCardEntryVO {
 	@Column(name = "modifyby", length = 25)
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active=true;
+	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "cancelremarks", length = 150)
@@ -102,11 +105,11 @@ public class RouteCardEntryVO {
 	@OneToMany(mappedBy = "routeCardEntryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<RouteCardEntryDetailsVO> routeCardEntryDetailsVO;
-	
+
 	@OneToMany(mappedBy = "routeCardEntryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<RouteCardEngDeptVO> routeCardEngDeptVO;
-	
+
 	@OneToMany(mappedBy = "routeCardEntryVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<RouteCardClosureVO> routeCardClosureVO;

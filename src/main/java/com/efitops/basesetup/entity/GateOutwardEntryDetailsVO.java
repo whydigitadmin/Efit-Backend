@@ -17,15 +17,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_gateoutwardentrydetails")
+@Table(name = "gateoutwardentrydetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GateOutwardEntryDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_gateoutwardentrydetailsgen")
-	@SequenceGenerator(name = "t_gateoutwardentrydetailsgen", sequenceName = "t_gateoutwardentrydetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gateoutwardentrydetailsgen")
+	@SequenceGenerator(name = "gateoutwardentrydetailsgen", sequenceName = "gateoutwardentrydetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "gateoutwardentrydetailsid")
 	private Long id;
 	

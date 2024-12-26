@@ -10,10 +10,10 @@ import com.efitops.basesetup.entity.ProcessMasterVO;
 @Repository
 public interface ProcessMasterRepo extends JpaRepository<ProcessMasterVO, Long> {
 
-	@Query(nativeQuery = true,value = "select * from m_processmaster where orgid=?1")
+	@Query(nativeQuery = true,value = "select * from processmaster where orgid=?1")
 	List<ProcessMasterVO> getAllProcessMasterByOrgId(Long orgId);
 	
-	@Query(nativeQuery = true,value = "select * from m_processmaster where processmasterid=?1")
+	@Query(nativeQuery = true,value = "select * from processmaster where processmasterid=?1")
 	List<ProcessMasterVO> getProcessMasterById(Long id);
 
 	boolean existsByProcessNameAndOrgId(String processName, Long orgId);

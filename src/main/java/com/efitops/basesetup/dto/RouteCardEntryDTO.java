@@ -19,21 +19,23 @@ import lombok.NoArgsConstructor;
 public class RouteCardEntryDTO {
 
 	private Long id;
-    private String customerName;
+	private String customerName;
 	private String customerCode;
-    private String woNo;
-    private String fgPartName;
-    private String fgPartDesc;
-    private int fgQty;
-    private int batchQty;
-    private String rmType;
-    private String rmSize;
-    private String rmbatchNo;
-    private int rmQty;
-    private String narration;
-    private Long orgId;
-    private String createdBy;
+	private String woNo;
+	private LocalDate woDate;
+	private String fgPartName;
+	private String fgPartDesc;
+	private int fgQty;
+	private int batchQty;
+	private String rmType;
+	private String rmSize;
+	private String rmbatchNo;
+	private int rmQty;
+	private String narration;
+	private Long orgId;
+	private String createdBy;
 	private String status;
+	private String supplierName;
 
 	@Column(name = "invoice")
 	private String invoice;
@@ -42,11 +44,11 @@ public class RouteCardEntryDTO {
 	@Column(name = "qty")
 	private int qty;
 	private int stockQty;
-	
+
 //    private MultipartFile file;
-	
+
 	List<RouteCardClosureDTO> routeCardClosureDTO;
-	List<RouteCardEngDeptDTO>routeCardEngDeptDTO;
-	List<RouteCardEntryDetailsDTO>routeCardEntryDetailsDTO;
+	List<RouteCardEngDeptDTO> routeCardEngDeptDTO;
+	List<RouteCardEntryDetailsDTO> routeCardEntryDetailsDTO;
 
 }

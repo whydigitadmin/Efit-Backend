@@ -23,15 +23,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_picklist")
+@Table(name = "picklist")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PickListVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_picklistgen")
-	@SequenceGenerator(name = "t_picklistgen", sequenceName = "t_picklistseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "picklistgen")
+	@SequenceGenerator(name = "picklistgen", sequenceName = "picklistseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "picklistid")
 	private Long id;
 	

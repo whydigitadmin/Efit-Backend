@@ -53,7 +53,7 @@ public class PurchaseQuotationDTO {
 	private String narration;
 //	private String amountInWords;
 	
-	List<PurchaseQuotation1DTO> purchaseQuotation1DTO;
+	List<PurchaseQuotationDetailsDTO> purchaseQuotationDetailsDTO;
 	
 	List<PurchaseQuotationAttachmentDTO> purchaseQuotationAttachmentDTO;
 	

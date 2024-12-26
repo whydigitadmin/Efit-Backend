@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_incomingmaterialinspectionappearance")
+@Table(name = "incomingmaterialinspectionappearance")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 public class IncomingMaterialInspectionAppearanceVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_incomingmaterialinspectionappearancegen")
-	@SequenceGenerator(name = "t_incomingmaterialinspectionappearancegen", sequenceName = "t_incomingmaterialinspectionappearanceseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "incomingmaterialinspectionappearancegen")
+	@SequenceGenerator(name = "incomingmaterialinspectionappearancegen", sequenceName = "incomingmaterialinspectionappearanceseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "incomingmaterialinspectionappearanceid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "characteristics")

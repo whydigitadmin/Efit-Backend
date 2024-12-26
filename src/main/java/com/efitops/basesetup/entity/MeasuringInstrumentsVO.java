@@ -20,15 +20,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_measuringinstruments")
+@Table(name = "measuringinstruments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MeasuringInstrumentsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_measuringinstrumentsgen")
-	@SequenceGenerator(name = "m_measuringinstrumentsgen", sequenceName = "m_measuringinstrumentsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "measuringinstrumentsgen")
+	@SequenceGenerator(name = "measuringinstrumentsgen", sequenceName = "measuringinstrumentsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "measuringinstrumentsid")
 	private Long id;
 

@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_dispatchplandetails")
+@Table(name = "dispatchplandetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 public class DispatchPlanDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "t_dispatchplandetailsgen")
-	@SequenceGenerator(name = "t_dispatchplandetailsgen", sequenceName = "t_dispatchplandetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "dispatchplandetailsgen")
+	@SequenceGenerator(name = "dispatchplandetailsgen", sequenceName = "dispatchplandetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "dispatchplandetailsid")
 	private Long id;
 	
