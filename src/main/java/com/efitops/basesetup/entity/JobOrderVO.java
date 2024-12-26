@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.efitops.basesetup.dto.CreatedUpdatedDate;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -31,68 +34,75 @@ public class JobOrderVO {
 	@SequenceGenerator(name = "jobordergen", sequenceName = "joborderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "joborderid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-	
+
 //	Main Fields
-	@Column(name="docid")
+	@Column(name = "docid")
 	private String docId;
-	@Column(name="docdate")
+	@Column(name = "docdate")
 	private LocalDate docDate;
-	@Column(name="shift")
+	@Column(name = "shift")
 	private String shift;
-	@Column(name="routecardno")
+	@Column(name = "routecardno")
 	private String routeCardNo;
-	@Column(name="workorderno")
+	@Column(name = "workorderno")
 	private String workOrderNo;
-	@Column(name="customername")
+	@Column(name = "customername")
 	private String customerName;
-	@Column(name="customerpono")
+	@Column(name = "customerpono")
 	private String customerPoNo;
-	@Column(name="supplier")
+	@Column(name = "supplier")
 	private String supplier;
-	@Column(name="partname")
+	@Column(name = "partname")
 	private String partName;
-	@Column(name="partno")
+	@Column(name = "partno")
 	private String partNo;
-	@Column(name="operationname")
+	@Column(name = "operationname")
 	private String operationName;
-	@Column(name="cycletimeinsecs")
+	@Column(name = "cycletimeinsecs")
 	private String cycleTimeInSecs;
-	@Column(name="normshr")
+	@Column(name = "normshr")
 	private String normsHr;
-	@Column(name="status")
+	@Column(name = "status")
 	private String status;
-	@Column(name="operatorname")
+	@Column(name = "operatorname")
 	private String operatorName;
 //	Defaul Fields
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "branch",length = 30)
+	@Column(name = "branch", length = 30)
 	private String branch;
-	@Column(name = "branchcode",length = 10)
+	@Column(name = "branchcode", length = 10)
 	private String branchCode;
-	@Column(name = "finyear",length =10)
+	@Column(name = "finyear", length = 10)
 	private String finYear;
-	@Column(name = "createdby",length = 30)
+	@Column(name = "createdby", length = 30)
 	private String createdBy;
-	@Column(name = "modifiedby",length = 30)
+	@Column(name = "modifiedby", length = 30)
 	private String modifiedBy;
 	@Column(name = "active")
-	private boolean active=true;
+	private boolean active = true;
 	@Column(name = "cancel")
-	private boolean cancel=false;
-	@Column(name = "cancelremarks",length = 150)
+	private boolean cancel = false;
+	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
-	@Column(name = "screencode",length = 30)
-	private String screenCode="JO";
-	@Column(name = "screenname",length = 30)
-	private String screenName="JOB ORDER";
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "JO";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "JOB ORDER";
 //	Summary Fields
-	@Column(name="narration")
+	@Column(name = "narration")
 	private String narration;
-	
+
 	@OneToMany(mappedBy = "jobOrderVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<JobOrderDetailsVO> jobOrderDetailsVO;
-	
-	
+
+	@Embedded
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+
 }

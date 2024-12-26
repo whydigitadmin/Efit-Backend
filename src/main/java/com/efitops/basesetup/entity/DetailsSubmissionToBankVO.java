@@ -23,41 +23,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "processdone")
+@Table(name = "detailssubmissiontobank")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProcessDoneVO {
+
+public class DetailsSubmissionToBankVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "processdonegen")
-	@SequenceGenerator(name = "processdonegen", sequenceName = "processdoneseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "processdoneid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "detailssubmissiontobankgen")
+	@SequenceGenerator(name = "detailssubmissiontobankgen", sequenceName = "detailssubmissiontobankseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "detailssubmissiontobankid")
 	private Long id;
+
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate;
-	@Column(name = "customername")
-	private String customerName;
-	@Column(name = "routecardno")
-	private String routeCardNo;
-	@Column(name = "joborderno")
-	private String jobOrderNo;
-	@Column(name = "fgpartname")
-	private String fgPartName;
-	@Column(name = "fgpartno")
-	private String fgPartNo;
-	@Column(name = "from")
-	private String from;
-	@Column(name = "to")
-	private String to;
-	@Column(name = "placinglocation")
-	private String placingLocation;
-	@Column(name = "qty")
-	private int qty;
-
-//	Defaul Fields
+	@Column(name = "invoiceno")
+	private String invoiceNo;
+	@Column(name = "invoicedate")
+	private LocalDate invoiceDate;
+	// Default Columns
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "branch", length = 30)
@@ -77,16 +64,15 @@ public class ProcessDoneVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "screencode", length = 30)
-	private String screenCode = "PD";
+	private String screenCode = "DSB";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "PROCESS DONE";
-//	Summary Fields
+	private String screenName = "Details Submission To Bank";
 	@Column(name = "narration")
 	private String narration;
 
-	@OneToMany(mappedBy = "processDoneVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "detailsSubmissionToBankVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<ProcessDoneDetailsVO> processDoneDetailsVO;
+	private List<DetailsSubmissionToBankDetailsVO> detailsSubmissionToBankDetailsVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
