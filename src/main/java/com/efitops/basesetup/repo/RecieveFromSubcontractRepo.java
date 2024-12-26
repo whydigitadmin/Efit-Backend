@@ -11,10 +11,10 @@ import com.efitops.basesetup.entity.RecieveFromSubcontractVO;
 @Repository
 public interface RecieveFromSubcontractRepo extends JpaRepository<RecieveFromSubcontractVO, Long> {
 
-	@Query(nativeQuery = true, value = "select*from t_recievefromsubcontract where orgid=?1")
+	@Query(nativeQuery = true, value = "select*from recievefromsubcontract where orgid=?1")
 	List<RecieveFromSubcontractVO> findRecieveFromSubcontractByOrgId(Long orgId);
 
-	@Query(nativeQuery = true, value = "select*from t_recievefromsubcontract where recievefromsubcontractid=?1")
+	@Query(nativeQuery = true, value = "select*from recievefromsubcontract where recievefromsubcontractid=?1")
 	List<RecieveFromSubcontractVO> getRecieveFromSubcontractById(Long id);
 
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
