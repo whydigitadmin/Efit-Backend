@@ -26,9 +26,9 @@ public interface RouteCardEntryRepo extends JpaRepository<RouteCardEntryVO, Long
 			+ " a.partyname,a.partycode order by  a.partyname")
 	Set<Object[]> findCustomerNameAndCodeFromRouteCardEntry(Long orgId);
 
-	@Query(nativeQuery = true,value = "select  a.docid from workorder a where a.orgid=?1 and customer=?2 and active=1 and cancel=0 group by \r\n"
+	@Query(nativeQuery = true,value = "select  a.docid from workorder a where a.orgid=?1 and a.customercode=?2 and active=1 and cancel=0 group by \r\n"
 			+ " a.docid order by  a.docid")
-	Set<Object[]> findWorkOrderNoFromRouteCardEntry(Long orgId, String customer);
+	Set<Object[]> findWorkOrderNoFromRouteCardEntry(Long orgId, String customerCode);
 
 	@Query(nativeQuery = true,value = "select  b.partno,b.partname,b.requiredqty from workorder a JOIN workorderdetails b ON a.workorderid = b.workorderid where a.orgid=?1 and a.docid=?2 and active=1 and cancel=0 group by \r\n"
 			+ " b.partno,b.partname,b.requiredqty order by   b.partno")
