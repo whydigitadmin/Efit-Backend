@@ -1,6 +1,7 @@
 package com.efitops.basesetup.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,11 @@ public interface SalesInvoiceLocalRepo extends JpaRepository<SalesInvoiceLocalVO
 
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getSalesInvoiceLocalDocId(Long orgId, String screenCode);
+
+	@Query(nativeQuery = true, value = "select a.partyname,a1.stategstin,a1.taxtype from partymaster a,partyaddress a1 where \r\n"
+			+ "	a.orgid='' and a.partymasterid=a1.partyaddressid and upper(a1.addresstype='BILLING')  and \r\n"
+			+ "	upper(a.suppliertype='LOCAL') and a.active = 1 group by\r\n"
+			+ "	 a.partyname,a1.stategstin,a1.taxtype order by a.partyname")
+	Set<Object[]> getCustomerNameFromPartyMaster(Long orgId);
 
 }
