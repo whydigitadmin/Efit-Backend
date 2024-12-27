@@ -19,7 +19,7 @@ public interface ItemIssueToProductionRepo extends JpaRepository<ItemIssueToProd
 	@Query(nativeQuery = true,value="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getItemIssueToProductionDocId(Long orgId, String screenCode);
 
-	@Query(nativeQuery = true,value = "select  a.docid from routecardentry a where a.orgid=?1 and a.customercode=?2 upper(status)='PENDING' and active=1 and cancel=0 group by \r\n"
+	@Query(nativeQuery = true,value = "select  a.docid from routecardentry a where a.orgid=?1 and a.customercode=?2 and upper(status)='PENDING' and active=1 and cancel=0 group by \r\n"
 			+ " a.docid order by  a.docid")
 	Set<Object[]> findRouteCardEntryNoForItemIssueToProduction(Long orgId, String customerCode);
 
