@@ -235,6 +235,7 @@ public class PurchaseReturnServiceImpl implements PurchaseReturnService {
 			map.put("invdcNo", ch[9] != null ? ch[9].toString() : "");
 			map.put("invdcDate", ch[10] != null ? ch[10].toString() : "");
 			map.put("gstType", ch[11] != null ? ch[11].toString() : "");
+			map.put("customerName", ch[12] != null ? ch[12].toString() : "");
 			List1.add(map);
 		}
 		return List1;
