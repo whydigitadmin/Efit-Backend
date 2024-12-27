@@ -21,15 +21,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_subcontractenquirydetails")
+@Table(name = "subcontractenquirydetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class SubContractEnquiryDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontractenquirydetailsgen")
-	@SequenceGenerator(name = "t_subcontractenquirydetailsgen", sequenceName = "t_subcontractenquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subcontractenquirydetailsgen")
+	@SequenceGenerator(name = "subcontractenquirydetailsgen", sequenceName = "subcontractenquirydetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "subcontractenquirydetailsid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "part")

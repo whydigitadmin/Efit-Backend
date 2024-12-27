@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_subcontractinvoice")
+@Table(name = "subcontractinvoice")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class SubContractInvoiceVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_subcontractinvoicegen")
-	@SequenceGenerator(name = "t_subcontractinvoicegen", sequenceName = "t_subcontractinvoiceseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subcontractinvoicegen")
+	@SequenceGenerator(name = "subcontractinvoicegen", sequenceName = "subcontractinvoiceseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "subcontractinvoiceid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
@@ -80,7 +80,7 @@ public class SubContractInvoiceVO {
 	@Column(name = "screencode", length = 30)
 	private String screenCode = "SCI";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "SUBCONTRACTINVOICE";
+	private String screenName = "SUBCONTRACT INVOICE";
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
@@ -88,11 +88,11 @@ public class SubContractInvoiceVO {
 
 	@OneToMany(mappedBy = "subContractInvoiceVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<SubContractTaxInvoiceDetailsVO> subContractTaxInvoiceDetailsVO;
+	List<SubContractInvoiceDetailsVO> subContractInvoiceDetailsVO;
 
 	@OneToMany(mappedBy = "subContractInvoiceVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<SubContractTermsAndConditionsVO> subContractTermsAndConditionsVO;
+	List<SubContractInvoiceTermsVO> subContractInvoiceTermsVO;
 
 	@JsonGetter("active")
 	public String getActive() {

@@ -26,15 +26,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_purchaseorder")
+@Table(name = "purchaseorder")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PurchaseOrderVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_purchaseordergen")
-	@SequenceGenerator(name = "t_purchaseordergen", sequenceName = "t_purchaseorderseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchaseordergen")
+	@SequenceGenerator(name = "purchaseordergen", sequenceName = "purchaseorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "purchaseorderid",columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid", length = 150)

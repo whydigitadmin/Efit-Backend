@@ -24,27 +24,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_toolissuetocalibration")
+@Table(name = "toolissuetocalibration")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ToolsIssueToCalibrationVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_toolissuetocalibrationgen")
-	@SequenceGenerator(name = "t_toolissuetocalibrationgen", sequenceName = "t_toolissuetocalibrationseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "toolissuetocalibrationid",columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "toolissuetocalibrationgen")
+	@SequenceGenerator(name = "toolissuetocalibrationgen", sequenceName = "toolissuetocalibrationseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "toolissuetocalibrationid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid", length = 150)
 	private String docId;
-	@Column(name="podate")
-	private LocalDate poDate= LocalDate.now();
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "issuepartyname")
 	private String issuePartyName;
 	@Column(name = "issuepartyaddress")
 	private String issuePartyAddress;
-	
-	
+
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "createdby", length = 25)
@@ -57,20 +56,20 @@ public class ToolsIssueToCalibrationVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="TIC";
-	@Column(name = "screenname",length = 30)
-	private String screenName="TOOLISSUETOCALIBRATION";
-	
-	@OneToMany(mappedBy = "purchaseOrderVO", cascade = CascadeType.ALL)
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "TIC";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "TOOLISSUETOCALIBRATION";
+
+	@OneToMany(mappedBy = "toolsIssueToCalibrationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<PurchaseOrderDetailsVO> purchaseOrderDetailsVO;
-	
+	List<ToolsIssueToCalibrationDetailsVO> toolsIssueToCalibrationDetailsVO;
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
@@ -79,9 +78,5 @@ public class ToolsIssueToCalibrationVO {
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
-	
-	
-	
 
 }

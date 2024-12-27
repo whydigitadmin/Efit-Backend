@@ -32,8 +32,8 @@ public class FinalInspectionReportDTO {
 	private String createdBy;
 	private boolean active;
 
-	private List<DimensionalInspectionReportDTO> dimensionalInspectionReportDTO;
+	private List<FirDimensionalInspectionDTO> firDimensionalInspectionDTO;
 
-	private List<AppearanceInspectionReportDTO> appearanceInspectionReportDTO;
+	private List<FirAppearanceInspectionDTO> firAppearanceInspectionDTO;
 
 }

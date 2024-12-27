@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_recieveformsubcontract")
+@Table(name = "recieveformsubcontract")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 public class RecieveFromSubcontractVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_recieveformsubcontractgen")
-	@SequenceGenerator(name = "t_recieveformsubcontractgen", sequenceName = "t_recieveformsubcontractseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recieveformsubcontractgen")
+	@SequenceGenerator(name = "recieveformsubcontractgen", sequenceName = "recieveformsubcontractseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "recieveformsubcontractid")
 	private Long id;
 	@Column(name = "docid", length = 150)

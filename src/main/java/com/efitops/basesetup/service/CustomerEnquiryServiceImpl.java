@@ -1,7 +1,6 @@
 package com.efitops.basesetup.service;
 
 import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,30 +16,30 @@ import org.springframework.stereotype.Service;
 import com.efitops.basesetup.dto.EnquiryDTO;
 import com.efitops.basesetup.dto.EnquiryDetailsDTO;
 import com.efitops.basesetup.dto.EnquirySummaryDTO;
-import com.efitops.basesetup.dto.ItemParticularsDTO;
 import com.efitops.basesetup.dto.QuotationDTO;
 import com.efitops.basesetup.dto.QuotationDetailsDTO;
-import com.efitops.basesetup.dto.TermsAndConditionsDTO;
 import com.efitops.basesetup.dto.WorkOrderDTO;
+import com.efitops.basesetup.dto.WorkOrderDetailsDTO;
+import com.efitops.basesetup.dto.WorkOrderTermsDTO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
 import com.efitops.basesetup.entity.EnquiryDetailsVO;
 import com.efitops.basesetup.entity.EnquirySummaryVO;
 import com.efitops.basesetup.entity.EnquiryVO;
-import com.efitops.basesetup.entity.ItemParticularsVO;
 import com.efitops.basesetup.entity.QuotationDetailsVO;
 import com.efitops.basesetup.entity.QuotationVO;
-import com.efitops.basesetup.entity.TermsAndConditionsVO;
+import com.efitops.basesetup.entity.WorkOrderDetailsVO;
+import com.efitops.basesetup.entity.WorkOrderTermsVO;
 import com.efitops.basesetup.entity.WorkOrderVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
 import com.efitops.basesetup.repo.EnquiryDetailsRepo;
 import com.efitops.basesetup.repo.EnquiryRepo;
 import com.efitops.basesetup.repo.EnquirySummaryRepo;
-import com.efitops.basesetup.repo.ItemParticularsRepo;
 import com.efitops.basesetup.repo.QuotationDetailsRepo;
 import com.efitops.basesetup.repo.QuotationRepo;
-import com.efitops.basesetup.repo.TermsAndConditionsRepo;
+import com.efitops.basesetup.repo.WorkOrderDetailsRepo;
 import com.efitops.basesetup.repo.WorkOrderRepo;
+import com.efitops.basesetup.repo.WorkOrderTermsRepo;
 
 @Service
 public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
@@ -72,10 +71,10 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	WorkOrderRepo workOrderRepo;
 
 	@Autowired
-	ItemParticularsRepo itemParticularsRepo;
+	WorkOrderDetailsRepo workOrderDetailsRepo;
 
 	@Autowired
-	TermsAndConditionsRepo termsAndConditionsRepo;
+	WorkOrderTermsRepo workOrderTermsRepo;
 
 	// Enquiry
 
@@ -89,7 +88,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 					.orElseThrow(() -> new ApplicationException("Invalid Enquiry details"));
 			message = "Enquiry Updated Successfully";
 			enquiryVO.setUpdatedBy(enquiryDTO.getCreatedBy());
-			
+
 		} else {
 
 			String docId = enquiryRepo.getEnquiryDocId(enquiryDTO.getOrgId(), screenCode);
@@ -247,8 +246,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-	
-	
+
 	@Override
 	public List<Map<String, Object>> getDrawingNoAndRevisionNo(String partNo, Long orgId) {
 		Set<Object[]> chType = enquiryRepo.getDrawingNoAndRevisionNo(partNo, orgId);
@@ -265,8 +263,6 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-
-	
 
 	// Quotation
 
@@ -392,11 +388,10 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		String result = quotationRepo.getQuotationDocId(orgId, screenCode);
 		return result;
 	}
-	
-	
+
 	@Override
 	public List<Map<String, Object>> getEnquiryNoAndDate(Long orgId, String customerCode) {
-		Set<Object[]> chType = quotationRepo.getEnquiryNoAndDate(orgId,customerCode);
+		Set<Object[]> chType = quotationRepo.getEnquiryNoAndDate(orgId, customerCode);
 		return getEnquiryNo(chType);
 	}
 
@@ -428,11 +423,11 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-	
-	
+
 	@Override
-	public List<Map<String, Object>> getPartNoAndPartDesBasedOnEnquiryNo(Long orgId,String docId, String customerCode) {
-		Set<Object[]> chType = quotationRepo.getPartNoAndPartDesBasedOnEnquiryNo(orgId,docId,customerCode);
+	public List<Map<String, Object>> getPartNoAndPartDesBasedOnEnquiryNo(Long orgId, String docId,
+			String customerCode) {
+		Set<Object[]> chType = quotationRepo.getPartNoAndPartDesBasedOnEnquiryNo(orgId, docId, customerCode);
 		return getPartNoAndPartDes(chType);
 	}
 
@@ -501,43 +496,44 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		workOrderVO.setCreatedBy(workOrderDTO.getCreatedBy());
 		workOrderVO.setOrgId(workOrderDTO.getOrgId());
 		workOrderVO.setActive(workOrderDTO.isActive());
- 
-		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
-			List<ItemParticularsVO> itemParticularsVO1 = itemParticularsRepo.findByWorkOrderVO(workOrderVO);
-			itemParticularsRepo.deleteAll(itemParticularsVO1);
 
-			List<TermsAndConditionsVO> termsAndConditionsVO2 = termsAndConditionsRepo.findByWorkOrderVO(workOrderVO);
-			termsAndConditionsRepo.deleteAll(termsAndConditionsVO2);
+		if (ObjectUtils.isNotEmpty(workOrderDTO.getId())) {
+			List<WorkOrderDetailsVO> workOrderItemParticularsVO1 = workOrderDetailsRepo.findByWorkOrderVO(workOrderVO);
+			workOrderDetailsRepo.deleteAll(workOrderItemParticularsVO1);
+
+			List<WorkOrderTermsVO> workOrderTermsAndConditionsVO1 = workOrderTermsRepo.findByWorkOrderVO(workOrderVO);
+			workOrderTermsRepo.deleteAll(workOrderTermsAndConditionsVO1);
 		}
 
 		BigDecimal requiredQty;
-		List<ItemParticularsVO> itemParticularsVOs = new ArrayList<>();
-		for (ItemParticularsDTO itemParticularsDTO : workOrderDTO.getItemParticularsDTO()) {
-			ItemParticularsVO itemParticularsVO = new ItemParticularsVO();
-			itemParticularsVO.setPartNo(itemParticularsDTO.getPartNo());
-			itemParticularsVO.setPartName(itemParticularsDTO.getPartName());
-			itemParticularsVO.setDrawingNo(itemParticularsDTO.getDrawingNo());
-			itemParticularsVO.setRevisionNo(itemParticularsDTO.getRevisionNo());
-			itemParticularsVO.setUom(itemParticularsDTO.getUom());
-			itemParticularsVO.setOrdQty(itemParticularsDTO.getOrdQty());
-			itemParticularsVO.setFreeQty(itemParticularsDTO.getFreeQty());
-			itemParticularsVO.setAvailableStockQty(itemParticularsDTO.getAvailableStockQty());
-			requiredQty=itemParticularsDTO.getOrdQty().add(itemParticularsDTO.getFreeQty()).subtract(itemParticularsDTO.getAvailableStockQty());
-			itemParticularsVO.setRequiredQty(requiredQty);
-			itemParticularsVO.setWorkOrderVO(workOrderVO);
-			itemParticularsVOs.add(itemParticularsVO);
+		List<WorkOrderDetailsVO> workOrderDetailsVOs = new ArrayList<>();
+		for (WorkOrderDetailsDTO workOrderDetailsDTO : workOrderDTO.getWorkOrderDetailsDTO()) {
+			WorkOrderDetailsVO workOrderDetailsVO = new WorkOrderDetailsVO();
+			workOrderDetailsVO.setPartNo(workOrderDetailsDTO.getPartNo());
+			workOrderDetailsVO.setPartName(workOrderDetailsDTO.getPartName());
+			workOrderDetailsVO.setDrawingNo(workOrderDetailsDTO.getDrawingNo());
+			workOrderDetailsVO.setRevisionNo(workOrderDetailsDTO.getRevisionNo());
+			workOrderDetailsVO.setUom(workOrderDetailsDTO.getUom());
+			workOrderDetailsVO.setOrdQty(workOrderDetailsDTO.getOrdQty());
+			workOrderDetailsVO.setFreeQty(workOrderDetailsDTO.getFreeQty());
+			workOrderDetailsVO.setAvailableStockQty(workOrderDetailsDTO.getAvailableStockQty());
+			requiredQty = workOrderDetailsDTO.getOrdQty().add(workOrderDetailsDTO.getFreeQty())
+					.subtract(workOrderDetailsDTO.getAvailableStockQty());
+			workOrderDetailsVO.setRequiredQty(requiredQty);
+			workOrderDetailsVO.setWorkOrderVO(workOrderVO);
+			workOrderDetailsVOs.add(workOrderDetailsVO);
 		}
-		workOrderVO.setItemParticularsVO(itemParticularsVOs);
+		workOrderVO.setWorkOrderDetailsVO(workOrderDetailsVOs);
 
-		List<TermsAndConditionsVO> termsAndConditionsVOs = new ArrayList<>();
-		for (TermsAndConditionsDTO termsAndConditionsDTO : workOrderDTO.getTermsAndConditionsDTO()) {
-			TermsAndConditionsVO termsAndConditionsVO = new TermsAndConditionsVO();
-			termsAndConditionsVO.setTemplate(termsAndConditionsDTO.getTemplate());
-			termsAndConditionsVO.setDescription(termsAndConditionsDTO.getDescription());
-			termsAndConditionsVO.setWorkOrderVO(workOrderVO);
-			termsAndConditionsVOs.add(termsAndConditionsVO);
+		List<WorkOrderTermsVO> workOrderTermsVOs = new ArrayList<>();
+		for (WorkOrderTermsDTO workOrderTermsDTO : workOrderDTO.getWorkOrderTermsDTO()) {
+			WorkOrderTermsVO workOrderTermsVO = new WorkOrderTermsVO();
+			workOrderTermsVO.setTemplate(workOrderTermsDTO.getTemplate());
+			workOrderTermsVO.setDescription(workOrderTermsDTO.getDescription());
+			workOrderTermsVO.setWorkOrderVO(workOrderVO);
+			workOrderTermsVOs.add(workOrderTermsVO);
 		}
-		workOrderVO.setTermsAndConditionsVO(termsAndConditionsVOs);
+		workOrderVO.setWorkOrderTermsVO(workOrderTermsVOs);
 
 	}
 
@@ -569,8 +565,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getQuotationNumber(Long orgId,String custmoerId) {
-		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId,custmoerId);
+	public List<Map<String, Object>> getQuotationNumber(Long orgId, String custmoerId) {
+		Set<Object[]> chType = workOrderRepo.getQuotationNumber(orgId, custmoerId);
 		return getQuotation(chType);
 	}
 
@@ -586,8 +582,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getWorkOrderPartNo(Long orgId,String docId,String custmoerId) {
-		Set<Object[]> chType = workOrderRepo.getWorkOrderPartNo(orgId,docId,custmoerId);
+	public List<Map<String, Object>> getWorkOrderPartNo(Long orgId, String docId, String custmoerId) {
+		Set<Object[]> chType = workOrderRepo.getWorkOrderPartNo(orgId, docId, custmoerId);
 		return getWorkOrder(chType);
 	}
 
@@ -608,9 +604,5 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		}
 		return List1;
 	}
-
-	
-
-
 
 }

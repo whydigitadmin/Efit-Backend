@@ -26,7 +26,7 @@ public interface ProductionPlanRepo extends JpaRepository<ProductionPlanVO, Long
 	@Query(nativeQuery = true, value = "SELECT A.itemname ,A.itemdesc FROM m_item A WHERE A.orgid=?1")
 	Set<Object[]> getRawMaterialDetails(Long orgId);
 
-	@Query(nativeQuery = true, value = "SELECT DISTINCT B.processname FROM itemwiseprocess A,itemwiseprocessdetails B WHERE A.itemwiseprocessid=B.itemwiseprocessid AND A.processtype=\"Prodution\" AND A.orgid=?1 AND A.item=?2;")
+	@Query(nativeQuery = true, value = "SELECT DISTINCT B.processname FROM itemwiseprocess A,itemwiseprocessdetails B WHERE A.itemwiseprocessid=B.itemwiseprocessid AND A.processtype='Prodution' AND A.orgid=?1 AND A.item=?2;")
 	Set<Object[]> getProcessName(Long orgId, String item);
 
 	@Query(nativeQuery = true, value = "SELECT CAST(A.machineno AS CHAR(100)) as machineno, A.machinename FROM machinemaster A WHERE A.machinename NOT IN (SELECT C.machinename FROM productionplan B JOIN productionplandetails C ON B.productionplanid = C.productionplanid WHERE A.orgid=?1 AND (?2 BETWEEN C.fromdate AND C.todate) OR C.status = 'PENDING') GROUP BY A.machineno, A.machinename HAVING (?3 = 0)\r\n"

@@ -775,8 +775,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	
 	@Override
-	public List<Map<String, Object>> getItemDetailsForPurchaseQuotation(Long orgId, String purchaseIndentNo) {
-		Set<Object[]> itemDetails = purchaseQuotationRepo.findItemDetailsForPurchaseQuotation(orgId, purchaseIndentNo);
+	public List<Map<String, Object>> getItemDetailsForPurchaseQuotation(Long orgId, String purchaseEnquiryNo) {
+		Set<Object[]> itemDetails = purchaseQuotationRepo.findItemDetailsForPurchaseQuotation(orgId, purchaseEnquiryNo);
 		return getItemDetailsForPurchaseQuotation(itemDetails);
 	}
 

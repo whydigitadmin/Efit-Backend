@@ -49,6 +49,14 @@ public interface QualityApprovalServive {
 
 	Map<String, Object> createUpdateSampleApproval(SampleApprovalDTO sampleApprovalDTO) throws ApplicationException;
 
+	List<Map<String, Object>> getRouteCardDetailsForSampleApproval(Long orgId);
+
+	List<Map<String, Object>> getDrawingMasterNoForSampleApproval(Long orgId, String partNo);
+
+	List<Map<String, Object>> getMachineNoForSampleApproval(Long orgId);
+
+	List<Map<String, Object>> getJobOrderNoForSampleApproval(Long orgId, String routeCardNo);
+
 	
 
 }

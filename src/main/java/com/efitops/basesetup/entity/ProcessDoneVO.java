@@ -34,7 +34,6 @@ public class ProcessDoneVO {
 	@SequenceGenerator(name = "processdonegen", sequenceName = "processdoneseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "processdoneid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
-
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
@@ -47,7 +46,7 @@ public class ProcessDoneVO {
 	private String jobOrderNo;
 	@Column(name = "fgpartname")
 	private String fgPartName;
-	@Column(name = "fgPartNo")
+	@Column(name = "fgpartno")
 	private String fgPartNo;
 	@Column(name = "from")
 	private String from;
