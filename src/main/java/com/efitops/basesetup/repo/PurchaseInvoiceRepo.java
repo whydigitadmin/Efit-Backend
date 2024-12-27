@@ -25,17 +25,18 @@ public interface PurchaseInvoiceRepo extends JpaRepository<PurchaseInvoiceVO, Lo
 	Set<Object[]> getPurchaseOrderPoNumber(Long orgId, String supplierCode);
 
 	@Query(nativeQuery = true, value = "select a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a.address,\r\n"
-			+ "		 a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer from\r\n"
-			+ "		 grn a,partymaster a1 where a.orgid=?1 and a.pono=?2 and a.suppliername=a1.partyname  and\r\n"
-			+ "		 a.active group by  a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a.address,\r\n"
-			+ "		a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer order by a.grnno")
+			+ "				 a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer from \r\n"
+			+ "	 grn a,partymaster a1 where a.orgid=?1 and a.pono=?2 and\r\n"
+			+ "     a.suppliername = a1.partyname group by\r\n"
+			+ "     a.grnno,a.grndate,a.location,a.inwardno,a1.partycode,a.gstno,a.address,\r\n"
+			+ "	a.currency,a.exchanderate,a.grncleartime,a.invdcno,a.invdcdate,a.gsttype,a.customer order by a.grnno")
 	Set<Object[]> getGrnNoAndGrnDateFromGrnDetails(Long orgId, String poNo);
 
 	@Query(nativeQuery = true, value = "select a.itemcode,a.itemdesc,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
-			+ "	 a.porate,a.recievedqty,a.acceptqty from\r\n"
-			+ "	 grn a1,grndetails a where a1.orgid=?1 and a1.grnno=?2 and a.grnid=a1.grnid and \r\n"
-			+ "	 a1.active group by a.itemcode,a.itemdesc,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
-			+ "	 a.porate,a.recievedqty,a.acceptqty order by  a.itemcode")
+			+ "	 a.porate,a.recievedqty,a.acceptqty from \r\n"
+			+ "	 grn a1,grndetails a where a1.orgid=?1 and a1.grnno=?2 and a.grnid=a1.grnid \r\n"
+			+ "     group by a.itemcode,a.itemdesc,a.hsnsaccode,a.taxtype,a.primaryunit, \r\n"
+			+ "	a.porate,a.recievedqty,a.acceptqty order by  a.itemcode")
 	Set<Object[]> getItemCodeAndItemDescFromGrn(Long orgId, String grnNo);
 
 	@Query(nativeQuery = true, value = "select a1.purchaseorderdetailsid from purchaseorder a, purchaseorderdetails a1 where a.purchaseorderid=a1.purchaseorderid and \r\n"
