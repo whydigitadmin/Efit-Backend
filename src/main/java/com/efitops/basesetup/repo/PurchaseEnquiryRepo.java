@@ -41,10 +41,10 @@ public interface PurchaseEnquiryRepo extends JpaRepository<PurchaseEnquiryVO, Lo
 			+ "UNION (select d.itemcode,d.itemdesc,d.uom,0 as qty  from m_bom c join m_bomdetails d where c.bomid=d.bomid and c.orgid=?1 and ?2='Null' and productcode=?3 )order by 1" )
 	Set<Object[]> findItemDetailsForPurchaseEnquiry(Long orgId, String purchaseIndentNo, String fgItem);
 
-	@Query(nativeQuery=true,value ="SELECT DISTINCT a.docid FROM workorder a WHERE a.orgid = ?1 AND a.customercode = ?2 AND a.active = 1  ORDER BY a.docid" )
+	@Query(nativeQuery=true,value ="SELECT DISTINCT a.docid ,b.partno, b.partname, b.requiredqty, a.customerpono FROM workorder a JOIN workorderdetails b ON a.workorderid = b.workorderid  WHERE a.orgid = ?1 AND a.customercode = ?2 AND a.active = 1  ORDER BY a.docid" )
 	Set<Object[]> findWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode);
 
-	@Query(nativeQuery=true,value ="SELECT DISTINCT  b.partno, b.partname, b.requiredqty, a.customerpono FROM workorder a JOIN itemparticulars b ON a.workorderid = b.workorderid WHERE a.orgid = ?1 AND a.docid = ?2 AND a.active = 1  ORDER BY b.partno" )
-	Set<Object[]> findWorkOrderDetailsForPurchaseEnquiry(Long orgId, String workOrderNo);
+//	@Query(nativeQuery=true,value ="SELECT DISTINCT  b.partno, b.partname, b.requiredqty, a.customerpono FROM workorder a JOIN workorderdetails b ON a.workorderid = b.workorderid WHERE a.orgid = ?1 AND a.docid = ?2 AND a.active = 1  ORDER BY b.partno" )
+//	Set<Object[]> findWorkOrderDetailsForPurchaseEnquiry(Long orgId, String workOrderNo);
 
 }
