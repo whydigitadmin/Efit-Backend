@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -90,6 +91,7 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 			ToolIssueEntryVO toolIssueEntryVO) {
 		toolIssueEntryVO.setInstrumentCode(toolIssueEntryDTO.getInstrumentCode().toUpperCase());
 		toolIssueEntryVO.setInstrumentName(toolIssueEntryDTO.getInstrumentName());
+		toolIssueEntryVO.setInstrumentDesc(toolIssueEntryDTO.getInstrumentDesc());
 		toolIssueEntryVO.setSeqCode(toolIssueEntryDTO.getSeqCode());
 		toolIssueEntryVO.setInstrumentRange(toolIssueEntryDTO.getInstrumentRange());
 		toolIssueEntryVO.setLocation(toolIssueEntryDTO.getLocation());
@@ -108,12 +110,13 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 	}
 
 	@Override
+	@Transactional
 	public List<Map<String, Object>> getInstrumentforTollIssueForEntry(Long orgId) {
-		Set<Object[]> instrument = toolIssueEntryRepo.getInstrumentforTollIssueForEntry(orgId);
-		return getItemForGRN(instrument);
+		Set<Object[]> instrument = toolIssueEntryRepo.findInstrumentforTollIssueForEntry(orgId);
+		return getInstrumentforTollIssueForEntryForGRN(instrument);
 	}
 
-	private List<Map<String, Object>> getItemForGRN(Set<Object[]> chCode) {
+	private List<Map<String, Object>> getInstrumentforTollIssueForEntryForGRN(Set<Object[]> chCode) {
 		List<Map<String, Object>> instrumrntname = new ArrayList<>();
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
@@ -129,15 +132,14 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 	@Override
 	public List<Map<String, Object>> getlastcountforTollIssueForEntry(Long orgId) {
 		Set<Object[]> instrument = toolIssueEntryRepo.getlastcountforTollIssueForEntry(orgId);
-		return getItemForGRN(instrument);
+		return getlastcountforToll(instrument);
 	}
 
-	private List<Map<String, Object>> getlastcountforTollIssueForEntry(Set<Object[]> chCode) {
+	private List<Map<String, Object>> getlastcountforToll(Set<Object[]> instrument) {
 		List<Map<String, Object>> instrumrntname = new ArrayList<>();
-		for (Object[] ch : chCode) {
+		for (Object[] ch : instrument) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("lastcount", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
-
+			map.put("lastcount", ch[0] != null ? ch[0].toString() : ""); // Empty
 			instrumrntname.add(map);
 		}
 		return instrumrntname;
@@ -173,7 +175,7 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 
 		if (toolsIssueToCalibrationDTO.getId() != null) {
 			toolsIssueToCalibrationVO = toolsIssueToCalibrationRepo.findById(toolsIssueToCalibrationVO.getId())
-					.orElseThrow(() -> new ApplicationException("Putaway not found"));
+					.orElseThrow(() -> new ApplicationException("tools Issue To Calibration not found"));
 			toolsIssueToCalibrationVO.setUpdatedBy(toolsIssueToCalibrationDTO.getCreatedBy());
 			message = " Updated Successfully";
 
@@ -211,6 +213,10 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 			ToolsIssueToCalibrationVO toolsIssueToCalibrationVO) {
 		toolsIssueToCalibrationVO.setIssuePartyName(toolsIssueToCalibrationDTO.getIssuePartyName());
 		toolsIssueToCalibrationVO.setIssuePartyAddress(toolsIssueToCalibrationDTO.getIssuePartyAddress());
+		toolsIssueToCalibrationVO.setTotalQty(toolsIssueToCalibrationDTO.getTotalQty());
+		toolsIssueToCalibrationVO.setRemarks(toolsIssueToCalibrationDTO.getRemarks());
+		toolsIssueToCalibrationVO.setNarration(toolsIssueToCalibrationDTO.getNarration());
+		toolsIssueToCalibrationVO.setIssueCreatedBy(toolsIssueToCalibrationDTO.getIssueCreatedBy());
 		toolsIssueToCalibrationVO.setOrgId(toolsIssueToCalibrationDTO.getOrgId());
 		toolsIssueToCalibrationVO.setCreatedBy(toolsIssueToCalibrationDTO.getCreatedBy());
 		toolsIssueToCalibrationVO.setActive(toolsIssueToCalibrationDTO.isActive());
@@ -239,6 +245,25 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 		}
 		toolsIssueToCalibrationVO.setToolsIssueToCalibrationDetailsVO(toolsIssueToCalibrationDetailsVOs);
 
+	}
+
+	@Override
+	public List<Map<String, Object>> getInstrumentdetforToolIssueForcalibration(Long orgId) {
+		Set<Object[]> instrument = toolsIssueToCalibrationRepo.findInstrumentdetforToolIssueForcalibration(orgId);
+		return getInstrumentdetforToolIssueForcalibration(instrument);
+	}
+
+	private List<Map<String, Object>> getInstrumentdetforToolIssueForcalibration(Set<Object[]> chCode) {
+		List<Map<String, Object>> instrumrntname = new ArrayList<>();
+		for (Object[] ch : chCode) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemname", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
+			map.put("instrumentseqcode", ch[2] != null ? ch[2].toString() : "");
+
+			instrumrntname.add(map);
+		}
+		return instrumrntname;
 	}
 
 }

@@ -67,7 +67,7 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> getWorkOrderNoForPurchaseEnquiry(Long orgId, String customerCode);
 	
-	List<Map<String, Object>> getWorkOrderDetailsForPurchaseEnquiry(Long orgId, String workOrderNo);
+//	List<Map<String, Object>> getWorkOrderDetailsForPurchaseEnquiry(Long orgId, String workOrderNo);
 
 
 	//PurchaseQuotation

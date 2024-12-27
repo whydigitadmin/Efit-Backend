@@ -15,6 +15,7 @@ public class ToolIssueEntryDTO {
 	private String docId;
 	private LocalDate docDate= LocalDate.now();
 	private String instrumentName;
+	private String instrumentDesc;
 	private String seqCode;
 	private String instrumentCode;
 	private String instrumentRange;

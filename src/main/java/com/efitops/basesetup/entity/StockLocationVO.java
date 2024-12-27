@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_stocklocation")	
+@Table(name = "stocklocation")	
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 public class StockLocationVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "m_stocklocationgen")
-	@SequenceGenerator(name = "m_stocklocationgen", sequenceName = "m_stocklocationseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "stocklocationgen")
+	@SequenceGenerator(name = "stocklocationgen", sequenceName = "stocklocationseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "stocklocationid")
 	private Long id;
 	

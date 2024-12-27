@@ -22,8 +22,11 @@ public interface ToolIssueEntryRepo extends JpaRepository<ToolIssueEntryVO, Long
 	String getGrnDocId(Long orgId, String screenCode);
 
 	@Query(nativeQuery = true, value ="select itemname,itemdesc,instrumentseqcode from efit_ops.item where upper(itemtype)='INSTRUMENT' and orgid=?1")
-	Set<Object[]> getInstrumentforTollIssueForEntry(Long orgId);
+	Set<Object[]> findInstrumentforTollIssueForEntry(Long orgId);
 
 	@Query(nativeQuery = true, value ="select count(*) as lastcount from efit_ops.toolissueentry where instrumentname='Pressure Gauge'")
 	Set<Object[]> getlastcountforTollIssueForEntry(Long orgId);
+
+	
+	
 }

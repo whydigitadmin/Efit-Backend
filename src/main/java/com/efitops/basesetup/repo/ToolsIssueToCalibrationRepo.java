@@ -1,6 +1,7 @@
 package com.efitops.basesetup.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,8 @@ public interface ToolsIssueToCalibrationRepo extends JpaRepository<ToolsIssueToC
 
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
 	String getToolsIssueToCalibrationDocId(Long orgId, String screenCode);
+
+	@Query(nativeQuery = true, value = "select instrumentcode,instrumentname,instrumentdesc from efit_ops.toolissueentry where  orgid=?1 and cancel =0 ")
+	Set<Object[]> findInstrumentdetforToolIssueForcalibration(Long orgId);
 
 }

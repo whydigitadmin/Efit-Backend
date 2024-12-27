@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class GrnDTO {
 	
 	private Long id;
-	private String grnNo;
 	private String location;
 	private String InwardNo;
 	private String supplierName;

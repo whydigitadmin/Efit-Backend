@@ -31,14 +31,12 @@ import com.efitops.basesetup.service.ToolIssueEntryService;
 @RestController
 @RequestMapping("/api/toolmanagement")
 public class ToolIssueEntryController extends BaseController {
-	
+
 	public static final Logger LOGGER = LoggerFactory.getLogger(ToolIssueEntryController.class);
 
 	@Autowired
-    ToolIssueEntryService toolIssueEntryService;
-	
-	
-	
+	ToolIssueEntryService toolIssueEntryService;
+
 	@GetMapping("/getToolIssueEntryByOrgId")
 	public ResponseEntity<ResponseDTO> getToolIssueEntryByOrgId(@RequestParam Long orgId) {
 		String methodName = "getToolIssueEntryByOrgId()";
@@ -54,21 +52,18 @@ public class ToolIssueEntryController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ToolIssueEntry information get successfully ByOrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"ToolIssueEntry information get successfully ByOrgId");
 			responseObjectsMap.put("toolIssueEntryVO", toolIssueEntryVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "ToolIssueEntry information receive failedByOrgId",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ToolIssueEntry information receive failedByOrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
-	
-	
-	
 
 	@GetMapping("/getToolIssueEntryById")
 	public ResponseEntity<ResponseDTO> getToolIssueEntryById(@RequestParam Long id) {
@@ -96,7 +91,7 @@ public class ToolIssueEntryController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@PutMapping("/updateCreateToolIssueEntry")
 	public ResponseEntity<ResponseDTO> updateCreateToolIssueEntry(@RequestBody ToolIssueEntryDTO toolIssueEntryDTO) {
 		String methodName = "updateCreateToolIssueEntry()";
@@ -117,8 +112,7 @@ public class ToolIssueEntryController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@GetMapping("/getInstrumentforTollIssueForEntry")
 	public ResponseEntity<ResponseDTO> getInstrumentforTollIssueForEntry(@RequestParam(required = false) Long orgId) {
 		String methodName = "getInstrumentforTollIssueForEntry()";
@@ -146,7 +140,6 @@ public class ToolIssueEntryController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
 
 	@GetMapping("/getlastcountforTollIssueForEntry")
 	public ResponseEntity<ResponseDTO> getlastcountforTollIssueForEntry(@RequestParam(required = false) Long orgId) {
@@ -175,7 +168,7 @@ public class ToolIssueEntryController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@GetMapping("/getToolsIssueToCalibrationByOrgId")
 	public ResponseEntity<ResponseDTO> getToolsIssueToCalibrationByOrgId(@RequestParam Long orgId) {
 		String methodName = "getToolsIssueToCalibrationByOrgId()";
@@ -191,18 +184,19 @@ public class ToolIssueEntryController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Tool Issue to Calibration information get successfully ByOrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Tool Issue to Calibration information get successfully ByOrgId");
 			responseObjectsMap.put("toolsIssueToCalibrationVO", toolsIssueToCalibrationVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Tool Issue to Calibration information receive failedByOrgId",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Tool Issue to Calibration information receive failedByOrgId", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@GetMapping("/getToolsIssueToCalibrationById")
 	public ResponseEntity<ResponseDTO> getToolsIssueToCalibrationById(@RequestParam Long id) {
 		String methodName = "getToolsIssueToCalibrationById()";
@@ -218,29 +212,33 @@ public class ToolIssueEntryController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Tool Issue to Calibration information get successfully By Id");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Tool Issue to Calibration information get successfully By Id");
 			responseObjectsMap.put("toolsIssueToCalibrationVO", toolsIssueToCalibrationVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Tool Issue to Calibration information receive failed By Id",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Tool Issue to Calibration information receive failed By Id", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-	
+
 	@PutMapping("/updateCreateToolsIssueToCalibration")
-	public ResponseEntity<ResponseDTO> updateCreateToolsIssueToCalibration(@RequestBody ToolsIssueToCalibrationDTO toolsIssueToCalibrationDTO) {
+	public ResponseEntity<ResponseDTO> updateCreateToolsIssueToCalibration(
+			@RequestBody ToolsIssueToCalibrationDTO toolsIssueToCalibrationDTO) {
 		String methodName = "updateCreateToolIssueEntry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			Map<String, Object> toolsIssueToCalibrationVO = toolIssueEntryService.updateCreateToolsIssueToCalibration(toolsIssueToCalibrationDTO);
+			Map<String, Object> toolsIssueToCalibrationVO = toolIssueEntryService
+					.updateCreateToolsIssueToCalibration(toolsIssueToCalibrationDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, toolsIssueToCalibrationVO.get("message"));
-			responseObjectsMap.put("toolsIssueToCalibrationVO", toolsIssueToCalibrationVO.get("toolsIssueToCalibrationVO"));
+			responseObjectsMap.put("toolsIssueToCalibrationVO",
+					toolsIssueToCalibrationVO.get("toolsIssueToCalibrationVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -251,5 +249,32 @@ public class ToolIssueEntryController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getInstrumentdetforToolIssueForcalibration")
+	public ResponseEntity<ResponseDTO> getInstrumentdetforToolIssueForcalibration(@RequestParam(required = false) Long orgId) {
+		String methodName = "getInstrumentdetforToolIssueForcalibration()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> chcode = new ArrayList<>();
+		try {
+			chcode = toolIssueEntryService.getInstrumentdetforToolIssueForcalibration(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" Instrumentname for calibration information get successfully By OrgId");
+			responseObjectsMap.put("chcode", chcode);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Instrumentname for calibration information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
 	
 }

@@ -76,6 +76,9 @@ public interface InventoryService {
 
 	String getPickListDocId(Long orgId);
 	
+	List<Map<String, Object>> getItemIssueToProductionDetailsfromPickList(Long orgId, String itemIssueToProduction);
+
+	
 	//ItemIssueToProduction
 
 	Map<String, Object> updateCreateItemIssToProd(@Valid ItemIssueToProductionDTO itemIssueToProductionDTO) throws ApplicationException;
@@ -86,11 +89,14 @@ public interface InventoryService {
 
 	String getItemIssueToProductionDocId(Long orgId);
 
-	List<Map<String, Object>> getRouteCardEntryNoForItemIssueToProduction(Long orgId);
+	List<Map<String, Object>> getRouteCardEntryNoForItemIssueToProduction(Long orgId, String customerCode);
 
 	List<Map<String, Object>> getRouteCardEntryDetailsForItemIssueToProduction(Long orgId, String routeCardNo);
 
 	List<Map<String, Object>> getItemIssueToProductionDetailsfromBom(Long orgId, String fgItemId);
+
+	List<Map<String, Object>> getItemIssueToProductionNofromPickList(Long orgId, String routeCardEntryNo);
+
 
 
 }
