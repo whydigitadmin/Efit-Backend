@@ -11,19 +11,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.DetailsSubmissionToBankDTO;
-import com.efitops.basesetup.dto.JobOrderDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
+import com.efitops.basesetup.entity.DetailsSubmissionToBankDetailsVO;
 import com.efitops.basesetup.entity.DetailsSubmissionToBankVO;
-import com.efitops.basesetup.entity.JobOrderVO;
+import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.service.DetailsSubmissionToBankService;
 
 @RestController
@@ -138,4 +140,39 @@ public class DetailsSubmissionToBankController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	@PostMapping("/uploadAttachementsInBloob")
+	public ResponseEntity<ResponseDTO> uploadAttachementsInBloob(@RequestParam("files") List<MultipartFile> files,
+			@RequestParam("id") List<Long> id) {
+
+		String methodName = "uploadAttachementsInBloob()";
+		LOGGER.debug("Starting method: " + methodName);
+
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String errorMsg = null;
+
+		try {
+			if (files.size() != id.size()) {
+				throw new IllegalArgumentException("Files and IDs must have the same size.");
+			}
+
+			// Call your service to handle files and ids
+			List<DetailsSubmissionToBankDetailsVO> masterVO = detailsSubmissionToBankService
+					.uploadAttachmentsInBloob(files, id);
+
+			responseObjectsMap.put("message", "Bank Details Attachments successfully uploaded.");
+			responseObjectsMap.put("bankDetailVO", masterVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error("Unable to upload attachments", methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Bank Details Attachments upload failed",
+					errorMsg);
+		}
+
+		LOGGER.debug("Ending method: " + methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

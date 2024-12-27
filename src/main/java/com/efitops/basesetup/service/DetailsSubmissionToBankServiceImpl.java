@@ -1,5 +1,6 @@
 package com.efitops.basesetup.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.efitops.basesetup.dto.DetailsSubmissionToBankDTO;
 import com.efitops.basesetup.dto.DetailsSubmissionToBankDetailsDTO;
 import com.efitops.basesetup.entity.DetailsSubmissionToBankDetailsVO;
 import com.efitops.basesetup.entity.DetailsSubmissionToBankVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.DrawingMaster1VO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DetailsSubmissionToBankDetailsRepo;
 import com.efitops.basesetup.repo.DetailsSubmissionToBankRepo;
@@ -131,5 +134,32 @@ public class DetailsSubmissionToBankServiceImpl implements DetailsSubmissionToBa
 	@Override
 	public String getDetailsSubmissionToBankDocId(Long orgId, String finYear, String branchCode, String screenCode) {
 		return detailsSubmissionToBankRepo.getBankDetailsDocId(orgId, finYear, branchCode, screenCode);
+	}
+
+	@Override
+	public List<DetailsSubmissionToBankDetailsVO> uploadAttachmentsInBloob(List<MultipartFile> files, List<Long> ids)
+			throws IOException {
+		List<DetailsSubmissionToBankDetailsVO> updatedMasterList = new ArrayList<>();
+
+		for (int i = 0; i < ids.size(); i++) {
+			Long id = ids.get(i);
+			MultipartFile file = files.get(i);
+
+			// Find the entity by its ID
+			DetailsSubmissionToBankDetailsVO masterDetailsVO = detailsSubmissionToBankDetailsRepo.findById(id)
+					.orElseThrow(() -> new RuntimeException("DrawingMaster1VO not found with ID: " + id));
+
+			// Process the file and set it as the attachment for this entity
+			masterDetailsVO.setAttachements(file.getBytes());
+
+			// Save the updated entity to the database
+			DetailsSubmissionToBankDetailsVO updatedMaster = detailsSubmissionToBankDetailsRepo.save(masterDetailsVO);
+
+			// Add the updated entity to the list
+			updatedMasterList.add(updatedMaster);
+		}
+
+		// Return the list of updated entities
+		return updatedMasterList;
 	}
 }
