@@ -688,6 +688,46 @@ public class InventoryServiceImpl implements InventoryService {
 		return result;
 	}
 	
+	@Override
+	public List<Map<String, Object>> getItemIssueToProductionDetailsfromPickList(Long orgId,String itemIssueToProduction) {
+		Set<Object[]> itemIssueToProductionDtls = pickListRepo.findItemIssueToProductionDetailsfromPickList(orgId,itemIssueToProduction);
+		return getItemIssueToProductionDetailsfromPickList(itemIssueToProductionDtls);
+	}
+
+	private List<Map<String, Object>> getItemIssueToProductionDetailsfromPickList(Set<Object[]> itemIssueToProductionDtls) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemIssueToProductionDtls) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("item", ch[0] != null ? ch[0].toString() : "");
+			map.put("itemName", ch[1] != null ? ch[1].toString() : "");
+			map.put("unit", ch[2] != null ? ch[2].toString() : "");
+			map.put("rackNo", ch[3] != null ? ch[3].toString() : "");
+			map.put("rackQty", ch[4] != null ? ch[4].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
+	@Override
+	public List<Map<String, Object>> getItemIssueToProductionNofromPickList(Long orgId,String routeCardEntryNo) {
+		Set<Object[]> itemIssueToProductionDtls = pickListRepo.findItemIssueToProductionNofromPickList(orgId,routeCardEntryNo);
+		return getItemIssueToProductionNofromPickList(itemIssueToProductionDtls);
+	}
+
+	private List<Map<String, Object>> getItemIssueToProductionNofromPickList(Set<Object[]> itemIssueToProductionDtls) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : itemIssueToProductionDtls) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("itemIssueToProductionNo", ch[0] != null ? ch[0].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
+	}
+	
+	
 	//ItemissueToProduction
 	
 	@Override
@@ -798,8 +838,8 @@ public class InventoryServiceImpl implements InventoryService {
 	
 	
 	@Override
-	public List<Map<String, Object>> getRouteCardEntryNoForItemIssueToProduction(Long orgId) {
-		Set<Object[]> itemIssueToProduction = itemIssueToProductionRepo.findRouteCardEntryNoForItemIssueToProduction(orgId);
+	public List<Map<String, Object>> getRouteCardEntryNoForItemIssueToProduction(Long orgId,String customerCode) {
+		Set<Object[]> itemIssueToProduction = itemIssueToProductionRepo.findRouteCardEntryNoForItemIssueToProduction(orgId,customerCode);
 		return getRouteCardEntryNoForItemIssueToProduction(itemIssueToProduction);
 	}
 
