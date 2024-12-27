@@ -22,7 +22,7 @@ public interface PutawayRepo extends JpaRepository<PutawayVO, Long>{
 	String getPutawayDocId(Long orgId, String screenCode);
 
 	@Query(nativeQuery = true, value = "SELECT DISTINCT a.grnno, a.grndate, a.suppliername, a.invdcno, c.invoiceno, c.vehicleno " +
-		       "FROM t_grn a, grndetails b, gateinwardentry c, gateinwardentrydetails d " +
+		       "FROM grn a, grndetails b, gateinwardentry c, gateinwardentrydetails d " +
 		       "WHERE a.grnid = b.grnid AND c.invoiceno = a.invdcno AND a.orgid = ?1 " +
 		       "GROUP BY a.grnno, a.grndate, a.suppliername, a.invdcno, c.invoiceno, c.vehicleno " +
 		       "ORDER BY a.grnno")
