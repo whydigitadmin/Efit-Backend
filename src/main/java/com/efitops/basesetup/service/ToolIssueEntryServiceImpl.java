@@ -129,15 +129,14 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 	@Override
 	public List<Map<String, Object>> getlastcountforTollIssueForEntry(Long orgId) {
 		Set<Object[]> instrument = toolIssueEntryRepo.getlastcountforTollIssueForEntry(orgId);
-		return getItemForGRN(instrument);
+		return getlastcountforToll(instrument);
 	}
 
-	private List<Map<String, Object>> getlastcountforTollIssueForEntry(Set<Object[]> chCode) {
+	private List<Map<String, Object>> getlastcountforToll(Set<Object[]> instrument) {
 		List<Map<String, Object>> instrumrntname = new ArrayList<>();
-		for (Object[] ch : chCode) {
+		for (Object[] ch : instrument) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("lastcount", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
-
+			map.put("lastcount", ch[0] != null ? ch[0].toString() : ""); // Empty
 			instrumrntname.add(map);
 		}
 		return instrumrntname;
@@ -173,7 +172,7 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 
 		if (toolsIssueToCalibrationDTO.getId() != null) {
 			toolsIssueToCalibrationVO = toolsIssueToCalibrationRepo.findById(toolsIssueToCalibrationVO.getId())
-					.orElseThrow(() -> new ApplicationException("Putaway not found"));
+					.orElseThrow(() -> new ApplicationException("tools Issue To Calibration not found"));
 			toolsIssueToCalibrationVO.setUpdatedBy(toolsIssueToCalibrationDTO.getCreatedBy());
 			message = " Updated Successfully";
 

@@ -669,8 +669,8 @@ public class GrnServiceImpl implements GrnService {
 			map.put("stategstin", ch[3] != null ? ch[3].toString() : "");
 			map.put("taxtype", ch[4] != null ? ch[4].toString() : "");
 			map.put("state", ch[5] != null ? ch[5].toString() : "");
-			map.put("pincode", ch[5] != null ? ch[5].toString() : "");
-			map.put("city", ch[5] != null ? ch[5].toString() : "");
+			map.put("pincode", ch[6] != null ? ch[6].toString() : "");
+			map.put("city", ch[7] != null ? ch[7].toString() : "");
 
 			List1.add(map);
 		}

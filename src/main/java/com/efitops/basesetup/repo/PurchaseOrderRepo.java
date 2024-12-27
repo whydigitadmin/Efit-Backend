@@ -50,7 +50,7 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderVO, Long> 
 	@Query (nativeQuery = true, value ="select docid from purchasequotation where  'Quotation'=?4 and customercode = ?2 and workorderno=?3 and orgid=?1 and active=1 and cancel=0")
 	Set<Object[]> findgetQuotationForPurchaseOrder(Long orgId, String customerCode, String workorderno, String basedOn);
 
-	@Query (nativeQuery = true, value ="select a1.item,a1.itemdesc,a1.indentqty,a1.uom,e.taxslab,d.price from efit_ops.purchaseindent1 a1 \r\n"
+	@Query (nativeQuery = true, value ="select a1.item,a1.itemdesc,a1.indentqty,a1.uom,e.taxslab,d.price from efit_ops.purchaseindentdetails a1 \r\n"
 			+ "join efit_ops.item c on a1.item =c.itemname\r\n"
 			+ "join efit_ops.purchaseindent b on a1.purchaseindentid = b.purchaseindentid\r\n"
 			+ "join efit_ops.itempriceslab d on c.itemid = d.itemid\r\n"

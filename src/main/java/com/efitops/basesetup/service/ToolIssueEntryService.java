@@ -13,7 +13,7 @@ import com.efitops.basesetup.exception.ApplicationException;
 
 @Service
 public interface ToolIssueEntryService {
-	
+
 	List<ToolIssueEntryVO> getToolIssueEntryByOrgId(Long orgId);
 
 	List<ToolIssueEntryVO> getToolIssueEntryById(Long id);
@@ -23,14 +23,14 @@ public interface ToolIssueEntryService {
 	List<Map<String, Object>> getInstrumentforTollIssueForEntry(Long orgId);
 
 	List<Map<String, Object>> getlastcountforTollIssueForEntry(Long orgId);
-	
-	//ToolIssueToCalibration
-	
+
+	// ToolIssueToCalibration
+
 	List<ToolsIssueToCalibrationVO> getToolsIssueToCalibrationByOrgId(Long orgId);
 
 	List<ToolsIssueToCalibrationVO> getToolsIssueToCalibrationById(Long id);
-	
-	Map<String, Object> updateCreateToolsIssueToCalibration(ToolsIssueToCalibrationDTO toolsIssueToCalibrationDTO) throws ApplicationException;
-	
-	
+
+	Map<String, Object> updateCreateToolsIssueToCalibration(ToolsIssueToCalibrationDTO toolsIssueToCalibrationDTO)
+			throws ApplicationException;
+
 }
