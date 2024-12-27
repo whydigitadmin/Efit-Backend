@@ -1276,7 +1276,7 @@ public class EfitMasterServiceImpl implements EfitMasterService {
 
 		// Prepare response
 		Map<String, Object> response = new HashMap<>();
-		response.put("rackMasterVO", rackMasterVO);
+		response.put("rackMasterVO", rackMasterVO); 
 		response.put("message", message);
 		return response;
 	}
