@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.DetailsSubmissionToBankDTO;
-import com.efitops.basesetup.dto.JobOrderDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
 import com.efitops.basesetup.entity.DetailsSubmissionToBankVO;
-import com.efitops.basesetup.entity.JobOrderVO;
 import com.efitops.basesetup.service.DetailsSubmissionToBankService;
 
 @RestController
@@ -124,7 +122,7 @@ public class DetailsSubmissionToBankController extends BaseController {
 			bankVO = detailsSubmissionToBankService.getDetailsSubmissionToBankDocId(orgId, finYear, branchCode,
 					screenCode);
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
+			errorMsg = e.getMessage(); 
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
