@@ -762,6 +762,70 @@ public class InventoryController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	
+	@GetMapping("/getItemIssueToProductionDetailsfromPickList")
+	public ResponseEntity<ResponseDTO> getItemIssueToProductionDetailsfromPickList(
+			@RequestParam Long orgId , @RequestParam String itemIssueToProduction) {
+
+		String methodName = "getItemIssueToProductionDetailsfromPickList()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemIssueToProductionDtls = new ArrayList<>();
+		try {
+			itemIssueToProductionDtls = inventoryService.getItemIssueToProductionDetailsfromPickList(orgId,itemIssueToProduction);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" ItemIssueToProductionDetails from PickList information retrieved successfully");
+			responseObjectsMap.put("itemIssueToProductionVO", itemIssueToProductionDtls);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve  ItemIssueToProductionDetails from PickList information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getItemIssueToProductionNofromPickList")
+	public ResponseEntity<ResponseDTO> getItemIssueToProductionNofromPickList(
+			@RequestParam Long orgId , @RequestParam String routeCardEntryNo) {
+
+		String methodName = "getItemIssueToProductionNofromPickList()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> itemIssueToProductionNo = new ArrayList<>();
+		try {
+			itemIssueToProductionNo = inventoryService.getItemIssueToProductionNofromPickList(orgId,routeCardEntryNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" ItemIssueToProductionNo from PickList information retrieved successfully");
+			responseObjectsMap.put("itemIssueToProductionNo", itemIssueToProductionNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve  ItemIssueToProductionNo from PickList information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
 	//ItemIssueToProduction
 	
 	@PutMapping("/updateCreateItemIssToProd")
@@ -875,7 +939,7 @@ public class InventoryController extends BaseController{
 	
 	@GetMapping("/getRouteCardEntryNoForItemIssueToProduction")
 	public ResponseEntity<ResponseDTO> getRouteCardEntryNoForItemIssueToProduction(
-			@RequestParam Long orgId) {
+			@RequestParam Long orgId,@RequestParam String customerCode) {
 
 		String methodName = "getRouteCardEntryNoForItemIssueToProduction()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -884,7 +948,7 @@ public class InventoryController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> itemIssueToProduction = new ArrayList<>();
 		try {
-			itemIssueToProduction = inventoryService.getRouteCardEntryNoForItemIssueToProduction(orgId);
+			itemIssueToProduction = inventoryService.getRouteCardEntryNoForItemIssueToProduction(orgId,customerCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
