@@ -31,11 +31,11 @@ public interface PurchaseReturnRepo extends JpaRepository<PurchaseReturnVO, Long
 	@Query(nativeQuery = true, value = "select a.locationcode from stocklocation a where a.orgid=?1 group by a.locationcode order by a.locationcode")
 	Set<Object[]> getLocationFromStockLocation(Long orgId);
 
-	@Query(nativeQuery = true, value = "  select a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
-			+ "		a.porate,a.unitprice from \r\n"
-			+ "		purchaseinvoice a1,purchaseinvoiceitem a where a1.orgid='' and a1.docid='' and\r\n"
-			+ "        a.purchaseinvoiceid=a1.purchaseinvoiceid group by a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
-			+ "			 a.porate,a.unitprice order by  a.itemcode")
+	@Query(nativeQuery = true, value = "select a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
+			+ "			a.porate,a.unitprice from \r\n"
+			+ "			purchaseinvoice a1,purchaseinvoiceitem a where a1.orgid=?1 and a1.docid=?2 and\r\n"
+			+ "		      a.purchaseinvoiceid=a1.purchaseinvoiceid group by a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
+			+ "					 a.porate,a.unitprice order by  a.itemcode")
 	Set<Object[]> getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo);
 
 }
