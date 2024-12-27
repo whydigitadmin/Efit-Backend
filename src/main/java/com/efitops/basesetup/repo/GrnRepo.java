@@ -30,7 +30,7 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 	
 @Query(nativeQuery = true, value="select a1.itemname,a1.itemdesc,a1.inwardqty,a1.invoiceqty,a1.poqty,uom,hsncode,inspection,needqcapproval,price,taxslab  \r\n"
 		+ " from efit_ops.t_gateinwardentrydetails a1   \r\n"
-		+ "				join efit_ops.t_gateinwardentry b on a1.gateinwardentryid = b.gateinwardentryid  \r\n"
+		+ "				join efit_ops.gateinwardentry b on a1.gateinwardentryid = b.gateinwardentryid  \r\n"
 		+ "					join efit_ops.item c on a1.itemname = c.itemname\r\n"
 		+ "				join efit_ops.m_itempriceslab d on c.itemid = d.itemid\r\n"
 		+ "			          join efit_ops.m_itemtaxslab e on e.itemid = c.itemid\r\n"

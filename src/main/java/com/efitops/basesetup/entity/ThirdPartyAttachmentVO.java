@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_thirdpartyattach")
+@Table(name = "thirdpartyattach")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 public class ThirdPartyAttachmentVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_thirdpartyattachgen")
-	@SequenceGenerator(name = "t_thirdpartyattachgen", sequenceName = "t_thirdpartyattachseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thirdpartyattachgen")
+	@SequenceGenerator(name = "thirdpartyattachgen", sequenceName = "thirdpartyattachseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "thirdpartyattachid")
 	private Long id;
 	@Column(name = "itemid")
