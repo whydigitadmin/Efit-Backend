@@ -11,6 +11,8 @@ public class DrawingMaster1DTO {
 
 	private Long id;
 	private String fileName;
+//    private MultipartFile file;
+
 	//private byte[] attachements;
 	
 }

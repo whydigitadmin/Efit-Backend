@@ -17,15 +17,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_shiftdet")
+@Table(name = "shiftdet")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShiftDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_shiftdetgen")
-	@SequenceGenerator(name = "m_shiftdetgen", sequenceName = "m_shiftdetseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shiftdetgen")
+	@SequenceGenerator(name = "shiftdetgen", sequenceName = "shiftdetseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "shiftdetid")
 	private Long id;
 	

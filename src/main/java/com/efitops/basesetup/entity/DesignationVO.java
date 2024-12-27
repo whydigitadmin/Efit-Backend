@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_designation")
+@Table(name = "designation")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 public class DesignationVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_designationgen")
-	@SequenceGenerator(name = "m_designationgen", sequenceName = "m_designationseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "designationgen")
+	@SequenceGenerator(name = "designationgen", sequenceName = "designationseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "designationid")
 	private Long id;
 	

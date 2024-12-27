@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "m_department")
+@Table(name = "department")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,14 +28,14 @@ import lombok.NoArgsConstructor;
 public class DepartmentVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_departmentgen")
-	@SequenceGenerator(name = "m_departmentgen", sequenceName = "m_departmentseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "departmentid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departmentgen")
+	@SequenceGenerator(name = "departmentgen", sequenceName = "departmentseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "departmentid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "departmentcode")
 	private String departmentCode;
 	@Column(name = "departmentname")
@@ -52,16 +52,16 @@ public class DepartmentVO {
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "screencode",length = 30)
-	private String screenCode ="DEPT";
-	@Column(name = "screenname",length = 30)
-	private String screenName="DEPARTMENT";
+	@Column(name = "screencode", length = 30)
+	private String screenCode = "DEPT";
+	@Column(name = "screenname", length = 30)
+	private String screenName = "DEPARTMENT";
 
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
+
 	@JsonGetter("cancel")
 	public String getCancel() {
 		return cancel ? "T" : "F";
@@ -71,4 +71,3 @@ public class DepartmentVO {
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
-

@@ -333,6 +333,8 @@ public class InventoryServiceImpl implements InventoryService {
 		routeCardEntryVO.setInvoiceDate(routeCardEntryDTO.getInvoiceDate());
 		routeCardEntryVO.setQty(routeCardEntryDTO.getQty());
 		routeCardEntryVO.setStockQty(routeCardEntryDTO.getStockQty());
+		routeCardEntryVO.setStatus(routeCardEntryDTO.getStatus());
+
 
 		//RouteCardEntryDetails
 		List<RouteCardEntryDetailsVO> routeCardEntryDetailsVOs = new ArrayList<>();

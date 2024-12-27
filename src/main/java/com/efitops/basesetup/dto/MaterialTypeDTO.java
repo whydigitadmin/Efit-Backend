@@ -18,5 +18,5 @@ public class MaterialTypeDTO {
 	private String createdBy;
 	private boolean active;
 	
-  List<MaterialDetailDTO>materialDetailDTO;
+  List<MaterialTypeDetailsDTO>materialTypeDetailDTO;
 }
