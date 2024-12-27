@@ -536,8 +536,8 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Long orgId,String customer) {
-		Set<Object[]> workOrderNo = routeCardEntryRepo.findWorkOrderNoFromRouteCardEntry(orgId,customer);
+	public List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Long orgId,String customerCode) {
+		Set<Object[]> workOrderNo = routeCardEntryRepo.findWorkOrderNoFromRouteCardEntry(orgId,customerCode);
 		return getWorkOrderNoFromRouteCardEntry(workOrderNo);
 	}
 

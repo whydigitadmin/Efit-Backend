@@ -421,7 +421,7 @@ public class InventoryController extends BaseController{
 	}
 
 	@GetMapping("/getWorkOrderNoFromRouteCardEntry")
-	public ResponseEntity<ResponseDTO> getWorkOrderNoFromRouteCardEntry(@RequestParam Long orgId,@RequestParam String customer) {
+	public ResponseEntity<ResponseDTO> getWorkOrderNoFromRouteCardEntry(@RequestParam Long orgId,@RequestParam String customerCode) {
 		String methodName = "getWorkOrderNoFromRouteCardEntry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -430,7 +430,7 @@ public class InventoryController extends BaseController{
 		List<Map<String, Object>> mapp = new ArrayList<>();
 
 		try {
-			mapp = inventoryService.getWorkOrderNoFromRouteCardEntry(orgId,customer);
+			mapp = inventoryService.getWorkOrderNoFromRouteCardEntry(orgId,customerCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

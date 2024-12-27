@@ -51,7 +51,7 @@ public interface InventoryService {
 	
 	List<Map<String, Object>> getCustomerNameAndCodeFromRouteCardEntry(Long orgId);
 	
-	List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Long orgId, String customer);
+	List<Map<String, Object>> getWorkOrderNoFromRouteCardEntry(Long orgId, String customerCode);
 	
 	List<Map<String, Object>> getFgPartNameAndDescAndQtyFromRouteCardEntry(Long orgId, String workOrderNo);
 	

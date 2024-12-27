@@ -12,8 +12,10 @@ import com.efitops.basesetup.entity.ItemIssueToProductionVO;
 @Repository
 public interface ItemIssueToProductionRepo extends JpaRepository<ItemIssueToProductionVO, Long>{
 
+	@Query(nativeQuery = true, value = "select * from itemisstoprod where itemisstoprodid=?1")
 	List<ItemIssueToProductionVO> findItemIssueToProductionById(Long id);
 
+	@Query(nativeQuery = true, value = "select * from itemisstoprod where orgid=?1")
 	List<ItemIssueToProductionVO> findItemIssueToProductionByOrgId(Long orgId);
 
 	@Query(nativeQuery = true,value="select concat(prefixfield,lpad(lastno,5,0)) AS docid from documenttypemappingdetails where orgid=?1 and screencode=?2")
