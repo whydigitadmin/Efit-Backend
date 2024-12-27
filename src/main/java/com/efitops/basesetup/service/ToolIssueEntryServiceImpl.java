@@ -257,9 +257,9 @@ public class ToolIssueEntryServiceImpl implements ToolIssueEntryService {
 		List<Map<String, Object>> instrumrntname = new ArrayList<>();
 		for (Object[] ch : chCode) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("itemname", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
-			map.put("itemdesc", ch[1] != null ? ch[1].toString() : "");
-			map.put("instrumentseqcode", ch[2] != null ? ch[2].toString() : "");
+			map.put("instrumentcode", ch[0] != null ? ch[0].toString() : ""); // Empty string if null
+			map.put("instrumentname", ch[1] != null ? ch[1].toString() : "");
+			map.put("instrumentdesc", ch[2] != null ? ch[2].toString() : "");
 
 			instrumrntname.add(map);
 		}
