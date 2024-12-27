@@ -14,6 +14,7 @@ public class SalesOrderDetailsDTO {
 
 	private Long totalTaxAmount;
 
+	
 	private Long grossAmount;
 
 	private Long netAmount;

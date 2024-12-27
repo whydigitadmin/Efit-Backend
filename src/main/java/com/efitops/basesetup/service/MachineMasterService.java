@@ -68,6 +68,13 @@ public interface MachineMasterService {
 
 
 
+	List<DrawingMaster1VO> uploadAttachmentsInBloob(List<MultipartFile> files, List<Long> id) throws IOException;
+
+	List<DrawingMaster2VO> uploadAttachmentsInBloob1(List<MultipartFile> files, List<Long> id) throws IOException;
+
+
+
+
 
 
 	

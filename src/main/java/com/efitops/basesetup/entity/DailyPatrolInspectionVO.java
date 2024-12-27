@@ -76,7 +76,7 @@ public class DailyPatrolInspectionVO {
 
 	@OneToMany(mappedBy = "dailyPatrolInspectionVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<DailyPatrolInspectionDetails1VO> dailyPatrolInspectionDetails1VO;
+		 	 private List<DailyPatrolInspectionDetails1VO> dailyPatrolInspectionDetails1VO;
 
 	@OneToMany(mappedBy = "dailyPatrolInspectionVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
