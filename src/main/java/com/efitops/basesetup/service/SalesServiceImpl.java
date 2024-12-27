@@ -14,13 +14,22 @@ import org.springframework.stereotype.Service;
 
 import com.efitops.basesetup.dto.DeliveryChalanForFgDTO;
 import com.efitops.basesetup.dto.DeliveryChallanForFgDetailsDTO;
+import com.efitops.basesetup.dto.SalesInvoiceLocalDTO;
+import com.efitops.basesetup.dto.SalesInvoiceLocalDetailsDTO;
+import com.efitops.basesetup.dto.SalesInvoiceLocalTermsDTO;
 import com.efitops.basesetup.entity.DeliveryChalanForFgVO;
 import com.efitops.basesetup.entity.DeliveryChallanForFgDetailsVO;
 import com.efitops.basesetup.entity.DocumentTypeMappingDetailsVO;
+import com.efitops.basesetup.entity.SalesInvoiceLocalDetailsVO;
+import com.efitops.basesetup.entity.SalesInvoiceLocalTermsVO;
+import com.efitops.basesetup.entity.SalesInvoiceLocalVO;
 import com.efitops.basesetup.exception.ApplicationException;
 import com.efitops.basesetup.repo.DeliveryChalanForFgRepo;
 import com.efitops.basesetup.repo.DeliveryChallanForFgDetailsRepo;
 import com.efitops.basesetup.repo.DocumentTypeMappingDetailsRepo;
+import com.efitops.basesetup.repo.SalesInvoiceLocalDetailsRepo;
+import com.efitops.basesetup.repo.SalesInvoiceLocalRepo;
+import com.efitops.basesetup.repo.SalesInvoiceLocalTermsRepo;
 
 @Service
 public class SalesServiceImpl implements SalesService {
@@ -38,6 +47,15 @@ public class SalesServiceImpl implements SalesService {
 
 	@Autowired
 	DeliveryChallanForFgDetailsRepo deliveryChallanForFgDetailsRepo;
+
+	@Autowired
+	SalesInvoiceLocalRepo salesInvoiceLocalRepo;
+
+	@Autowired
+	SalesInvoiceLocalDetailsRepo salesInvoiceLocalDetailsRepo;
+
+	@Autowired
+	SalesInvoiceLocalTermsRepo salesInvoiceLocalTermsRepo;
 
 	// DeliveryChalanForFg
 
@@ -189,6 +207,120 @@ public class SalesServiceImpl implements SalesService {
 			List1.add(map);
 		}
 		return List1;
+	}
+
+	// SalesInvoiceLocal
+
+	@Override
+	public Map<String, Object> createUpdateSalesInvoiceLocal(SalesInvoiceLocalDTO salesInvoiceLocalDTO)
+			throws ApplicationException {
+		SalesInvoiceLocalVO salesInvoiceLocalVO = new SalesInvoiceLocalVO();
+		String message;
+		String screenCode = "SIL";
+		if (ObjectUtils.isNotEmpty(salesInvoiceLocalDTO.getId())) {
+			salesInvoiceLocalVO = salesInvoiceLocalRepo.findById(salesInvoiceLocalDTO.getId())
+					.orElseThrow(() -> new ApplicationException("SalesInvoiceLocal Enquiry details"));
+			message = "SalesInvoiceLocal Updated Successfully";
+			salesInvoiceLocalVO.setUpdatedBy(salesInvoiceLocalDTO.getCreatedBy());
+
+		} else {
+
+			String docId = salesInvoiceLocalRepo.getSalesInvoiceLocalDocId(salesInvoiceLocalDTO.getOrgId(), screenCode);
+			salesInvoiceLocalVO.setDocId(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndScreenCode(salesInvoiceLocalDTO.getOrgId(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+			salesInvoiceLocalVO.setCreatedBy(salesInvoiceLocalDTO.getCreatedBy());
+			salesInvoiceLocalVO.setUpdatedBy(salesInvoiceLocalDTO.getCreatedBy());
+
+			message = "SalesInvoiceLocal Created Successfully";
+		}
+		createUpdatedSalesInvoiceLocalVOFromSalesInvoiceLocalDTO(salesInvoiceLocalDTO, salesInvoiceLocalVO);
+		salesInvoiceLocalRepo.save(salesInvoiceLocalVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("salesInvoiceLocalVO", salesInvoiceLocalVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdatedSalesInvoiceLocalVOFromSalesInvoiceLocalDTO(SalesInvoiceLocalDTO salesInvoiceLocalDTO,
+			SalesInvoiceLocalVO salesInvoiceLocalVO) {
+		salesInvoiceLocalVO.setCustomerName(salesInvoiceLocalDTO.getCustomerName());
+		salesInvoiceLocalVO.setPackingListNo(salesInvoiceLocalDTO.getPackingListNo());
+		salesInvoiceLocalVO.setSalesOrderNo(salesInvoiceLocalDTO.getSalesOrderNo());
+		salesInvoiceLocalVO.setGstNo(salesInvoiceLocalDTO.getGstNo());
+		salesInvoiceLocalVO.setCurrency(salesInvoiceLocalDTO.getCurrency());
+		salesInvoiceLocalVO.setExchangeRate(salesInvoiceLocalDTO.getExchangeRate());
+		salesInvoiceLocalVO.setLocation(salesInvoiceLocalDTO.getLocation());
+		salesInvoiceLocalVO.setBillingAddress(salesInvoiceLocalDTO.getBillingAddress());
+		salesInvoiceLocalVO.setShippingAddress(salesInvoiceLocalDTO.getShippingAddress());
+		salesInvoiceLocalVO.setTaxType(salesInvoiceLocalDTO.getTaxType());
+		salesInvoiceLocalVO.setRemarks(salesInvoiceLocalDTO.getRemarks());
+		salesInvoiceLocalVO.setOrgId(salesInvoiceLocalDTO.getOrgId());
+		salesInvoiceLocalVO.setCreatedBy(salesInvoiceLocalDTO.getCreatedBy());
+
+		if (ObjectUtils.isNotEmpty(salesInvoiceLocalDTO.getId())) {
+			List<SalesInvoiceLocalDetailsVO> salesInvoiceLocalDetailsVO1 = salesInvoiceLocalDetailsRepo
+					.findBySalesInvoiceLocalVO(salesInvoiceLocalVO);
+			salesInvoiceLocalDetailsRepo.deleteAll(salesInvoiceLocalDetailsVO1);
+
+			List<SalesInvoiceLocalTermsVO> salesInvoiceLocalTermsVO1 = salesInvoiceLocalTermsRepo
+					.findBySalesInvoiceLocalVO(salesInvoiceLocalVO);
+			salesInvoiceLocalTermsRepo.deleteAll(salesInvoiceLocalTermsVO1);
+		}
+
+		List<SalesInvoiceLocalDetailsVO> salesInvoiceLocalDetailsVOs = new ArrayList<>();
+		for (SalesInvoiceLocalDetailsDTO salesInvoiceLocalDetailsDTO : salesInvoiceLocalDTO
+				.getSalesInvoiceLocalDetailsDTO()) {
+			SalesInvoiceLocalDetailsVO salesInvoiceLocalDetailsVO = new SalesInvoiceLocalDetailsVO();
+			salesInvoiceLocalDetailsVO.setItem(salesInvoiceLocalDetailsDTO.getItem());
+			salesInvoiceLocalDetailsVO.setItemDesc(salesInvoiceLocalDetailsDTO.getItemDesc());
+			salesInvoiceLocalDetailsVO.setUnits(salesInvoiceLocalDetailsDTO.getUnits());
+			salesInvoiceLocalDetailsVO.setAvlStkQty(salesInvoiceLocalDetailsDTO.getAvlStkQty());
+			salesInvoiceLocalDetailsVO.setQty(salesInvoiceLocalDetailsDTO.getQty());
+			salesInvoiceLocalDetailsVO.setRate(salesInvoiceLocalDetailsDTO.getRate());
+			salesInvoiceLocalDetailsVO.setTaxCode(salesInvoiceLocalDetailsDTO.getTaxCode());
+			salesInvoiceLocalDetailsVO.setDiscount(salesInvoiceLocalDetailsDTO.getDiscount());
+			salesInvoiceLocalDetailsVO.setSgst(salesInvoiceLocalDetailsDTO.getSgst());
+			salesInvoiceLocalDetailsVO.setCgst(salesInvoiceLocalDetailsDTO.getSgst());
+			salesInvoiceLocalDetailsVO.setIgst(salesInvoiceLocalDetailsDTO.getSgst());
+			salesInvoiceLocalDetailsVO.setSalesInvoiceLocalVO(salesInvoiceLocalVO);
+			salesInvoiceLocalDetailsVOs.add(salesInvoiceLocalDetailsVO);
+		}
+		salesInvoiceLocalVO.setSalesInvoiceLocalDetailsVO(salesInvoiceLocalDetailsVOs);
+		List<SalesInvoiceLocalTermsVO> salesInvoiceLocalTermsVOs = new ArrayList<>();
+		for (SalesInvoiceLocalTermsDTO salesInvoiceLocalTermsDTO : salesInvoiceLocalDTO
+				.getSalesInvoiceLocalTermsDTO()) {
+			SalesInvoiceLocalTermsVO salesInvoiceLocalTermsVO = new SalesInvoiceLocalTermsVO();
+			salesInvoiceLocalTermsVO.setTerms(salesInvoiceLocalTermsDTO.getTerms());
+			salesInvoiceLocalTermsVO.setDescription(salesInvoiceLocalTermsDTO.getDescription());
+
+			salesInvoiceLocalTermsVO.setSalesInvoiceLocalVO(salesInvoiceLocalVO);
+			salesInvoiceLocalTermsVOs.add(salesInvoiceLocalTermsVO);
+		}
+		salesInvoiceLocalVO.setSalesInvoiceLocalTermsVO(salesInvoiceLocalTermsVOs);
+	}
+
+	@Override
+	public List<SalesInvoiceLocalVO> getAllSalesInvoiceLocalByOrgId(Long orgId) {
+
+		return salesInvoiceLocalRepo.getAllSalesInvoiceLocalByOrgId(orgId);
+	}
+
+	@Override
+	public SalesInvoiceLocalVO getSalesInvoiceLocalById(Long id) {
+
+		return salesInvoiceLocalRepo.getSalesInvoiceLocalById(id);
+	}
+
+	@Override
+	public String getSalesInvoiceLocalDocId(Long orgId) {
+		String ScreenCode = "SIL";
+		return salesInvoiceLocalRepo.getSalesInvoiceLocalDocId(orgId, ScreenCode);
 	}
 
 }

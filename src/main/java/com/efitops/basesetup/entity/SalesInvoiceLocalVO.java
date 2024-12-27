@@ -25,17 +25,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "quotation")
+@Table(name = "salesinvoicelocal")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuotationVO {
-
+public class SalesInvoiceLocalVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quotationgen")
-	@SequenceGenerator(name = "quotationgen", sequenceName = "quotationseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "quotationid", columnDefinition = "BIGINT DEFAULT 0")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salesinvoicelocalgen")
+	@SequenceGenerator(name = "salesinvoicelocalgen", sequenceName = "salesinvoicelocalgseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "salesinvoicelocalid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
 	private String docId;
@@ -43,31 +42,37 @@ public class QuotationVO {
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "customername")
 	private String customerName;
-	@Column(name = "customerid")
-	private String customerId;
-	@Column(name = "enquiryno")
-	private String enquiryNo;
-	@Column(name = "enquirydate")
-	private LocalDate enquiryDate;
-	@Column(name = "validtill")
-	private LocalDate validTill;
-	@Column(name = "kindattention")
-	private String kindAttention;
-	@Column(name = "contactno")
-	private Long contactNo;
-	@Column(name = "taxcode")
-	private String taxCode;
-	@Column(name = "productionmanager")
-	private String productionManager;
+	@Column(name = "packinglistno")
+	private String packingListNo;
+	@Column(name = "salesorderno")
+	private String salesOrderNo;
+	@Column(name = "gstno")
+	private String gstNo;
 	@Column(name = "currency")
 	private String currency;
+	@Column(name = "exchangerate", precision = 10, scale = 2)
+	private BigDecimal exchangeRate;
+	@Column(name = "location")
+	private String location;
+	@Column(name = "billingaddress")
+	private String billingAddress;
+	@Column(name = "shippingaddress")
+	private String shippingAddress;
+	@Column(name = "taxtype")
+	private String taxType;
+
+	// Summary
 
 	@Column(name = "grossamount", precision = 10, scale = 2)
 	private BigDecimal grossAmount;
-	@Column(name = "netamount", precision = 10, scale = 2)
-	private BigDecimal netAmount;
-	@Column(name = "amountinwords", length = 150)
-	private String amountInWords;
+	@Column(name = "totaltaxamount", precision = 10, scale = 2)
+	private BigDecimal totalTaxAmount;
+	@Column(name = "totalamount", precision = 10, scale = 2)
+	private BigDecimal totalAmount;
+	@Column(name = "totalamountinwords", precision = 10, scale = 2)
+	private BigDecimal totalAmountInWords;
+	@Column(name = "remarks")
+	private String remarks;
 
 	@Column(name = "orgid")
 	private Long orgId;
@@ -78,17 +83,21 @@ public class QuotationVO {
 	@Column(name = "cancelremarks", length = 150)
 	private String cancelRemarks;
 	@Column(name = "active")
-	private boolean active;
+	private boolean active = true;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel = false;
 	@Column(name = "screencode", length = 30)
-	private String screenCode = "QOT";
+	private String screenCode = "SIL";
 	@Column(name = "screenname", length = 30)
-	private String screenName = "QUOTATION";
+	private String screenName = "SALES INVOICE LOCAL";
 
-	@OneToMany(mappedBy = "quotationVO", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "salesInvoiceLocalVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	List<QuotationDetailsVO> quotationDetailsVO;
+	List<SalesInvoiceLocalDetailsVO> salesInvoiceLocalDetailsVO;
+
+	@OneToMany(mappedBy = "salesInvoiceLocalVO", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	List<SalesInvoiceLocalTermsVO> salesInvoiceLocalTermsVO;
 
 	@JsonGetter("active")
 	public String getActive() {

@@ -24,15 +24,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_inprocessinspection")
+@Table(name = "inprocessinspection")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class InprocessInspectionVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_inprocessinspectiongen")
-	@SequenceGenerator(name = "t_inprocessinspectiongen", sequenceName = "t_inprocessinspectionseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inprocessinspectiongen")
+	@SequenceGenerator(name = "inprocessinspectiongen", sequenceName = "inprocessinspectionseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "inprocessinspectionid", columnDefinition = "BIGINT DEFAULT 0")
 	private Long id;
 	@Column(name = "docid")
