@@ -34,7 +34,7 @@ public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrderVO, Long> 
 			+ "        COALESCE(a.state, '')\r\n"
 			+ "    ) AS full_address,\r\n"
 			+ "    a.stategstin,\r\n"
-			+ "    a.taxtype,\r\n"
+			+ "    a.taxtype as taxcode,\r\n"
 			+ "    a.state,\r\n"
 			+ "    a.pincode,\r\n"
 			+ "    a.city\r\n"

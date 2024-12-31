@@ -39,6 +39,8 @@ public class ToolIssueEntryVO {
 	private LocalDate docDate= LocalDate.now();
 	@Column(name = "instrumentname")
 	private String instrumentName;
+	@Column(name = "instrumentdesc")
+	private String instrumentDesc;
 	@Column(name = "seqcode")
 	private String seqCode;
 	@Column(name = "instrumentcode")

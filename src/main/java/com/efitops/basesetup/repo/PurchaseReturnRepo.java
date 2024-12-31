@@ -22,19 +22,20 @@ public interface PurchaseReturnRepo extends JpaRepository<PurchaseReturnVO, Long
 	String getPurchaseReturnDocId(Long orgId, String screenCode);
 
 	@Query(nativeQuery = true, value = "select a.docid,a.docdate,a.grncleartime,a.pono,a.gst_no,\r\n"
-			+ "		 a.address,a.inwardno,a.currency,a.exchangerate,a.invdcno,a.invdcdate,a.gsttype,a.customername from purchaseinvoice a where\r\n"
-			+ " a.orgid=?1 and a.suppliercode=?2 and  a.active group by a.docid,a.docdate,a.grncleartime,a.pono,a.gst_no,\r\n"
-			+ "		a.address,a.inwardno,a.currency,a.exchangerate,a.invdcno,a.invdcdate,a.gsttype,a.customername order by a.docid")
+			+ "a.address,a.inwardno,a.currency,a.exchangerate,a.invdcno,a.invdcdate,a.gsttype,a.customername from\r\n"
+			+ " purchaseinvoice a where \r\n"
+			+ "		a.orgid=?1 and a.suppliercode=?2 group by a.docid,a.docdate,a.grncleartime,a.pono,a.gst_no,\r\n"
+			+ "			a.address,a.inwardno,a.currency,a.exchangerate,a.invdcno,a.invdcdate,a.gsttype,a.customername order by a.docid")
 	Set<Object[]> getPurchaseInvoiceNumberFromPurchaseInvoice(Long orgId, String supplierCode);
 
 	@Query(nativeQuery = true, value = "select a.locationcode from stocklocation a where a.orgid=?1 group by a.locationcode order by a.locationcode")
 	Set<Object[]> getLocationFromStockLocation(Long orgId);
 
-	@Query(nativeQuery = true, value = " select a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
-			+ " a.porate,a.unitprice from\r\n"
-			+ " purchaseinvoice a1,purchaseinvoiceitem a where a1.orgid=?1 and a1.docid=?2 and a.purchaseinvoiceid=a1.purchaseinvoiceid and \r\n"
-			+ " a1.active group by a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
-			+ " a.porate,a.unitprice order by  a.itemcode")
+	@Query(nativeQuery = true, value = "select a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
+			+ "			a.porate,a.unitprice from \r\n"
+			+ "			purchaseinvoice a1,purchaseinvoiceitem a where a1.orgid=?1 and a1.docid=?2 and\r\n"
+			+ "		      a.purchaseinvoiceid=a1.purchaseinvoiceid group by a.itemcode,a.itemname,a.hsnsaccode,a.taxtype,a.primaryunit,\r\n"
+			+ "					 a.porate,a.unitprice order by  a.itemcode")
 	Set<Object[]> getItemCodeAndItemDescFromPurchsaeInvoice(Long orgId, String purchaseInvoiceNo);
 
 }

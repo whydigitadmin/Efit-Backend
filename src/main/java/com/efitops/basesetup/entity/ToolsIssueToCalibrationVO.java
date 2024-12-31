@@ -43,6 +43,14 @@ public class ToolsIssueToCalibrationVO {
 	private String issuePartyName;
 	@Column(name = "issuepartyaddress")
 	private String issuePartyAddress;
+	@Column(name = "totalqty")
+	private Long totalQty;
+	@Column(name = "isscreatedby")
+	private String issueCreatedBy;
+	@Column(name = "remarks")
+	private String remarks;
+	@Column(name = "narration")
+	private String narration;
 
 	@Column(name = "orgid")
 	private Long orgId;

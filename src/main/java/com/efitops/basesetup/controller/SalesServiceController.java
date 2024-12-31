@@ -21,7 +21,9 @@ import com.efitops.basesetup.common.CommonConstant;
 import com.efitops.basesetup.common.UserConstants;
 import com.efitops.basesetup.dto.DeliveryChalanForFgDTO;
 import com.efitops.basesetup.dto.ResponseDTO;
+import com.efitops.basesetup.dto.SalesInvoiceLocalDTO;
 import com.efitops.basesetup.entity.DeliveryChalanForFgVO;
+import com.efitops.basesetup.entity.SalesInvoiceLocalVO;
 import com.efitops.basesetup.service.SalesService;
 
 @RestController
@@ -230,4 +232,115 @@ public class SalesServiceController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	// SalesInvoiceLocal
+
+	@GetMapping("/getAllSalesInvoiceLocalByOrgId")
+	public ResponseEntity<ResponseDTO> getAllSalesInvoiceLocalByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllSalesInvoiceLocalByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<SalesInvoiceLocalVO> salesInvoiceLocalVO = new ArrayList<>();
+		try {
+			salesInvoiceLocalVO = salesService.getAllSalesInvoiceLocalByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SalesInvoiceLocal information get successfully ByOrgId");
+			responseObjectsMap.put("salesInvoiceLocalVO", salesInvoiceLocalVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"SalesInvoiceLocal information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+
+	@GetMapping("/getSalesInvoiceLocalById")
+	public ResponseEntity<ResponseDTO> getSalesInvoiceLocalById(@RequestParam Long id) {
+		String methodName = "getSalesInvoiceLocalById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		SalesInvoiceLocalVO salesInvoiceLocalVO = new SalesInvoiceLocalVO();
+		try {
+			salesInvoiceLocalVO = salesService.getSalesInvoiceLocalById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SalesInvoiceLocal information get successfully By id");
+			responseObjectsMap.put("salesInvoiceLocalVO", salesInvoiceLocalVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"SalesInvoiceLocal information receive failedByOrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/createUpdateSalesInvoiceLocal")
+	public ResponseEntity<ResponseDTO> createUpdateSalesInvoiceLocal(
+			@RequestBody SalesInvoiceLocalDTO salesInvoiceLocalDTO) {
+		String methodName = "createUpdateSalesInvoiceLocal()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> salesInvoiceLocalVO = salesService.createUpdateSalesInvoiceLocal(salesInvoiceLocalDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, salesInvoiceLocalVO.get("message"));
+			responseObjectsMap.put("salesInvoiceLocalVO", salesInvoiceLocalVO.get("salesInvoiceLocalVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getSalesInvoiceLocalDocId")
+	public ResponseEntity<ResponseDTO> getSalesInvoiceLocalDocId(@RequestParam Long orgId) {
+
+		String methodName = "getSalesInvoiceLocalDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = salesService.getSalesInvoiceLocalDocId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SalesInvoiceLocalDocId information retrieved successfully");
+			responseObjectsMap.put("salesInvoiceLocalDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve SalesInvoiceLocalDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

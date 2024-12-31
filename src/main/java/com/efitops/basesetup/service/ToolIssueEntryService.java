@@ -32,5 +32,7 @@ public interface ToolIssueEntryService {
 
 	Map<String, Object> updateCreateToolsIssueToCalibration(ToolsIssueToCalibrationDTO toolsIssueToCalibrationDTO)
 			throws ApplicationException;
+	
+	List<Map<String, Object>> getInstrumentdetforToolIssueForcalibration(Long orgId);
 
 }

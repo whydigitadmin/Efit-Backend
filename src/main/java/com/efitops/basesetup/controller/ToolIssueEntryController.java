@@ -249,4 +249,32 @@ public class ToolIssueEntryController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getInstrumentdetforToolIssueForcalibration")
+	public ResponseEntity<ResponseDTO> getInstrumentdetforToolIssueForcalibration(@RequestParam(required = false) Long orgId) {
+		String methodName = "getInstrumentdetforToolIssueForcalibration()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> chcode = new ArrayList<>();
+		try {
+			chcode = toolIssueEntryService.getInstrumentdetforToolIssueForcalibration(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					" Instrumentname for calibration information get successfully By OrgId");
+			responseObjectsMap.put("chcode", chcode);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Instrumentname for calibration information receive failed By OrgId", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+
+	}
+	
 }
